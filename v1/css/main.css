@@ -1,0 +1,582 @@
+/* =========================
+   GRUNDLAGEN
+========================= */
+
+*{
+  box-sizing: border-box;
+}
+
+html{
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body{
+  margin: 0;
+  background: #f6f6f6;
+  color: #111;
+  caret-color: transparent;
+
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', Roboto, Arial, sans-serif;
+
+  font-weight: 400;
+}
+
+
+/* Seitencontainer */
+.page{
+  width: 390px;        /* feste Mobile-Breite */
+  min-width: 390px;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100vh;
+
+  /* globaler Innenrand */
+  padding: 24px 16px 80px;
+}
+
+/* =========================
+   HERO / HEADER
+========================= */
+
+.hero{
+  background: #dfe8e7;
+  border: 1px solid #111;
+
+  margin: 0 0 36px;
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 18px 16px;
+
+  border-top-left-radius: 44px;
+  border-bottom-left-radius: 1px;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 16px;
+}
+
+
+.hero__left{
+  flex: 1 1 auto;
+  min-width: 0;
+padding-right: 110px;
+}
+
+
+
+.hero h1{
+  margin: 0;
+  font-size: 36px;
+  line-height: 0.92;
+  letter-spacing: -0.085em;
+  font-weight: 800;
+}
+
+.hero p{
+  margin: 10px 0 0;
+  font-size: 9.75px;
+  line-height: 1.3;
+  font-weight: 300;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;   /* MAX 2 Zeilen */
+  overflow: hidden;
+}
+
+.hero{
+  position: relative;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+  display: inline-block;
+  text-decoration: none;
+  background: #8e9a9c;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.btn:hover{
+  background: #7f8b8d;
+}
+
+.btn:active{
+  transform: scale(0.97);
+}
+
+.btn--hero{
+  width: 104px;
+  height: 42px;
+
+  flex: 0 0 auto;     /* verhindert, dass Flex den Button zusammendrückt */
+ align-self: flex-start;
+  display: grid;
+  place-items: center;
+
+  box-sizing: border-box;
+  padding: 0 12px;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 500;
+margin-left: auto;
+
+  border-radius: 0 12px 0 12px;
+
+}
+
+
+
+/* =========================
+   SCROLL TO TOP BUTTON
+========================= */
+
+.fab{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+
+  display: grid;
+  place-items: center;
+
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.2);
+  color: #111;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* =========================
+   SECTIONS / TYPO BASIS
+========================= */
+
+.section{
+  margin: 0 0 40px;
+}
+
+.section__title{
+  margin: 0 0 18px;
+  font-size: 20px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.project__title,
+.story__title{
+  margin: 0 0 14px;
+  font-size: 15px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+p{
+  margin: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* =========================
+   MEDIA / IMAGES (Fit fix)
+========================= */
+
+.media{
+  margin: 0 0 28px;
+}
+
+.media img{
+  display: block;
+  width: 100%;
+
+  /* Ordnung + weniger Skalierung */
+  max-width: 450px;
+  margin: 0 auto;
+
+  height: auto;
+  border-radius: 22px;
+}
+
+
+/* Foto/Produkt: darf etwas größer, rund */
+.media--photo img{
+  max-width: 520px;
+  border-radius: 22px;
+}
+
+/* Persona: ruhiger und etwas kleiner */
+.media--persona img{
+  max-width: 420px;
+  border-radius: 18px;
+}
+
+/* Boards/Diagramme: weniger Rundung + „Dokument“-Look */
+.media--boardfull img{
+  max-width: 700px;                 /* Desktop lesbarer */
+  border-radius: 12px;              /* weniger „Foto“ */
+  border: 1px solid rgba(0,0,0,0.10);
+  background: #fff;
+}
+
+
+/* =========================
+   MEDIA DUO (Flasche + Board)
+========================= */
+
+.media-duo{
+  display: flex;
+  gap: 14px;
+  align-items: center;
+
+  padding: 14px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 22px;
+  max-width: 560px;
+  margin: 0 auto 24px;
+
+
+}
+
+.media-duo .media{
+  margin: 0;
+}
+
+/* links: Flasche klein, fix */
+.media-duo .media--bottle{
+  flex: 0 0 86px;
+  display: flex;
+  justify-content: center;
+}
+
+.media-duo .media--bottle img{
+  width: 86px;
+  height: auto;
+  max-width: none;
+}
+
+/* rechts: Board groß, füllt */
+.media-duo .media--board{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.media-duo .media--board img{
+  width: 100%;
+  height: 140px;
+  padding: 10px;
+  object-fit: contain;
+  border-radius: 16px;
+  display: block;
+}
+
+
+
+
+/* =========================
+   CARD (Über mich)
+========================= */
+
+.card{
+  background: #dfe8e7;
+  border: 1px solid #111;
+
+  padding: 26px 10px 22px;
+  margin: 0 0 40px;
+
+  /* gleiches Markenzeichen wie Hero */
+  border-top-left-radius: 44px;
+  border-bottom-left-radius: 1px;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 16px;
+}
+
+.card .section__title{
+  margin-bottom: 18px;
+}
+
+/* =========================
+   RESPONSIVE (Desktop Vorbereitung)
+========================= */
+
+@media (min-width: 900px){
+  .page{
+    width: 100%;
+    min-width: 0;
+    max-width: 860px;
+    padding: 48px 24px 120px;
+  }
+}
+
+/* =========================
+   LIGHTBOX (Zoom)
+========================= */
+
+.lightbox{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+
+.lightbox.is-open{
+  display: flex;
+}
+
+.lightbox__img{
+  max-width: min(1100px, 96vw);
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.lightbox__close{
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+
+/* =========================
+   FOOTER (Mobile-first)
+========================= */
+
+.footer{
+  margin: 56px 0 0;
+}
+
+.footer__wrap{
+  position: relative;
+}
+
+/* Panel wie in Figma */
+.footer__panel{
+  background: #dfe8e7;
+  border: 1px solid #111;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 14px 14px 16px;
+
+  /* Markenradius (wie Header) */
+  border-top-left-radius: 44px;
+  border-bottom-left-radius: 1px;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 16px;
+}
+
+/* Text links – NICHT zentriert */
+.footer__text{
+  margin: 0;
+  text-align: left;
+
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 400;
+    max-width: none;        /* wichtig */
+  white-space: nowrap;   /* erzwingt eine Zeile */
+  max-width: 240px;
+}
+
+/* LinkedIn Button rechts */
+.footer__linkedin{
+  flex: 0 0 auto;
+
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.55);
+
+  text-decoration: none;
+}
+
+.footer__linkedin img{
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* Top Button oben rechts am Panel */
+.footer__top{
+  position: absolute;
+  right: 10px;
+  top: -48px;
+
+  width: 41px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 10px;
+
+  text-decoration: none;
+}
+
+.footer__top img{
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* =========================
+   PRODUKTGESCHICHTEN (Cards)
+========================= */
+
+.stories{
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.story-card{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-top-left-radius: 44px;
+  border-bottom-left-radius: 1px;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 16px;
+  padding: 14px 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.story-card__head{
+  display: grid;
+  gap: 4px;
+}
+
+.story-card__title{
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.story-card__sub{
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: rgba(0,0,0,0.65);
+}
+
+.story-card__text{
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  font-weight: 400;
+  color: rgba(0,0,0,0.9);
+  white-space: pre-line; /* falls du später echte Zeilenumbrüche einfügst */
+}
+
+.story-card__focus{
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: rgba(0,0,0,0.8);
+}
+
+.story-card__focus span{
+  font-weight: 700;
+}
+
+/* =========================
+   YOUTUBE THUMBNAIL
+========================= */
+
+.media--youtube .youtube-link{
+  display: block;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.media--youtube .youtube-link img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.media--youtube .youtube-link::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.media--youtube .youtube-link:hover::after{
+  opacity: 1;
+}
+
+/* Play-Button */
+.media--youtube .youtube-link::before{
+  content: "▶";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.12);
+  font-size: 18px;
+  line-height: 1;
+  color: #111;
+}
+
+

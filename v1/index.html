@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Pascal Jäger – Portfolio</title>
+  <meta name="description" content="Portfolio von Pascal Jäger. Produktstrategie, UX, End-to-End Verantwortung, klare Systeme statt Buzzwords." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://pascaljaeger.online/" />
+
+  <!-- Light only -->
+  <meta name="color-scheme" content="only light" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pascal Jäger – Product Owner · UX Denker · Systematisierer" />
+  <meta property="og:description" content="Portfolio mit Projekten, Arbeitsweise und Produktgeschichten. Fokus: nutzerzentrierte Systeme, klare Struktur, End-to-End Verantwortung." />
+  <meta property="og:url" content="https://pascaljaeger.online/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://pascaljaeger.online/assets/img/ui/pjthumbheader.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Pascal Jäger – Product Owner · UX Denker · Systematisierer" />
+  <meta name="twitter:description" content="Portfolio mit Projekten, Arbeitsweise und Produktgeschichten." />
+  <meta name="twitter:image" content="https://pascaljaeger.online/assets/img/ui/pjthumbheader.png" />
+<meta name="author" content="Pascal Jäger">
+
+
+  <style>
+    /* =========================
+       GRUNDLAGEN
+    ========================= */
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: light;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f6f6;
+      color: #111;
+      caret-color: transparent;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-weight: 400;
+    }
+
+    img { max-width: 100%; height: auto; }
+
+    /* =========================
+       SEITENCONTAINER (Mobile-first)
+    ========================= */
+
+    .page {
+      width: 390px;
+      min-width: 390px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      padding: 24px 16px 80px;
+    }
+
+    /* =========================
+       HERO / HEADER
+    ========================= */
+
+    .hero {
+      background: #dfe8e7;
+      border: 1px solid #111;
+
+      margin: 0 0 36px;
+      width: 100%;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+     flex-wrap: wrap;
+
+      padding: 18px 16px;
+
+      border-top-left-radius: 44px;
+      border-bottom-left-radius: 1px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 16px;
+
+      position: relative;
+    }
+
+    .hero__left {
+      flex: 1 1 100%;
+      min-width: 0;
+      
+    }
+
+    .hero h1{
+  margin: 0;
+  font-size: 36px;
+  line-height: 0.92;
+  letter-spacing: -0.085em;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+
+  .hero p{
+  margin: 10px 0 0;
+  font-size: 9.75px;
+  line-height: 1.3;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #8e9a9c;
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 120ms ease, background 120ms ease;
+    }
+
+    .btn:hover { background: #7f8b8d; }
+    .btn:active { transform: scale(0.97); }
+
+    .btn--hero {
+      width: 104px;
+      height: 42px;
+
+      flex: 0 0 auto;
+      align-self: flex-start;
+
+      display: grid;
+      place-items: center;
+
+      box-sizing: border-box;
+      padding: 0 12px;
+      line-height: 1;
+      white-space: nowrap;
+
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: auto;
+
+      border-radius: 0 12px 0 12px;
+    }
+
+    /* =========================
+       SECTIONS / TYPO
+    ========================= */
+
+    .section { margin: 0 0 40px; }
+
+    .section__title {
+      margin: 0 0 18px;
+      font-size: 20px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+    }
+
+    .project__title,
+    .story__title {
+      margin: 0 0 14px;
+      font-size: 15px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 18px;
+      font-size: 16px;
+      line-height: 1.45;
+      letter-spacing: -0.01em;
+    }
+
+    /* =========================
+       MEDIA / IMAGES
+    ========================= */
+
+    .media { margin: 0 0 28px; }
+
+    .media img {
+      display: block;
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+      height: auto;
+      border-radius: 22px;
+    }
+
+    .media--photo img {
+      max-width: 520px;
+      border-radius: 22px;
+    }
+
+    .media--persona img {
+      max-width: 420px;
+      border-radius: 18px;
+    }
+
+    .media--boardfull img {
+      max-width: 700px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.10);
+      background: #fff;
+    }
+
+    /* =========================
+       MEDIA DUO (Flasche + Board)
+    ========================= */
+
+    .media-duo {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+
+      padding: 14px;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 22px;
+
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+
+    .media-duo .media { margin: 0; }
+
+    .media-duo .media--bottle {
+      flex: 0 0 86px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .media-duo .media--bottle img {
+      width: 86px;
+      height: auto;
+      max-width: none;
+      border-radius: 22px;
+    }
+
+    .media-duo .media--board {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .media-duo .media--board img {
+      width: 100%;
+      height: 140px;
+      padding: 10px;
+      object-fit: contain;
+      border-radius: 16px;
+      display: block;
+    }
+
+    /* =========================
+       CARD (Über mich)
+    ========================= */
+
+    .card {
+      background: #dfe8e7;
+      border: 1px solid #111;
+
+      padding: 26px 10px 22px;
+      margin: 0 0 40px;
+
+      border-top-left-radius: 44px;
+      border-bottom-left-radius: 1px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .card .section__title { margin-bottom: 18px; }
+
+    /* =========================
+       PRODUKTGESCHICHTEN (Cards)
+    ========================= */
+
+    .stories {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .story-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-top-left-radius: 44px;
+      border-bottom-left-radius: 1px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 16px;
+      padding: 14px 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .story-card__head {
+      display: grid;
+      gap: 4px;
+    }
+
+    .story-card__title {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    .story-card__sub {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .story-card__text {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.9);
+      white-space: pre-line;
+    }
+
+    .story-card__focus {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .story-card__focus span { font-weight: 700; }
+
+    /* =========================
+       YOUTUBE THUMBNAIL
+    ========================= */
+
+    .media--youtube .youtube-link {
+      display: block;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      text-decoration: none;
+    }
+
+    .media--youtube .youtube-link img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 450px;
+      margin: 0 auto;
+      border-radius: 14px;
+    }
+
+    .media--youtube .youtube-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.12);
+      opacity: 0;
+      transition: opacity 140ms ease;
+    }
+
+    .media--youtube .youtube-link:hover::after { opacity: 1; }
+
+    .media--youtube .youtube-link::before {
+      content: "▶";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      font-size: 18px;
+      line-height: 1;
+      color: #111;
+      pointer-events: none;
+    }
+
+    /* =========================
+       FOOTER (Mobile-first)
+    ========================= */
+
+    .footer { margin: 56px 0 0; }
+
+    .footer__wrap { position: relative; }
+
+    .footer__panel {
+      background: #dfe8e7;
+      border: 1px solid #111;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+flex-wrap: wrap;
+      padding: 14px 14px 14px 16px;
+
+      border-top-left-radius: 44px;
+      border-bottom-left-radius: 1px;
+      border-top-right-radius: 1px;
+      border-bottom-right-radius: 16px;
+    }
+
+    .footer__text {
+      margin: 0;
+      text-align: left;
+
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 400;
+
+      
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .footer__linkedin {
+      flex: 0 0 auto;
+      width: 36px;
+      height: 36px;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+    }
+
+    .footer__linkedin img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .footer__top {
+      position: absolute;
+      right: 10px;
+      top: -48px;
+
+      width: 41px;
+      height: 39px;
+
+      display: grid;
+      place-items: center;
+
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+
+      text-decoration: none;
+    }
+
+    .footer__top img {
+      width: 14px;
+      height: 14px;
+      display: block;
+    }
+
+.footer__linkedin,
+.footer__linkedin img,
+.footer__linkedin svg {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+}
+
+
+    /* =========================
+       LIGHTBOX (Zoom)
+    ========================= */
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 9999;
+    }
+
+    .lightbox.is-open { display: flex; }
+
+    .lightbox__img {
+      max-width: min(1100px, 96vw);
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    /* =========================
+       RESPONSIVE (Desktop Vorbereitung)
+    ========================= */
+
+    @media (min-width: 900px) {
+      .page {
+        width: 100%;
+        min-width: 0;
+        max-width: 860px;
+        padding: 48px 24px 120px;
+      }
+
+      .media img { max-width: 700px; }
+      .media--youtube .youtube-link img { max-width: 700px; }
+    }
+
+#impressum a,
+#datenschutz a{
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* =========================
+   MODAL (Impressum / Datenschutz)
+========================= */
+
+.modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,0.55);
+  z-index: 9998;
+}
+
+.modal.is-open{ display: flex; }
+
+.modal__panel{
+  width: 100%;
+  max-width: 720px;
+  max-height: 85vh;
+  overflow: auto;
+
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.18);
+  border-radius: 22px;
+  padding: 18px 16px 16px;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.modal__title{
+  margin: 0 0 10px;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+.modal__body p{
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.modal__close{
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
+
+  background: rgba(0,0,0,0.04);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Footer legal links */
+.footer__legal{
+  color: inherit;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+.footer__sep{
+  opacity: 0.6;
+  font-size: 12px;
+  margin: 0 6px;
+}
+
+.about__cta{
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+padding-bottom: 8px;
+}
+
+
+#kontakt{
+  scroll-margin-top: 24px;
+}
+
+/* =========================
+   SELECTED STACK
+========================= */
+.pj-stack{
+  margin: 36px 0;
+}
+
+.pj-stack__grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pj-stack__card{
+  border: 1px solid #111;
+  border-radius: 18px;
+  padding: 16px;
+  background: #fff;
+}
+
+.pj-stack__card h3{
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.pj-stack__card ul{
+  margin: 0;
+  padding-left: 18px;
+}
+
+@media (max-width: 520px){
+  .pj-stack__grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+.media-single{
+  display: flex;
+  justify-content: center;
+}
+
+.media-single .media{
+  max-width: 420px;   /* fein, ruhig, nicht dominant */
+  width: 100%;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+<!--
+       ~     ~
+      ~   ~    
+    ┌────────┐
+     │  p j   │ >
+      └────┘
+    -flavor over all
+    crafted with taste-
+-->
+
+
+
+  <!-- Scroll-Anker -->
+  <div id="top"></div>
+
+  <main class="page">
+    <!-- =========================
+         HEADER / HERO
+    ========================== -->
+    <header class="hero">
+      <div class="hero__left">
+        <h1>Pascal Jäger</h1>
+
+        <p>Product Owner · UX-Denker · Systematisierer</p>
+      </div>
+      <a class="btn btn--hero" href="#projekte">Projekte</a>
+    </header>
+
+   <!-- =========================
+     WIE ICH ARBEITE
+========================== -->
+<section class="section" id="wie-ich-arbeite">
+  <h2 class="section__title">Wie ich arbeite</h2>
+
+  <p>
+    <strong>Kontext vor Framework.</strong>
+  </p>
+  <p>
+    Jede Arbeit beginnt mit dem Verständnis ihres spezifischen Umfelds. 
+    Statt vorgefertigte Methoden anzuwenden, analysiere ich Menschen, Ziele und Rahmenbedingungen, 
+    bevor Lösungen entstehen. So werden komplexe Zusammenhänge greifbar und für alle Beteiligten 
+    handhabbar.
+  </p>
+
+  <p>
+    <strong>Die richtige Frage als Hebel.</strong>
+  </p>
+  <p>
+    Fortschritt entsteht nicht durch schnelle Antworten, sondern durch präzise Fragen. 
+    Im gemeinsamen Austausch kläre ich, was dem Vorankommen im Weg steht und welche Entscheidungen 
+    unter den gegebenen Bedingungen langfristig tragfähig sind.
+  </p>
+</section>
+
+<!-- Bild: Work Pattern -->
+<figure class="media">
+  <img src="./assets/img/projects/work-pattern.png" alt="Work Pattern" loading="lazy" />
+</figure>
+
+<!-- Text: Zusammenarbeit -->
+<section class="section">
+  <p>
+    <strong>Struktur und Nachvollziehbarkeit.</strong>
+  </p>
+  <p>
+    Durch das bewusste Klären von Abhängigkeiten und konsequentes Priorisieren wird Komplexität 
+    auf ein tragfähiges Maß reduziert. Ziel ist nicht Perfektion zu Beginn, sondern eine 
+    durchgehende Nachvollziehbarkeit von Entscheidungen – für Team, Produkt und unternehmerischen Erfolg.
+  </p>
+</section>
+
+
+    <!-- =========================
+         ÜBER MICH (Karte)
+    ========================== -->
+    <section class="card card--about" id="ueber-mich">
+      <h2 class="section__title">Über mich</h2>
+
+      <p>Ein früher und praktischer Zugang zu IT-Systemen bildet die Grundlage meiner heutigen Arbeitsweise. Die manuelle Konfiguration von 386er-Hardware erforderte bereits damals bewusste Entscheidungen über Speicherbereiche und Systemparameter, da Standardeinstellungen oft nicht ausreichten. Dieser Weg führte konsequent von der Programmierung in BASIC und Turbo Pascal hin zum ersten Kontakt mit HTML, woraufhin sich der Fokus schnell in Richtung Design verlagerte. Mit Werkzeugen wie Photoshop und Dreamweaver entstand ein tiefes Verständnis für die visuelle Schnittstelle und die Gestaltung digitaler Erlebnisse.</p>
+<p>
+
+Systeme sollten sich stets dem Menschen anpassen und nicht umgekehrt. Dabei markiert das Verständnis eines technischen Prinzips nie den Endpunkt, sondern lediglich den Beginn der eigentlichen Auseinandersetzung. Es geht darum, Varianten zu vergleichen, Grenzen auszuloten und das System in seiner Gesamtheit zu durchdringen. Gestaltung fungiert in diesem Prozess als die entscheidende Brücke zwischen der rein technischen Funktion und der menschlichen Wahrnehmung. Belastbare Produktarbeit entsteht genau dort, wo technische Machbarkeit, menschliche Bedürfnisse und wirtschaftliche Ziele gleichwertig gewichtet werden. Das Ergebnis sind Systeme, die zuverlässig tragen und für Menschen gebaut sind, statt bloßen Konzepten zu folgen.</p>
+
+<div class="about__cta">
+  <a class="btn btn--hero" href="#kontakt">Kontakt</a>
+</div>
+    </section>
+
+<section class="pj-stack" id="stack" aria-labelledby="stack-title">
+  <h2 id="stack-title">Selected Stack</h2>
+
+  <div class="pj-stack__grid">
+
+  <article class="pj-stack__card">
+    <h3>Product & System Thinking</h3>
+    <ul>
+      <li>Problem Framing & Kontextanalyse</li>
+      <li>Priorisierung & Entscheidungslogik</li>
+      <li>User Journeys & Nutzungskontexte</li>
+      <li>End-to-End Produktverantwortung</li>
+    </ul>
+  </article>
+
+  <article class="pj-stack__card">
+    <h3>Project Delivery & Collaboration</h3>
+    <ul>
+      <li>Jira · Linear</li>
+      <li>Notion</li>
+      <li>Strukturierte Übergaben</li>
+      <li>Zusammenarbeit mit Design & Entwicklung</li>
+    </ul>
+  </article>
+
+  <article class="pj-stack__card">
+    <h3>UI/UX & Prototyping</h3>
+    <ul>
+      <li>Figma</li>
+      <li>FigJam</li>
+      <li>Informationsarchitektur</li>
+      <li>UX Flows & Wireframes</li>
+    </ul>
+  </article>
+
+  <article class="pj-stack__card">
+    <h3>Web & Interface Fundamentals</h3>
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript (Grundverständnis)</li>
+      <li>Responsive Layouts</li>
+    </ul>
+  </article>
+
+  <article class="pj-stack__card">
+    <h3>AI-gestützte Arbeitsweise</h3>
+    <ul>
+      <li>ChatGPT · Gemini</li>
+      <li>Prompt-basierte Analyse & Strukturierung</li>
+      <li>Ideation & Textarbeit mit LLMs</li>
+      <li>Visuelle Exploration (Midjourney)</li>
+    </ul>
+  </article>
+
+  <article class="pj-stack__card">
+    <h3>Visual Design & Brand Systems</h3>
+    <ul>
+      <li>Photoshop · Illustrator</li>
+      <li>InDesign</li>
+      <li>After Effects</li>
+      <li>Visuelle Konsistenz & Systematik</li>
+    </ul>
+  </article>
+
+</div>
+
+
+</section>
+
+
+    <!-- =========================
+         PROJEKTE / MATCHACHIN
+    ========================== -->
+    <section class="section" id="projekte">
+      <h2 class="section__title">Projekte</h2>
+
+      <h3 class="project__title">Matchachin: Von der ersten Hypothese zum marktreifen MVP</h3>
+
+      <!-- Duo: Flasche links, MVP Board rechts -->
+      <div class="media-single">
+  <figure class="media">
+    <img
+      src="./assets/img/projects/matchachin-set.png"
+      alt="Matchachin – Produkt und Branding"
+      loading="lazy"
+    />
+  </figure>
+</div>
+
+
+     
+<p>
+  <strong>Vom Rohstoff zum ganzheitlichen Erlebnis.</strong><br>
+  Für Tausendkraut habe ich Matchachin als funktionales Ready-to-Drink-Getränk auf Guayusa-Basis entwickelt.
+  Ausgangspunkt war nicht die Idee eines weiteren Energy-Drinks, sondern die Frage, wie sich natürliche
+  Wachheit sinnvoll in den Alltag integrieren lässt. Ziel war ein Produkt, das Leistung unterstützt,
+  ohne Überreizung oder anschließenden Leistungsabfall zu erzeugen.
+</p>
+
+<p>
+  Ich habe die Produktentwicklung ganzheitlich verantwortet und entlang klarer Entscheidungslinien
+  aufgebaut. Jede Phase folgte dem gleichen Prinzip. Nutzen vor Wirkung. Klarheit vor Inszenierung.
+</p>
+
+<p><strong>Mein Beitrag im Überblick</strong></p>
+
+<ul class="project-list">
+  <li><strong>Produktstrategie:</strong> Entwicklung der Rezeptur, Definition der Zielgruppe und klare Positionierung im Spannungsfeld zwischen funktionalem Getränk und bewusster Ernährung.</li>
+  <li><strong>Branding und UX:</strong> Aufbau eines konsistenten Design-Systems, Gestaltung von Flasche und Etikett sowie Sounddesign als Teil der Markenerfahrung.</li>
+  <li><strong>Validierung:</strong> Kontinuierliche Prüfung aller Entscheidungen anhand realer Nutzungssituationen. Maßstab war Alltagstauglichkeit.</li>
+</ul>
+
+<p>
+  Die folgende Dokumentation zeigt den strategischen Entstehungsprozess im MVP-Board.
+  Sie macht sichtbar, wie aus einer anfänglichen Hypothese Schritt für Schritt ein tragfähiges
+  Produkt entstand. Entscheidungen wurden im Zusammenhang von Rezeptur, Nutzung, Gestaltung
+  und Markenlogik getroffen.
+</p>
+
+      <figure class="media media--persona">
+        <img src="./assets/img/projects/user-julian.jpg" alt="User / Persona" loading="lazy" />
+      </figure>
+
+      <p><strong>Der Nutzer im Fokus.</strong>
+</p>
+<p>
+  Um ein Produkt zu entwickeln, das im Alltag trägt, habe ich die Persona <em>Julian</em> definiert.
+  Julian steht für eine wachsende Zielgruppe leistungsorientierter Menschen, die beruflich stark
+  gefordert sind und bewusst mit ihrem Körper umgehen. Er achtet auf Fitness und Ernährung und
+  trifft Entscheidungen reflektiert.
+</p>
+
+<p>
+  Julian lehnt klassische Energy-Drinks ab. Nicht aus Prinzip, sondern aus Erfahrung.
+  Zu viel Zucker, künstliche Inhaltsstoffe und eine aufgesetzte Wirkung führen bei ihm
+  zu Unruhe und anschließendem Leistungsabfall. Für seine Arbeitsphasen ist das kontraproduktiv.
+</p>
+
+<p>
+  Der zentrale Bedarf liegt nicht in maximaler Stimulation, sondern in stabiler Wachheit.
+  Julian sucht einen Zustand, der Konzentration über mehrere Stunden ermöglicht.
+  Ruhig. Kontrolliert. Ohne Nervosität. Genau dieser Anspruch wurde zur Leitlinie
+  der Produktentwicklung.
+</p>
+
+<p>
+  Alle Entscheidungen wurden konsequent an diesem Nutzungskontext ausgerichtet.
+  Rezeptur, Dosierung, Geschmack und Gestaltung wurden nicht isoliert bewertet,
+  sondern im Zusammenspiel betrachtet. Maßstab war nicht ein idealisiertes Nutzerbild,
+  sondern ein realer Alltag, in dem das Produkt funktionieren muss.
+</p>
+
+      <figure class="media">
+        <img src="./assets/img/projects/matchachin-herkunft.png" alt="Matchachin Herkunft" loading="lazy" />
+      </figure>
+
+      <figure class="media">
+        <img src="./assets/img/projects/matchachin-motivation.png" alt="Matchachin Motivation" loading="lazy" />
+      </figure>
+
+      <p>
+  Guayusa ist ein kraftvolles Naturprodukt mit ausgewogener, gut verträglicher Wirkung.
+  Im Alltag stellt die klassische Zubereitung jedoch für viele Menschen eine Hürde dar.
+</p>
+
+<p>
+  Meine Aufgabe war es, die Vorteile des Rohstoffs in ein alltagstaugliches Ready-to-Drink-Format
+  zu übersetzen und so neue Nutzungssituationen zu erschließen.
+</p>
+
+
+      <figure class="media">
+        <img src="./assets/img/projects/matchachin-risiken.png" alt="Matchachin Risiken" loading="lazy" />
+      </figure>
+
+      <p>
+  Ein zentrales Risiko lag in der klaren Abgrenzung zu klassischen Energy-Drinks.
+  Matchachin verzichtet bewusst auf künstliches Koffein und Industriezucker und
+  setzt stattdessen auf die natürliche Kombination aus Koffein und L Theanin aus
+  der Guayusa-Pflanze.
+</p>
+
+<p>
+  Diese Zusammensetzung ermöglicht eine gleichmäßige Wachheit mit stabilem Fokus.
+  Ohne Blutzuckerspitzen. Ohne innere Unruhe.
+</p>
+
+
+      <figure class="media media--boardfull">
+        <img src="./assets/img/projects/matchachin-ux-journey.png" alt="Matchachin UX Journey" loading="lazy" />
+      </figure>
+
+      <p>
+  Um die strategischen Leitbilder von Matchachin erfahrbar zu machen, wurde ein Produktvideo
+  entwickelt, das die Idee ruhiger Wachheit visuell und akustisch übersetzt.
+</p>
+
+<p>
+  Das von mir komponierte Sound-Logo und Lied bildet dabei den akustischen Anker.
+  Es begleitet den Moment vom Öffnen der Flasche bis zum bewussten Konsum
+  und verleiht dem Produkt ein wiedererkennbares Ritual.
+</p>
+
+
+      <figure class="media media--youtube">
+        <a
+          class="youtube-link"
+          href="https://www.youtube.com/watch?v=b27ubyZfq4g"
+          target="_blank"
+          rel="noreferrer noopener"
+          aria-label="Matchachin Video auf YouTube öffnen"
+        >
+          <img src="./assets/img/projects/thumb-youtube-matchachin.jpg" alt="Matchachin Video (YouTube)" loading="lazy" />
+        </a>
+      </figure>
+
+      <p>
+  Design endet nicht beim Etikett. Die gesamte User Journey wurde bewusst gestaltet.
+  Sie reicht vom ersten Kaufimpuls über das Erleben der Wirkung bis zum nachhaltigen
+  Wiedereinsatz der Flasche.
+</p>
+
+<p>
+  Visuelle Leitbilder wie ruhige Wachheit und ehrliche Energy dienten dabei als
+  verbindende Orientierung und sorgten für Konsistenz über alle Touchpoints hinweg.
+</p>
+
+
+      <figure class="media">
+        <img src="./assets/img/projects/matchachin-leitbilder.png" alt="Matchachin Leitbilder" loading="lazy" />
+      </figure>
+
+      <figure class="media">
+        <img src="./assets/img/projects/matchachin-decision-logic.png" alt="Matchachin Decision Logic" loading="lazy" />
+      </figure>
+
+    <p>
+  Um die Konsistenz des Produkts sicherzustellen, habe ich eine klare Entscheidungslogik definiert.
+  Weiterentwickelt wurde nur, was reale Probleme löst und die versprochene Wirkung im Alltag
+  tatsächlich erreicht.
+</p>
+
+<p>
+  Dieser iterative Prozess stellt sicher, dass Matchachin kein reines Designprojekt bleibt.
+  Das Ergebnis ist ein Produkt, das systematisch geprüft, geschärft und als belastbares
+  Geschäftsmodell aufgebaut wurde.
+</p>
+
+<p>
+  Ein erfolgreiches MVP entsteht nicht zufällig, sondern durch konsequente Validierung.
+</p>
+
+    </section>
+
+    <!-- =========================
+         PRODUKTGESCHICHTEN
+    ========================== -->
+    <section class="section" id="produktgeschichten">
+      <h2 class="section__title">Produktgeschichten</h2>
+
+      <div class="stories">
+        <article class="story-card">
+          <div class="story-card__head">
+        
+            <h3 class="story-card__title">Tausendkraut</h3>
+            <p class="story-card__sub">Produkt, System und operative Verantwortung</p>
+          </div>
+
+          <p class="story-card__text">
+Produktverantwortung für biologische Nahrungsergänzungsmittel auf Basis von Tees, Kräutern, Mineralien und Superfoods.
+End-to-End-Arbeit von Produktdesign, UX/UI und Markenlogik bis zur operativen Umsetzung.
+Zusätzlich Verantwortung für Produktion, Bestand, Nachschub und Pflege des Webshops.
+Produkt, Prozess und System wurden als Einheit gedacht.
+Übersetzung fachlicher und operativer Anforderungen in eine klare, priorisierbare Entscheidungslogik.
+Reduktion von Reibungsverlusten durch die Schaffung belastbarer Informationsarchitekturen für das gesamte Sortiment.
+          </p>
+
+          <p class="story-card__focus"><span>Fokus:</span> Übersicht, Verfügbarkeit, Klarheit.</p>
+        </article>
+
+        <article class="story-card">
+          <div class="story-card__head">
+            <h3 class="story-card__title">Matchachin</h3>
+            <p class="story-card__sub">End-to-End Getränkentwicklung</p>
+          </div>
+
+          <p class="story-card__text">
+Die Entwicklung von Matchachin folgte der Frage, wie sich natürliche Wachheit sinnvoll und ohne die typischen Nebenwirkungen herkömmlicher Energy-Drinks in den Alltag integrieren lässt. Die Verantwortung reichte von der ersten Hypothese über die Rezepturentwicklung bis hin zur Marktreife und der Listung im Einzelhandel. Jede Phase dieses Prozesses unterlag einer klaren Entscheidungslogik, bei der der tatsächliche Nutzen stets vor der bloßen Inszenierung stand.
+
+Ein zentraler Aspekt der Arbeit war die Definition und Validierung der Persona Julian, um das Produkt konsequent an realen Nutzungssituationen auszurichten. Anstatt auf maximale Stimulation zu setzen, konzentrierte sich die Produktstrategie auf die Bereitstellung stabiler Konzentration. Diese Zielsetzung prägte nicht nur die Wahl der Inhaltsstoffe wie Guayusa und L-Theanin, sondern auch das gesamte Branding, das UX-Design der Flasche und sogar das begleitende Sounddesign.
+
+Durch diesen ganzheitlichen Ansatz entstand mehr als nur ein funktionales Getränk; es wurde ein System geschaffen, das technische Machbarkeit, menschliche Bedürfnisse und wirtschaftliche Tragfähigkeit vereint. Die Dokumentation im MVP-Board macht sichtbar, wie aus unklaren Anforderungen durch konsequente Iteration und systemische Ordnung ein belastbares Produkt für den Markt entstand.
+          </p>
+        </article>
+
+        <article class="story-card">
+          <div class="story-card__head">
+            <h3 class="story-card__title">Parliament Vodka</h3>
+            <p class="story-card__sub">Marke und Web</p>
+          </div>
+
+          <p class="story-card__text">
+Die Verantwortung umfasste das Logodesign, die visuelle Markenführung sowie die Konzeption und Umsetzung der Website. In enger Abstimmung mit der Markenstrategie entstanden Designlösungen, die weniger als Dekoration, sondern vielmehr als Werkzeuge für die Positionierung und Orientierung im Premium-Segment fungierten.
+
+Ein wesentlicher Teil der Arbeit floss in die iterative Schärfung von UX und UI. Durch das Hinterfragen gängiger Darstellungsmuster wurde die Nutzerführung konsequent auf die Markenwerte optimiert. Dabei stand die Philosophie im Vordergrund, dass eine digitale Schnittstelle die Wertigkeit eines physischen Produkts nicht nur abbilden, sondern durch eine klare und reduzierte Ästhetik fühlbar machen muss.
+          </p>
+        </article>
+
+        <article class="story-card">
+          <div class="story-card__head">
+
+    <h3 class="story-card__title">MediaUp Crossmedia</h3>
+            <p class="story-card__sub">logomad.com</p>
+          </div>
+
+          <p class="story-card__text">
+Eigenständige Verantwortung für Design, UX und Produktentscheidungen innerhalb der MediaUp Group.
+Direkter Kundenkontakt, direkte Abstimmung mit Entwicklung.
+Entscheidungen wurden im laufenden Prozess getroffen und sofort umgesetzt.
+Analyse und Vereinfachung komplexer Nutzerflüsse.
+Enge Zusammenarbeit mit der Entwicklung, um Anforderungen direkt in umsetzbare, technische Spezifikationen zu übersetzen.
+          </p>
+
+          <p class="story-card__focus"><span>Fokus:</span> Klarheit, Umsetzbarkeit, Geschwindigkeit.</p>
+        </article>
+
+        <article class="story-card">
+          <div class="story-card__head">
+
+            <h3 class="story-card__title">Akai &amp; Numark</h3>
+            <p class="story-card__sub">Marketing und Produktdarstellung</p>
+          </div>
+
+          <p class="story-card__text">
+Im Fokus stand die Gestaltung von Webinhalten, Produktbildern und visuellen Assets für hochkomplexe Audiotechnologie. Die Herausforderung lag darin, technische Komplexität so zu übersetzen, dass sie für den Nutzer unmittelbar zugänglich und verständlich bleibt. Ergänzend zur visuellen Ebene wurden Sound- und Designmaterialien entwickelt, um die Produkte ganzheitlich in Szene zu setzen.
+
+Die Arbeit an UX- und UI-Konzepten erforderte eine tiefe Auseinandersetzung mit der Logik professioneller Musikhardware. Produktübergreifende Konsistenz war dabei kein Selbstzweck, sondern das Ergebnis einer klaren Informationsarchitektur. Durch die Verbindung von funktionalem Design und einer durchdachten Nutzererfahrung konnten selbst erklärungsbedürftige Systeme intuitiv und effizient präsentiert werden.          </p>
+        </article>
+
+        <article class="story-card">
+          <div class="story-card__head">
+            <h3 class="story-card__title">Eigene Projekte</h3>
+            <p class="story-card__sub">Musik, Design und Web</p>
+          </div>
+
+          <p class="story-card__text">
+Kontinuierliche Arbeit an eigenen Musik-, Design- und Webprojekten.
+Experimentier- und Lernraum über viele Jahre.
+Grundlage vieler Prinzipien meiner heutigen Arbeitsweise.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================
+         FOOTER sein vater
+    ========================== -->
+    <footer class="footer" id="kontakt">
+      <div class="footer__wrap">
+        <a class="footer__top" href="#top" aria-label="Nach oben">
+          <img src="./assets/img/icons/pfeil-icon-scroll-to-top-button.svg" alt="" />
+        </a>
+
+        <div class="footer__panel">
+  <p class="footer__text">
+    Wenn du ein Produkt hast, das Klarheit braucht, lass uns sprechen.
+  </p>
+
+  <p class="footer__text">
+    <a class="footer__legal" href="#" data-modal-open="modal-impressum">Impressum</a>
+    <span class="footer__sep">·</span>
+    <a class="footer__legal" href="#" data-modal-open="modal-datenschutz">Datenschutz</a>
+  </p>
+
+<a href="https://www.linkedin.com/in/pascal-jäger-957213254"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="footer__linkedin"
+   aria-label="LinkedIn">
+  <img src="./assets/img/icons/linkedin-icon.svg" alt="LinkedIn">
+</a>
+
+
+</div>
+
+
+      </div>
+    </footer>
+  </main>
+
+
+<!-- Legal Modal: Impressum -->
+<div class="modal" id="modal-impressum" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-impressum-title">
+  <div class="modal__panel" role="document">
+    <button class="modal__close" type="button" aria-label="Schließen">×</button>
+
+    <h2 class="modal__title" id="modal-impressum-title">Impressum</h2>
+
+    <div class="modal__body">
+      <p>
+        Pascal Jäger<br>
+        Turnerstr. 121<br>
+        69126 Heidelberg<br>
+        Deutschland
+      </p>
+
+      <p>
+        E-Mail: <a href="mailto:pasco1280@gMAIL.com">pasco1280@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Legal Modal: Datenschutz -->
+<div class="modal" id="modal-datenschutz" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-datenschutz-title">
+  <div class="modal__panel" role="document">
+    <button class="modal__close" type="button" aria-label="Schließen">×</button>
+
+    <h2 class="modal__title" id="modal-datenschutz-title">Datenschutz</h2>
+
+    <div class="modal__body">
+      <p>
+        Diese Website dient der persönlichen Information über meine Arbeit. Es werden keine personenbezogenen Daten aktiv erhoben.
+      </p>
+
+      <p>
+        Beim Aufruf der Website werden durch den Hosting-Anbieter automatisch technische Informationen (z. B. IP-Adresse, Browsertyp, Uhrzeit)
+        in Server-Logfiles gespeichert. Diese Daten dienen der technischen Bereitstellung und Sicherheit der Website und werden nicht personenbezogen ausgewertet.
+      </p>
+
+      <p>
+        Es werden keine Cookies, Tracking- oder Analyse-Tools eingesetzt.
+      </p>
+
+      <p>
+        Verantwortlich im Sinne der DSGVO:<br>
+        Pascal Jäger<br>
+        E-Mail: <a href="mailto:pasco1280@gMAIL.com">pasco1280@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__close" type="button" aria-label="Schließen">×</button>
+    <img class="lightbox__img" alt="" />
+  </div>
+
+  <script>
+    (function () {
+      const lb = document.getElementById("lightbox");
+      const lbImg = lb.querySelector(".lightbox__img");
+      const closeBtn = lb.querySelector(".lightbox__close");
+
+      function openLightbox(src, alt) {
+        lbImg.src = src;
+        lbImg.alt = alt || "";
+        lb.classList.add("is-open");
+        lb.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lb.classList.remove("is-open");
+        lb.setAttribute("aria-hidden", "true");
+        lbImg.src = "";
+        lbImg.alt = "";
+        document.body.style.overflow = "";
+      }
+
+      // Klick auf jedes Bild in .media öffnet Lightbox
+      document.querySelectorAll(".media img").forEach((img) => {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => openLightbox(img.src, img.alt));
+      });
+
+      // Schließen: Button, Hintergrund, ESC
+      closeBtn.addEventListener("click", closeLightbox);
+      lb.addEventListener("click", (e) => { if (e.target === lb) closeLightbox(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+    })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Pascal Jäger",
+  "url": "https://pascaljaeger.online",
+  "jobTitle": "Product Owner",
+  "sameAs": [
+    "https://www.linkedin.com/in/pascaljäger"
+  ]
+}
+</script>
+
+
+<script>
+  (function(){
+    function openModal(id){
+      const m = document.getElementById(id);
+      if(!m) return;
+      m.classList.add("is-open");
+      m.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(modal){
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll("[data-modal-open]").forEach(a=>{
+      a.addEventListener("click", (e)=>{
+        e.preventDefault();
+        openModal(a.getAttribute("data-modal-open"));
+      });
+    });
+
+    document.querySelectorAll(".modal").forEach(modal=>{
+      const closeBtn = modal.querySelector(".modal__close");
+
+      closeBtn.addEventListener("click", ()=> closeModal(modal));
+
+      modal.addEventListener("click", (e)=>{
+        if(e.target === modal) closeModal(modal);
+      });
+    });
+
+    document.addEventListener("keydown", (e)=>{
+      if(e.key !== "Escape") return;
+      const open = document.querySelector(".modal.is-open");
+      if(open) closeModal(open);
+    });
+  })();
+</script>
+
+</body>
+</html>

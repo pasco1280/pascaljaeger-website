@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="de" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pascal Jäger — UX · Product Owner · Heidelberg</title>
+  <meta name="description" content="Pascal Jäger — UX Designer und Product Owner aus Heidelberg.">
+  <meta property="og:title" content="Pascal Jäger — UX · Product Ownership">
+  <meta property="og:description" content="Systeme denken, Produkte formen, Dinge die tragen. Portfolio von Pascal Jäger.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pascaljaeger.online">
+  <meta property="og:image" content="https://pascaljaeger.online/assets/img/og-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <style>
+  @font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:300 600;font-display:swap;src:url('assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');}
+  @font-face{font-family:'Lora';font-style:italic;font-weight:400;font-display:swap;src:url('assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');}
+
+  :root {
+    --deep:#1c2f24; --mid:#2e503e; --mint:#89c4a2;
+    --cream:#f3ede3; --warm:#f9f7f2; --ink:#131a15;
+    --muted:#7d9882; --hi:#b2e8dc;
+    --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+    --serif:'Lora',Georgia,serif;
+    --cs:320px; --nav-h:58px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{background:var(--warm);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.7;overflow-x:hidden;}
+  .mw{max-width:980px;margin:0 auto;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+  .fi{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+  .fi.vis{opacity:1;transform:none;}
+  .no-js .fi{opacity:1;transform:none;transition:none;}
+  .no-js .proj-body{max-height:none!important;overflow:visible!important;}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}.fi,.fi.vis{opacity:1;transform:none;transition:none;}#sine-wrap{display:none;}}
+
+  /* SINE */
+  #sine-wrap{position:fixed;left:0;top:0;bottom:0;width:44px;z-index:150;pointer-events:none;}
+  #sine-wrap svg{width:100%;height:100%;}
+  .sp{fill:none;stroke:var(--mint);stroke-width:1;opacity:.18;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(249,247,242,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(28,47,36,.07);}
+  .nav-inner{max-width:980px;margin:0 auto;padding:1.1rem 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+  .nlogo{font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--deep);text-decoration:none;}
+  .nlinks{display:flex;gap:2rem;list-style:none;padding:0;margin:0;}
+  .nlinks a{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;}
+  .nlinks a:hover{color:var(--deep);}
+  .nmenu{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--deep);}
+  .nav-backdrop{display:none;}
+
+  @media(max-width:680px){
+    .nmenu{display:block;}
+    .nlinks{position:fixed;top:var(--nav-h);left:0;right:0;height:calc(100dvh - var(--nav-h));background:#f3ede3;z-index:350;display:flex;flex-direction:column;justify-content:flex-start;padding-top:.5rem;list-style:none;margin:0;overflow-y:auto;transform:translateY(-110%);transition:transform .38s cubic-bezier(.25,1,.5,1);pointer-events:none;}
+    .nlinks.open{transform:translateY(0);pointer-events:auto;}
+    .nlinks li{width:100%;border-bottom:1px solid rgba(28,47,36,.1);}
+    .nlinks a{display:block;padding:1.3rem 2rem;font-size:.88rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#2e503e;text-decoration:none;background:#f3ede3;}
+    .nav-backdrop{display:block;position:fixed;inset:0;background:rgba(19,26,21,.55);z-index:349;opacity:0;pointer-events:none;transition:opacity .38s ease;}
+    .nav-backdrop.open{opacity:1;pointer-events:auto;}
+  }
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:var(--deep);position:relative;overflow:hidden;}
+  #hero-shader{position:absolute;inset:0;z-index:0;opacity:.35;}
+  .hero-inner{max-width:980px;margin:0 auto;width:100%;padding:0 2.5rem 5rem;position:relative;z-index:1;}
+  .hero-title{font-size:clamp(2.4rem,6vw,6rem);font-weight:300;line-height:1.02;color:var(--cream);letter-spacing:-.02em;margin-bottom:2.5rem;}
+  .hero-title .hi{color:var(--hi);}
+  .hero-title em{font-style:italic;font-family:var(--serif);}
+  .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+  .hero-sub{font-size:.92rem;color:rgba(243,237,227,.42);max-width:380px;line-height:1.85;}
+  .hero-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.7rem;}
+  .hero-tag{font-size:.64rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mint);opacity:.6;}
+  .hero-cta{display:inline-flex;align-items:center;gap:.8rem;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--deep);background:var(--mint);padding:.85rem 1.8rem;border-radius:0 14px 0 14px;text-decoration:none;transition:border-radius .5s,gap .3s,background .25s;}
+  .hero-cta:hover{border-radius:0 22px 0 22px;gap:1.3rem;background:#9dd4b2;}
+  .hero-curve{position:absolute;bottom:-1px;left:0;right:0;line-height:0;pointer-events:none;z-index:1;}
+  .hero-curve svg{display:block;width:100%;}
+
+  /* SECTIONS */
+  section{scroll-margin-top:var(--nav-h);}
+  .sec-pad{padding:6rem 2.5rem;}
+  .sec-eyebrow{display:block;font-size:.62rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--mint);opacity:.7;margin-bottom:2rem;}
+  .sec-h{font-size:clamp(1.6rem,3vw,2.5rem);font-weight:300;color:var(--deep);line-height:1.15;margin-bottom:1.2rem;}
+  .sec-h em{font-style:italic;font-family:var(--serif);}
+  .sec-sub{font-size:.92rem;color:var(--muted);max-width:480px;line-height:1.8;}
+
+  /* ÜBER */
+  #about{background:var(--cream);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:3rem;align-items:start;}
+  .about-text{font-size:1rem;font-weight:300;color:var(--deep);line-height:1.75;}
+  .about-text strong{font-weight:500;color:var(--mid);}
+  .fact-table{border-top:1px solid rgba(28,47,36,.08);}
+  .fact-row{display:flex;justify-content:space-between;align-items:baseline;padding:.85rem 0;border-bottom:1px solid rgba(28,47,36,.07);}
+  .fact-k{font-size:.63rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .fact-v{font-size:.84rem;color:var(--deep);text-align:right;}
+  .fact-v.open{color:var(--mint);font-weight:500;}
+  .tool-icons{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end;}
+  .ti{display:inline-flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--muted);padding:.2rem .5rem;border:1px solid rgba(28,47,36,.1);border-radius:0 5px 0 5px;line-height:1;}
+  .ti svg{flex-shrink:0;}
+  .ti.ti-legacy{opacity:.45;}
+  .client-strip{margin-top:3.5rem;padding-top:2rem;border-top:1px solid rgba(28,47,36,.07);}
+  .client-strip-label{font-size:.55rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.5;margin-bottom:1.6rem;}
+  .client-logos{display:flex;flex-wrap:wrap;gap:2rem 3rem;align-items:center;}
+  .cl-text{font-size:.72rem;font-weight:500;letter-spacing:.06em;color:var(--muted);opacity:.55;white-space:nowrap;}
+  .cl-img{height:22px;width:auto;opacity:.4;filter:grayscale(1);transition:opacity .3s,filter .3s;}
+  .cl-img:hover{opacity:.7;filter:grayscale(0);}
+  .cl-img.cl-dark{opacity:.6;filter:grayscale(1) brightness(.4);}
+  .cl-img.cl-dark:hover{opacity:.8;filter:grayscale(0) brightness(.6);}
+  .cl-img.cl-lg{height:32px;}
+  .cl{opacity:.5;transition:opacity .3s;filter:grayscale(1);flex-shrink:0;height:36px;width:auto;object-fit:contain;}
+  .cl:hover{opacity:.9;}
+  .cl-dark{opacity:.75;filter:grayscale(1) brightness(.5);}
+
+  /* TIMELINE */
+  #frequenz{background:var(--warm);padding:6rem 2.5rem;}
+  .tl-outer{margin-top:3.5rem;overflow:visible;}
+  .tl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:14px 8px 1rem 8px;}
+  .tl-row{display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;position:relative;min-width:640px;}
+  .tl-row::before{content:'';position:absolute;left:0;right:0;top:4px;height:1px;background:rgba(28,47,36,.13);z-index:0;}
+  .tl-station{flex:1 1 0;position:relative;z-index:1;padding-right:1rem;}
+  .tl-dot{display:block;width:9px;height:9px;border-radius:50%;margin-bottom:1.5rem;position:relative;z-index:2;transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease;}
+  .tl-station:nth-child(1) .tl-dot{background:#1e3828;}
+  .tl-station:nth-child(2) .tl-dot{background:#2e5040;}
+  .tl-station:nth-child(3) .tl-dot{background:#3d6a52;}
+  .tl-station:nth-child(4) .tl-dot{background:#5a9070;}
+  .tl-station.now .tl-dot{background:var(--mint);box-shadow:0 0 0 4px rgba(137,196,162,.2);animation:tl-breathe 2.8s ease-in-out infinite;}
+  .tl-station.future .tl-dot{background:transparent;border:1px solid rgba(28,47,36,.2);}
+  .tl-station:not(.now):hover .tl-dot{transform:scale(1.8);box-shadow:0 0 0 6px rgba(137,196,162,.15);}
+  @keyframes tl-breathe{0%,100%{box-shadow:0 0 0 3px rgba(137,196,162,.12);}50%{box-shadow:0 0 0 9px rgba(137,196,162,.2);}}
+  .tl-phase{display:block;font-size:.54rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);opacity:.75;margin-bottom:.3rem;line-height:1.3;}
+  .tl-station.future .tl-phase{opacity:.38;}
+  .tl-title{display:block;font-size:.84rem;font-weight:500;color:var(--deep);line-height:1.25;margin-bottom:.3rem;}
+  .tl-station.future .tl-title{color:var(--muted);}
+  .tl-body{display:block;font-size:.68rem;color:var(--muted);line-height:1.6;}
+
+  /* PROJEKTE */
+  #projekte{background:var(--warm);}
+  .proj-intro{font-size:.92rem;color:var(--muted);max-width:500px;line-height:1.8;margin-bottom:3rem;}
+  .proj-item{border-top:1px solid rgba(28,47,36,.1);}
+  .proj-item:last-child{border-bottom:1px solid rgba(28,47,36,.1);}
+  .proj-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.8rem 0;gap:1.5rem;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--sans);}
+  .proj-header:hover .proj-name{opacity:.65;}
+  .proj-num{font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--muted);margin-bottom:.35rem;}
+  .proj-name{font-size:1.05rem;font-weight:500;color:var(--deep);line-height:1.2;transition:opacity .2s;}
+  .proj-cat{font-size:.65rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);opacity:.7;margin-top:.3rem;}
+  .proj-arrow{font-size:1.2rem;color:var(--muted);flex-shrink:0;line-height:1;transition:transform .45s cubic-bezier(.34,1.2,.64,1),color .25s;pointer-events:none;}
+  .proj-item.open .proj-arrow{transform:rotate(45deg);color:var(--mint);}
+  .proj-body{max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.25,1,.5,1);}
+  .proj-body-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding-bottom:2.5rem;}
+  .proj-story{font-size:.88rem;color:var(--muted);line-height:1.85;}
+  .proj-story p+p{margin-top:.9rem;}
+  .proj-story strong{color:var(--deep);font-weight:500;}
+  .pd-block{margin-bottom:1.3rem;}
+  .pd-label{font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;}
+  .pd-value{font-size:.83rem;color:var(--deep);line-height:1.6;}
+  .pd-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
+  .pd-tag{font-size:.61rem;font-weight:500;border:1px solid rgba(28,47,36,.14);color:var(--muted);padding:.18rem .6rem;border-radius:0 7px 0 7px;}
+  /* FIX: proj-imgs is now a simple grid, caption sits outside */
+  .proj-imgs{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:1.5rem 0 .6rem;}
+  .proj-imgs img{width:100%;height:160px;object-fit:cover;border-radius:0 10px 0 10px;filter:grayscale(.15);cursor:zoom-in;transition:filter .3s,transform .3s;}
+  .proj-imgs img:hover{filter:grayscale(0);transform:scale(1.02);}
+  .proj-imgs img:first-child{grid-column:1/-1;height:260px;object-fit:contain;background:#1c2f24;}
+
+  /* LIGHTBOX */
+  #lightbox{position:fixed;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;background:rgba(13,20,15,0);pointer-events:none;transition:background .35s ease;}
+  #lightbox.open{background:rgba(13,20,15,.93);pointer-events:auto;}
+  #lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:0 18px 0 18px;box-shadow:0 32px 80px rgba(0,0,0,.6);opacity:0;transform:scale(.94);transition:opacity .35s ease,transform .35s cubic-bezier(.25,1,.5,1);}
+  #lightbox.open img{opacity:1;transform:scale(1);}
+  #lb-close{position:fixed;top:1.4rem;right:1.6rem;background:none;border:1px solid rgba(137,196,162,.25);color:var(--mint);font-size:1.1rem;line-height:1;width:2.4rem;height:2.4rem;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s,border-color .25s;font-family:var(--sans);}
+  #lightbox.open #lb-close{opacity:1;}
+  #lb-close:hover{border-color:rgba(137,196,162,.6);}
+  #lb-caption{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(137,196,162,.45);opacity:0;transition:opacity .3s;white-space:nowrap;}
+  #lightbox.open #lb-caption{opacity:1;}
+  .proj-img-caption{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.5;margin-bottom:2rem;}
+  .case-visual{margin:2rem 0;border-radius:0 16px 0 16px;overflow:hidden;position:relative;}
+  .case-visual img{width:100%;height:280px;object-fit:cover;display:block;}
+  .case-visual-label{position:absolute;bottom:0;left:0;right:0;padding:.8rem 1.2rem;background:linear-gradient(to top,rgba(16,28,20,.9),transparent);font-size:.62rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);}
+  .case-video{margin:1.5rem 0;border-radius:0 16px 0 16px;overflow:hidden;}
+  .case-video iframe{width:100%;height:280px;display:block;border:none;}
+
+  /* ARCHIV */
+  #archiv{background:var(--cream);padding:6rem 2.5rem 7rem;}
+  .archiv-intro{font-size:.92rem;color:var(--muted);max-width:480px;line-height:1.8;margin-bottom:3rem;}
+  .archiv-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:3.5rem;}
+  .atab{font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.5rem 1.1rem;cursor:pointer;border:1px solid rgba(28,47,36,.12);border-radius:0 10px 0 10px;transition:all .25s;background:none;font-family:var(--sans);}
+  .atab.active{color:var(--deep);background:var(--warm);border-color:rgba(28,47,36,.22);}
+  .atab:hover:not(.active){color:var(--deep);border-color:rgba(28,47,36,.2);}
+  .cube-panel{display:none;}
+  .cube-panel.active{display:flex;flex-direction:column;align-items:center;}
+  .cube-scene{width:var(--cs);height:var(--cs);perspective:700px;cursor:grab;user-select:none;position:relative;}
+  .cube-scene.dragging{cursor:grabbing;}
+  .cube{width:100%;height:100%;position:relative;transform-style:preserve-3d;}
+  .face{position:absolute;width:var(--cs);height:var(--cs);overflow:hidden;border-radius:0 28px 0 28px;backface-visibility:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+  .face-f{transform:rotateY(0deg) translateZ(calc(var(--cs)/2));}
+  .face-r{transform:rotateY(90deg) translateZ(calc(var(--cs)/2));}
+  .face-b{transform:rotateY(180deg) translateZ(calc(var(--cs)/2));}
+  .face-l{transform:rotateY(270deg) translateZ(calc(var(--cs)/2));}
+  .face canvas{position:absolute;inset:0;width:100%;height:100%;}
+  .face-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(16,28,20,.92) 0%,rgba(16,28,20,.04) 55%,transparent 100%);}
+  .face-label{position:relative;z-index:2;padding:1.3rem 1.6rem;}
+  .face-cat{font-size:.55rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mint);opacity:.7;margin-bottom:.3rem;}
+  .face-title{font-size:1rem;font-weight:300;color:var(--cream);line-height:1.25;}
+  .face-title em{font-style:italic;font-family:var(--serif);}
+  .face-idx{position:absolute;top:1rem;right:1.2rem;z-index:2;font-size:.57rem;letter-spacing:.1em;color:rgba(137,196,162,.28);}
+  .cube-shadow{width:calc(var(--cs)*.7);height:18px;margin-top:4px;background:radial-gradient(ellipse,rgba(20,34,24,.25) 0%,transparent 70%);filter:blur(8px);}
+  .cube-dots{display:flex;gap:.5rem;margin-top:1.4rem;justify-content:center;}
+  .cdot{width:6px;height:6px;border-radius:50%;background:rgba(28,47,36,.15);transition:background .35s,transform .35s;}
+  .cdot.on{background:var(--mint);transform:scale(1.4);}
+  .cube-hint{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.38;margin-top:.9rem;transition:opacity .6s;}
+  .cube-hint.hide{opacity:0;pointer-events:none;}
+  .cube-manifesto{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(28,47,36,.07);max-width:480px;}
+  .cube-manifesto p{font-size:.82rem;font-weight:300;color:var(--muted);line-height:1.9;}
+  .cube-manifesto strong{font-weight:500;color:var(--deep);}
+  .cube-manifesto em{font-style:italic;font-family:var(--serif);}
+
+  /* CASE STUDY */
+  .case-toggle-body{max-height:0;overflow:hidden;transition:max-height .7s cubic-bezier(.25,1,.5,1);}
+  .case-toggle-btn{display:inline-flex;align-items:center;gap:.7rem;margin-top:2rem;font-size:.68rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--mint);background:none;border:1px solid rgba(137,196,162,.2);border-radius:0 10px 0 10px;padding:.7rem 1.4rem;cursor:pointer;font-family:var(--sans);transition:border-color .3s,color .3s,border-radius .4s;}
+  .case-toggle-btn:hover{border-color:rgba(137,196,162,.45);border-radius:0 16px 0 16px;}
+  .case-toggle-btn .ctb-icon{font-size:1rem;line-height:1;transition:transform .35s cubic-bezier(.25,1,.5,1);}
+  .case-toggle-btn[aria-expanded="true"] .ctb-icon{transform:rotate(45deg);}
+  .case-toggle-btn[aria-expanded="true"] .ctb-label-open{display:none;}
+  .case-toggle-btn[aria-expanded="false"] .ctb-label-close{display:none;}
+  .case-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem;}
+  .case-chip{font-size:.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid rgba(28,47,36,.12);border-radius:0 6px 0 6px;color:var(--muted);}
+  #case-matchachin{scroll-margin-top:var(--nav-h);}
+  .case-block{display:grid;grid-template-columns:180px 1fr;gap:0 3rem;padding:2.2rem 0;border-top:1px solid rgba(28,47,36,.08);}
+  .case-block:not(:has(.case-label)){grid-template-columns:1fr;border-top:none;padding-top:0;}
+  .case-block:last-of-type{border-bottom:1px solid rgba(28,47,36,.08);}
+  .case-label{font-size:.58rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding-top:.18rem;line-height:1.4;}
+  .case-body{font-size:.88rem;color:var(--muted);line-height:1.8;}
+  .case-body p+p{margin-top:.8rem;}
+  .case-body strong{color:var(--deep);font-weight:500;}
+  .case-hypotheses{display:flex;flex-direction:column;}
+  .case-h-item{display:grid;grid-template-columns:2.2rem 1fr auto;gap:0 1rem;align-items:baseline;padding:.65rem 0;border-bottom:1px solid rgba(28,47,36,.05);}
+  .case-h-id{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:var(--mint);opacity:.7;}
+  .case-h-text{font-size:.84rem;color:var(--muted);line-height:1.6;}
+  .case-h-status{font-size:.55rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;padding:.18rem .5rem;border-radius:0 4px 0 4px;}
+  .status-confirmed{background:rgba(137,196,162,.12);color:var(--mint);}
+  .status-revised{background:rgba(200,150,58,.08);color:#c8963a;}
+  .case-conflicts{display:flex;flex-direction:column;}
+  .case-conflict{padding:.9rem 0;border-bottom:1px solid rgba(28,47,36,.05);}
+  .case-conflict:last-child{border-bottom:none;}
+  .conflict-row{display:grid;grid-template-columns:1fr 2rem 1fr;gap:0 .8rem;align-items:baseline;margin-bottom:.4rem;}
+  .conflict-a{font-size:.84rem;color:var(--deep);font-weight:500;}
+  .conflict-vs{font-size:.55rem;font-weight:600;letter-spacing:.1em;color:var(--muted);opacity:.4;text-transform:uppercase;text-align:center;}
+  .conflict-b{font-size:.84rem;color:var(--muted);}
+  .conflict-decision{font-size:.75rem;color:var(--muted);opacity:.75;line-height:1.6;padding-left:.9rem;border-left:2px solid rgba(137,196,162,.3);}
+  .case-artifacts{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+  .case-artifact{padding:1.1rem 1.3rem;border:1px solid rgba(28,47,36,.09);border-radius:0 10px 0 10px;}
+  .artifact-name{font-size:.74rem;font-weight:600;color:var(--deep);margin-bottom:.3rem;}
+  .artifact-proof{font-size:.74rem;color:var(--muted);line-height:1.6;}
+  .artifact-type{display:inline-block;margin-top:.55rem;font-size:.54rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);opacity:.65;}
+  .case-iterations{display:flex;flex-direction:column;}
+  .case-iteration{display:grid;grid-template-columns:1.8rem 1fr;gap:0 1.1rem;padding-bottom:1.3rem;}
+  .iter-num{font-size:.6rem;font-weight:700;color:var(--mint);opacity:.55;padding-top:.15rem;}
+  .iter-body{font-size:.84rem;color:var(--muted);line-height:1.7;}
+  .iter-body strong{color:var(--deep);font-weight:500;}
+
+  /* LEISTUNGEN */
+  #leistungen{background:var(--warm);padding:6rem 2.5rem;}
+  .leist-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-top:3rem;}
+  .leist-card{padding:2rem 1.8rem;border:1px solid rgba(28,47,36,.08);border-radius:0 18px 0 18px;transition:border-color .3s,box-shadow .3s;}
+  .leist-card:hover{border-color:rgba(137,196,162,.3);box-shadow:0 4px 24px rgba(28,47,36,.04);}
+  .leist-num{font-size:.58rem;font-weight:600;letter-spacing:.14em;color:var(--mint);opacity:.55;margin-bottom:1.2rem;display:block;}
+  .leist-title{font-size:.9rem;font-weight:500;color:var(--deep);margin-bottom:.6rem;}
+  .leist-desc{font-size:.82rem;color:var(--muted);line-height:1.7;}
+  .leist-footer{margin-top:3rem;text-align:center;}
+  .leist-rate{font-size:.88rem;font-weight:400;color:var(--deep);letter-spacing:.01em;}
+  .leist-rate strong{font-weight:600;color:var(--mid);}
+  .leist-note{font-size:.72rem;color:var(--muted);margin-top:.5rem;}
+  @media(max-width:680px){
+    .leist-grid{grid-template-columns:1fr;gap:1.2rem;}
+    #leistungen{padding:4rem 1.4rem;}
+  }
+
+  /* KONTAKT */
+  #kontakt{background:var(--deep);padding:7rem 2.5rem;text-align:center;}
+  .kontakt-inner{max-width:560px;margin:0 auto;}
+  .kontakt-h{font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:300;color:var(--cream);line-height:1.2;margin:1rem 0;}
+  .kontakt-h em{font-style:italic;font-family:var(--serif);}
+  .kontakt-sub{font-size:.88rem;color:rgba(243,237,227,.35);line-height:1.8;margin-bottom:2.5rem;}
+  .kontakt-mail{display:inline-block;font-size:clamp(1rem,2.2vw,1.5rem);font-weight:300;color:var(--cream);text-decoration:none;border:1px solid rgba(243,237,227,.15);padding:.9rem 2.2rem;border-radius:0 18px 0 18px;transition:border-color .35s,color .35s,border-radius .5s,background .35s;}
+  .kontakt-mail:hover{color:var(--mint);border-color:rgba(137,196,162,.4);border-radius:0 28px 0 28px;background:rgba(137,196,162,.05);}
+  .kontakt-links{display:flex;flex-direction:column;align-items:center;gap:1rem;margin-top:1.8rem;}
+  .li-link{display:inline-flex;align-items:center;gap:.65rem;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,237,227,.45);text-decoration:none;border:1px solid rgba(243,237,227,.1);padding:.7rem 1.5rem;border-radius:0 12px 0 12px;transition:color .3s,border-color .3s,border-radius .4s;}
+  .li-link:hover{color:var(--mint);border-color:rgba(137,196,162,.3);border-radius:0 20px 0 20px;}
+
+  /* FOOTER */
+  footer{background:var(--ink);padding:1.4rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem;}
+  .footer-left{display:flex;flex-direction:column;gap:.25rem;}
+  .fname{font-size:.68rem;font-weight:500;letter-spacing:.1em;color:var(--muted);}
+  .fsig{font-size:.62rem;color:rgba(125,152,130,.25);letter-spacing:.06em;}
+  .footer-legal{display:flex;gap:1.4rem;align-items:center;}
+  .flegal-link{font-size:.61rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mint);opacity:.5;text-decoration:none;transition:opacity .25s;}
+  .flegal-link:hover{opacity:1;}
+
+  /* CASE STUDIES WRAPPER */
+  #case-studies{background:var(--warm);}
+  .case-item{margin-top:2.5rem;border-top:1px solid rgba(28,47,36,.12);padding-top:2rem;}
+  .case-item-header{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:.3rem;}
+  .case-item-num{font-size:.58rem;font-weight:600;letter-spacing:.14em;color:var(--muted);margin-bottom:.3rem;}
+  .case-item-name{font-size:1.35rem;font-weight:400;color:var(--deep);line-height:1.2;}
+  .case-item-sub{font-size:.84rem;color:var(--muted);line-height:1.7;margin-top:.35rem;max-width:460px;}
+
+  /* ═══ HNTZ CASE STUDY ═══ */
+
+  /* HERO */
+  .hntz-hero{margin:1rem 0 2.5rem;padding:2.8rem 2.2rem;background:var(--deep);border-radius:0 20px 0 20px;position:relative;overflow:hidden;}
+  .hntz-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(218,180,32,.06),transparent 70%);}
+  .hntz-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(137,196,162,.05),transparent 60%);}
+  .hntz-hero-top{display:flex;align-items:center;gap:1.4rem;margin-bottom:1.4rem;position:relative;}
+  .hntz-hero-logo{width:48px;height:48px;opacity:.85;}
+  .hntz-hero-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:300;color:var(--cream);line-height:1.1;letter-spacing:.02em;}
+  .hntz-tagline{font-size:clamp(1.1rem,2.2vw,1.5rem);font-weight:300;color:var(--cream);line-height:1.3;position:relative;}
+  .hntz-tagline em{font-style:italic;font-family:var(--serif);}
+  .hntz-tagline-sub{font-size:.76rem;color:rgba(243,237,227,.35);margin-top:.8rem;position:relative;line-height:1.7;}
+  .hntz-role-chips{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1.2rem;position:relative;}
+  .hntz-role-chip{font-size:.52rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.28rem .7rem;border:1px solid rgba(218,180,32,.25);border-radius:0 6px 0 6px;color:#dab420;}
+
+  /* SECTION LABELS */
+  .hntz-section{margin:2.8rem 0 0;}
+  .hntz-section-num{font-size:.5rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);opacity:.5;margin-bottom:.3rem;}
+  .hntz-section-title{font-size:1.1rem;font-weight:400;color:var(--deep);line-height:1.25;margin-bottom:.3rem;}
+  .hntz-section-title em{font-style:italic;font-family:var(--serif);}
+  .hntz-section-intro{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:1.4rem;max-width:680px;}
+  .hntz-divider{height:1px;background:linear-gradient(90deg,rgba(28,47,36,.12),transparent);margin:2.5rem 0 0;}
+
+  /* BODY TEXT */
+  .hntz-text{font-size:.78rem;color:var(--muted);line-height:1.8;margin:.8rem 0;max-width:680px;}
+  .hntz-text strong{color:var(--deep);font-weight:500;}
+  .hntz-text-sm{font-size:.72rem;color:var(--muted);line-height:1.7;margin:.6rem 0;}
+
+  /* KEY METRICS ROW */
+  .hntz-metrics{display:flex;gap:1.2rem;flex-wrap:wrap;margin:1.2rem 0;}
+  .hntz-metric{text-align:center;min-width:80px;}
+  .hntz-metric-val{font-size:1.6rem;font-weight:300;color:var(--deep);line-height:1;}
+  .hntz-metric-label{font-size:.5rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.3rem;}
+
+  /* IMAGE GRID */
+  .hntz-img-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.4rem 0;}
+  .hntz-img-grid-single{grid-template-columns:1fr;}
+  .hntz-img-grid-triple{grid-template-columns:1fr 1fr 1fr;}
+  .hntz-img-card{border-radius:0 12px 0 12px;overflow:hidden;border:1px solid rgba(28,47,36,.08);background:var(--warm);}
+  .hntz-img-card img{width:100%;height:auto;max-height:520px;object-fit:contain;display:block;background:#f5f0e8;cursor:zoom-in;}
+  .hntz-img-card.hntz-dark-bg img{background:#1a2b1f;}
+  .hntz-img-legend{font-size:.64rem;color:var(--muted);line-height:1.65;padding:.7rem .9rem;}
+  .hntz-legend-tag{display:inline-block;font-size:.46rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);background:rgba(137,196,162,.1);padding:.15rem .45rem;border-radius:0 4px 0 4px;margin-right:.4rem;vertical-align:middle;}
+
+  /* COMPARISON: ALT vs NEU */
+  .hntz-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:1.4rem 0;border:1px solid rgba(28,47,36,.08);border-radius:0 12px 0 12px;overflow:hidden;}
+  .hntz-compare-side{padding:1.2rem;}
+  .hntz-compare-old{background:rgba(200,180,140,.08);}
+  .hntz-compare-new{background:rgba(137,196,162,.06);}
+  .hntz-compare-vs{display:flex;align-items:center;justify-content:center;padding:0 .6rem;font-size:.5rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.4;writing-mode:vertical-lr;}
+  .hntz-compare-label{font-size:.48rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid rgba(28,47,36,.08);}
+  .hntz-compare-label.old{color:#a08a40;}
+  .hntz-compare-label.new{color:var(--mint);}
+  .hntz-compare-list{list-style:none;padding:0;margin:0;}
+  .hntz-compare-list li{font-size:.72rem;color:var(--muted);line-height:1.5;padding:.35rem 0 .35rem .7rem;border-left:2px solid rgba(28,47,36,.08);}
+  .hntz-compare-list li strong{color:var(--deep);font-weight:500;}
+
+  /* PROBLEM CARDS */
+  .hntz-problems{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.4rem 0;}
+  .hntz-problem{padding:1rem 1.1rem;border:1px solid rgba(28,47,36,.08);border-radius:0 10px 0 10px;background:var(--warm);}
+  .hntz-problem-icon{font-size:1rem;margin-bottom:.4rem;}
+  .hntz-problem-title{font-size:.72rem;font-weight:600;color:var(--deep);margin-bottom:.3rem;}
+  .hntz-problem-desc{font-size:.66rem;color:var(--muted);line-height:1.6;}
+
+  /* COMPETITOR TABLE */
+  .hntz-comp-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.74rem;}
+  .hntz-comp-table th{font-size:.52rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:.6rem .7rem;border-bottom:2px solid rgba(28,47,36,.12);}
+  .hntz-comp-table td{padding:.5rem .7rem;border-bottom:1px solid rgba(28,47,36,.06);color:var(--muted);line-height:1.5;vertical-align:top;}
+  .hntz-comp-table td:first-child{font-weight:500;color:var(--deep);font-size:.68rem;white-space:nowrap;}
+  .hntz-win{color:var(--mid);font-weight:500;}
+  .hntz-miss{opacity:.45;}
+
+  /* MOSCOW */
+  .hntz-moscow{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1.4rem 0;}
+  .hntz-moscow-card{padding:1rem;border:1px solid rgba(28,47,36,.1);border-radius:0 12px 0 12px;background:var(--warm);}
+  .hntz-moscow-label{font-size:.5rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.6rem;padding-bottom:.4rem;border-bottom:1px solid rgba(28,47,36,.08);}
+  .hntz-ml-must{color:var(--mid);}
+  .hntz-ml-should{color:#8a7a40;}
+  .hntz-ml-could{color:var(--muted);}
+  .hntz-ml-wont{color:var(--muted);opacity:.5;}
+  .hntz-moscow-items{display:flex;flex-direction:column;gap:.3rem;}
+  .hntz-moscow-items span{font-size:.7rem;color:var(--muted);line-height:1.4;padding-left:.6rem;border-left:2px solid rgba(28,47,36,.1);}
+
+  /* ARCHITECTURE */
+  .hntz-arch{margin:1.2rem 0;}
+  .hntz-arch-row{display:flex;align-items:stretch;gap:.5rem;flex-wrap:wrap;}
+  .hntz-arch-row+.hntz-arch-row{margin-top:.8rem;}
+  .hntz-arch-node{flex:1;min-width:110px;padding:.8rem;border:1px solid rgba(28,47,36,.12);border-radius:0 10px 0 10px;background:var(--warm);display:flex;flex-direction:column;gap:.15rem;font-size:.66rem;color:var(--muted);line-height:1.4;}
+  .hntz-arch-node strong{color:var(--deep);font-size:.7rem;}
+  .hntz-arch-arrow{display:flex;align-items:center;font-size:.85rem;color:var(--mint);opacity:.5;flex-shrink:0;}
+
+  /* EVOLUTION FEATURES */
+  .hntz-evo-feature{padding:1.4rem 0;border-top:1px dashed rgba(28,47,36,.1);}
+  .hntz-evo-feature:first-child{border-top:none;padding-top:0;}
+  .hntz-evo-label{font-size:.5rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:.7rem;}
+  .hntz-evo-workflow{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:.7rem 0;font-size:.7rem;color:var(--muted);}
+  .hntz-evo-workflow span{padding:.35rem .65rem;border:1px solid rgba(28,47,36,.1);border-radius:0 8px 0 8px;background:var(--warm);}
+  .hntz-evo-workflow .hntz-evo-arrow{border:none;background:none;padding:0;color:var(--mint);opacity:.5;font-size:.75rem;}
+  .hntz-evo-example{margin:.7rem 0;padding:.7rem 1rem;border-left:2px solid var(--mint);background:rgba(137,196,162,.04);font-size:.7rem;color:var(--muted);line-height:1.6;font-family:var(--mono, monospace);}
+
+  /* DIAGRAMS */
+  .hntz-diagram{margin:1.4rem 0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .hntz-diagram svg{width:100%;height:auto;display:block;}
+  .hntz-diagram-caption{font-size:.64rem;color:var(--muted);line-height:1.65;margin-top:.5rem;font-style:italic;}
+
+  /* INSIGHT CALLOUT */
+  .hntz-insight{margin:1.4rem 0;padding:1.2rem 1.4rem;border:1px solid rgba(137,196,162,.2);border-left:3px solid var(--mint);border-radius:0 12px 0 0;background:rgba(137,196,162,.04);}
+  .hntz-insight-label{font-size:.48rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:.5rem;}
+  .hntz-insight p{font-size:.74rem;color:var(--muted);line-height:1.7;}
+  .hntz-insight p strong{color:var(--deep);}
+
+  /* DECISION LOG */
+  .hntz-decisions{margin:1.4rem 0;}
+  .hntz-decision{display:grid;grid-template-columns:auto 1fr;gap:.8rem;padding:.8rem 0;border-bottom:1px solid rgba(28,47,36,.06);}
+  .hntz-decision:last-child{border-bottom:none;}
+  .hntz-decision-num{font-size:.5rem;font-weight:700;color:var(--mint);opacity:.5;padding-top:.15rem;}
+  .hntz-decision-title{font-size:.72rem;font-weight:500;color:var(--deep);margin-bottom:.2rem;}
+  .hntz-decision-desc{font-size:.68rem;color:var(--muted);line-height:1.6;}
+
+  /* LEARNINGS */
+  .hntz-learnings{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:1.4rem 0;}
+  .hntz-learning{padding:1rem;border:1px solid rgba(28,47,36,.08);border-radius:0 12px 0 12px;background:var(--warm);}
+  .hntz-learning-title{font-size:.68rem;font-weight:600;color:var(--deep);margin-bottom:.4rem;}
+  .hntz-learning-desc{font-size:.66rem;color:var(--muted);line-height:1.6;}
+
+  /* STATUS BADGE */
+  .hntz-status{display:inline-flex;align-items:center;gap:.4rem;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mint);padding:.3rem .8rem;border:1px solid rgba(137,196,162,.25);border-radius:0 6px 0 6px;margin:1rem 0;}
+  .hntz-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--mint);animation:hntz-pulse 2s infinite;}
+  @keyframes hntz-pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+  /* RESPONSIVE */
+  @media(max-width:680px){
+    :root{--cs:min(290px,88vw);}
+    #sine-wrap{display:none;}
+    .nav-inner{padding:.9rem 1.2rem;}
+    .sec-pad{padding:4rem 1.4rem;}
+    #frequenz{padding:4rem 1.4rem;}
+    #archiv{padding:4rem 1.4rem 5rem;}
+    #kontakt{padding:5rem 1.4rem;}
+    #hero .hero-inner{padding:0 1.4rem 4rem;}
+    .hero-bottom{flex-direction:column;align-items:flex-start;gap:1.2rem;}
+    .hero-meta{align-items:flex-start;}
+    .about-grid{grid-template-columns:1fr;gap:2.5rem;}
+    .proj-body-inner{grid-template-columns:1fr;}
+    .tool-icons{justify-content:flex-start;}
+    .tl-row{flex-direction:column;min-width:0;padding-left:24px;}
+    .tl-row::before{left:4px;top:4px;bottom:0;width:1px;height:auto;right:auto;}
+    .tl-station{flex:none;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto auto;column-gap:1.2rem;padding-right:0;padding-bottom:2rem;}
+    .tl-station.future{display:none;}
+    .tl-dot{grid-column:1;grid-row:1/4;margin-bottom:0;margin-top:3px;align-self:start;}
+    .tl-phase{grid-column:2;grid-row:1;}
+    .tl-title{grid-column:2;grid-row:2;}
+    .tl-body{grid-column:2;grid-row:3;}
+    .case-block{grid-template-columns:1fr;gap:.5rem;}
+    .case-item-header{flex-direction:column;gap:.8rem;}
+    .hntz-moscow{grid-template-columns:1fr;}
+    .hntz-img-grid{grid-template-columns:1fr;}
+    .hntz-img-grid-triple{grid-template-columns:1fr;}
+    .hntz-arch-row{flex-direction:column;}
+    .hntz-arch-arrow{transform:rotate(90deg);align-self:center;}
+    .hntz-evo-workflow{flex-direction:column;align-items:flex-start;gap:.3rem;}
+    .hntz-evo-workflow .hntz-evo-arrow{transform:rotate(90deg);align-self:center;}
+    .hntz-compare{grid-template-columns:1fr;gap:0;}
+    .hntz-compare-vs{writing-mode:horizontal-tb;padding:.4rem 0;}
+    .hntz-problems{grid-template-columns:1fr;}
+    .hntz-learnings{grid-template-columns:1fr;}
+    .hntz-metrics{gap:.8rem;}
+    .hntz-hero-top{flex-direction:column;align-items:flex-start;gap:.8rem;}
+    .hntz-comp-table{display:block;font-size:.72rem;}
+    .hntz-comp-table thead{display:none;}
+    .hntz-comp-table tbody{display:block;}
+    .hntz-comp-table tr{display:block;border:1px solid rgba(28,47,36,.1);border-radius:0 10px 0 10px;margin-bottom:.8rem;padding:.75rem 1rem;background:var(--warm);}
+    .hntz-comp-table td{display:block;padding:.3rem 0;border:none;line-height:1.5;}
+    .hntz-comp-table td:first-child{white-space:normal;font-weight:600;color:var(--deep);font-size:.68rem;border-bottom:1px solid rgba(28,47,36,.08);padding-bottom:.5rem;margin-bottom:.35rem;}
+    .hntz-comp-table td:not(:first-child)::before{content:attr(data-label);display:block;font-size:.46rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);opacity:.55;margin-bottom:.1rem;}
+    .case-artifacts{grid-template-columns:1fr;}
+    .conflict-row{grid-template-columns:1fr;}
+    .conflict-vs{display:none;}
+    footer{flex-direction:column;align-items:flex-start;}
+  }
+  </style>
+</head>
+<body>
+
+<div id="sine-wrap" aria-hidden="true">
+  <svg viewBox="0 0 44 800" preserveAspectRatio="none"><path id="sp" class="sp" d=""/></svg>
+</div>
+
+<nav aria-label="Hauptnavigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nlogo">Pascal Jäger</a>
+    <ul class="nlinks" id="navlinks" role="list">
+      <li><a href="#about">Über mich</a></li>
+      <li><a href="#projekte">Projekte</a></li>
+      <li><a href="#case-studies">Case Studies</a></li>
+      <li><a href="#archiv">Archiv</a></li>
+      <li><a href="#leistungen">Leistungen</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <button class="nmenu" id="nav-toggle" aria-expanded="false" aria-controls="navlinks" aria-label="Navigation öffnen">
+      <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+        <line x1="0" y1="2"  x2="22" y2="2"  stroke="#1c2f24" stroke-width="1.5"/>
+        <line x1="0" y1="8"  x2="22" y2="8"  stroke="#1c2f24" stroke-width="1.5"/>
+        <line x1="0" y1="14" x2="22" y2="14" stroke="#1c2f24" stroke-width="1.5"/>
+      </svg>
+    </button>
+  </div>
+  <div id="nav-backdrop" class="nav-backdrop" aria-hidden="true"></div>
+</nav>
+
+<section id="hero" aria-labelledby="hero-title">
+  <div id="hero-shader" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1 id="hero-title" class="hero-title">
+      <span class="hi">Systeme</span> denken,<br>
+      <span class="hi">Produkte</span> formen,<br>
+      <span class="hi">Dinge</span> die tragen.
+    </h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">Ob Küche, Studio oder Screen: Es war immer dasselbe. Ein Gericht braucht dieselbe Rezeptur wie ein Song: Harmonie, Proportion, den richtigen Moment. Auditiv, visuell, geschmacklich. Ich habe alle drei gelernt. Design war immer meine Sprache.</p>
+      <div class="hero-meta">
+        <span class="hero-tag">UX · Product Ownership · Heidelberg</span>
+        <a href="#projekte" class="hero-cta">
+          Projekte ansehen
+          <svg width="16" height="7" viewBox="0 0 16 7" fill="none" aria-hidden="true">
+            <path d="M0 3.5H14M11 1l3 2.5L11 6" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+        </a>
+        <p style="font-size:.58rem;letter-spacing:.12em;color:rgba(243,237,227,.25);text-transform:uppercase;margin-top:.6rem;line-height:1.6;">REWE-Listung · End-to-End Projekte · UX &amp; Operations · 15+ Jahre Systemdenken</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-curve" aria-hidden="true">
+    <svg viewBox="0 0 1440 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,56 C480,14 960,48 1440,8 L1440,56 Z" fill="#f3ede3"/>
+    </svg>
+  </div>
+</section>
+
+<section id="about" class="sec-pad" aria-labelledby="about-h">
+  <div class="mw">
+    <h2 id="about-h" class="sr-only">Über mich</h2>
+    <span class="sec-eyebrow fi" aria-hidden="true">Über mich</span>
+    <div class="about-grid">
+      <div class="fi">
+        <p class="about-text">
+          Ich habe mit Turbo Pascal angefangen. Nicht weil mich jemand hingesetzt hat, sondern weil mein 386er ohne eigene Boot-Tools gar nicht erst lief. <strong>Ich wollte spielen, also musste ich zuerst bauen.</strong><br><br>
+          Das Muster war damit gesetzt. Egal wo ich gelandet bin: Küche, Studio, Boden, Screen. Ich bin reingegangen, habe verstanden wie das System funktioniert, und angefangen die Stellen zu reparieren, an denen es unter Druck bricht. <strong>Nicht als Beobachter von außen. Immer mittendrin.</strong><br><br>
+          Ich habe in vielen Kulturen gelebt, nicht daneben. Nicht als Tourist, nicht als Gast. Ich gehörte dazu. Das trainiert etwas, das kein Studium ersetzt: ein Radar für Spannungen. Wo redet jemand an jemandem vorbei. Wo ist das beschriebene Problem nicht das eigentliche. Wo fehlt die Perspektive, die noch keiner eingenommen hat.<br><br>
+          Die Küche hat mich gelehrt was kein Studium lehrt: Qualität entsteht unter Druck, nicht trotzdem. Seit 1999 produziere ich Musik. Ein Mix ist ein Feedback-System: zu viel von einem Element, und das Ganze kollabiert. Der Boden kam durch Farm-to-Table und eigene Züchtungen. <strong>Fermentation lässt sich nicht beschleunigen.</strong> Man kann nur die Bedingungen schaffen. Und warten.<br><br>
+          Das alles war kein Umweg. <strong>Es war immer dasselbe: in Systeme reingehen, das Problem hinter dem Problem finden, zwischen Perspektiven übersetzen.</strong> Ich muss eine Perspektive nicht teilen, um sie vollständig zu begreifen. Das macht mich zu einem natürlichen Mediator in Teams, die an Kommunikation scheitern, nicht an Kompetenz.<br><br>
+          Jetzt übersetze ich das in digitale Produkte.
+        </p>
+      </div>
+      <div class="fi">
+        <dl class="fact-table">
+          <div class="fact-row"><dt class="fact-k">Fokus</dt><dd class="fact-v">UX Design · Product Ownership</dd></div>
+          <div class="fact-row">
+            <dt class="fact-k">Tools</dt>
+            <dd class="fact-v">
+              <div class="tool-icons">
+                <span class="ti">Figma</span>
+                <span class="ti">Notion</span>
+                <span class="ti">Jira</span>
+                <span class="ti">Miro</span>
+                <span class="ti ti-legacy">Ableton</span>
+              </div>
+            </dd>
+          </div>
+          <div class="fact-row"><dt class="fact-k">Sprachen</dt><dd class="fact-v">DE · FR · EN</dd></div>
+          <div class="fact-row"><dt class="fact-k">Ort</dt><dd class="fact-v">Heidelberg · Remote</dd></div>
+          <div class="fact-row"><dt class="fact-k">Status</dt><dd class="fact-v open">Offen für Projekte</dd></div>
+        </dl>
+      </div>
+    </div>
+    <div class="client-strip fi">
+      <p class="client-strip-label">Gearbeitet für &amp; mit</p>
+      <div class="client-logos">
+        <img class="cl-img" src="assets/img/clients/akai.png" alt="Akai Professional" loading="lazy">
+        <img class="cl-img" src="assets/img/clients/numark.png" alt="Numark" loading="lazy">
+        <img class="cl-img cl-dark" src="assets/img/clients/matchachin.png" alt="Matchachin" loading="lazy">
+        <img class="cl-img cl-dark cl-lg" src="assets/img/clients/tk_logo.png" alt="Tausendkraut" loading="lazy">
+        <img class="cl-img cl-dark cl-lg" src="assets/img/clients/eur_hof.png" alt="Europäischer Hof Heidelberg" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="frequenz" aria-labelledby="frequenz-h">
+  <div class="mw">
+    <span class="sec-eyebrow fi" aria-hidden="true">Frequenzprofil</span>
+    <h2 id="frequenz-h" class="sec-h fi">Eine Linie. <em>Viele Amplituden.</em></h2>
+    <p class="sec-sub fi">Identität ist kein Zustand, sie ist ein Verlauf.</p>
+    <div class="tl-outer fi">
+      <div class="tl-scroll">
+        <div class="tl-row" role="list" aria-label="Karriere-Stationen">
+          <div class="tl-station past" role="listitem"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Phase 01</span><span class="tl-title">Code &amp; Maschine</span><span class="tl-body">Turbo Pascal, BASIC. Boot-Tools für den 386er, weil es sonst nicht lief.</span></div>
+          <div class="tl-station past" role="listitem"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Phase 02</span><span class="tl-title">Küche &amp; Druck</span><span class="tl-body">Internationale Restaurants. Mise-en-place als Prozesslogik.</span></div>
+          <div class="tl-station past" role="listitem"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Phase 03 · 1999</span><span class="tl-title">Sound &amp; Design</span><span class="tl-body">Cubase, Ableton, erste Releases. Graffiti, Photoshop, Flash.</span></div>
+          <div class="tl-station past" role="listitem"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Phase 04 · 2010</span><span class="tl-title">Sounddesign &amp; Boden</span><span class="tl-body">Klang als Gestaltungsmittel. Farm-to-Table. Geduld als Methode.</span></div>
+          <div class="tl-station now" role="listitem" aria-current="step"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Gegenwart</span><span class="tl-title">UX / PO</span><span class="tl-body">Figma. Prototypen. Epics. Research. Iteration.</span></div>
+          <div class="tl-station future" role="listitem"><span class="tl-dot" aria-hidden="true"></span><span class="tl-phase">Richtung</span><span class="tl-title">Systemdesign</span><span class="tl-body">Nachhaltige digitale Produkte. Kreativität und Struktur als ein Gedanke.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PROJEKTE — alle 4 Items sind Kinder von #projekte .mw
+     FIX: proj-imgs enthält nur <img>-Elemente; <p.proj-img-caption>
+          sitzt als direktes Geschwister *außerhalb* des Grids
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="projekte" class="sec-pad" aria-labelledby="projekte-h">
+  <div class="mw">
+    <span class="sec-eyebrow fi" aria-hidden="true">Projekte</span>
+    <h2 id="projekte-h" class="sec-h fi">Arbeiten, die <em>etwas bedeuten.</em></h2>
+    <p class="proj-intro fi">Kein Showcase für den CV. Projekte, die zeigen wie ich denke.</p>
+
+    <!-- Item 01 ─────────────────────────────────────────── -->
+    <div class="proj-item fi">
+      <button class="proj-header" aria-expanded="false" aria-controls="proj-body-01" id="proj-btn-01">
+        <div>
+          <div class="proj-num">01</div>
+          <div class="proj-name">Matchachin</div>
+          <div class="proj-cat">Product · Branding · Sound</div>
+        </div>
+        <span class="proj-arrow" aria-hidden="true">+</span>
+      </button>
+      <div class="proj-body" id="proj-body-01" role="region" aria-labelledby="proj-btn-01">
+        <div class="proj-body-inner">
+          <div class="proj-story">
+            <p>Ein RTD-Getränk von der Hypothese bis zur Listung, komplett in Eigenregie. Die Ausgangsfrage war nicht "wie sieht es aus", sondern <strong>wer kauft es, warum, und in welchem Moment.</strong></p>
+            <p>Persona-Arbeit, Rezepturentwicklung, Branding, Sounddesign für POS: alles als ein zusammenhängendes System.</p>
+            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: REWE-Listung im Energy-Segment.</p>
+          </div>
+          <div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Founder · Product Owner · Brand Lead</div></div>
+            <div class="pd-block"><div class="pd-label">Zeitraum</div><div class="pd-value">18 Monate · End-to-End</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Kompetenzen</div>
+              <div class="pd-tags">
+                <span class="pd-tag">Produktstrategie</span>
+                <span class="pd-tag">Persona Research</span>
+                <span class="pd-tag">Brand System</span>
+                <span class="pd-tag">Sounddesign</span>
+                <span class="pd-tag">GTM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- FIX: .proj-imgs enthält NUR <img>; Caption ist Geschwister außerhalb -->
+        <div class="proj-imgs">
+          <img src="assets/img/matchachin/rewe-shelf.png"        alt="Matchachin im REWE Regal"  loading="lazy">
+          <img src="assets/img/matchachin/rewe-banner.png"       alt="Matchachin REWE Listung"   loading="lazy">
+          <img src="assets/img/matchachin/matchachin_hp.png"     alt="Matchachin Website UX"     loading="lazy">
+          <img src="assets/img/matchachin/bottle-lifestyle.jpg"  alt="Matchachin Flasche"        loading="lazy">
+        </div>
+        <p class="proj-img-caption">Im Regal. Auf dem Screen. Für real.</p>
+      </div><!-- /.proj-body -->
+    </div><!-- /.proj-item 01 -->
+
+    <!-- Item 02 ─────────────────────────────────────────── -->
+    <div class="proj-item fi">
+      <button class="proj-header" aria-expanded="false" aria-controls="proj-body-02" id="proj-btn-02">
+        <div>
+          <div class="proj-num">02</div>
+          <div class="proj-name">Tausendkraut</div>
+          <div class="proj-cat">Product Ownership · UX · Operations</div>
+        </div>
+        <span class="proj-arrow" aria-hidden="true">+</span>
+      </button>
+      <div class="proj-body" id="proj-body-02" role="region" aria-labelledby="proj-btn-02">
+        <div class="proj-body-inner">
+          <div class="proj-story">
+            <p>UX, Webshop, Lager, Produktion: alles ein System. <strong>Das kostet Geld, Zeit und Kundenerfahrung.</strong></p>
+            <p>Ich habe den gesamten Stack von der Markenlogik bis zur Lagerverwaltung als eine zusammenhängende User Journey konzipiert.</p>
+            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Klar strukturierte Prozesse zwischen Webshop, Lager und Produktion.</p>
+          </div>
+          <div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Product Owner · UX Lead · Operations</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Kompetenzen</div>
+              <div class="pd-tags">
+                <span class="pd-tag">End-to-End PO</span>
+                <span class="pd-tag">UX/UI</span>
+                <span class="pd-tag">Systemdesign</span>
+                <span class="pd-tag">Operations</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.proj-body -->
+    </div><!-- /.proj-item 02 -->
+
+    <!-- Item 03 ─────────────────────────────────────────── -->
+    <div class="proj-item fi">
+      <button class="proj-header" aria-expanded="false" aria-controls="proj-body-03" id="proj-btn-03">
+        <div>
+          <div class="proj-num">03</div>
+          <div class="proj-name">Parliament Vodka</div>
+          <div class="proj-cat">Brand · Web · UX</div>
+        </div>
+        <span class="proj-arrow" aria-hidden="true">+</span>
+      </button>
+      <div class="proj-body" id="proj-body-03" role="region" aria-labelledby="proj-btn-03">
+        <div class="proj-body-inner">
+          <div class="proj-story">
+            <p>Logodesign, Markenführung, Website. Die zentrale Entscheidung: <strong>Reduktion als Aussage, nicht als Mangel.</strong></p>
+            <p>Jedes Element wurde daraufhin geprüft ob es das Markengefühl stärkt oder verwässert. Was nicht bestanden hat, wurde gestrichen.</p>
+            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Reduziertes Brand-System mit klarer Markenidentität.</p>
+          </div>
+          <div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Brand Lead · Designer · Web UX</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Kompetenzen</div>
+              <div class="pd-tags">
+                <span class="pd-tag">Logodesign</span>
+                <span class="pd-tag">Brand System</span>
+                <span class="pd-tag">Web UX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.proj-body -->
+    </div><!-- /.proj-item 03 -->
+
+    <!-- Item 04 ─────────────────────────────────────────── -->
+    <div class="proj-item fi">
+      <button class="proj-header" aria-expanded="false" aria-controls="proj-body-04" id="proj-btn-04">
+        <div>
+          <div class="proj-num">04</div>
+          <div class="proj-name">Akai &amp; Numark</div>
+          <div class="proj-cat">UX · Informationsarchitektur · Sound</div>
+        </div>
+        <span class="proj-arrow" aria-hidden="true">+</span>
+      </button>
+      <div class="proj-body" id="proj-body-04" role="region" aria-labelledby="proj-btn-04">
+        <div class="proj-body-inner">
+          <div class="proj-story">
+            <p>Marketing-Assets für professionelle Audiotechnologie. <strong>Technische Tiefe zugänglich machen ohne sie zu vereinfachen.</strong></p>
+            <p>Mein Vorteil war der Hintergrund im Sounddesign. Ich musste das Produkt nicht erst verstehen. Ich kannte es.</p>
+            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Technische Inhalte verständlich und markenkonform strukturiert.</p>
+          </div>
+          <div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">UX · Content-Strategie · Sound</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Kompetenzen</div>
+              <div class="pd-tags">
+                <span class="pd-tag">Informationsarchitektur</span>
+                <span class="pd-tag">UX/UI</span>
+                <span class="pd-tag">Sounddesign</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.proj-body -->
+    </div><!-- /.proj-item 04 -->
+
+  </div><!-- /.mw — bleibt jetzt korrekt offen bis hier -->
+</section>
+
+<section id="case-studies" class="sec-pad" aria-labelledby="cases-h">
+  <div class="mw">
+    <span class="sec-eyebrow fi" aria-hidden="true">Case Studies</span>
+    <h2 id="cases-h" class="sec-h fi">Zwei Projekte. <em>Vollständig durchdacht.</em></h2>
+    <p class="sec-sub fi">Vom Problem bis zum Ergebnis. Was ich entschieden habe, warum, und was ich daraus gelernt habe.</p>
+
+    <!-- ══ CASE 01: HNTZ APP ═══════════════════════════════ -->
+    <div class="case-item fi" id="case-hntz">
+      <div class="case-item-header">
+        <div>
+          <div class="case-item-num">01</div>
+          <h3 class="case-item-name">HNTZ App</h3>
+          <p class="case-item-sub">Phenotype Hunting Tracker. Mobile-First Web App für datengetriebene Phänotyp-Selektion in der Pflanzenzucht. Von der ersten Idee zum skalierbaren Produktsystem.</p>
+        </div>
+        <div class="case-chips">
+          <span class="case-chip">Product Strategy</span>
+          <span class="case-chip">UX/UI Design</span>
+          <span class="case-chip">React · Supabase</span>
+          <span class="case-chip">Design System Pivot</span>
+          <span class="case-chip">Solo — PO + Design + Dev</span>
+        </div>
+      </div>
+      <button class="case-toggle-btn" id="case-toggle-hntz" aria-expanded="false" aria-controls="case-body-hntz">
+        <span class="ctb-icon" aria-hidden="true">+</span>
+        <span class="ctb-label-open">Case öffnen</span>
+        <span class="ctb-label-close">Schließen</span>
+      </button>
+      <div class="case-toggle-body" id="case-body-hntz" role="region" aria-labelledby="case-toggle-hntz">
+        <div style="padding-top:2.5rem">
+
+          <!-- ═══ HNTZ HERO ═══ -->
+          <div class="hntz-hero">
+            <div class="hntz-hero-top">
+              <img src="assets/img/hntz/hntz_logo_golden.svg" alt="HNTZ Logo" class="hntz-hero-logo">
+              <span class="hntz-hero-title">HNTZ</span>
+            </div>
+            <p class="hntz-tagline">Hunts · Tracks · <em>Perfects.</em></p>
+            <p class="hntz-tagline-sub">Phenotype Discovery System. Von der ersten Skizze zum datengetriebenen Selektionswerkzeug. Diese Case Study dokumentiert die komplette Produktevolution eines Systems, das ich als Solo-Designer, Product Owner und Developer von Grund auf gebaut habe.</p>
+            <div class="hntz-role-chips">
+              <span class="hntz-role-chip">Product Owner</span>
+              <span class="hntz-role-chip">UX/UI Design</span>
+              <span class="hntz-role-chip">Frontend Dev</span>
+              <span class="hntz-role-chip">Domain Expert</span>
+            </div>
+            <div class="hntz-status">Closed Beta</div>
+          </div>
+
+          <!-- ═══ 01 PROJEKTÜBERBLICK ═══ -->
+          <div class="hntz-section">
+            <div class="hntz-section-num">01</div>
+            <h4 class="hntz-section-title">Projektüberblick</h4>
+            <p class="hntz-section-intro">Was HNTZ ist, welches Problem es löst und für wen es gebaut wird.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p><strong>Professionelle Züchter haben ein Datenproblem, kein Tagebuch-Problem.</strong> Beim Phenotype Hunting werden 5 bis 20 genetisch verschiedene Pflanzen derselben Sorte parallel aufgezogen. Das Ziel: den einen überlegenen Phänotyp identifizieren, den sogenannten Keeper. Die Entscheidung basiert auf dutzenden Metriken über 7 Wachstumsphasen.</p>
+              <p>Die bestehenden Lösungen versagen an genau diesem Punkt. Journal-Apps sind Lifestyle-Tagebücher: ein Foto, ein Kommentar, fertig. <strong>Sie behandeln Pflanzen als Content, nicht als genetische Entitäten mit messbaren Attributen.</strong> Die Alternative ist Excel. Manche Züchter bauen sich eigene Spreadsheets. Das funktioniert, aber es skaliert nicht und die Dateneingabe am Smartphone zwischen Pflanzen ist eine Katastrophe.</p>
+              <p>HNTZ löst das durch ein System, das <strong>jede Pflanze als diskretes Datenobjekt</strong> über alle Phasen trackt und am Ende algorithmisch vergleichen kann, welche Phänotypen sich ähneln.</p>
+              <div class="hntz-metrics">
+                <div class="hntz-metric"><div class="hntz-metric-val">29</div><div class="hntz-metric-label">Components</div></div>
+                <div class="hntz-metric"><div class="hntz-metric-val">7</div><div class="hntz-metric-label">Phasen</div></div>
+                <div class="hntz-metric"><div class="hntz-metric-val">6</div><div class="hntz-metric-label">DB Tables</div></div>
+                <div class="hntz-metric"><div class="hntz-metric-val">3</div><div class="hntz-metric-label">AI Features</div></div>
+                <div class="hntz-metric"><div class="hntz-metric-val">6</div><div class="hntz-metric-label">Beta Tester</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 02 PROBLEM SPACE ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">02</div>
+            <h4 class="hntz-section-title">Problem Space &amp; <em>Wettbewerbsanalyse</em></h4>
+            <p class="hntz-section-intro">Warum kein existierendes Tool das Problem löst.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div style="overflow-x:auto;margin:.5rem 0 1rem;">
+                <table class="hntz-comp-table">
+                  <thead><tr><th>Kriterium</th><th>HNTZ</th><th>Journal-Apps</th><th>Excel / Sheets</th></tr></thead>
+                  <tbody>
+                    <tr><td>Per-Plant Tracking</td><td class="hntz-win" data-label="HNTZ">Einzelpflanze als Entity</td><td class="hntz-miss" data-label="Journal-Apps">Zyklus-Level, keine Isolation</td><td data-label="Excel / Sheets">Manuell, fehleranfällig</td></tr>
+                    <tr><td>Phasen-Metriken</td><td class="hntz-win" data-label="HNTZ">7 Phasen, je eigene Skalen</td><td class="hntz-miss" data-label="Journal-Apps">Keine phasenspezifischen Felder</td><td data-label="Excel / Sheets">Möglich, enormer Setup</td></tr>
+                    <tr><td>Pheno-Vergleich</td><td class="hntz-win" data-label="HNTZ">Algorithmisch (Bayesian Weighting)</td><td class="hntz-miss" data-label="Journal-Apps">Nicht vorhanden</td><td data-label="Excel / Sheets">Manuell visuell</td></tr>
+                    <tr><td>Mobile Dateneingabe</td><td class="hntz-win" data-label="HNTZ">Bottom-Sheet Sliders, One-Thumb</td><td data-label="Journal-Apps">Akzeptabel</td><td class="hntz-miss" data-label="Excel / Sheets">Unbrauchbar am Handy</td></tr>
+                    <tr><td>Stammbaum / Lineage</td><td class="hntz-win" data-label="HNTZ">Visuelles Lineage-Mapping</td><td class="hntz-miss" data-label="Journal-Apps">Textfeld</td><td data-label="Excel / Sheets">Manuell</td></tr>
+                    <tr><td>AI Integration</td><td class="hntz-win" data-label="HNTZ">Voice, Photo, Import AI</td><td class="hntz-miss" data-label="Journal-Apps">Keine</td><td class="hntz-miss" data-label="Excel / Sheets">Keine</td></tr>
+                    <tr><td>Zielgruppe</td><td class="hntz-win" data-label="HNTZ">Phänotyp-Tester, Pro-Züchter</td><td data-label="Journal-Apps">Hobby-Anwender, Social</td><td data-label="Excel / Sheets">Data-affine Züchter</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="hntz-insight">
+                <div class="hntz-insight-label">Zentrale Erkenntnis</div>
+                <p><strong>HNTZ konkurriert nicht mit Journal-Apps.</strong> HNTZ konkurriert mit dem selbstgebauten Spreadsheet erfahrener Züchter, das zwar mächtig ist, aber kein Interface hat. Die echte Konkurrenz sind Happy Valley PhenoHunter (iOS, 2K Downloads), Grow with Jane (500K, aber kein Per-Plant Tracking) und PLNTRK (QR/NFC-basiert, aber kein Similarity-Scoring).</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 03 ERSTE VERSION ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">03</div>
+            <h4 class="hntz-section-title">Erste Version — <em>Cream UI Prototyp</em></h4>
+            <p class="hntz-section-intro">Der Ausgangspunkt. Die Annahmen, die Designentscheidungen und die Interface-Konzepte der Version 1.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p>Die erste Version lief unter dem Namen <strong>Phenohunter</strong> auf phenohunta.netlify.app. Das Design basierte auf einer Cream/Apricot-Palette, die bewusst gegen den branchentypischen Dark-Look entwickelt wurde.</p>
+              <p><strong>Die UX-Annahmen der ersten Version:</strong></p>
+              <p>1. Ein Grow ist die zentrale Entity. Alles hängt am Grow.<br>
+              2. Eine warme Cream-Palette funktioniert unter Pflanzenlampen besser als Dark UI.<br>
+              3. Eine 3-Tab-Navigation (Home, Strains, Phenos) reicht für den Kern-Flow.<br>
+              4. Slider-basierte Metriken (0–10) eliminieren das Tastatur-Problem.<br>
+              5. Die Phasen-Timeline steuert, welche Metriken sichtbar sind.</p>
+
+              <div class="hntz-img-grid">
+                <div class="hntz-img-card">
+                  <img src="assets/img/hntz/home.jpeg" alt="Phenohunter v1 Home Screen mit Cream-Palette" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">HOME v1</span> Dashboard mit 4 KPI-Tiles, CTA und Grow-Cards. Cream-Palette mit Apricot-Akzenten. Emoji-basierte Phase-Badges.</p>
+                </div>
+                <div class="hntz-img-card">
+                  <img src="assets/img/hntz/grow_uebersicht.jpeg" alt="Phenohunter v1 Grow-Übersicht mit Phasen-Timeline" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">GROW v1</span> Grow-Detail: Phasen-Timeline steuert den Kontext. Plant-Grid mit manueller Gruppierung. Status-Indikatoren (Gesund, Issues, Gruppiert, Elim.).</p>
+                </div>
+              </div>
+              <div class="hntz-img-grid">
+                <div class="hntz-img-card">
+                  <img src="assets/img/hntz/bluetephase.jpeg" alt="Phenohunter v1 Blütephase mit 10 kontextspezifischen Metriken" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">CONTEXT v1</span> Blüte-Phase expandiert: 10 phasenspezifische Metriken (Blütestart, Blütenstruktur, Harzproduktion, Trichom-Köpfe, Aroma, Aroma-Typ, Farbe, Kelch/Blatt-Ratio, Blüte-Vigor). Kontextuelle Reduktion als Kern-UX-Pattern.</p>
+                </div>
+                <div class="hntz-img-card">
+                  <img src="assets/img/hntz/beobachtung_curing.jpeg" alt="Phenohunter v1 Curing Observation mit Slider-Metriken" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">INPUT v1</span> Plant-Detail als Bottom-Sheet: Curing-Observation mit Slider-Metriken (Trockengewicht, Cure-Aroma, Geschmack, Wirkung-Typ, Wirkung-Stärke). One-Thumb-Eingabe.</p>
+                </div>
+              </div>
+              <div class="hntz-img-grid hntz-img-grid-single">
+                <div class="hntz-img-card">
+                  <img src="assets/img/hntz/stammbaum.jpeg" alt="Phenohunter v1 Stammbaum-Visualisierung" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">LINEAGE v1</span> Stammbaum-View: Visuelles Lineage-Mapping mit Züchter-Attribution (Cookie Fam, Sherbinski, Seed Junky). Genetische Herkunft auf einen Blick.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 04 PROBLEME DER ERSTEN VERSION ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">04</div>
+            <h4 class="hntz-section-title">Kritische Analyse — <em>Was nicht funktionierte</em></h4>
+            <p class="hntz-section-intro">Ein System-Audit nach den ersten Beta-Tests deckte fundamentale Architektur- und UX-Probleme auf.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div class="hntz-problems">
+                <div class="hntz-problem">
+                  <div class="hntz-problem-title">Grow-zentrische Architektur</div>
+                  <div class="hntz-problem-desc">Das System war um Grows herum gebaut. Phenos waren untergeordnete Objekte. Problem: Ein Phänotyp existiert über Grows hinweg. Wenn ein Grow gelöscht wird, sterben die Pheno-Daten mit (CASCADE Delete). Das ist konzeptionell falsch.</div>
+                </div>
+                <div class="hntz-problem">
+                  <div class="hntz-problem-title">GrowScreen-Monolith</div>
+                  <div class="hntz-problem-desc">535 Zeilen, 55% aller Datenbank-Schreiboperationen in einer Komponente. Nicht testbar, nicht wartbar, nicht erweiterbar. Feature-Overload in einem einzigen Screen.</div>
+                </div>
+                <div class="hntz-problem">
+                  <div class="hntz-problem-title">Sicherheitslücke (RLS)</div>
+                  <div class="hntz-problem-desc">Die pheno_groups-Tabelle hatte SELECT using(true) als RLS-Policy. Jeder authentifizierte User konnte die Pheno-Daten aller anderen User sehen. Kritisch für einen Multi-User-Betrieb.</div>
+                </div>
+                <div class="hntz-problem">
+                  <div class="hntz-problem-title">Fehlende Skalierbarkeit</div>
+                  <div class="hntz-problem-desc">Keine Import-Funktion für historische Daten. Keine Voice-Eingabe. Keine AI-Analyse. Der einzige Datenkanal war manuelle Slider-Eingabe — das skaliert nicht für 200+ Pflanzen.</div>
+                </div>
+              </div>
+
+              <div class="hntz-insight">
+                <div class="hntz-insight-label">Architektur-Erkenntnis</div>
+                <p>Die zentrale Erkenntnis aus dem Audit: <strong>Das System war Grow-zentrisch, obwohl es Pheno-zentrisch sein muss.</strong> Ein Phänotyp ist kein Ergebnis eines Grows. Er ist eine genetische Eigenschaft, die über beliebig viele Grows hinweg validiert wird. Die Architektur musste diese Realität abbilden.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 05 DER PIVOT ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">05</div>
+            <h4 class="hntz-section-title">Der Pivot — <em>Design &amp; Architektur Evolution</em></h4>
+            <p class="hntz-section-intro">Rebrand, Design-System-Wechsel und Architektur-Fix. Drei parallele Transformationen.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p><strong>Transformation 1: Von Phenohunter zu HNTZ.</strong> Der Name musste geändert werden — Happy Valley PhenoHunter hält die Marke. HNTZ (ausgesprochen: Hunts) ist kürzer, markenfähig und transportiert die Kernfunktion: das Jagen nach dem perfekten Phänotyp.</p>
+
+              <div class="hntz-img-grid hntz-img-grid-single">
+                <div class="hntz-img-card hntz-dark-bg">
+                  <img src="assets/img/hntz/branding-exploration.png" alt="HNTZ Branding-Exploration: Logo-Geometrie, Golden Ratio, Farbsystem" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">BRAND</span> Logo-Exploration: Geometrische Konstruktion mit Golden Ratio. Diamond-Mark referenziert die botanische Blattstruktur. Primary Color #DAB420 als Branding-Akzent.</p>
+                </div>
+              </div>
+
+              <p style="margin-top:1.4rem;"><strong>Transformation 2: Von Cream zu Dark Forest.</strong></p>
+
+              <div class="hntz-compare">
+                <div class="hntz-compare-side hntz-compare-old">
+                  <div class="hntz-compare-label old">Version 1 — Cream UI</div>
+                  <ul class="hntz-compare-list">
+                    <li><strong>Palette:</strong> Soft Apricot, Dry Sage, Cream (#f3ede3)</li>
+                    <li><strong>Logik:</strong> Wissenschaftliches Notizbuch, neutraler Lab-Look</li>
+                    <li><strong>Typografie:</strong> Plus Jakarta Sans (leicht, offen)</li>
+                    <li><strong>Navigation:</strong> 3 Tabs (Home, Strains, Phenos)</li>
+                    <li><strong>Emoticons:</strong> Emoji-basierte Phase-Icons</li>
+                    <li><strong>Limitierung:</strong> Unter Pflanzenlampen zu hell, wirkt generisch</li>
+                  </ul>
+                </div>
+                <div class="hntz-compare-vs">VS</div>
+                <div class="hntz-compare-side hntz-compare-new">
+                  <div class="hntz-compare-label new">Version 2 — Dark Forest</div>
+                  <ul class="hntz-compare-list">
+                    <li><strong>Palette:</strong> Deep Forest #1c2f24, Gold #DAB420, Sage #93B48B</li>
+                    <li><strong>Logik:</strong> Professionelles Tool, eigenständige Markenidentität</li>
+                    <li><strong>Typografie:</strong> Plus Jakarta Sans (beibehalten, bewährt)</li>
+                    <li><strong>Navigation:</strong> 4 Tabs (Home, Strains, Phenos, Settings)</li>
+                    <li><strong>Status:</strong> Farbcodierte Badges statt Emojis</li>
+                    <li><strong>Vorteil:</strong> Augenfreundlich unter Pflanzenlampen, markenstark</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="hntz-img-grid">
+                <div class="hntz-img-card hntz-dark-bg">
+                  <img src="assets/img/hntz/home-dark.png" alt="HNTZ v2 Home Screen mit Dark Forest Theme" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">HOME v2</span> Neues Dashboard: Grow/Import CTAs, KPI-Tiles, Grow-Dropdown, Top Phenos mit Keeper/Watch-Verdikt und Confidence Score. Dark Forest Palette.</p>
+                </div>
+                <div class="hntz-img-card hntz-dark-bg">
+                  <img src="assets/img/hntz/settings-dark.png" alt="HNTZ v2 Settings Screen mit Beta-Status" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">SETTINGS v2</span> Neuer Settings-Screen: Account-Info, Beta-Status mit Limits (3 Grows, 5 Fotos/Pflanze, 5 MB), Feedback-Kanal, Version &amp; Roadmap, Community-Chat (Coming Soon).</p>
+                </div>
+              </div>
+
+              <p style="margin-top:1.4rem;"><strong>Transformation 3: Von Grow-zentrisch zu Pheno-zentrisch.</strong></p>
+              <div class="hntz-decisions">
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">D1</div>
+                  <div>
+                    <div class="hntz-decision-title">CASCADE Delete entfernt</div>
+                    <div class="hntz-decision-desc">Phenos überleben jetzt das Löschen eines Grows. grow_id in pheno_groups wird nullable. Ein Phänotyp gehört nicht einem Grow — er wird durch Grows validiert.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">D2</div>
+                  <div>
+                    <div class="hntz-decision-title">RLS-Policy gefixt</div>
+                    <div class="hntz-decision-desc">pheno_groups.SELECT von using(true) zu using(auth.uid() = user_id). Multi-User-Privatsphäre gesichert.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">D3</div>
+                  <div>
+                    <div class="hntz-decision-title">FK Constraint hinzugefügt</div>
+                    <div class="hntz-decision-desc">plants.pheno_group_id bekommt einen echten Foreign Key mit ON DELETE SET NULL. Datenintegrität auf DB-Ebene statt im Frontend.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">D4</div>
+                  <div>
+                    <div class="hntz-decision-title">Settings-Tab eingeführt</div>
+                    <div class="hntz-decision-desc">4-Tab-Navigation statt 3. Account, Beta-Status, Feedback und Roadmap in eigenem Screen. Entlastet den Home-Screen.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 06 NEUE PRODUKTARCHITEKTUR ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">06</div>
+            <h4 class="hntz-section-title">Neue Produktarchitektur</h4>
+            <p class="hntz-section-intro">Das aktuelle System und wie die Subsysteme zusammenspielen.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div class="hntz-arch">
+                <div class="hntz-arch-row">
+                  <div class="hntz-arch-node"><strong>UI Layer</strong><span>React 18 · CDN · Babel</span><span>29 Components · Mobile-First</span></div>
+                  <div class="hntz-arch-arrow">→</div>
+                  <div class="hntz-arch-node"><strong>Supabase</strong><span>Auth · RLS · Storage</span><span>Edge Functions (AI)</span></div>
+                  <div class="hntz-arch-arrow">→</div>
+                  <div class="hntz-arch-node"><strong>PostgreSQL</strong><span>6 Tables + 5 Migrations</span><span>JSONB Metrics · Indexes</span></div>
+                </div>
+                <div class="hntz-arch-row">
+                  <div class="hntz-arch-node"><strong>Pheno Engine</strong><span>Bayesian Weighting</span><span>70% Terpen · 20% Morph · 10% Timing</span></div>
+                  <div class="hntz-arch-arrow">←</div>
+                  <div class="hntz-arch-node"><strong>Observation Hub</strong><span>Manual · Voice · Photo · Import</span><span>4 Eingabekanäle</span></div>
+                  <div class="hntz-arch-arrow">→</div>
+                  <div class="hntz-arch-node"><strong>Pheno Atlas</strong><span>Confirmed Phenos · Keeper Wall</span><span>Radar Charts · Verdicts</span></div>
+                </div>
+              </div>
+
+              <div class="hntz-img-grid hntz-img-grid-single" style="margin-top:1.4rem;">
+                <div class="hntz-img-card hntz-dark-bg">
+                  <img src="assets/img/hntz/radar-chart.png" alt="HNTZ Radar-Chart: Pheno-Visualisierung mit 6 Achsen" loading="lazy">
+                  <p class="hntz-img-legend"><span class="hntz-legend-tag">RADAR</span> Pheno-Visualisierung: 6-Achsen-Radar (Vigor, Verzweigung, Harz, Dichte, Aroma, Optik). Jeder bestätigte Phänotyp bekommt ein einzigartiges Profil. Visuelle Sofort-Differenzierung statt tabellarischer Vergleich.</p>
+                </div>
+              </div>
+
+              <p class="hntz-text"><strong>Warum Radar-Charts:</strong> Ein Phänotyp ist ein multidimensionales Objekt. Tabellen zeigen Einzelwerte. Radar-Charts zeigen das Profil — die Form. Zwei Phänotypen mit identischem Durchschnitt können völlig unterschiedliche Profile haben. Das Radar macht diesen Unterschied sofort sichtbar.</p>
+            </div>
+          </div>
+
+          <!-- ═══ 07 UX PROZESS ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">07</div>
+            <h4 class="hntz-section-title">UX Prozess — <em>Informationsarchitektur &amp; Flows</em></h4>
+            <p class="hntz-section-intro">Wie die Datenstruktur die Interface-Logik bestimmt.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p class="hntz-text">Die IA folgt der biologischen Realität: <strong>User → Grows → Plants → Observations → Pheno Groups.</strong> Jede Entität hat eine klare Eltern-Kind-Beziehung. Metriken sind als JSONB gespeichert, weil sich die Attribute je Phase ändern.</p>
+              <p class="hntz-text">Die 7-Phasen-Timeline (Keimung → Sämling → Vegetativ → Stretch → Blüte → Ernte → Curing) steuert, <strong>welche Eingabefelder der User sieht</strong>. In der Blütephase trackt man Harzproduktion und Trichom-Köpfe. Beim Curing trackt man Aroma-Entwicklung und Geschmack. Irrelevante Felder werden ausgeblendet.</p>
+
+              <p class="hntz-text"><strong>Cognitive Load Strategie — 3 Ebenen:</strong></p>
+              <p class="hntz-text"><strong>Ebene 1: Phasen-Gating.</strong> Metriken erscheinen nur in ihrer Phase. Trichom-Köpfe sind irrelevant in der Keimung. Das Interface zeigt sie nicht.</p>
+              <p class="hntz-text"><strong>Ebene 2: Bottom-Sheet Pattern.</strong> Statt einer langen Scroll-Seite öffnet sich ein Modal-Sheet mit allen Metriken für eine Pflanze. Die Aufmerksamkeit bleibt fokussiert auf ein Objekt.</p>
+              <p class="hntz-text"><strong>Ebene 3: Slider statt Textfeld.</strong> Terpen-Profile und Bewertungen sind 0–10 Skalen. Slider ermöglichen schnelle, konsistente Eingaben ohne Tastatur. <strong>Anwender stehen mit erdigen Händen zwischen Pflanzen</strong>, nicht am Schreibtisch.</p>
+
+              <div class="hntz-insight">
+                <div class="hntz-insight-label">UX-Erkenntnis</div>
+                <p>Theoretisch 1.400 Datenpunkte pro Grow (20 Pflanzen × 10 Metriken × 7 Phasen). <strong>Phasen-Gating reduziert die sichtbare Komplexität um 85%.</strong> Der User sieht nie mehr als 10 Metriken gleichzeitig.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 08 PRIORISIERUNG ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">08</div>
+            <h4 class="hntz-section-title">Feature-Priorisierung</h4>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p class="hntz-text">Feature-Priorisierung folgte einer klaren Logik: <strong>Pheno-Data-Integrity vor allem anderen.</strong> Ohne verlässliche Daten ist kein Vergleich möglich. Ohne Vergleich kein Phenotype Hunting.</p>
+              <div class="hntz-moscow">
+                <div class="hntz-moscow-card"><div class="hntz-moscow-label hntz-ml-must">Must Have</div><div class="hntz-moscow-items"><span>7-Phasen-Tracking</span><span>Per-Plant Observation Logging</span><span>Pheno-Grouping (Bayesian)</span><span>Supabase Auth + RLS</span><span>Mobile-First Slider-Input</span><span>Pheno Engine Pipeline</span></div></div>
+                <div class="hntz-moscow-card"><div class="hntz-moscow-label hntz-ml-should">Should Have</div><div class="hntz-moscow-items"><span>Stammbaum-Visualisierung</span><span>Voice Observation Input</span><span>Grow Report Import (AI)</span><span>Radar-Chart Visualisierung</span><span>Keeper/Watch Verdicts</span></div></div>
+                <div class="hntz-moscow-card"><div class="hntz-moscow-label hntz-ml-could">Could Have</div><div class="hntz-moscow-items"><span>Photo-AI Trait Extraction</span><span>PDF/Excel Export</span><span>Multi-Strain Grows</span><span>Onboarding Wizard</span></div></div>
+                <div class="hntz-moscow-card"><div class="hntz-moscow-label hntz-ml-wont">Won't Have (Yet)</div><div class="hntz-moscow-items"><span>QR/NFC Plant Labels</span><span>Community Social Feed</span><span>Sensor Integration</span><span>Public Pheno Atlas</span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 09 PRODUCT EVOLUTION: FEATURES ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">09</div>
+            <h4 class="hntz-section-title">Produkt-Evolution — <em>Neue Features</em></h4>
+            <p class="hntz-section-intro">Vier Systeme, die HNTZ vom Tracking-Tool zum Phenotype Discovery System transformiert haben.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div class="hntz-evo-feature">
+                <div class="hntz-evo-label">A — Die Pheno Engine</div>
+                <p class="hntz-text"><strong>Das Herzstück des Systems.</strong> Eine mehrstufige Phenotype Discovery Pipeline mit Bayesian Weighting: 70% Terpene (genetisch am stabilsten), 20% Morphologie (Internodien, Stretch), 10% Timing (Blütebeginn, Trichom-Reife).</p>
+                <div class="hntz-evo-workflow">
+                  <span>Observation</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Trait Vector</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Similarity Score</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Working Group</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Confirmed Pheno</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Keeper</span>
+                </div>
+                <p class="hntz-text"><strong>Fuzzy Logic:</strong> Werte 6 und 7 auf der 1–10-Skala gelten als identisch, wenn das Terpen-Profil matcht. Abweichung > 3 = andere Gruppe. Das verhindert Daten-Fragmentierung durch natürliche Messungenauigkeit.</p>
+                <p class="hntz-text"><strong>Phase Migration:</strong> Die Engine re-evaluiert Similarity in jeder Phase. Eine Pflanze kann die Gruppe wechseln, wenn die Abweichung über 2 Phasen > 30% beträgt. Das System dokumentiert: "Plant #66 moved from Pheno #2 to #5 (Reason: Terpen Development Phase 6)".</p>
+                <p class="hntz-text"><strong>Die Engine lebt.</strong> Sie passt sich der Pflanze an — nicht umgekehrt. Sie erkennt Parameter-Veränderungen über Phasen hinweg und ordnet sie der richtigen Pheno-Gruppe zu. Die Pflanze zeigt, was sie ist. Die Engine hört zu.</p>
+                <p class="hntz-text"><strong>Timeline-Kurven:</strong> Jeder Parameter — Stretch, Terpene, Bud Density, Trichom-Reife — wird als Kurvendiagramm über den Blütezyklus visualisiert. Woche für Woche. So wird sichtbar, wie sich eine Pflanze entwickelt, wann sie divergiert, und warum die Engine sie einer bestimmten Pheno-Gruppe zuordnet. Nicht ein Snapshot, sondern der ganze Verlauf.</p>
+                <p class="hntz-text"><strong>Limit:</strong> Maximal 50 Phenos pro Strain. 1.000 Pflanzen resultieren typischerweise in 4–6 bestätigten Phänotypen. <strong>Der Atlas bleibt Qualitätssignal, kein Rauschen.</strong></p>
+              </div>
+
+              <div class="hntz-evo-feature">
+                <div class="hntz-evo-label">B — Voice Observations</div>
+                <p class="hntz-text"><strong>Spracheingabe als primärer Datenkanal.</strong> Der Grower spricht eine Beobachtung. Die KI parst den Freitext und befüllt automatisch die Slider-Felder mit strukturierten Metrik-Werten.</p>
+                <div class="hntz-evo-example">
+„Pflanze 27. Starker Stretch. Citrus-Terpen. Leicht luftige Buds."<br><br>
+→ stretch = 7 · terpene = citrus · bud_density = 4
+                </div>
+                <p class="hntz-text">Das eliminiert den Bruch zwischen Beobachten und Dokumentieren. Grower erfassen Daten, während sie sich durch die Reihen bewegen — nicht danach am Schreibtisch.</p>
+              </div>
+
+              <div class="hntz-evo-feature">
+                <div class="hntz-evo-label">C — Grow Report Import</div>
+                <p class="hntz-text"><strong>Historische Daten sind ein Asset.</strong> Viele Züchter haben jahrelang Daten in Excel-Sheets, CSVs, PDFs oder Textnotizen gesammelt. Das System erlaubt den Upload dieser Dokumente.</p>
+                <div class="hntz-evo-workflow">
+                  <span>Dokument-Upload</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>AI Document Parsing</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Grow-Struktur rekonstruiert</span>
+                  <span class="hntz-evo-arrow">→</span>
+                  <span>Pheno Engine Matching</span>
+                </div>
+                <p class="hntz-text">Die KI rekonstruiert aus unstrukturierten Dokumenten die Grow-Hierarchie. Enthält ein Dokument keine verwertbaren Phänotyp-Daten, wird der Import abgelehnt. <strong>Datenbank-Integrität vor Vollständigkeit.</strong></p>
+              </div>
+
+              <div class="hntz-evo-feature">
+                <div class="hntz-evo-label">D — Photo-AI Analyse</div>
+                <p class="hntz-text"><strong>Visuelle Merkmale werden maschinenlesbar.</strong> Das System analysiert Pflanzenfotos und extrahiert strukturierte Trait-Daten: Bud-Dichte, Farbausprägung, Internodien-Abstand, Blattmorphologie. Diese Werte fließen direkt in die Similarity Engine ein.</p>
+                <p class="hntz-text"><strong>Wichtige Einschränkung:</strong> Nur visuell erkennbare Merkmale werden extrahiert. Keine Terpen-Profile, keine Wirkung. Das System ist ehrlich über seine Grenzen.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 10 SYSTEM DIAGRAMM ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">10</div>
+            <h4 class="hntz-section-title">System-Diagramm — <em>Datenfluss</em></h4>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div class="hntz-diagram">
+                <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="font-family:'Plus Jakarta Sans',system-ui,sans-serif;">
+                  <defs>
+                    <marker id="hntz-a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="none" stroke="#89c4a2" stroke-width="1.2"/></marker>
+                  </defs>
+                  <rect x="20" y="210" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#1c2f24" stroke-opacity=".12" stroke-width="1"/>
+                  <text x="70" y="230" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Grower</text>
+                  <text x="70" y="244" text-anchor="middle" fill="#7d9882" font-size="8">Datenquelle</text>
+                  <line x1="120" y1="234" x2="150" y2="234" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="150" y="210" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#1c2f24" stroke-opacity=".12" stroke-width="1"/>
+                  <text x="200" y="230" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">GrowRun</text>
+                  <text x="200" y="244" text-anchor="middle" fill="#7d9882" font-size="8">Zuchtzyklus</text>
+                  <line x1="250" y1="234" x2="280" y2="234" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="280" y="210" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#1c2f24" stroke-opacity=".12" stroke-width="1"/>
+                  <text x="330" y="230" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Plants</text>
+                  <text x="330" y="244" text-anchor="middle" fill="#7d9882" font-size="8">Einzelpflanzen</text>
+                  <line x1="380" y1="234" x2="410" y2="234" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="410" y="200" width="120" height="68" rx="0" ry="10" fill="#f3ede3" stroke="#89c4a2" stroke-width="1.5"/>
+                  <text x="470" y="226" text-anchor="middle" fill="#1c2f24" font-size="11" font-weight="700">Observations</text>
+                  <text x="470" y="242" text-anchor="middle" fill="#7d9882" font-size="8">Strukturierte</text>
+                  <text x="470" y="254" text-anchor="middle" fill="#7d9882" font-size="8">Metriken</text>
+                  <line x1="530" y1="234" x2="560" y2="234" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="560" y="200" width="120" height="68" rx="0" ry="10" fill="#f3ede3" stroke="#89c4a2" stroke-width="1.5"/>
+                  <text x="620" y="222" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Pheno</text>
+                  <text x="620" y="236" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Engine</text>
+                  <text x="620" y="256" text-anchor="middle" fill="#7d9882" font-size="8">Bayesian Weighting</text>
+                  <line x1="680" y1="234" x2="710" y2="234" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="710" y="210" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#1c2f24" stroke-opacity=".12" stroke-width="1"/>
+                  <text x="760" y="228" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Working</text>
+                  <text x="760" y="242" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Groups</text>
+                  <line x1="760" y1="258" x2="760" y2="310" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="700" y="310" width="120" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#1c2f24" stroke-opacity=".12" stroke-width="1"/>
+                  <text x="760" y="330" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Pheno Candidate</text>
+                  <text x="760" y="344" text-anchor="middle" fill="#7d9882" font-size="8">Validierung</text>
+                  <line x1="700" y1="334" x2="670" y2="334" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="540" y="310" width="130" height="48" rx="0" ry="10" fill="#f3ede3" stroke="#2e503e" stroke-width="1.5"/>
+                  <text x="605" y="330" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="700">Confirmed Pheno</text>
+                  <text x="605" y="344" text-anchor="middle" fill="#2e503e" font-size="8">Bestätigter Phänotyp</text>
+                  <line x1="540" y1="334" x2="500" y2="370" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <line x1="540" y1="334" x2="500" y2="310" stroke="#89c4a2" stroke-width="1.2" marker-end="url(#hntz-a1)"/>
+                  <rect x="390" y="360" width="110" height="44" rx="0" ry="10" fill="#f9f7f2" stroke="#2e503e" stroke-width="1"/>
+                  <text x="445" y="378" text-anchor="middle" fill="#2e503e" font-size="10" font-weight="600">Pheno Atlas</text>
+                  <text x="445" y="392" text-anchor="middle" fill="#7d9882" font-size="8">Radar · Referenz-Katalog</text>
+                  <rect x="390" y="290" width="110" height="44" rx="0" ry="10" fill="#f9f7f2" stroke="#2e503e" stroke-width="1"/>
+                  <text x="445" y="308" text-anchor="middle" fill="#2e503e" font-size="10" font-weight="600">Keeper Wall</text>
+                  <text x="445" y="322" text-anchor="middle" fill="#7d9882" font-size="8">Selektions-Entscheidung</text>
+                  <rect x="310" y="60" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#89c4a2" stroke-width="1.2"/>
+                  <text x="360" y="80" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Voice Input</text>
+                  <text x="360" y="94" text-anchor="middle" fill="#7d9882" font-size="8">Spracheingabe</text>
+                  <line x1="410" y1="84" x2="460" y2="200" stroke="#89c4a2" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#hntz-a1)"/>
+                  <rect x="440" y="60" width="100" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#89c4a2" stroke-width="1.2"/>
+                  <text x="490" y="76" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Fotos</text>
+                  <text x="490" y="90" text-anchor="middle" fill="#7d9882" font-size="8">AI Image</text>
+                  <text x="490" y="101" text-anchor="middle" fill="#7d9882" font-size="8">Analysis</text>
+                  <line x1="485" y1="108" x2="473" y2="200" stroke="#89c4a2" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#hntz-a1)"/>
+                  <rect x="570" y="60" width="110" height="48" rx="0" ry="10" fill="#f9f7f2" stroke="#89c4a2" stroke-width="1.2"/>
+                  <text x="625" y="76" text-anchor="middle" fill="#1c2f24" font-size="10" font-weight="600">Grow Report</text>
+                  <text x="625" y="90" text-anchor="middle" fill="#7d9882" font-size="8">AI Document</text>
+                  <text x="625" y="101" text-anchor="middle" fill="#7d9882" font-size="8">Parsing</text>
+                  <line x1="600" y1="108" x2="490" y2="200" stroke="#89c4a2" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#hntz-a1)"/>
+                  <text x="470" y="30" text-anchor="middle" fill="#7d9882" font-size="9" font-weight="600" letter-spacing=".1em" opacity=".6">AI-EINGABEKANÄLE</text>
+                  <line x1="310" y1="42" x2="680" y2="42" stroke="#89c4a2" stroke-width=".5" stroke-dasharray="2,4" opacity=".3"/>
+                  <text x="70" y="186" text-anchor="middle" fill="#7d9882" font-size="9" font-weight="600" letter-spacing=".1em" opacity=".6">DATENFLUSS</text>
+                  <line x1="20" y1="194" x2="830" y2="194" stroke="#89c4a2" stroke-width=".5" stroke-dasharray="2,4" opacity=".3"/>
+                  <text x="445" y="440" text-anchor="middle" fill="#7d9882" font-size="9" font-weight="600" letter-spacing=".1em" opacity=".6">OUTPUT</text>
+                  <line x1="390" y1="448" x2="500" y2="448" stroke="#89c4a2" stroke-width=".5" stroke-dasharray="2,4" opacity=".3"/>
+                </svg>
+              </div>
+              <p class="hntz-diagram-caption">HNTZ transformiert Grow-Beobachtungen in Phänotyp-Entdeckungen. Vier Eingabekanäle (manuell, Voice, Photo, Import) füttern den Observation Hub. Die Pheno Engine clustert, validiert und produziert bestätigte Phänotypen.</p>
+            </div>
+          </div>
+
+          <!-- ═══ 11 STRATEGISCHES PRODUKTDENKEN ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">11</div>
+            <h4 class="hntz-section-title">Strategisches <em>Produktdenken</em></h4>
+            <p class="hntz-section-intro">Warum das System so aufgebaut ist und wie es langfristig skaliert.</p>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <p class="hntz-text"><strong>Zero-Build-Step Architecture.</strong> React 18 via CDN, Babel-Transpilation im Browser. Kein Webpack, kein Vite, kein package.json. Bewusste Entscheidung: Als Solo-Developer war Iteration Speed wichtiger als Engineering Best Practice. Eine HTML-Datei editieren und deployen in Sekunden. Das Risiko: keine Tree-Shaking, kein Code-Splitting. Akzeptabel für die Beta-Phase.</p>
+              <p class="hntz-text"><strong>Closed Beta Strategie.</strong> 6 Tester (darunter ein prominenter Züchter der Szene), 3 Grows Limit, 5 Fotos pro Pflanze. Das Beta-Limit ist kein technisches, sondern ein strategisches Constraint. Es zwingt zur Priorisierung: Welche Grows sind wirklich Pheno-Hunts, welche sind nur Hobby-Grows? Das filtert die Zielgruppe automatisch.</p>
+              <p class="hntz-text"><strong>Community Layer (geplant).</strong> Die Pheno-Datenbank wird das eigentliche Asset. Wenn Züchter ihre bestätigten Phänotypen teilen können, entsteht ein globaler Pheno-Atlas. Die architektonische Voraussetzung (pheno_groups als eigenständige, nicht-cascade Entity) ist bereits geschaffen.</p>
+
+              <div class="hntz-insight">
+                <div class="hntz-insight-label">Produkt-Positionierung</div>
+                <p><strong>HNTZ ist kein Grow Diary.</strong> Es ist ein Phenotype Discovery System. Das Interface existiert, um strukturierte Daten zu erfassen, die algorithmisch verglichen werden können. Jeder Screen, jeder Slider, jeder Eingabekanal dient einem Zweck: die Entscheidung, welche Pflanze ein Keeper ist, von Bauchgefühl auf Daten zu verlagern.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ 12 ERGEBNIS & LEARNINGS ═══ -->
+          <div class="hntz-divider"></div>
+          <div class="hntz-section">
+            <div class="hntz-section-num">12</div>
+            <h4 class="hntz-section-title">Ergebnis &amp; <em>Learnings</em></h4>
+          </div>
+          <div class="case-block">
+            <div class="case-body">
+              <div class="hntz-compare" style="margin-bottom:1.4rem;">
+                <div class="hntz-compare-side hntz-compare-old">
+                  <div class="hntz-compare-label old">Version 1 (Phenohunter)</div>
+                  <ul class="hntz-compare-list">
+                    <li>Grow-zentrische Architektur</li>
+                    <li>Cream UI, Emoji-Phase-Icons</li>
+                    <li>3-Tab-Navigation</li>
+                    <li>Manueller Pheno-Vergleich</li>
+                    <li>Ein Eingabekanal (Slider)</li>
+                    <li>Keine Import-Funktion</li>
+                    <li>Sicherheitslücke in RLS</li>
+                  </ul>
+                </div>
+                <div class="hntz-compare-vs">→</div>
+                <div class="hntz-compare-side hntz-compare-new">
+                  <div class="hntz-compare-label new">Version 2 (HNTZ)</div>
+                  <ul class="hntz-compare-list">
+                    <li>Pheno-zentrische Architektur</li>
+                    <li>Dark Forest Theme, professionelle Marke</li>
+                    <li>4-Tab-Navigation + Settings</li>
+                    <li>Bayesian Pheno Engine (algorithmisch)</li>
+                    <li>4 Eingabekanäle (Slider, Voice, Photo, Import)</li>
+                    <li>AI-gestützter Grow Report Import</li>
+                    <li>Korrekte RLS + FK Constraints</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="hntz-learnings">
+                <div class="hntz-learning">
+                  <div class="hntz-learning-title">Domain Expertise</div>
+                  <div class="hntz-learning-desc">Ich habe 5 Jahre lang Phänotypen für spezialisierte Zuchtbetriebe getestet. Ich wusste nicht theoretisch, was ein Züchter braucht — ich wusste es, weil ich selbst der User war. Jede UX-Entscheidung basiert auf Erfahrung, die man nicht durch Interviews substituieren kann.</div>
+                </div>
+                <div class="hntz-learning">
+                  <div class="hntz-learning-title">Architektur vor Features</div>
+                  <div class="hntz-learning-desc">Das System-Audit deckte auf, dass der Grow-zentrische Ansatz nicht skaliert. Die Entscheidung, zuerst die Architektur zu fixen (CASCADE, RLS, FK) bevor neue Features gebaut werden, war die wichtigste Product-Entscheidung des Projekts.</div>
+                </div>
+                <div class="hntz-learning">
+                  <div class="hntz-learning-title">Feature-Kill ist Arbeit</div>
+                  <div class="hntz-learning-desc">QR-Labels, Community-Feed und Sensor-Integration waren attraktiv. Sie wurden bewusst gestrichen. HNTZ muss zuerst beweisen, dass die Kern-These stimmt: algorithmischer Pheno-Vergleich schlägt manuelles Bauchgefühl.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /.case-toggle-body hntz -->
+    </div><!-- /.case-item hntz -->
+
+    <!-- ══ CASE 02: MATCHACHIN ══════════════════════════════ -->
+    <div class="case-item fi" id="case-matchachin">
+      <div class="case-item-header">
+        <div>
+          <div class="case-item-num">02</div>
+          <h3 class="case-item-name">Matchachin</h3>
+          <p class="case-item-sub">Natural Energy mit Guayusa. RTD-Getränk, entwickelt und bis zur REWE-Listung verantwortet.</p>
+        </div>
+        <div class="case-chips">
+          <span class="case-chip">REWE-Listung</span>
+          <span class="case-chip">End-to-End PO</span>
+          <span class="case-chip">RTD · Guayusa</span>
+          <span class="case-chip">Packaging · GTM</span>
+          <span class="case-chip">UX Research</span>
+        </div>
+      </div>
+      <button class="case-toggle-btn" id="case-toggle" aria-expanded="false" aria-controls="case-body">
+        <span class="ctb-icon" aria-hidden="true">+</span>
+        <span class="ctb-label-open">Case öffnen</span>
+        <span class="ctb-label-close">Schließen</span>
+      </button>
+    <div class="case-toggle-body" id="case-body" role="region" aria-labelledby="case-toggle">
+      <div style="padding-top:2.5rem">
+        <div class="case-block">
+          <div class="case-label">01 Ausgangssituation</div>
+          <div class="case-body">
+            <p>Guayusa ist eine Stechpalmenart aus dem ecuadorianischen Regenwald, botanisch verwandt mit Mate. Wirkstoffprofil: Koffein, L-Theanin, Theobromin. In Deutschland 2022 praktisch unbekannt, im Massenmarkt nicht präsent.</p>
+            <p>Der Energy-Drink-Markt war gesättigt und negativ konnotiert: synthetische Inhaltsstoffe, künstliche Süße, Taurin. Eine identifizierte Lücke: <strong>Konsumenten mit klarem Energie-Bedarf, die klassische Energy Drinks aktiv ablehnten</strong>, aber keine funktionale Alternative im Kühlregal fanden.</p>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">02 Problemdefinition</div>
+          <div class="case-body">
+            <p>Nicht: Wie bauen wir ein Tee-Getränk. Sondern: <strong>Welcher Konsument hat ein Energie-Bedürfnis, das kein bestehendes Produkt sauber adressiert?</strong></p>
+            <p>Zielgruppe: 25–40 Jahre, aktiver Lebensstil, informierter Konsum. Trinkt keinen Monster oder Red Bull mehr. Kauft Oatly, aber will nachmittags auch funktionieren.</p>
+            <p>Zutaten: Guayusa-Tee, Kalamansi, Zitronengras, Apfelsaft, Agavendicksaft. Kein Taurin, keine Farbstoffe, keine künstlichen Aromen.</p>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">03 Hypothesen</div>
+          <div class="case-body">
+            <div class="case-hypotheses">
+              <div class="case-h-item"><span class="case-h-id">H1</span><span class="case-h-text">Die Kaufentscheidung fällt nicht am Regal. Sie fällt vorher, wenn jemand den Inhalt kennt und der Marke vertraut.</span><span class="case-h-status status-confirmed">Bestätigt</span></div>
+              <div class="case-h-item"><span class="case-h-id">H2</span><span class="case-h-text">Der Hauptkonkurrent ist nicht anderer Tee. Es ist der Griff zur Dose Monster von jemandem, der eigentlich keinen will.</span><span class="case-h-status status-confirmed">Bestätigt</span></div>
+              <div class="case-h-item"><span class="case-h-id">H3</span><span class="case-h-text">Guayusa als Zutat muss erklärt werden, bevor sie verkauft werden kann.</span><span class="case-h-status status-confirmed">Bestätigt</span></div>
+              <div class="case-h-item"><span class="case-h-id">H4</span><span class="case-h-text">Das Packaging muss Energy-Regal-tauglich sein, ohne die Zielgruppe abzuschrecken, die Energy Drinks ablehnt.</span><span class="case-h-status status-revised">Mehrfach überarbeitet</span></div>
+              <div class="case-h-item"><span class="case-h-id">H5</span><span class="case-h-text">REWE ist der richtige Erstzulassungskanal: Reichweite, Biobereich-Nähe, kaufbereite Zielgruppe.</span><span class="case-h-status status-confirmed">Bestätigt</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">04 Research-Fragen</div>
+          <div class="case-body">
+            <p>Welche Konsumenten lehnen Energy Drinks aktiv ab und was trinken sie stattdessen in Situationen wo sie Energie brauchen?</p>
+            <p>Wie viel Erklärungsarbeit braucht eine unbekannte Botanik damit sie kaufauslösend und nicht kaufhemmend wirkt?</p>
+            <p>Was kommuniziert auf dem Energy-Shelf Natürlichkeit ohne dabei Wirkungslosigkeit zu signalisieren?</p>
+            <p>Wie verhält sich die Preisbereitschaft im Vergleich zu synthetischen Energy Drinks vs. Premium-RTD-Tees?</p>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">05 Entscheidungs-Konflikte</div>
+          <div class="case-body">
+            <div class="case-conflicts">
+              <div class="case-conflict">
+                <div class="conflict-row"><span class="conflict-a">Natürlichkeit kommunizieren</span><span class="conflict-vs">vs</span><span class="conflict-b">Energie-Performance versprechen</span></div>
+                <p class="conflict-decision">Energie-Claim primär, Natürlichkeit als Begründung sekundär. Reihenfolge der Botschaft entscheidend.</p>
+              </div>
+              <div class="case-conflict">
+                <div class="conflict-row"><span class="conflict-a">Geschmackskomplexität</span><span class="conflict-vs">vs</span><span class="conflict-b">Massentaugliche Zugänglichkeit</span></div>
+                <p class="conflict-decision">Komplexität behalten, aber Kalamansi auf dem Label erklären. Packaging als Erklärungs-Interface genutzt.</p>
+              </div>
+              <div class="case-conflict">
+                <div class="conflict-row"><span class="conflict-a">Tee-Shelf: sichere Zielgruppe</span><span class="conflict-vs">vs</span><span class="conflict-b">Energy-Shelf: größere Reichweite</span></div>
+                <p class="conflict-decision">Energy-Shelf. Wer Energie sucht, kann überzeugt werden, wenn das Produkt Vertrauen erzeugt bevor er es kennt.</p>
+              </div>
+              <div class="case-conflict">
+                <div class="conflict-row"><span class="conflict-a">Zwei SKUs zum Launch</span><span class="conflict-vs">vs</span><span class="conflict-b">Eine SKU, fokussierte Listungsstory</span></div>
+                <p class="conflict-decision">Eine SKU. Listungsgespräche mit REWE funktionieren mit einer klaren Einheit.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">06 Artefakte</div>
+          <div class="case-body">
+            <div class="case-artifacts">
+              <div class="case-artifact"><div class="artifact-name">Positioning-Matrix</div><div class="artifact-proof">Natural vs. Functional vs. Energy auf zwei Achsen.</div><span class="artifact-type">PO: Markt-Entscheidungslogik</span></div>
+              <div class="case-artifact"><div class="artifact-name">Shelf Competition Map (REWE)</div><div class="artifact-proof">Kategorisierung der tatsächlichen Regalumgebung.</div><span class="artifact-type">UX: Kontextanalyse am Point of Decision</span></div>
+              <div class="case-artifact"><div class="artifact-name">Rezeptur-Iterationslog</div><div class="artifact-proof">Version, Testgruppe, Hauptkritik, Konsequenz.</div><span class="artifact-type">PO: Hypothesen-getriebene Iteration</span></div>
+              <div class="case-artifact"><div class="artifact-name">Packaging-Iterationen (3 Versionen)</div><div class="artifact-proof">Drei Designzyklen mit Testfeedback. Version 1 wurde als "Drogerie-Produkt" beschrieben.</div><span class="artifact-type">UX: Wahrnehmungstest am Regal-Kontext</span></div>
+              <div class="case-artifact"><div class="artifact-name">Go-to-Market Board</div><div class="artifact-proof">Kanal-Reihenfolge, Begründung, was bewusst zurückgestellt wurde.</div><span class="artifact-type">PO: Priorisierung unter Unsicherheit</span></div>
+              <div class="case-artifact"><div class="artifact-name">Nutzer-Kontext-Map</div><div class="artifact-proof">Situativ: wann, wo, welche Energie-Alternative wurde bisher gewählt.</div><span class="artifact-type">UX: Jobs-to-be-done Analyse</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">07 Iterationen</div>
+          <div class="case-body">
+            <div class="case-iterations">
+              <div class="case-iteration"><span class="iter-num">01</span><p class="iter-body"><strong>Rezeptur, Durchlauf 1:</strong> Zu herb, zu nah an klassischem Tee. Rückmeldung: "Schmeckt gesund aber nicht nach Energie." Konsequenz: Referenzpunkt neu definiert. Nicht Tee-Trinker, sondern Iced-Coffee-Trinker als primäre Testgruppe.</p></div>
+              <div class="case-iteration"><span class="iter-num">02</span><p class="iter-body"><strong>Packaging, Version 1:</strong> Klares, minimales Design. Testfeedback: "Sieht aus wie Drogerie-Produkt." Energie-Signalsprache, Farbsystem und Claim-Hierarchie komplett überarbeitet.</p></div>
+              <div class="case-iteration"><span class="iter-num">03</span><p class="iter-body"><strong>Positionierungs-Pivot:</strong> Ursprüngliche Idee war Tee-Shelf. Nach Shelf-Mapping entschieden: Energy-Shelf mit Natürlichkeit als Differenzierer.</p></div>
+              <div class="case-iteration"><span class="iter-num">04</span><p class="iter-body"><strong>GTM-Anpassung:</strong> POS-Sounddesign im Retailer-Briefing nicht umsetzbar. Ressourcen auf Packaging-Finalisierung und digitale Vor-Kaufstrecke umgeschichtet.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">08 Ergebnis</div>
+          <div class="case-body">
+            <p><strong>Listung bei REWE</strong> im Energy-Segment. Erstkäufer mit Iced-Coffee-Hintergrund konvertierten stärker als Tee-affine Käufer. Bestätigung von H2.</p>
+            <p>Was nicht funktioniert hat: Guayusa als Zutat war zu unbekannt für spontane Impulskäufe ohne Vorwissen. Die digitale Bekanntheitsstrecke war unterinvestiert.</p>
+            <div class="case-video" style="margin-top:1.5rem;">
+              <a href="https://www.youtube.com/watch?v=b27ubyZfq4g"
+                 target="_blank" rel="noopener noreferrer"
+                 style="display:flex;align-items:center;justify-content:center;gap:1rem;height:280px;background:#0f1f16;border-radius:0 16px 0 16px;text-decoration:none;border:1px solid rgba(137,196,162,.15);transition:border-color .3s;">
+                <svg width="52" height="52" viewBox="0 0 52 52" fill="none" style="flex-shrink:0;">
+                  <circle cx="26" cy="26" r="25" stroke="#89c4a2" stroke-width="1.5" opacity=".5"/>
+                  <polygon points="21,17 37,26 21,35" fill="#89c4a2"/>
+                </svg>
+                <span style="display:flex;flex-direction:column;gap:.3rem;">
+                  <span style="font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#89c4a2;">Video ansehen</span>
+                  <span style="font-size:.65rem;color:rgba(137,196,162,.45);letter-spacing:.08em;">Matchachin · Produktion &amp; Sound — YouTube ↗</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="case-block">
+          <div class="case-label">09 Learnings</div>
+          <div class="case-body">
+            <p><strong>Positionierungs-Entscheidungen müssen vor der Rezeptur stehen.</strong> Erst den Kaufkontext definieren, dann das Produkt daran ausrichten.</p>
+            <p>Packaging ist kein Designproblem. Es ist ein Informationsarchitektur-Problem auf 25 Quadratzentimetern.</p>
+            <p>Eine unbekannte Zutat ist kein Nachteil wenn man sie als Qualitätssignal rahmt. Aber das Framing braucht Fläche und Konsequenz.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /.case-item matchachin -->
+
+  </div><!-- /.mw -->
+</section>
+
+<section id="archiv" aria-labelledby="archiv-h">
+  <div class="mw">
+    <span class="sec-eyebrow fi" aria-hidden="true">Design Archiv</span>
+    <h2 id="archiv-h" class="sec-h fi">Früher. <em>Flash, Photoshop, Straße.</em></h2>
+    <p class="archiv-intro fi">Erst Bleistift. Dann Tabletts. Jetzt Prompts. Das Ergebnis war immer das Gleiche: zu viele Ideen.</p>
+    <div class="archiv-tabs fi" role="tablist" aria-label="Design-Kategorien">
+      <button class="atab active" role="tab" aria-selected="true"  aria-controls="cp0" id="tab0" data-tab="0">Logos &amp; Brand</button>
+      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp1" id="tab1" data-tab="1">Flyer &amp; Print</button>
+      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp2" id="tab2" data-tab="2">Web &amp; Interface</button>
+      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp3" id="tab3" data-tab="3">Illustration &amp; Straße</button>
+    </div>
+    <div id="cp0" class="cube-panel active fi" role="tabpanel" aria-labelledby="tab0"></div>
+    <div id="cp1" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab1"></div>
+    <div id="cp2" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab2"></div>
+    <div id="cp3" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab3"></div>
+    <div class="cube-manifesto fi">
+      <p>Ich betrachte keinen Würfel von einer Seite.<br>
+      <strong>Ich analysiere das gesamte System:</strong> User, Stakeholder, Umfeld, Nutzungskontext, Nebenwirkungen.<br><br>
+      Personas sind für mich keine isolierten Profile. Sie sind Teil eines <em>lebenden Ökosystems.</em><br><br>
+      <strong>Design ist Verantwortung.</strong></p>
+    </div>
+    <div class="cube-manifesto fi" style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(28,47,36,.07);">
+      <p style="font-size:.9rem;font-style:italic;font-family:var(--serif);color:var(--deep);font-weight:400;line-height:1.6;">KI nutzen kann jeder.<br>Wissen was man baut, nicht.</p>
+    </div>
+  </div>
+</section>
+
+<section id="leistungen" aria-labelledby="leist-h">
+  <div class="mw">
+    <span class="sec-eyebrow fi" aria-hidden="true">Leistungen</span>
+    <h2 id="leist-h" class="sec-h fi">Vier Disziplinen. <em>Ein System.</em></h2>
+    <p class="sec-sub fi">Kein Bauchladen. Alles hängt zusammen — und genau so arbeite ich.</p>
+
+    <div class="leist-grid">
+      <div class="leist-card fi">
+        <span class="leist-num" aria-hidden="true">01</span>
+        <h3 class="leist-title">Discovery &amp; Research</h3>
+        <p class="leist-desc">Du hast eine Idee, aber keine Daten. Ich finde raus, ob sie trägt — bevor ein Pixel entsteht.</p>
+      </div>
+      <div class="leist-card fi">
+        <span class="leist-num" aria-hidden="true">02</span>
+        <h3 class="leist-title">UX &amp; Interface Design</h3>
+        <p class="leist-desc">Dein Produkt funktioniert, aber keiner versteht es. Ich baue Interfaces, die sich erklären.</p>
+      </div>
+      <div class="leist-card fi">
+        <span class="leist-num" aria-hidden="true">03</span>
+        <h3 class="leist-title">Product Ownership</h3>
+        <p class="leist-desc">Euer Team baut Features, aber kein Produkt. Ich bringe Vision, Priorisierung und den roten Faden.</p>
+      </div>
+      <div class="leist-card fi">
+        <span class="leist-num" aria-hidden="true">04</span>
+        <h3 class="leist-title">Brand &amp; Positionierung</h3>
+        <p class="leist-desc">Dein Produkt ist gut, aber unsichtbar. Ich baue das System, das es sichtbar macht — bis ins Regal.</p>
+      </div>
+    </div>
+
+    <div class="leist-footer fi">
+      <p class="leist-rate">Stundensatz: <strong>90 €</strong> · Projektbasiert auf Anfrage</p>
+      <p class="leist-note">Remote oder vor Ort · Verfügbarkeit auf Anfrage</p>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" aria-labelledby="kontakt-h">
+  <div class="kontakt-inner">
+    <span class="sec-eyebrow fi" style="color:rgba(137,196,162,.6)" aria-hidden="true">Kontakt</span>
+    <h2 id="kontakt-h" class="kontakt-h fi">Klar gedacht.<br><em>Direkt gemacht.</em></h2>
+    <p class="kontakt-sub fi">Projekt im Kopf? Schreib mir — kein Anschreiben nötig.<br><span style="opacity:.6;">UX, Product Ownership oder beides. Remote oder vor Ort.</span></p>
+    <div class="kontakt-links fi">
+      <a href="mailto:hello@pascaljaeger.de" class="kontakt-mail" id="mail-btn">hello@pascaljaeger.de</a>
+      <a href="https://www.linkedin.com/in/pascaljäger/" class="li-link" target="_blank" rel="noopener noreferrer">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452H17.1v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.767V9.75h3.212v1.548h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v5.549zM5.337 8.2a1.857 1.857 0 0 1 0-3.714 1.857 1.857 0 0 1 0 3.714zm1.607 12.252H3.73V9.75h3.214zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="fname">Pascal Jäger · Heidelberg</span>
+    <span class="fsig">∿ Frequenz · Boden · Produkt</span>
+  </div>
+  <div class="footer-legal">
+    <a href="#" class="flegal-link">Impressum</a>
+    <a href="#" class="flegal-link">Datenschutz</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  document.documentElement.classList.remove('no-js');
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var HAS_IO  = 'IntersectionObserver' in window;
+
+  /* SINE */
+  function initSine(){
+    if(REDUCED) return;
+    var path = document.getElementById('sp'); if(!path) return;
+    var phase = 0, mode = 'drift', pulseT = 0;
+    function build(amp, freq){
+      var d = '';
+      for(var y = 0; y <= 800; y += 3){
+        var x = 22 + Math.sin(y * freq + phase) * amp;
+        d += (y === 0 ? 'M' : 'L') + x + ' ' + y;
+      }
+      return d;
+    }
+    (function tick(){
+      if(mode === 'drift'){
+        phase += 0.003;
+        path.setAttribute('d', build(9, 0.038));
+        path.style.opacity = '';
+        path.style.strokeWidth = '';
+        path.style.filter = '';
+      } else {
+        pulseT += 0.035; phase += 0.003;
+        var intensity = Math.max(0, Math.sin(pulseT) * Math.exp(-pulseT * 0.45));
+        path.setAttribute('d', build(9 + intensity * 14, 0.038));
+        path.style.opacity     = 0.18 + intensity * 0.37;
+        path.style.strokeWidth = 1 + intensity;
+        path.style.filter      = intensity > 0.05 ? 'drop-shadow(0 0 ' + (intensity * 6) + 'px var(--mint))' : '';
+        if(pulseT >= 6) mode = 'drift';
+      }
+      requestAnimationFrame(tick);
+    })();
+    document.addEventListener('click', function(){ mode = 'pulse'; pulseT = 0; });
+  }
+
+  /* NAV */
+  function initNav(){
+    var toggle = document.getElementById('nav-toggle');
+    var nav    = document.getElementById('navlinks');
+    var bd     = document.getElementById('nav-backdrop');
+    if(!toggle || !nav) return;
+    var navEl = toggle.closest('nav');
+    if(navEl){
+      var setNavH = function(){ document.documentElement.style.setProperty('--nav-h', navEl.getBoundingClientRect().height + 'px'); };
+      setNavH();
+      window.addEventListener('resize', setNavH, { passive: true });
+    }
+    function open(){ nav.classList.add('open'); if(bd) bd.classList.add('open'); toggle.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function close(){ nav.classList.remove('open'); if(bd) bd.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    toggle.addEventListener('click', function(e){ e.stopPropagation(); nav.classList.contains('open') ? close() : open(); });
+    if(bd) bd.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && nav.classList.contains('open')){ close(); toggle.focus(); }});
+    nav.querySelectorAll('a[href^="#"]').forEach(function(link){ link.addEventListener('click', function(){ close(); }); });
+  }
+
+  /* FADE IN */
+  function initFadeIn(){
+    var els = document.querySelectorAll('.fi');
+    if(!els.length) return;
+    if(REDUCED || !HAS_IO){ els.forEach(function(el){ el.classList.add('vis'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry, i){
+        if(!entry.isIntersecting) return;
+        setTimeout(function(){ entry.target.classList.add('vis'); }, Math.min(i * 55, 300));
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.08 });
+    els.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ACCORDION — handler on #projekte .mw; alle 4 items sind jetzt korrekt Kinder davon */
+  function initAccordion(){
+    var container = document.querySelector('#projekte .mw');
+    if(!container) return;
+
+    // DOM-Check: console.log zeigt 4 wenn fix korrekt
+    console.log('[Accordion] proj-items in .mw:', container.querySelectorAll('.proj-item').length);
+
+    function toggle(header){
+      var item = header.closest('.proj-item');
+      var body = document.getElementById(header.getAttribute('aria-controls'));
+      if(!item || !body) return;
+      var isOpen = item.classList.contains('open');
+      container.querySelectorAll('.proj-item.open').forEach(function(oi){
+        var h = oi.querySelector('.proj-header');
+        var b = document.getElementById(h.getAttribute('aria-controls'));
+        oi.classList.remove('open'); h.setAttribute('aria-expanded','false');
+        if(b) b.style.maxHeight = '0';
+      });
+      if(!isOpen){
+        item.classList.add('open'); header.setAttribute('aria-expanded','true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        body.addEventListener('transitionend', function(){ if(item.classList.contains('open')) body.style.maxHeight = 'none'; }, { once: true });
+      }
+    }
+    container.addEventListener('click', function(e){
+      var h = e.target.closest('.proj-header'); if(h) toggle(h);
+    });
+  }
+
+  /* CASE TOGGLE */
+  function initCaseToggle(){
+    function wire(btnId, bodyId){
+      var btn = document.getElementById(btnId);
+      var body = document.getElementById(bodyId);
+      if(!btn || !body) return;
+      btn.addEventListener('click', function(){
+        var isOpen = btn.getAttribute('aria-expanded') === 'true';
+        if(isOpen){
+          /* Collapse: hide instantly, scroll to header */
+          var caseItem = btn.closest('.case-item') || btn.parentElement;
+          body.style.transition = 'none';
+          body.style.maxHeight = '0';
+          body.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+          /* Force reflow then restore transition for future opens */
+          body.offsetHeight;
+          body.style.transition = '';
+          caseItem.scrollIntoView({ behavior:'instant', block:'start' });
+        } else {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          body.classList.add('open'); btn.setAttribute('aria-expanded','true');
+          body.addEventListener('transitionend', function(){ if(body.classList.contains('open')) body.style.maxHeight = 'none'; }, { once: true });
+          setTimeout(function(){ btn.scrollIntoView({ behavior:'smooth', block:'start' }); }, 80);
+        }
+      });
+    }
+    wire('case-toggle', 'case-body');
+    wire('case-toggle-hntz', 'case-body-hntz');
+  }
+
+  /* CUBES */
+  function initCubes(){
+    var TABS = [
+      {faces:[
+        {cat:'Logoentwicklung',title:'Loki <em>Genetics.</em>',            bg:'#0e1a13', src:'assets/img/logos/loki-front.png'},
+        {cat:'Brand Identity', title:'Nekta <em>Candy.</em>',              bg:'#0a130e', src:'assets/img/logos/necta-candy-yellow-deckel-final.jpg'},
+        {cat:'Wortmarke',      title:'Parliament <em>Vodka.</em>',         bg:'#071209', src:'assets/img/logos/parliament-1.png'},
+        {cat:'Signet',         title:'Soil Food. <em>Living Soil.</em>',   bg:'#1a1200', src:'assets/img/logos/soil-food-logo-final-a.jpg'}
+      ]},
+      {faces:[
+        {cat:'DJ Booking', title:'Eisenwaren <em>Bookings.</em>',          bg:'#111',    src:'assets/img/flyer/eisenwaren_cover_adamnsampler.jpg'},
+        {cat:'Club Flyer', title:'Urbalicious <em>Düsseldorf.</em>',       bg:'#0a0005', src:'assets/img/flyer/urbalicious_party.jpg'},
+        {cat:'Event Flyer',title:'Lauschig <em>Tanzmusik.</em>',           bg:'#080010', src:'assets/img/flyer/lauschig_party.jpg'},
+        {cat:'Party Flyer',title:'Forever Young <em>80s.</em>',            bg:'#000008', src:'assets/img/flyer/forever_young.jpg'}
+      ]},
+      {faces:[
+        {cat:'Web · UX',   title:'Tausendkraut <em>Shop.</em>',            bg:'#0d1a0d', src:'assets/img/web/1000kraut.jpg'},
+        {cat:'Web · UX',   title:'Akai Professional.',                     bg:'#0a0a0a', src:'assets/img/web/akai.jpg'},
+        {cat:'Web · UX',   title:'Kyowa <em>Hakko.</em>',                  bg:'#051205', src:'assets/img/web/kyowa.jpg'},
+        {cat:'Web · Brand',title:'Matchachin <em>Store.</em>',             bg:'#1a0800', src:'assets/img/web/matchachin-a.jpg'}
+      ]},
+      {faces:[
+        {cat:'Illustration',title:'Retro <em>Handstyle.</em>',             bg:'#1a0e00', src:'assets/img/illustrationen/faces.png'},
+        {cat:'Digital Art', title:'CAD <em>Portrait.</em>',                bg:'#0a0a0a', src:'assets/img/illustrationen/faces2.png'},
+        {cat:'Graffiti',    title:'Cat <em>on the Wave.</em>',             bg:'#080008', src:'assets/img/illustrationen/cat_over_boat.png'},
+        {cat:'Illustration',title:'Sushi <em>Universe.</em>',              bg:'#080010', src:'assets/img/illustrationen/zushi.png'}
+      ]}
+    ];
+    var FC = ['face-f','face-r','face-b','face-l'];
+    var rendered = new Set();
+
+    function drawTex(canvas, p, bg){
+      var W=320,H=320,S=5; canvas.width=W; canvas.height=H;
+      var ctx=canvas.getContext('2d'); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+      for(var y=0;y<H;y+=S){ for(var x=0;x<W;x+=S){
+        var nx=x/W,ny=y/H,a=0;
+        var v=Math.sin(nx*Math.PI*(8+p)+p)*Math.cos(ny*Math.PI*(6+p*.5)+p*.7);
+        a=v>.15?(v-.15)*.38:0;
+        if(a>0.005){ctx.globalAlpha=a;ctx.fillStyle='#89c4a2';ctx.fillRect(x,y,S,S);}
+      }}
+      ctx.globalAlpha=1;
+      var g=ctx.createRadialGradient(W/2,H/2,W*.2,W/2,H/2,W*.75);
+      g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.6)');
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
+
+    function buildPanel(el, data){
+      var scene=document.createElement('div'); scene.className='cube-scene';
+      var cube=document.createElement('div');  cube.className='cube';
+      data.faces.forEach(function(f,fi){
+        var face=document.createElement('div'); face.className='face '+FC[fi]; face.style.background=f.bg;
+        if(f.src){var im=document.createElement('img');im.src=f.src;im.alt=f.cat;im.loading='lazy';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';face.appendChild(im);}
+        else{var c=document.createElement('canvas');drawTex(c,fi,f.bg);face.appendChild(c);}
+        var ov=document.createElement('div');   ov.className='face-overlay';
+        var ix=document.createElement('span');  ix.className='face-idx'; ix.textContent=(fi+1)+'/4';
+        var lb=document.createElement('div');   lb.className='face-label';
+        lb.innerHTML='<div class="face-cat">'+f.cat+'</div><div class="face-title">'+f.title+'</div>';
+        face.append(ov,ix,lb); cube.appendChild(face);
+      });
+      scene.appendChild(cube);
+      var sh=document.createElement('div'); sh.className='cube-shadow';
+      var dots=document.createElement('div'); dots.className='cube-dots';
+      for(var i=0;i<4;i++){ var d=document.createElement('div'); d.className='cdot'+(i===0?' on':''); dots.appendChild(d); }
+      var hint=document.createElement('p'); hint.className='cube-hint'; hint.textContent='← Ziehen →';
+      el.append(scene,sh,dots,hint);
+      attachCube(scene,cube,dots,hint);
+    }
+
+    function renderTab(idx){
+      if(rendered.has(idx)) return;
+      var p=document.getElementById('cp'+idx); if(!p) return;
+      buildPanel(p,TABS[idx]); rendered.add(idx);
+    }
+    renderTab(0);
+
+    var tl=document.querySelector('.archiv-tabs');
+    if(tl){
+      tl.addEventListener('click',function(e){
+        var btn=e.target.closest('.atab'); if(!btn) return;
+        var idx=parseInt(btn.dataset.tab,10);
+        tl.querySelectorAll('.atab').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+        btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+        document.querySelectorAll('.cube-panel').forEach(function(p){ p.classList.remove('active'); });
+        var ap=document.getElementById('cp'+idx); if(ap) ap.classList.add('active');
+        renderTab(idx);
+      });
+      tl.addEventListener('keydown',function(e){
+        var tabs=Array.from(tl.querySelectorAll('.atab'));
+        var cur=tabs.indexOf(document.activeElement); if(cur===-1) return;
+        var next=-1;
+        if(e.key==='ArrowRight') next=(cur+1)%tabs.length;
+        if(e.key==='ArrowLeft')  next=(cur-1+tabs.length)%tabs.length;
+        if(next>=0){ e.preventDefault(); tabs[next].focus(); tabs[next].click(); }
+      });
+    }
+  }
+
+  function attachCube(scene,cube,dots,hint){
+    var faceIdx=0,baseRot=0,dragging=false,startX=0,delta=0,hovering=false,autoRot=0,hintHidden=false;
+    function applyRot(deg,anim){ cube.style.transition=anim?'transform .5s cubic-bezier(.25,1,.5,1)':'none'; cube.style.transform='rotateY('+deg+'deg)'; }
+    function updDots(rot){ var fi=(((- Math.round(rot/90))%4)+4)%4; dots.querySelectorAll('.cdot').forEach(function(d,i){ d.classList.toggle('on',i===fi); }); }
+    function snap(rot){ faceIdx=(((- Math.round(rot/90))%4)+4)%4; baseRot=-faceIdx*90; autoRot=delta=0; applyRot(baseRot,true); setTimeout(function(){ cube.style.transition='none'; },550); updDots(baseRot); }
+    (function tick(){ if(!dragging&&hovering){ autoRot+=0.18; cube.style.transition='none'; cube.style.transform='rotateY('+(baseRot+autoRot)+'deg)'; updDots(baseRot+autoRot); } requestAnimationFrame(tick); })();
+    scene.addEventListener('mouseenter',function(){ hovering=true; autoRot=0; if(!hintHidden){ hint.classList.add('hide'); hintHidden=true; }});
+    scene.addEventListener('mouseleave',function(){ if(!dragging){ hovering=false; snap(baseRot+autoRot); }});
+    function onS(x){ dragging=true; startX=x; delta=0; scene.classList.add('dragging'); cube.style.transition='none'; }
+    function onM(x){ if(!dragging) return; delta=Math.max(-135,Math.min(135,(x-startX)*0.35)); var r=baseRot+autoRot+delta; cube.style.transform='rotateY('+r+'deg)'; updDots(r); }
+    function onE(){ if(!dragging) return; dragging=false; scene.classList.remove('dragging'); snap(baseRot+autoRot+delta); }
+    scene.addEventListener('mousedown',function(e){ e.preventDefault(); onS(e.clientX); });
+    window.addEventListener('mousemove',function(e){ if(dragging) onM(e.clientX); });
+    window.addEventListener('mouseup',onE);
+    scene.addEventListener('touchstart',function(e){ hovering=true; onS(e.touches[0].clientX); },{passive:true});
+    window.addEventListener('touchmove',function(e){ if(dragging) onM(e.touches[0].clientX); },{passive:true});
+    window.addEventListener('touchend',function(){ hovering=false; onE(); });
+  }
+
+  /* LIGHTBOX */
+  function initLightbox(){
+    var lb = document.createElement('div'); lb.id = 'lightbox';
+    var img = document.createElement('img'); img.alt = '';
+    var btn = document.createElement('button'); btn.id = 'lb-close'; btn.innerHTML = '×'; btn.setAttribute('aria-label','Schließen');
+    var cap = document.createElement('p'); cap.id = 'lb-caption';
+    lb.append(img, btn, cap);
+    document.body.appendChild(lb);
+
+    function open(src, alt){
+      img.src = src; cap.textContent = alt;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function(){ img.src = ''; }, 350);
+    }
+
+    document.addEventListener('click', function(e){
+      var pi = e.target.closest('.proj-imgs img') || e.target.closest('.hntz-img-card img');
+      if(pi){ open(pi.src, pi.alt); return; }
+      if(e.target === lb || e.target === btn) close();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && lb.classList.contains('open')) close();
+    });
+  }
+
+  /* INIT */
+  initSine();
+  initNav();
+  initFadeIn();
+  initAccordion();
+  initCaseToggle();
+  initCubes();
+  initLightbox();
+})();
+</script>
+<script type="module">
+import{ShaderMount,warpFragmentShader,getShaderColorFromString}from'https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.71/+esm';
+const el=document.getElementById('hero-shader');
+if(el&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  new ShaderMount(el,warpFragmentShader,{
+    u_colors:[
+      getShaderColorFromString('hsl(150,25%,15%)'),
+      getShaderColorFromString('hsl(147,35%,65%)'),
+      getShaderColorFromString('hsl(148,30%,25%)'),
+      getShaderColorFromString('hsl(40,40%,94%)')
+    ],
+    u_colorsCount:4,
+    u_proportion:0.45,
+    u_softness:1.0,
+    u_distortion:0.2,
+    u_swirl:0.7,
+    u_swirlIterations:10,
+    u_shape:0,
+    u_shapeScale:0.1,
+    u_scale:1.0
+  },undefined,0.4);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datenschutz — Pascal Jäger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Lora:ital@1&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --deep:  #1c2f24;
+    --mint:  #89c4a2;
+    --cream: #f3ede3;
+    --warm:  #f9f7f2;
+    --ink:   #131a15;
+    --muted: #7d9882;
+    --sans:  'Plus Jakarta Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--warm); color: var(--ink);
+    font-family: var(--sans); font-weight: 400;
+    line-height: 1.7; min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  nav {
+    position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(243,237,227,.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(28,47,36,.06);
+  }
+  .nav-inner {
+    max-width: 980px; margin: 0 auto;
+    padding: 1rem 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nlogo {
+    font-size: .72rem; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--deep); text-decoration: none;
+  }
+  .back-link {
+    font-size: .68rem; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); text-decoration: none;
+    display: flex; align-items: center; gap: .4rem;
+    transition: color .2s;
+  }
+  .back-link:hover { color: var(--deep); }
+  main { flex: 1; }
+  .legal-page {
+    max-width: 680px; margin: 0 auto;
+    padding: 5rem 2.5rem 7rem;
+  }
+  .legal-eyebrow {
+    font-size: .58rem; font-weight: 600; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--mint); opacity: .7;
+    margin-bottom: 1rem; display: block;
+  }
+  .legal-page h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 300;
+    color: var(--deep); line-height: 1.2; margin-bottom: 3rem;
+  }
+  .legal-page h1 em { font-style: italic; color: var(--mint); }
+  .legal-section { margin-bottom: 2.5rem; }
+  .legal-section h2 {
+    font-size: .58rem; font-weight: 600; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--mint); opacity: .65;
+    margin-bottom: .6rem;
+  }
+  .legal-section p {
+    font-size: .88rem; color: var(--muted); line-height: 1.8;
+    margin-bottom: .5rem;
+  }
+  .legal-section p:last-child { margin-bottom: 0; }
+  .legal-section a {
+    color: var(--mint); text-underline-offset: 3px;
+    text-decoration: underline; text-decoration-color: rgba(137,196,162,.3);
+    transition: text-decoration-color .2s;
+  }
+  .legal-section a:hover { text-decoration-color: var(--mint); }
+  .legal-notice {
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid rgba(28,47,36,.07);
+    font-size: .72rem; color: var(--muted); opacity: .55; line-height: 1.7;
+  }
+  footer {
+    background: var(--ink); padding: 1.4rem 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: .8rem;
+  }
+  .fname { font-size: .68rem; font-weight: 500; letter-spacing: .1em; color: var(--muted); }
+  .flegal-link {
+    font-size: .61rem; font-weight: 500; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--mint); opacity: .5;
+    text-decoration: none; transition: opacity .25s;
+  }
+  .flegal-link:hover { opacity: 1; }
+  .flegal-link.active { opacity: 1; }
+  @media (max-width: 680px) {
+    .legal-page { padding: 3rem 1.4rem 5rem; }
+    .nav-inner   { padding: .9rem 1.4rem; }
+  }
+  </style>
+</head>
+<body>
+
+<nav aria-label="Navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nlogo">Pascal Jäger</a>
+    <a href="index.html" class="back-link">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Zurück
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="legal-page">
+    <span class="legal-eyebrow">Rechtliches</span>
+    <h1>Datenschutz. <em>Transparenz ohne Marketing.</em></h1>
+
+    <div class="legal-section">
+      <h2>Verantwortlicher</h2>
+      <p>
+        Pascal Jäger<br>
+        Turnerstr. 121<br>
+        69126 Heidelberg<br>
+        Deutschland<br>
+        <a href="mailto:hello@pascaljaeger.de">hello@pascaljaeger.de</a>
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Grundsatz</h2>
+      <p>
+        Diese Website verzichtet bewusst auf Tracking, Analyse-Tools und
+        Werbe-Cookies. Es findet kein Consent-Banner statt.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Server-Logfiles</h2>
+      <p>
+        Der Hosting-Anbieter speichert automatisch: IP-Adresse, aufgerufene
+        URL, Browser, Betriebssystem, Datum und Uhrzeit. Diese Daten sind
+        keiner Person direkt zuordenbar und werden nach spätestens 7 Tagen
+        gelöscht.<br>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>E-Mail-Kontakt</h2>
+      <p>
+        Daten aus E-Mail-Anfragen (Name, Adresse, Inhalt) werden
+        ausschließlich zur Bearbeitung der Anfrage genutzt und nicht
+        an Dritte weitergegeben.<br>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Google Fonts</h2>
+      <p>
+        Diese Website bindet Schriftarten über Google Fonts ein
+        (Google LLC, Mountain View, CA, USA). Beim Laden der Seite wird
+        die IP-Adresse des Besuchers an Google-Server übertragen.
+        Google ist unter dem EU-US Data Privacy Framework zertifiziert.<br>
+        Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.<br>
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>LinkedIn</h2>
+      <p>
+        Diese Website enthält einen Link zum LinkedIn-Profil. Erst beim
+        Klick wird eine Verbindung zu LinkedIn (LinkedIn Ireland Unlimited
+        Company, Dublin) hergestellt. Vorher findet keine Datenübertragung
+        statt.<br>
+        <a href="https://www.linkedin.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">linkedin.com/legal/privacy-policy</a>
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Ihre Rechte (DSGVO)</h2>
+      <p>
+        Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17),
+        Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20),
+        Widerspruch (Art. 21).<br>
+        Anfragen per E-Mail:
+        <a href="mailto:hello@pascaljaeger.de">hello@pascaljaeger.de</a>
+      </p>
+      <p>
+        Beschwerderecht beim LfDI Baden-Württemberg:<br>
+        <a href="https://www.baden-wuerttemberg.datenschutz.de" target="_blank" rel="noopener noreferrer">baden-wuerttemberg.datenschutz.de</a>
+      </p>
+    </div>
+
+    <p class="legal-notice">
+      Stand: März 2026 · Empfehlung: Google Fonts lokal einbinden, um IP-Übertragung zu vermeiden.
+      Download via <a href="https://gwfh.mranftl.com/fonts" target="_blank" rel="noopener noreferrer">gwfh.mranftl.com</a>.
+      Diese Erklärung ersetzt keine Rechtsberatung.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <span class="fname">Pascal Jäger — Heidelberg</span>
+  <div style="display:flex;gap:1.4rem">
+    <a href="impressum.html" class="flegal-link">Impressum</a>
+    <a href="datenschutz.html" class="flegal-link active">Datenschutz</a>
+  </div>
+</footer>
+
+</body>
+</html>
