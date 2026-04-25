@@ -81,7 +81,10 @@
   html[data-theme="dark"] .hero-cta,
   html[data-theme="dark"] .kf-submit,
   html[data-theme="dark"] .arch-arrow:hover{color:#0d1612;}
-  /* Nav-Hintergrund bleibt aus dem alten Override-Block */
+  /* Footer im Dark Mode dunkel halten (background:var(--ink) wäre sonst hell) */
+  html[data-theme="dark"] footer{background:#0d1612;}
+  html[data-theme="dark"] .fname{color:#9ab09f;}
+  html[data-theme="dark"] .fsig{color:rgba(154,176,159,.4);}
   html[data-theme="dark"] body{background:var(--bg);color:var(--text);}
   html[data-theme="dark"] nav{background:rgba(15,26,20,.95);border-bottom-color:rgba(232,239,233,.07);}
   html[data-theme="dark"] .nlogo{color:var(--text);}
