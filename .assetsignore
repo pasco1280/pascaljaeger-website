@@ -1,0 +1,11 @@
+node_modules
+.git
+.github
+.claude
+.gitignore
+.assetsignore
+wrangler.toml
+README.md
+*.md
+og-generator.html
+v1
