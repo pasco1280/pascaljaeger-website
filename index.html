@@ -561,16 +561,49 @@
     .conflict-vs{display:none;}
     footer{flex-direction:column;align-items:flex-start;}
   }
-  /* ARCHIVE GRID — Replacement for cube */
-  .archive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:3rem;margin-bottom:3rem;}
-  .arch-card{background:var(--cream);border:1px solid var(--border);border-radius:0 14px 0 14px;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;transition:transform .35s ease,border-color .35s ease;}
-  .arch-card:hover{transform:translateY(-2px);border-color:rgba(137,196,162,.45);}
+  /* ARCHIVE SLIDER — Scroll-Snap Filmstreifen mit Peek + Drag */
+  .archive-slider-wrap{position:relative;margin:3rem -2.5rem 2rem;padding:0;}
+  .archive-grid{display:flex;gap:1.4rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:2.5rem;padding:1rem 2.5rem 2rem;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;user-select:none;}
+  .archive-grid::-webkit-scrollbar{display:none;}
+  .archive-grid.dragging{cursor:grabbing;scroll-snap-type:none;}
+  .arch-card{flex:0 0 340px;scroll-snap-align:start;background:var(--cream);border:1px solid var(--border);border-radius:0 18px 0 18px;display:flex;flex-direction:column;overflow:hidden;transition:transform .4s cubic-bezier(.25,1,.5,1),border-color .35s ease,box-shadow .4s ease;position:relative;}
+  .arch-card:hover{transform:translateY(-4px);border-color:rgba(137,196,162,.5);box-shadow:0 18px 40px -20px rgba(28,47,36,.4);}
+  .arch-card-img{position:relative;aspect-ratio:4/5;overflow:hidden;background:#1c2f24;cursor:zoom-in;}
+  .arch-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.25,1,.5,1),filter .4s ease;pointer-events:none;}
+  .arch-card:hover .arch-card-img img{transform:scale(1.06);}
+  .arch-card-img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,47,36,.85) 0%,rgba(28,47,36,0) 50%);pointer-events:none;}
+  .arch-card-img-tag{position:absolute;top:1rem;left:1rem;font-size:.5rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);background:rgba(28,47,36,.6);backdrop-filter:blur(6px);padding:.35rem .65rem;border-radius:0 6px 0 6px;z-index:2;}
+  .arch-card-img-title{position:absolute;left:1rem;right:1rem;bottom:1rem;font-size:1.1rem;font-weight:500;color:var(--cream);line-height:1.2;z-index:2;letter-spacing:-.005em;}
+  .arch-card-content{padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.55rem;flex:1;}
   .arch-card-meta{display:flex;justify-content:space-between;align-items:center;gap:.8rem;}
-  .arch-card-cat{font-size:.55rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);opacity:.85;}
-  .arch-card-year{font-size:.6rem;font-weight:500;letter-spacing:.1em;color:var(--muted);}
-  .arch-card-title{font-size:1.05rem;font-weight:500;color:var(--deep);line-height:1.25;margin:0;}
-  .arch-card-body{font-size:.82rem;color:var(--muted);line-height:1.7;margin:0;}
-  .arch-card-result{font-size:.7rem;color:var(--mint);opacity:.8;letter-spacing:.04em;margin:0;padding-top:.6rem;border-top:1px solid var(--border);}
+  .arch-card-cat{font-size:.5rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);opacity:.85;}
+  .arch-card-year{font-size:.55rem;font-weight:500;letter-spacing:.1em;color:var(--muted);}
+  .arch-card-title{font-size:.95rem;font-weight:500;color:var(--deep);line-height:1.3;margin:0;}
+  .arch-card-body{font-size:.76rem;color:var(--muted);line-height:1.65;margin:0;}
+  .arch-card-result{font-size:.65rem;color:var(--mint);opacity:.85;letter-spacing:.04em;margin:0;padding-top:.5rem;border-top:1px solid var(--border);}
+
+  /* ARCHIVE SLIDER NAV (Counter + Arrows + Progress) */
+  .archive-nav{display:flex;align-items:center;gap:1.2rem;padding:0 2.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+  .archive-counter{font-family:var(--serif);font-size:1.25rem;font-style:italic;color:var(--deep);min-width:64px;letter-spacing:.02em;}
+  .archive-counter span{color:var(--mint);font-weight:500;}
+  .archive-progress{flex:1;height:1px;background:var(--border);position:relative;min-width:120px;}
+  .archive-progress-bar{position:absolute;left:0;top:-1px;height:3px;background:var(--mint);width:0;transition:width .35s cubic-bezier(.25,1,.5,1);}
+  .archive-arrows{display:flex;gap:.4rem;}
+  .arch-arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--deep);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:1rem;transition:all .25s ease;}
+  .arch-arrow:hover:not(:disabled){background:var(--mint);color:var(--deep);border-color:var(--mint);transform:translateY(-1px);}
+  .arch-arrow:disabled{opacity:.3;cursor:not-allowed;}
+  .archive-hint{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:.6;font-weight:600;}
+
+  @media(max-width:680px){
+    .archive-slider-wrap{margin:2rem -1.4rem;}
+    .archive-grid{padding:1rem 1.4rem 1.5rem;scroll-padding:1.4rem;gap:1rem;}
+    .arch-card{flex:0 0 78vw;max-width:320px;}
+    .archive-nav{padding:0 1.4rem;}
+    .archive-arrows{display:none;}
+  }
+  html[data-theme="dark"] .arch-card{background:#1a2620;}
+  html[data-theme="dark"] .arch-arrow{color:var(--text);border-color:rgba(232,239,233,.18);}
+  html[data-theme="dark"] .archive-counter{color:var(--text);}
 
   /* PROJ RESULT — accent line in expanded project body */
   .proj-result{font-size:.75rem;color:var(--mint);opacity:.8;margin-top:1rem;letter-spacing:.04em;}
@@ -1837,49 +1870,99 @@
     <h2 id="archiv-h" class="sec-h fi">Davor. <em>Marken, Regale, Sound.</em></h2>
     <p class="archiv-intro fi">Bevor die Pipelines kamen, gab es Flaschen, Logos, Plattencover und Webshops. Verkürzt — aber nicht verschwiegen.</p>
 
-    <div class="archive-grid fi">
+    <div class="archive-nav fi">
+      <div class="archive-counter"><span id="arch-cur">01</span> <em>/</em> <span id="arch-total">08</span></div>
+      <div class="archive-progress" aria-hidden="true"><div class="archive-progress-bar" id="arch-progress"></div></div>
+      <span class="archive-hint">Ziehen · Scrollen · Pfeile</span>
+      <div class="archive-arrows">
+        <button type="button" class="arch-arrow" id="arch-prev" aria-label="Vorherige Arbeit">←</button>
+        <button type="button" class="arch-arrow" id="arch-next" aria-label="Nächste Arbeit">→</button>
+      </div>
+    </div>
+
+    <div class="archive-slider-wrap fi">
+    <div class="archive-grid" id="archive-grid">
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">Product · Brand · GTM</span><span class="arch-card-year">2022–2024</span></div>
-        <h3 class="arch-card-title">Matchachin</h3>
-        <p class="arch-card-body">Natural Energy mit Guayusa. Vom Persona-Mapping über Rezeptur und Packaging bis zur REWE-Listung im Energy-Segment. Eine SKU, klare Listungsstory.</p>
-        <p class="arch-card-result">REWE-Listung · Iced-Coffee-Trinker als Konversions-Cluster bestätigt</p>
+        <div class="arch-card-img"><img src="assets/img/matchachin/rewe-shelf.png" alt="Matchachin im REWE-Regal" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Product · Brand · GTM</span><span class="arch-card-year">2022–2024</span></div>
+          <h3 class="arch-card-title">Matchachin</h3>
+          <p class="arch-card-body">Natural Energy mit Guayusa. Vom Persona-Mapping über Rezeptur und Packaging bis zur REWE-Listung im Energy-Segment. Eine SKU, klare Listungsstory.</p>
+          <p class="arch-card-result">REWE-Listung · Iced-Coffee-Trinker als Konversions-Cluster bestätigt</p>
+        </div>
       </article>
 
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">PO · UX · Operations</span><span class="arch-card-year">2023–2024</span></div>
-        <h3 class="arch-card-title">Tausendkraut</h3>
-        <p class="arch-card-body">Webshop, Lager und Produktion als eine User Journey. Markenlogik bis zur Lagerverwaltung — kein Stilbruch zwischen den Schichten.</p>
-        <p class="arch-card-result">Klarer Prozess zwischen Shop, Lager und Produktion</p>
+        <div class="arch-card-img"><img src="assets/img/web/1000kraut.jpg" alt="Tausendkraut Webshop" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">PO · UX · Operations</span><span class="arch-card-year">2023–2024</span></div>
+          <h3 class="arch-card-title">Tausendkraut</h3>
+          <p class="arch-card-body">Webshop, Lager und Produktion als eine User Journey. Markenlogik bis zur Lagerverwaltung — kein Stilbruch zwischen den Schichten.</p>
+          <p class="arch-card-result">Klarer Prozess zwischen Shop, Lager und Produktion</p>
+        </div>
       </article>
 
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">Brand · Web · UX</span><span class="arch-card-year">2021</span></div>
-        <h3 class="arch-card-title">Parliament Vodka</h3>
-        <p class="arch-card-body">Logo, Markenführung, Website. Reduktion als Aussage. Was nicht jeden Test bestand, wurde gestrichen — auch wenn es schön war.</p>
-        <p class="arch-card-result">Reduziertes Brand-System mit klarer Identität</p>
+        <div class="arch-card-img"><img src="assets/img/logos/parliament-1.png" alt="Parliament Vodka" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Brand · Web · UX</span><span class="arch-card-year">2021</span></div>
+          <h3 class="arch-card-title">Parliament Vodka</h3>
+          <p class="arch-card-body">Logo, Markenführung, Website. Reduktion als Aussage. Was nicht jeden Test bestand, wurde gestrichen — auch wenn es schön war.</p>
+          <p class="arch-card-result">Reduziertes Brand-System mit klarer Identität</p>
+        </div>
       </article>
 
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">UX · IA · Sound</span><span class="arch-card-year">2018–2020</span></div>
-        <h3 class="arch-card-title">Akai &amp; Numark</h3>
-        <p class="arch-card-body">Marketing-Assets für professionelle Audiotechnik. Technische Tiefe zugänglich machen, ohne sie zu vereinfachen — der Sound-Hintergrund war der Vorteil.</p>
-        <p class="arch-card-result">Komplexe Tech, markenkonform und verständlich strukturiert</p>
+        <div class="arch-card-img"><img src="assets/img/web/akai.jpg" alt="Akai Professional Web-Asset" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">UX · IA · Sound</span><span class="arch-card-year">2018–2020</span></div>
+          <h3 class="arch-card-title">Akai &amp; Numark</h3>
+          <p class="arch-card-body">Marketing-Assets für professionelle Audiotechnik. Technische Tiefe zugänglich machen, ohne sie zu vereinfachen — der Sound-Hintergrund war der Vorteil.</p>
+          <p class="arch-card-result">Komplexe Tech, markenkonform und verständlich strukturiert</p>
+        </div>
       </article>
 
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">Brand · Logo · Print</span><span class="arch-card-year">2015–2022</span></div>
-        <h3 class="arch-card-title">Loki Genetics · Nekta · Soil Food</h3>
-        <p class="arch-card-body">Kleine Marken im Living-Soil-Umfeld. Jedes Logo eine Antwort auf die Frage, wem die Marke gehört und gegen wen sie sich abgrenzt.</p>
-        <p class="arch-card-result">Drei eigenständige Markensignets, alle in Verwendung</p>
+        <div class="arch-card-img"><img src="assets/img/logos/loki-front.png" alt="Loki Genetics Logo" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Brand · Logo · Print</span><span class="arch-card-year">2015–2022</span></div>
+          <h3 class="arch-card-title">Loki Genetics · Nekta · Soil Food</h3>
+          <p class="arch-card-body">Kleine Marken im Living-Soil-Umfeld. Jedes Logo eine Antwort auf die Frage, wem die Marke gehört und gegen wen sie sich abgrenzt.</p>
+          <p class="arch-card-result">Drei eigenständige Markensignets, alle in Verwendung</p>
+        </div>
       </article>
 
       <article class="arch-card">
-        <div class="arch-card-meta"><span class="arch-card-cat">Flyer · Club · Event</span><span class="arch-card-year">2008–2018</span></div>
-        <h3 class="arch-card-title">Eisenwaren · Urbalicious · Lauschig</h3>
-        <p class="arch-card-body">Düsseldorfer Nachtkultur. DJ-Booking-Materialien, Club-Flyer, Event-Branding. Print als Echtzeit-Kommunikation mit der Stadt.</p>
-        <p class="arch-card-result">Hunderte Drucksachen über zehn Jahre</p>
+        <div class="arch-card-img"><img src="assets/img/flyer/urbalicious_party.jpg" alt="Urbalicious Düsseldorf Flyer" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Flyer · Club · Event</span><span class="arch-card-year">2008–2018</span></div>
+          <h3 class="arch-card-title">Eisenwaren · Urbalicious · Lauschig</h3>
+          <p class="arch-card-body">Düsseldorfer Nachtkultur. DJ-Booking-Materialien, Club-Flyer, Event-Branding. Print als Echtzeit-Kommunikation mit der Stadt.</p>
+          <p class="arch-card-result">Hunderte Drucksachen über zehn Jahre</p>
+        </div>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-img"><img src="assets/img/illustrationen/cat_over_boat.png" alt="Cat on the Wave — Graffiti" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Illustration · Graffiti</span><span class="arch-card-year">seit 1999</span></div>
+          <h3 class="arch-card-title">Handstyle · Digital Art · Wand</h3>
+          <p class="arch-card-body">Cat on the Wave, CAD-Portraits, Sushi-Universe. Bevor das Tablet kam, war es die Wand. Bevor die Wand kam, war es der Block. Jetzt sind es Prompts — der Strich bleibt der gleiche.</p>
+          <p class="arch-card-result">25+ Jahre durchgehende Bild-Praxis</p>
+        </div>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-img"><img src="assets/img/web/kyowa.jpg" alt="Kyowa Hakko Web" loading="lazy"></div>
+        <div class="arch-card-content">
+          <div class="arch-card-meta"><span class="arch-card-cat">Web · UX · Pharma</span><span class="arch-card-year">2019</span></div>
+          <h3 class="arch-card-title">Kyowa Hakko</h3>
+          <p class="arch-card-body">Web-UX für ein japanisches Pharma-Unternehmen. Englisch und Japanisch parallel, B2B-Wissenschaftskommunikation, klare Hierarchien zwischen Studie, Produkt und Anwendung.</p>
+          <p class="arch-card-result">B2B-Web mit i18n und wissenschaftlicher Tiefe</p>
+        </div>
       </article>
     </div>
+    </div><!-- /.archive-slider-wrap -->
 
     <div class="cube-manifesto fi">
       <p>Ich betrachte keinen Würfel von einer Seite.<br>
@@ -2287,13 +2370,90 @@
     }
 
     document.addEventListener('click', function(e){
-      var pi = e.target.closest('.proj-imgs img') || e.target.closest('.hntz-img-card img');
-      if(pi){ open(pi.src, pi.alt); return; }
+      var pi = e.target.closest('.proj-imgs img') || e.target.closest('.hntz-img-card img') || e.target.closest('.arch-card-img');
+      if(pi){
+        var imgEl = pi.tagName === 'IMG' ? pi : pi.querySelector('img');
+        if(imgEl) open(imgEl.src, imgEl.alt);
+        return;
+      }
       if(e.target === lb || e.target === btn) close();
     });
     document.addEventListener('keydown', function(e){
       if(e.key === 'Escape' && lb.classList.contains('open')) close();
     });
+  }
+
+  /* ARCHIVE SLIDER — drag, counter, arrows, progress */
+  function initArchiveSlider(){
+    var grid = document.getElementById('archive-grid');
+    if(!grid) return;
+    var cards = Array.from(grid.querySelectorAll('.arch-card'));
+    var counterCur = document.getElementById('arch-cur');
+    var counterTotal = document.getElementById('arch-total');
+    var progress = document.getElementById('arch-progress');
+    var prevBtn = document.getElementById('arch-prev');
+    var nextBtn = document.getElementById('arch-next');
+    if(counterTotal) counterTotal.textContent = String(cards.length).padStart(2,'0');
+
+    function update(){
+      var max = grid.scrollWidth - grid.clientWidth;
+      var pct = max > 0 ? (grid.scrollLeft / max) : 0;
+      if(progress) progress.style.width = (pct * 100) + '%';
+      // Find which card is most visible at the leading edge
+      var leadX = grid.scrollLeft + 24;
+      var idx = 0;
+      for(var i=0;i<cards.length;i++){
+        if(cards[i].offsetLeft - grid.offsetLeft <= leadX) idx = i;
+      }
+      if(counterCur) counterCur.textContent = String(idx + 1).padStart(2,'0');
+      if(prevBtn) prevBtn.disabled = grid.scrollLeft <= 4;
+      if(nextBtn) nextBtn.disabled = grid.scrollLeft >= max - 4;
+    }
+
+    function scrollByCard(dir){
+      var first = cards[0]; if(!first) return;
+      var step = first.getBoundingClientRect().width + 22;
+      grid.scrollBy({left: dir * step, behavior:'smooth'});
+    }
+
+    grid.addEventListener('scroll', function(){
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    if(prevBtn) prevBtn.addEventListener('click', function(){ scrollByCard(-1); });
+    if(nextBtn) nextBtn.addEventListener('click', function(){ scrollByCard(1); });
+
+    /* Drag-to-scroll */
+    var isDown = false, startX = 0, startScroll = 0, moved = 0;
+    grid.addEventListener('mousedown', function(e){
+      isDown = true; moved = 0;
+      startX = e.pageX; startScroll = grid.scrollLeft;
+      grid.classList.add('dragging');
+    });
+    window.addEventListener('mouseup', function(){
+      if(!isDown) return;
+      isDown = false;
+      grid.classList.remove('dragging');
+      // re-snap to nearest card
+      setTimeout(function(){
+        var first = cards[0]; if(!first) return;
+        var step = first.getBoundingClientRect().width + 22;
+        var nearest = Math.round(grid.scrollLeft / step) * step;
+        grid.scrollTo({left:nearest, behavior:'smooth'});
+      }, 30);
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!isDown) return;
+      var dx = e.pageX - startX;
+      moved = Math.abs(dx);
+      grid.scrollLeft = startScroll - dx;
+    });
+    /* Suppress click after drag */
+    grid.addEventListener('click', function(e){
+      if(moved > 8){ e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    update();
+    window.addEventListener('resize', update, { passive: true });
   }
 
   /* INIT */
@@ -2304,6 +2464,7 @@
   initAccordion();
   initCaseToggle();
   initLightbox();
+  initArchiveSlider();
 })();
 </script>
 <script type="module">
