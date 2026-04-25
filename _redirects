@@ -1,7 +1,6 @@
-# Cloudflare Pages — Domain consolidation
-# All other domains redirect to the canonical .de
-https://pascaljaeger.online/* https://pascaljaeger.de/:splat 301
-https://pascaljaeger.com/*    https://pascaljaeger.de/:splat 301
-https://pascaljaeger.info/*   https://pascaljaeger.de/:splat 301
-https://pascaljaeger.store/*  https://pascaljaeger.de/:splat 301
-https://www.pascaljaeger.de/* https://pascaljaeger.de/:splat 301
+# Cloudflare Workers Static Assets erlaubt nur relative URLs hier.
+# Cross-Domain-Redirects (.online/.com/.info/.store → .de) werden über
+# Cloudflare Bulk Redirects im Dashboard konfiguriert, nicht in dieser Datei.
+#
+# Beispiel für relative Redirects (zukünftige Routen):
+#   /alter-pfad   /neuer-pfad   301
