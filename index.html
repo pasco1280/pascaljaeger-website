@@ -3,18 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pascal Jäger — UX · Product Owner · Heidelberg</title>
-  <meta name="description" content="Pascal Jäger — UX Designer und Product Owner aus Heidelberg.">
-  <meta property="og:title" content="Pascal Jäger — UX · Product Ownership">
-  <meta property="og:description" content="Freelance UX Designer & Product Owner aus Heidelberg. Systeme denken, Produkte formen — Research, Interface Design, Product Strategy und Design Systems.">
+  <title>Pascal Jäger — UX, Product Ownership & KI-Automation · Heidelberg</title>
+  <meta name="description" content="Freelance UX Designer, Product Owner und Gründer der KI-Automations-Agentur WRLZ. Heidelberg. Systeme denken, Produkte formen — von Discovery bis Launch.">
+  <meta name="author" content="Pascal Jäger">
+  <link rel="canonical" href="https://pascaljaeger.de/">
+  <meta name="theme-color" content="#1c2f24">
+  <meta property="og:title" content="Pascal Jäger — UX, Product Ownership & KI-Automation">
+  <meta property="og:description" content="Freelance UX Designer & Product Owner aus Heidelberg. KI-Automation, Phenotype-Discovery-System, Kanzlei-Digitalisierung. Drei Cases. Volle Tiefe.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pascaljaeger.online">
-  <meta property="og:image" content="https://pascaljaeger.online/assets/img/og-card.png">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://pascaljaeger.de/">
+  <meta property="og:site_name" content="Pascal Jäger">
+  <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
   <meta property="og:image:width" content="1377">
   <meta property="og:image:height" content="786">
   <meta property="og:image:type" content="image/png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://pascaljaeger.online/assets/img/og-card.png">
+  <meta name="twitter:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"Person",
+        "@id":"https://pascaljaeger.de/#pascal",
+        "name":"Pascal Jäger",
+        "jobTitle":"UX Designer & Product Owner",
+        "url":"https://pascaljaeger.de/",
+        "email":"hello@pascaljaeger.de",
+        "address":{"@type":"PostalAddress","addressLocality":"Heidelberg","addressCountry":"DE"},
+        "knowsAbout":["UX Design","Product Ownership","KI-Automation","Design Systems","Product Strategy","User Research"],
+        "sameAs":["https://www.linkedin.com/in/pascaljäger/"]
+      },
+      {
+        "@type":"ProfessionalService",
+        "@id":"https://pascaljaeger.de/#service",
+        "name":"Pascal Jäger — Freelance UX & Product Ownership",
+        "url":"https://pascaljaeger.de/",
+        "areaServed":"DE",
+        "founder":{"@id":"https://pascaljaeger.de/#pascal"},
+        "address":{"@type":"PostalAddress","addressLocality":"Heidelberg","addressCountry":"DE"},
+        "serviceType":["UX Design","Product Ownership","KI-Automation","Brand & Positioning","Discovery & Research"]
+      }
+    ]
+  }
+  </script>
   <style>
   @font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:300 600;font-display:swap;src:url('assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');}
   @font-face{font-family:'Lora';font-style:italic;font-weight:400;font-display:swap;src:url('assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');}
@@ -22,11 +56,43 @@
   :root {
     --deep:#1c2f24; --mid:#2e503e; --mint:#89c4a2;
     --cream:#f3ede3; --warm:#f9f7f2; --ink:#131a15;
-    --muted:#7d9882; --hi:#b2e8dc;
+    --muted:#6e8c75; --hi:#b2e8dc;
+    --bg:var(--warm); --bg-alt:var(--cream); --text:var(--ink);
+    --border:rgba(28,47,36,.1);
     --sans:'Plus Jakarta Sans',system-ui,sans-serif;
     --serif:'Lora',Georgia,serif;
     --cs:320px; --nav-h:58px;
   }
+  html[data-theme="dark"]{
+    --deep:#0d1612; --mid:#1c2f24; --mint:#89c4a2;
+    --cream:#1a2620; --warm:#0f1a14; --ink:#e8efe9;
+    --muted:#9ab09f; --hi:#b2e8dc;
+    --bg:#0f1a14; --bg-alt:#1a2620; --text:#e8efe9;
+    --border:rgba(232,239,233,.1);
+  }
+  html[data-theme="dark"] body{background:var(--bg);color:var(--text);}
+  html[data-theme="dark"] nav{background:rgba(15,26,20,.95);border-bottom-color:rgba(232,239,233,.07);}
+  html[data-theme="dark"] .nlogo{color:var(--text);}
+  html[data-theme="dark"] #about,
+  html[data-theme="dark"] #frequenz,
+  html[data-theme="dark"] #projekte,
+  html[data-theme="dark"] #case-studies,
+  html[data-theme="dark"] #archiv,
+  html[data-theme="dark"] #leistungen{background:var(--bg);}
+  html[data-theme="dark"] #about{background:var(--bg-alt);}
+  html[data-theme="dark"] .about-text,
+  html[data-theme="dark"] .sec-h,
+  html[data-theme="dark"] .arch-card-title,
+  html[data-theme="dark"] .leist-title,
+  html[data-theme="dark"] .proj-name,
+  html[data-theme="dark"] .case-item-name,
+  html[data-theme="dark"] .fact-v,
+  html[data-theme="dark"] .pd-value{color:var(--text);}
+  html[data-theme="dark"] .about-text strong{color:var(--mint);}
+  html[data-theme="dark"] .arch-card{background:var(--bg-alt);border-color:var(--border);}
+  html[data-theme="dark"] .kf-field input,
+  html[data-theme="dark"] .kf-field textarea{background:rgba(232,239,233,.04);color:var(--text);border-color:rgba(232,239,233,.18);}
+  html[data-theme="dark"] .ti{border-color:rgba(232,239,233,.15);color:var(--muted);}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   body{background:var(--warm);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.7;overflow-x:hidden;}
@@ -487,6 +553,43 @@
     .conflict-vs{display:none;}
     footer{flex-direction:column;align-items:flex-start;}
   }
+  /* ARCHIVE GRID — Replacement for cube */
+  .archive-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-top:3rem;margin-bottom:3rem;}
+  .arch-card{background:var(--cream);border:1px solid var(--border);border-radius:0 14px 0 14px;padding:1.6rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;transition:transform .35s ease,border-color .35s ease;}
+  .arch-card:hover{transform:translateY(-2px);border-color:rgba(137,196,162,.45);}
+  .arch-card-meta{display:flex;justify-content:space-between;align-items:center;gap:.8rem;}
+  .arch-card-cat{font-size:.55rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);opacity:.85;}
+  .arch-card-year{font-size:.6rem;font-weight:500;letter-spacing:.1em;color:var(--muted);}
+  .arch-card-title{font-size:1.05rem;font-weight:500;color:var(--deep);line-height:1.25;margin:0;}
+  .arch-card-body{font-size:.82rem;color:var(--muted);line-height:1.7;margin:0;}
+  .arch-card-result{font-size:.7rem;color:var(--mint);opacity:.8;letter-spacing:.04em;margin:0;padding-top:.6rem;border-top:1px solid var(--border);}
+
+  /* PROJ RESULT — accent line in expanded project body */
+  .proj-result{font-size:.75rem;color:var(--mint);opacity:.8;margin-top:1rem;letter-spacing:.04em;}
+
+  /* CONTACT FORM */
+  .kontakt-form{display:flex;flex-direction:column;gap:1rem;max-width:540px;margin:1.5rem auto 2rem;text-align:left;position:relative;}
+  .kf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .kf-field{display:flex;flex-direction:column;gap:.4rem;}
+  .kf-label{font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(243,237,227,.55);}
+  .kf-field input,.kf-field textarea{background:rgba(243,237,227,.06);border:1px solid rgba(243,237,227,.14);border-radius:0 8px 0 8px;padding:.85rem 1rem;font-family:var(--sans);font-size:.88rem;color:#f3ede3;transition:border-color .25s,background .25s;resize:vertical;}
+  .kf-field input:focus,.kf-field textarea:focus{outline:none;border-color:var(--mint);background:rgba(137,196,162,.08);}
+  .kf-field textarea{min-height:110px;line-height:1.6;}
+  .kf-submit{align-self:flex-start;display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--deep);background:var(--mint);padding:.85rem 1.8rem;border-radius:0 14px 0 14px;border:none;cursor:pointer;transition:border-radius .5s,gap .3s,background .25s;font-family:var(--sans);}
+  .kf-submit:hover{border-radius:0 22px 0 22px;gap:1rem;background:#9dd4b2;}
+  .kf-fallback{font-size:.7rem;color:rgba(243,237,227,.45);margin-top:.4rem;}
+  .kf-fallback a{color:var(--mint);text-decoration:none;border-bottom:1px solid rgba(137,196,162,.4);}
+  @media(max-width:520px){.kf-row{grid-template-columns:1fr;}}
+
+  /* THEME TOGGLE BUTTON in footer */
+  #theme-toggle{background:none;border:none;cursor:pointer;font-family:var(--sans);}
+
+  /* FOCUS-VISIBLE */
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,[role="tab"]:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:2px;}
+
+  /* HIDDEN MARKER for removed legacy case content */
+  #case-removed-marker{display:none!important;}
+
   </style>
 </head>
 <body>
@@ -535,7 +638,7 @@
             <path d="M0 3.5H14M11 1l3 2.5L11 6" stroke="currentColor" stroke-width="1.2"/>
           </svg>
         </a>
-        <p style="font-size:.58rem;letter-spacing:.12em;color:rgba(243,237,227,.25);text-transform:uppercase;margin-top:.6rem;line-height:1.6;">REWE-Listung · End-to-End Projekte · UX &amp; Operations · 15+ Jahre Systemdenken</p>
+        <p style="font-size:.58rem;letter-spacing:.12em;color:rgba(243,237,227,.35);text-transform:uppercase;margin-top:.6rem;line-height:1.6;">KI-Automation · Phenotype Discovery · Kanzlei-Digitalisierung · 15+ Jahre Systemdenken</p>
       </div>
     </div>
   </div>
@@ -585,11 +688,14 @@
     <div class="client-strip fi">
       <p class="client-strip-label">Gearbeitet für &amp; mit</p>
       <div class="client-logos">
-        <img class="cl-img" src="assets/img/clients/akai.png" alt="Akai Professional" loading="lazy">
-        <img class="cl-img" src="assets/img/clients/numark.png" alt="Numark" loading="lazy">
-        <img class="cl-img cl-dark" src="assets/img/clients/matchachin.png" alt="Matchachin" loading="lazy">
+        <span class="cl-text">WRLZ</span>
+        <span class="cl-text">HNTZ</span>
+        <span class="cl-text">Kanzlei Nill &amp; Böhm</span>
         <img class="cl-img cl-dark cl-lg" src="assets/img/clients/tk_logo.png" alt="Tausendkraut" loading="lazy">
         <img class="cl-img cl-dark cl-lg" src="assets/img/clients/eur_hof.png" alt="Europäischer Hof Heidelberg" loading="lazy">
+        <img class="cl-img cl-dark" src="assets/img/clients/matchachin.png" alt="Matchachin" loading="lazy">
+        <img class="cl-img" src="assets/img/clients/akai.png" alt="Akai Professional" loading="lazy">
+        <img class="cl-img" src="assets/img/clients/numark.png" alt="Numark" loading="lazy">
       </div>
     </div>
   </div>
@@ -616,164 +722,158 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     PROJEKTE — alle 4 Items sind Kinder von #projekte .mw
-     FIX: proj-imgs enthält nur <img>-Elemente; <p.proj-img-caption>
-          sitzt als direktes Geschwister *außerhalb* des Grids
+     PROJEKTE — 3 Karten: WRLZ · HNTZ · Kanzlei
      ═══════════════════════════════════════════════════════════════ -->
 <section id="projekte" class="sec-pad" aria-labelledby="projekte-h">
   <div class="mw">
     <span class="sec-eyebrow fi" aria-hidden="true">Projekte</span>
-    <h2 id="projekte-h" class="sec-h fi">Arbeiten, die <em>etwas bedeuten.</em></h2>
-    <p class="proj-intro fi">Kein Showcase für den CV. Projekte, die zeigen wie ich denke.</p>
+    <h2 id="projekte-h" class="sec-h fi">Drei Arbeiten. <em>Volle Tiefe.</em></h2>
+    <p class="proj-intro fi">Kein Showcase. Drei Systeme, in denen ich denke, gestalte und baue — von der ersten Hypothese bis zum Code im Produktiveinsatz.</p>
 
-    <!-- Item 01 ─────────────────────────────────────────── -->
+    <!-- Item 01 — WRLZ ─────────────────────────────────────────── -->
     <div class="proj-item fi">
       <button class="proj-header" aria-expanded="false" aria-controls="proj-body-01" id="proj-btn-01">
         <div>
-          <div class="proj-num">01</div>
-          <div class="proj-name">Matchachin</div>
-          <div class="proj-cat">Product · Branding · Sound</div>
+          <div class="proj-num">01 · Hero Case</div>
+          <div class="proj-name">WRLZ — KI-Automation für Wissensarbeit</div>
+          <div class="proj-cat">Agentur · Claude API · n8n · Drei aktive Kunden</div>
         </div>
         <span class="proj-arrow" aria-hidden="true">+</span>
       </button>
       <div class="proj-body" id="proj-body-01" role="region" aria-labelledby="proj-btn-01">
         <div class="proj-body-inner">
           <div class="proj-story">
-            <p>Ein RTD-Getränk von der Hypothese bis zur Listung, komplett in Eigenregie. Die Ausgangsfrage war nicht "wie sieht es aus", sondern <strong>wer kauft es, warum, und in welchem Moment.</strong></p>
-            <p>Persona-Arbeit, Rezepturentwicklung, Branding, Sounddesign für POS: alles als ein zusammenhängendes System.</p>
-            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: REWE-Listung im Energy-Segment.</p>
+            <p>WRLZ ist meine Agentur für KI-Automation in dokumentenintensiven Domänen. Keine Chatbots. <strong>Werkzeuge, die echte Arbeit übernehmen — und zwar dort, wo sie weh tut.</strong></p>
+            <p>Drei produktive Kunden: eine Familienrechtskanzlei mit eigenem KI-Schriftsatz-Assistenten (JustAI), eine Marken-Pipeline für Living-Soil-Content (Tausendkraut), eine Lead-Engine mit 250+ qualifizierten Datensätzen. Infrastruktur auf Hetzner, n8n-Workflows, Supabase, Claude API.</p>
+            <p>Die Architektur-Entscheidung in jedem Projekt: <strong>Mensch im Loop, EU-gehostet, kein Vendor-Lock-in.</strong> KI darf entwerfen — entscheiden tut der Mensch.</p>
+            <p class="proj-result">Ergebnis: bis zu 70 % Fixkosten-Reduktion bei einem Kunden. Drei Pipelines, die täglich laufen.</p>
           </div>
           <div>
-            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Founder · Product Owner · Brand Lead</div></div>
-            <div class="pd-block"><div class="pd-label">Zeitraum</div><div class="pd-value">18 Monate · End-to-End</div></div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Founder · Product Owner · Solution Architect</div></div>
+            <div class="pd-block"><div class="pd-label">Zeitraum</div><div class="pd-value">seit Q1 2026 · laufend</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Stack</div>
+              <div class="pd-tags">
+                <span class="pd-tag">Claude API</span>
+                <span class="pd-tag">n8n</span>
+                <span class="pd-tag">Supabase</span>
+                <span class="pd-tag">Hetzner</span>
+                <span class="pd-tag">React</span>
+              </div>
+            </div>
             <div class="pd-block">
               <div class="pd-label">Kompetenzen</div>
               <div class="pd-tags">
-                <span class="pd-tag">Produktstrategie</span>
-                <span class="pd-tag">Persona Research</span>
-                <span class="pd-tag">Brand System</span>
-                <span class="pd-tag">Sounddesign</span>
-                <span class="pd-tag">GTM</span>
+                <span class="pd-tag">KI-Integration</span>
+                <span class="pd-tag">Workflow-Design</span>
+                <span class="pd-tag">Solution Architecture</span>
+                <span class="pd-tag">Client Strategy</span>
               </div>
             </div>
           </div>
         </div>
-        <!-- FIX: .proj-imgs enthält NUR <img>; Caption ist Geschwister außerhalb -->
-        <div class="proj-imgs">
-          <img src="assets/img/matchachin/rewe-shelf.png"        alt="Matchachin im REWE Regal"  loading="lazy">
-          <img src="assets/img/matchachin/rewe-banner.png"       alt="Matchachin REWE Listung"   loading="lazy">
-          <img src="assets/img/matchachin/matchachin_hp.png"     alt="Matchachin Website UX"     loading="lazy">
-          <img src="assets/img/matchachin/bottle-lifestyle.jpg"  alt="Matchachin Flasche"        loading="lazy">
-        </div>
-        <p class="proj-img-caption">Im Regal. Auf dem Screen. Für real.</p>
-      </div><!-- /.proj-body -->
-    </div><!-- /.proj-item 01 -->
+        <p class="proj-img-caption">→ Volle Case Study weiter unten unter <a href="#case-wrlz" style="color:var(--mint);text-decoration:none;border-bottom:1px solid currentColor;">Case Studies · 02</a></p>
+      </div>
+    </div>
 
-    <!-- Item 02 ─────────────────────────────────────────── -->
+    <!-- Item 02 — HNTZ ─────────────────────────────────────────── -->
     <div class="proj-item fi">
       <button class="proj-header" aria-expanded="false" aria-controls="proj-body-02" id="proj-btn-02">
         <div>
-          <div class="proj-num">02</div>
-          <div class="proj-name">Tausendkraut</div>
-          <div class="proj-cat">Product Ownership · UX · Operations</div>
+          <div class="proj-num">02 · Eigenes Produkt</div>
+          <div class="proj-name">HNTZ — Phenotype Discovery System</div>
+          <div class="proj-cat">SaaS · React · Supabase · Closed Beta</div>
         </div>
         <span class="proj-arrow" aria-hidden="true">+</span>
       </button>
       <div class="proj-body" id="proj-body-02" role="region" aria-labelledby="proj-btn-02">
         <div class="proj-body-inner">
           <div class="proj-story">
-            <p>UX, Webshop, Lager, Produktion: alles ein System. <strong>Das kostet Geld, Zeit und Kundenerfahrung.</strong></p>
-            <p>Ich habe den gesamten Stack von der Markenlogik bis zur Lagerverwaltung als eine zusammenhängende User Journey konzipiert.</p>
-            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Klar strukturierte Prozesse zwischen Webshop, Lager und Produktion.</p>
+            <p>Vom Tracking-MVP zum Phenotype Discovery System. <strong>Einzelpflanzen als Datenobjekte über sieben Wachstumsphasen — und ein Algorithmus, der entscheidet welche Pflanzen sich genetisch ähneln.</strong></p>
+            <p>Solo gebaut: Product Ownership, UX, Frontend, Datenmodell, KI-Integration. Vier Eingabekanäle (manuell, Voice, Foto-AI, Dokument-Import), Bayesian-gewichtete Pheno-Engine, Radar-Charts, Living Engine v1. 6 Beta-Tester, ~20.000 Zeilen Code.</p>
+            <p>Domänen-Tiefe statt Feature-Breite: HNTZ konkurriert nicht mit Journal-Apps. <strong>Es konkurriert mit dem selbstgebauten Spreadsheet professioneller Züchter.</strong></p>
+            <p class="proj-result">Ergebnis: funktionierendes Beta-System auf Cloudflare Pages, Living Engine erkennt Anomalien, Voice-Input strukturiert Freitext in Slider-Werte.</p>
           </div>
           <div>
-            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Product Owner · UX Lead · Operations</div></div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Founder · PO · UX/UI · Frontend Dev</div></div>
+            <div class="pd-block"><div class="pd-label">Zeitraum</div><div class="pd-value">seit 01/2026 · v0.5 Beta</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Stack</div>
+              <div class="pd-tags">
+                <span class="pd-tag">React 18 · Vite</span>
+                <span class="pd-tag">Supabase</span>
+                <span class="pd-tag">Cloudflare Pages</span>
+                <span class="pd-tag">Claude API</span>
+              </div>
+            </div>
             <div class="pd-block">
               <div class="pd-label">Kompetenzen</div>
               <div class="pd-tags">
-                <span class="pd-tag">End-to-End PO</span>
-                <span class="pd-tag">UX/UI</span>
-                <span class="pd-tag">Systemdesign</span>
-                <span class="pd-tag">Operations</span>
+                <span class="pd-tag">Product Strategy</span>
+                <span class="pd-tag">UX Architecture</span>
+                <span class="pd-tag">i18n</span>
+                <span class="pd-tag">Design System</span>
               </div>
             </div>
           </div>
         </div>
-      </div><!-- /.proj-body -->
-    </div><!-- /.proj-item 02 -->
+        <p class="proj-img-caption">→ Volle Case Study mit Pheno-Engine, System-Diagramm und Pivot-Story unter <a href="#case-hntz" style="color:var(--mint);text-decoration:none;border-bottom:1px solid currentColor;">Case Studies · 01</a></p>
+      </div>
+    </div>
 
-    <!-- Item 03 ─────────────────────────────────────────── -->
+    <!-- Item 03 — Kanzlei ─────────────────────────────────────────── -->
     <div class="proj-item fi">
       <button class="proj-header" aria-expanded="false" aria-controls="proj-body-03" id="proj-btn-03">
         <div>
-          <div class="proj-num">03</div>
-          <div class="proj-name">Parliament Vodka</div>
-          <div class="proj-cat">Brand · Web · UX</div>
+          <div class="proj-num">03 · Enterprise</div>
+          <div class="proj-name">Kanzlei-Digitalisierung — Familienrecht in der Cloud</div>
+          <div class="proj-cat">Legacy-Migration · Custom KI-Cockpit · Active</div>
         </div>
         <span class="proj-arrow" aria-hidden="true">+</span>
       </button>
       <div class="proj-body" id="proj-body-03" role="region" aria-labelledby="proj-btn-03">
         <div class="proj-body-inner">
           <div class="proj-story">
-            <p>Logodesign, Markenführung, Website. Die zentrale Entscheidung: <strong>Reduktion als Aussage, nicht als Mangel.</strong></p>
-            <p>Jedes Element wurde daraufhin geprüft ob es das Markengefühl stärkt oder verwässert. Was nicht bestanden hat, wurde gestrichen.</p>
-            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Reduziertes Brand-System mit klarer Markenidentität.</p>
+            <p>Eine Heidelberger Familienrechtskanzlei wechselt von Citrix-Terminalserver auf cloud-natives Setup. Drei Lizenzen Advoware werden zu einer Actaport-Lizenz plus eigenem KI-Cockpit. <strong>~1.500 €/Monat werden ~420 €/Monat — bei besseren Werkzeugen.</strong></p>
+            <p>Familienrecht ist dokumentenschwer: 6.000–10.000 Seiten pro Akte, monatlich. Drei Personas mit drei Geräten und drei Bedürfnissen. Anwältin im Auto braucht Voice-to-Action. Kanzleimanagerin am Desktop braucht ein Outlook-artiges Triage-Dashboard. Aushilfskraft braucht ein Tool, das die dritte Lizenz spart.</p>
+            <p>Architektur: Actaport als Backend, n8n als Middleware, Claude API als Logik-Schicht, eigenes Web-Frontend. <strong>Direkt-API statt Pay-per-Page-Vendor-KI.</strong></p>
+            <p class="proj-result">Ergebnis (in Roll-out): KI-Triage für Posteingang, Recherche-Bridge für PDF-Urteile, Smart Dictation für Aktennotizen.</p>
           </div>
           <div>
-            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Brand Lead · Designer · Web UX</div></div>
+            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">Externer Berater · Solution Architect · Umsetzer</div></div>
+            <div class="pd-block"><div class="pd-label">Zeitraum</div><div class="pd-value">Q1 2026 · in Implementierung</div></div>
+            <div class="pd-block">
+              <div class="pd-label">Stack</div>
+              <div class="pd-tags">
+                <span class="pd-tag">Actaport API</span>
+                <span class="pd-tag">n8n</span>
+                <span class="pd-tag">Claude API</span>
+                <span class="pd-tag">Custom Web</span>
+              </div>
+            </div>
             <div class="pd-block">
               <div class="pd-label">Kompetenzen</div>
               <div class="pd-tags">
-                <span class="pd-tag">Logodesign</span>
-                <span class="pd-tag">Brand System</span>
-                <span class="pd-tag">Web UX</span>
+                <span class="pd-tag">Persona-Research</span>
+                <span class="pd-tag">Legacy-Migration</span>
+                <span class="pd-tag">Compliance-aware UX</span>
+                <span class="pd-tag">Cost Engineering</span>
               </div>
             </div>
           </div>
         </div>
-      </div><!-- /.proj-body -->
-    </div><!-- /.proj-item 03 -->
+        <p class="proj-img-caption">→ Volle Case Study unter <a href="#case-kanzlei" style="color:var(--mint);text-decoration:none;border-bottom:1px solid currentColor;">Case Studies · 03</a></p>
+      </div>
+    </div>
 
-    <!-- Item 04 ─────────────────────────────────────────── -->
-    <div class="proj-item fi">
-      <button class="proj-header" aria-expanded="false" aria-controls="proj-body-04" id="proj-btn-04">
-        <div>
-          <div class="proj-num">04</div>
-          <div class="proj-name">Akai &amp; Numark</div>
-          <div class="proj-cat">UX · Informationsarchitektur · Sound</div>
-        </div>
-        <span class="proj-arrow" aria-hidden="true">+</span>
-      </button>
-      <div class="proj-body" id="proj-body-04" role="region" aria-labelledby="proj-btn-04">
-        <div class="proj-body-inner">
-          <div class="proj-story">
-            <p>Marketing-Assets für professionelle Audiotechnologie. <strong>Technische Tiefe zugänglich machen ohne sie zu vereinfachen.</strong></p>
-            <p>Mein Vorteil war der Hintergrund im Sounddesign. Ich musste das Produkt nicht erst verstehen. Ich kannte es.</p>
-            <p style="font-size:.75rem;color:var(--mint);opacity:.7;margin-top:1rem;letter-spacing:.04em;">Ergebnis: Technische Inhalte verständlich und markenkonform strukturiert.</p>
-          </div>
-          <div>
-            <div class="pd-block"><div class="pd-label">Rolle</div><div class="pd-value">UX · Content-Strategie · Sound</div></div>
-            <div class="pd-block">
-              <div class="pd-label">Kompetenzen</div>
-              <div class="pd-tags">
-                <span class="pd-tag">Informationsarchitektur</span>
-                <span class="pd-tag">UX/UI</span>
-                <span class="pd-tag">Sounddesign</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- /.proj-body -->
-    </div><!-- /.proj-item 04 -->
-
-  </div><!-- /.mw — bleibt jetzt korrekt offen bis hier -->
+  </div><!-- /.mw -->
 </section>
 
 <section id="case-studies" class="sec-pad" aria-labelledby="cases-h">
   <div class="mw">
     <span class="sec-eyebrow fi" aria-hidden="true">Case Studies</span>
-    <h2 id="cases-h" class="sec-h fi">Zwei Projekte. <em>Vollständig durchdacht.</em></h2>
-    <p class="sec-sub fi">Vom Problem bis zum Ergebnis. Was ich entschieden habe, warum, und was ich daraus gelernt habe.</p>
+    <h2 id="cases-h" class="sec-h fi">Drei Systeme. <em>Vollständig durchdacht.</em></h2>
+    <p class="sec-sub fi">Vom Problem bis zum Code. Was ich entschieden habe, warum — und was passiert ist, als die Realität dazwischenfunkte.</p>
 
     <!-- ══ CASE 01: HNTZ APP ═══════════════════════════════ -->
     <div class="case-item fi" id="case-hntz">
@@ -1340,28 +1440,269 @@
       </div><!-- /.case-toggle-body hntz -->
     </div><!-- /.case-item hntz -->
 
-    <!-- ══ CASE 02: MATCHACHIN ══════════════════════════════ -->
-    <div class="case-item fi" id="case-matchachin">
+    <!-- ══ CASE 02: WRLZ — KI-AUTOMATION ══════════════════════════════ -->
+    <div class="case-item fi" id="case-wrlz">
       <div class="case-item-header">
         <div>
           <div class="case-item-num">02</div>
-          <h3 class="case-item-name">Matchachin</h3>
-          <p class="case-item-sub">Natural Energy mit Guayusa. RTD-Getränk, entwickelt und bis zur REWE-Listung verantwortet.</p>
+          <h3 class="case-item-name">WRLZ — KI-Automation für Wissensarbeit</h3>
+          <p class="case-item-sub">Meine Agentur. Drei produktive Kunden, drei Domänen, ein Architekturprinzip: KI darf entwerfen, der Mensch entscheidet.</p>
         </div>
         <div class="case-chips">
-          <span class="case-chip">REWE-Listung</span>
-          <span class="case-chip">End-to-End PO</span>
-          <span class="case-chip">RTD · Guayusa</span>
-          <span class="case-chip">Packaging · GTM</span>
-          <span class="case-chip">UX Research</span>
+          <span class="case-chip">Solution Architecture</span>
+          <span class="case-chip">Claude API</span>
+          <span class="case-chip">n8n · Supabase</span>
+          <span class="case-chip">Human-in-the-Loop</span>
+          <span class="case-chip">EU-gehostet</span>
         </div>
       </div>
-      <button class="case-toggle-btn" id="case-toggle" aria-expanded="false" aria-controls="case-body">
+      <button class="case-toggle-btn" data-case-toggle="case-body-wrlz" aria-expanded="false" aria-controls="case-body-wrlz">
         <span class="ctb-icon" aria-hidden="true">+</span>
         <span class="ctb-label-open">Case öffnen</span>
         <span class="ctb-label-close">Schließen</span>
       </button>
-    <div class="case-toggle-body" id="case-body" role="region" aria-labelledby="case-toggle">
+      <div class="case-toggle-body" id="case-body-wrlz" role="region">
+        <div style="padding-top:2.5rem">
+
+          <div class="case-block">
+            <div class="case-label">01 Ausgangssituation</div>
+            <div class="case-body">
+              <p>Die Frage hinter WRLZ ist nicht <em>"wie automatisieren wir Aufgaben"</em>. Sie ist: <strong>welche Arbeit kostet einen Menschen Konzentration, ohne sein Urteil zu brauchen?</strong> Genau dort gehört KI hin — als Schicht, die das Material vorsortiert, nicht als Entscheidungsinstanz.</p>
+              <p>Der Markt ist voll mit zwei Extremen: ChatGPT-Wrapper ohne Domänenwissen und Enterprise-Suiten, die für 4-Personen-Betriebe völlig unbezahlbar sind. WRLZ besetzt die Mitte: <strong>maßgeschneiderte Pipelines, EU-gehostet, ohne Vendor-Lock-in.</strong></p>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">02 Architekturprinzipien</div>
+            <div class="case-body">
+              <div class="case-hypotheses">
+                <div class="case-h-item"><span class="case-h-id">P1</span><span class="case-h-text">Human-in-the-Loop ist nicht optional. Jeder KI-Output ist Vorschlag, nie Endprodukt.</span><span class="case-h-status status-confirmed">Tragend</span></div>
+                <div class="case-h-item"><span class="case-h-id">P2</span><span class="case-h-text">EU-Hosting + offene APIs schlagen jede Vendor-KI mit Pay-per-Page-Logik.</span><span class="case-h-status status-confirmed">Tragend</span></div>
+                <div class="case-h-item"><span class="case-h-id">P3</span><span class="case-h-text">n8n als Middleware, Claude als Reasoning-Layer, Supabase für State — drei austauschbare Schichten.</span><span class="case-h-status status-confirmed">Tragend</span></div>
+                <div class="case-h-item"><span class="case-h-id">P4</span><span class="case-h-text">Approval-Gates vor jeder externen Aktion. Besonders bei Content, der unter Marken-Account postet.</span><span class="case-h-status status-confirmed">Tragend</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">03 Drei Pipelines, drei Domänen</div>
+            <div class="case-body">
+              <div class="hntz-decisions">
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">A</div>
+                  <div>
+                    <div class="hntz-decision-title">JustAI — KI-Schriftsatz-Assistent (Familienrecht)</div>
+                    <div class="hntz-decision-desc">Split-Screen-Editor mit Claude API. Anwältin diktiert/liest, Claude entwirft Schriftsatz-Bausteine, Fristen werden erkannt, Gehaltsbescheinigungen analysiert. Jede Ausgabe ist Vorschlag, kein Paragraph wird halluziniert. Demo-Backend live, Sprint 1 abgeschlossen, Pricing 199–249 €/Monat.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">B</div>
+                  <div>
+                    <div class="hntz-decision-title">Tausendkraut — Instagram-Content-Pipeline</div>
+                    <div class="hntz-decision-desc">n8n-Workflow für Living-Soil-Marke. Content-Generierung, Approval Gate (Kunde sagt ja/nein), Publisher zu festen Slots (09:00 / 18:00). Pipeline läuft, Go-Live wartet auf Meta-SMS-Verifizierung. Token-Refresh-Logik bereits eingebaut für Mai 2026.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">C</div>
+                  <div>
+                    <div class="hntz-decision-title">Lead Engine v2 — Akquise-System</div>
+                    <div class="hntz-decision-desc">Automatisiertes Scraping + Audit-Bewertung für Webdesign-Leads. n8n läuft täglich um 04:00 UTC, schreibt in Supabase. Aktuell 250+ qualifizierte Datensätze, +74 täglich. Dashboard-Frontend mit PageSpeed-Score-Anreicherung.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">04 Was WRLZ <em>nicht</em> macht</div>
+            <div class="case-body">
+              <p><strong>Keine Chatbots auf Webseiten.</strong> Sie lösen kein echtes Problem — sie verschieben Frust.</p>
+              <p><strong>Keine vollautomatischen Outbound-Kanäle.</strong> Wer ohne Approval-Gate sendet, beschädigt Marken irgendwann garantiert. Approval ist kein Bremsklotz, Approval ist Versicherung.</p>
+              <p><strong>Keine Pay-per-Token-Vendor-Suiten.</strong> Für rechenintensive Domänen (Familienrecht, 6.000–10.000 Seiten/Akte) bedeutet das Kostenexplosion. Direkter API-Zugang ist Pflicht.</p>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">05 Learnings aus Q1 2026</div>
+            <div class="case-body">
+              <p><strong>Approval-Gates sind UX-Arbeit, nicht Kontroll-Arbeit.</strong> Wenn die Bestätigung zu aufwendig ist, klickt der Kunde auf "alles freigeben" und das Gate verschwindet. Das Interface muss schneller sein als der Reflex zur Abkürzung.</p>
+              <p><strong>Drei kleine Kunden lehren mehr als ein großer.</strong> Jede Domäne hat eigene Compliance-Realität, eigene Datenstruktur, eigene Schmerzpunkte. Die Architektur-Bibliothek wächst durch Vielfalt, nicht durch Volumen.</p>
+              <p><strong>Hetzner + n8n + Supabase ist kein Stack, es ist eine Haltung.</strong> Drei Stellschrauben, alle EU, alle ersetzbar. Der Kunde besitzt seine Pipeline. Wenn ich morgen weg bin, steht alles weiter.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CASE 03: KANZLEI-DIGITALISIERUNG ══════════════════════════════ -->
+    <div class="case-item fi" id="case-kanzlei">
+      <div class="case-item-header">
+        <div>
+          <div class="case-item-num">03</div>
+          <h3 class="case-item-name">Kanzlei-Digitalisierung — Familienrecht in der Cloud</h3>
+          <p class="case-item-sub">Eine Heidelberger Anwaltskanzlei verlässt Citrix-Terminalserver. Drei Personas, ein Custom-KI-Cockpit, 70 % Fixkosten weniger.</p>
+        </div>
+        <div class="case-chips">
+          <span class="case-chip">Legacy → Cloud</span>
+          <span class="case-chip">Persona-getrieben</span>
+          <span class="case-chip">Compliance-aware</span>
+          <span class="case-chip">Cost Engineering</span>
+          <span class="case-chip">Aktiv im Roll-out</span>
+        </div>
+      </div>
+      <button class="case-toggle-btn" data-case-toggle="case-body-kanzlei" aria-expanded="false" aria-controls="case-body-kanzlei">
+        <span class="ctb-icon" aria-hidden="true">+</span>
+        <span class="ctb-label-open">Case öffnen</span>
+        <span class="ctb-label-close">Schließen</span>
+      </button>
+      <div class="case-toggle-body" id="case-body-kanzlei" role="region">
+        <div style="padding-top:2.5rem">
+
+          <div class="case-block">
+            <div class="case-label">01 Ausgangslage</div>
+            <div class="case-body">
+              <p>Eine Familienrechtskanzlei in Heidelberg. Drei Mitarbeiterinnen. Drei Lizenzen Advoware, ausgeliefert über Citrix-Terminalserver. Monatliche Fixkosten der Software-Schicht: ~1.500 €.</p>
+              <p>Das System ist nicht kaputt — es ist <strong>ein anderer Zeitalter.</strong> Inkompatibel mit Google Workspace, inkompatibel mit Outlook-Add-ins, das KI-Modul ("Legal Twin") rechnet pro Seite und macht selbst kleine Akten zu vierstelligen Beträgen. Familienrecht produziert 6.000–10.000 Seiten pro Akte und Monat.</p>
+              <p>Der Auftrag: <strong>auf cloud-natives Setup migrieren — ohne dass die Kanzlei den Workflow neu lernt.</strong></p>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">02 Drei Personas, drei Geräte, drei Bedürfnisse</div>
+            <div class="case-body">
+              <div class="hntz-decisions">
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">P1</div>
+                  <div>
+                    <div class="hntz-decision-title">Die Anwältin</div>
+                    <div class="hntz-decision-desc">Im Auto, im Gericht, im Mandatsgespräch. iPhone-zentrisch. Wenig Geduld für Admin-Details. <strong>Pain:</strong> Notizen vom Termin abtippen, Recherche in Juris/DIJuF aufwendig. <strong>Werkzeug:</strong> Voice-to-Action (iPhone-Diktat → strukturierte Aktennotiz) + Recherche-Bridge (PDF-Urteil hochladen → Argumentationsbaustein).</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">P2</div>
+                  <div>
+                    <div class="hntz-decision-title">Die Kanzleimanagerin</div>
+                    <div class="hntz-decision-desc">Stationär am Desktop, Outlook ist die Heimat, arbeitet hochstrukturiert. <strong>Pain:</strong> Manuelles Zuordnen von Posteingängen, Fristenberechnung, Daten-Schubserei. <strong>Werkzeug:</strong> Web-Dashboard mit Outlook-Add-in-Feeling. KI analysiert Scans, schlägt drei Quick Actions vor — sie bestätigt nur.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">P3</div>
+                  <div>
+                    <div class="hntz-decision-title">Die Aushilfskraft</div>
+                    <div class="hntz-decision-desc">Übernimmt das physische Scannen, liefert digitales Futter ans System. Arbeitet nur über das Custom-Tool. <strong>Effekt:</strong> spart die dritte Lizenz — der größte Einzelhebel im Kostenmodell.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">03 Stack-Entscheidungen</div>
+            <div class="case-body">
+              <p><strong>Backend:</strong> Actaport Professional. Cloud-nativ, M365-Integration, offene API. Eine Lizenz statt drei.</p>
+              <p><strong>Middleware:</strong> n8n auf eigenem Server. Workflow-Orchestrierung, Webhooks, File-Watching auf den Scan-Ordner.</p>
+              <p><strong>Reasoning:</strong> Claude API direkt. Kein Vendor-KI-Layer. Token-Effizienz wird kritisch bei großen PDFs — Chunking-Strategien sind Teil der Architektur, nicht Nachgedanke.</p>
+              <p><strong>Frontend:</strong> Custom Web-App, minimalistisch, im Look der Kanzlei. Drei Personas → ein Tool, das je nach Rolle verschiedene Oberflächen zeigt.</p>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">04 Drei Kern-Features</div>
+            <div class="case-body">
+              <div class="hntz-decisions">
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">F1</div>
+                  <div>
+                    <div class="hntz-decision-title">KI-Triage Posteingang</div>
+                    <div class="hntz-decision-desc">n8n watcht den Scan-Ordner → Dokument an Claude → Typ, Aktenzeichen, Frist werden erkannt → Frontend zeigt Zusammenfassung + drei Quick-Action-Buttons (z.B. „In Akte 2026/0124 ablegen", „Frist 15.05. eintragen"). Christiane bestätigt mit einem Klick.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">F2</div>
+                  <div>
+                    <div class="hntz-decision-title">Recherche-Bridge</div>
+                    <div class="hntz-decision-desc">Anwältin lädt PDF eines Urteils in die Akte → Webhook → Claude liest, extrahiert die juristisch tragenden Sätze, baut Argumentationsbaustein im Schriftsatz-Stil der Kanzlei. <strong>Niemals als Endprodukt</strong> — als Vorschlag im Editor.</div>
+                  </div>
+                </div>
+                <div class="hntz-decision">
+                  <div class="hntz-decision-num">F3</div>
+                  <div>
+                    <div class="hntz-decision-title">Smart Dictation</div>
+                    <div class="hntz-decision-desc">Apple Speech-to-Text auf dem iPhone → n8n → Claude strukturiert Fließtext in formelle, rechtssichere Aktennotiz → Push via API zurück in Actaport. Aus „Kurz mit Frau X telefoniert, sie sagt …" wird ein dokumentierter Aktenvermerk mit Datum, Beteiligten und Inhalt.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">05 Entscheidungs-Konflikte</div>
+            <div class="case-body">
+              <div class="case-conflicts">
+                <div class="case-conflict">
+                  <div class="conflict-row"><span class="conflict-a">Vendor-KI nutzen (schnell)</span><span class="conflict-vs">vs</span><span class="conflict-b">Direkter API-Zugang (eigene Logik)</span></div>
+                  <p class="conflict-decision">Direkte API. Pay-per-Page wäre bei Familienrecht ruinös. Einmal-Aufwand für eigene Pipeline schlägt laufende Vendor-Kosten in unter 6 Monaten.</p>
+                </div>
+                <div class="case-conflict">
+                  <div class="conflict-row"><span class="conflict-a">Standardlösung (Actaport-Standard-UI)</span><span class="conflict-vs">vs</span><span class="conflict-b">Custom Frontend für 3. Lizenz-Ersatz</span></div>
+                  <p class="conflict-decision">Custom Frontend. Spart eine Lizenz dauerhaft — und bildet exakt die Persona-Realität ab statt einer generischen Anwalts-Oberfläche.</p>
+                </div>
+                <div class="case-conflict">
+                  <div class="conflict-row"><span class="conflict-a">Vollautomatik (KI macht und meldet)</span><span class="conflict-vs">vs</span><span class="conflict-b">Approval-First (KI schlägt vor, Mensch klickt)</span></div>
+                  <p class="conflict-decision">Approval-First. In rechtssensiblen Domänen ist Halluzination keine Fußnote — sie ist Berufsrisiko. Jeder KI-Output ist Entwurf, niemals Endzustand.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">06 Ergebnis (in Roll-out)</div>
+            <div class="case-body">
+              <div class="hntz-compare">
+                <div class="hntz-compare-side hntz-compare-old">
+                  <div class="hntz-compare-label old">Vorher</div>
+                  <ul class="hntz-compare-list">
+                    <li>3× Advoware-Lizenz via Citrix</li>
+                    <li>~1.500 €/Monat</li>
+                    <li>Inkompatibel mit Google Workspace</li>
+                    <li>Vendor-KI mit Pay-per-Page</li>
+                    <li>Manuelles Zuordnen von Posteingängen</li>
+                    <li>Notizen abtippen nach Termin</li>
+                  </ul>
+                </div>
+                <div class="hntz-compare-vs">→</div>
+                <div class="hntz-compare-side hntz-compare-new">
+                  <div class="hntz-compare-label new">Nachher</div>
+                  <ul class="hntz-compare-list">
+                    <li>1× Actaport + Custom-Tool</li>
+                    <li>~420 €/Monat</li>
+                    <li>Native M365-Integration</li>
+                    <li>Direkte Claude-API mit eigener Logik</li>
+                    <li>KI-Triage mit Quick-Actions</li>
+                    <li>Voice-to-Action im Auto</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-block">
+            <div class="case-label">07 Learnings</div>
+            <div class="case-body">
+              <p><strong>Personas first, Stack later.</strong> Die Kosteneinsparung kam nicht aus der Stack-Wahl. Sie kam daraus, dass die Aushilfskraft eine eigene Oberfläche bekommt, statt eine teure Anwalts-Lizenz zu belegen.</p>
+              <p><strong>Compliance ist UX-Anforderung, kein Footer.</strong> Jede KI-Ausgabe als Entwurf zu markieren, ist nicht Disclaimer — es ist Interface-Logik. Buttons heißen „Vorschlag übernehmen", nie „Speichern".</p>
+              <p><strong>Legacy-Migration ist Übersetzungsarbeit.</strong> Anwältinnen denken in Akten, Mandanten, Fristen. Wenn das neue System ihre mentale Karte spiegelt, ist die Migration unsichtbar. Wenn nicht, scheitert sie an Tag 3.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ALTE MATCHACHIN-CASE — entfernt, Highlights wandern in 'Frühere Arbeiten' ═════ -->
+    <div class="case-item fi" id="case-removed-marker" style="display:none;">
+      <div style="padding-top:2.5rem">
       <div style="padding-top:2.5rem">
         <div class="case-block">
           <div class="case-label">01 Ausgangssituation</div>
@@ -1482,21 +1823,56 @@
   </div><!-- /.mw -->
 </section>
 
-<section id="archiv" aria-labelledby="archiv-h">
+<section id="archiv" class="sec-pad" aria-labelledby="archiv-h">
   <div class="mw">
-    <span class="sec-eyebrow fi" aria-hidden="true">Design Archiv</span>
-    <h2 id="archiv-h" class="sec-h fi">Früher. <em>Flash, Photoshop, Straße.</em></h2>
-    <p class="archiv-intro fi">Erst Bleistift. Dann Tabletts. Jetzt Prompts. Das Ergebnis war immer das Gleiche: zu viele Ideen.</p>
-    <div class="archiv-tabs fi" role="tablist" aria-label="Design-Kategorien">
-      <button class="atab active" role="tab" aria-selected="true"  aria-controls="cp0" id="tab0" data-tab="0">Logos &amp; Brand</button>
-      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp1" id="tab1" data-tab="1">Flyer &amp; Print</button>
-      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp2" id="tab2" data-tab="2">Web &amp; Interface</button>
-      <button class="atab"        role="tab" aria-selected="false" aria-controls="cp3" id="tab3" data-tab="3">Illustration &amp; Straße</button>
+    <span class="sec-eyebrow fi" aria-hidden="true">Frühere Arbeiten</span>
+    <h2 id="archiv-h" class="sec-h fi">Davor. <em>Marken, Regale, Sound.</em></h2>
+    <p class="archiv-intro fi">Bevor die Pipelines kamen, gab es Flaschen, Logos, Plattencover und Webshops. Verkürzt — aber nicht verschwiegen.</p>
+
+    <div class="archive-grid fi">
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">Product · Brand · GTM</span><span class="arch-card-year">2022–2024</span></div>
+        <h3 class="arch-card-title">Matchachin</h3>
+        <p class="arch-card-body">Natural Energy mit Guayusa. Vom Persona-Mapping über Rezeptur und Packaging bis zur REWE-Listung im Energy-Segment. Eine SKU, klare Listungsstory.</p>
+        <p class="arch-card-result">REWE-Listung · Iced-Coffee-Trinker als Konversions-Cluster bestätigt</p>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">PO · UX · Operations</span><span class="arch-card-year">2023–2024</span></div>
+        <h3 class="arch-card-title">Tausendkraut</h3>
+        <p class="arch-card-body">Webshop, Lager und Produktion als eine User Journey. Markenlogik bis zur Lagerverwaltung — kein Stilbruch zwischen den Schichten.</p>
+        <p class="arch-card-result">Klarer Prozess zwischen Shop, Lager und Produktion</p>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">Brand · Web · UX</span><span class="arch-card-year">2021</span></div>
+        <h3 class="arch-card-title">Parliament Vodka</h3>
+        <p class="arch-card-body">Logo, Markenführung, Website. Reduktion als Aussage. Was nicht jeden Test bestand, wurde gestrichen — auch wenn es schön war.</p>
+        <p class="arch-card-result">Reduziertes Brand-System mit klarer Identität</p>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">UX · IA · Sound</span><span class="arch-card-year">2018–2020</span></div>
+        <h3 class="arch-card-title">Akai &amp; Numark</h3>
+        <p class="arch-card-body">Marketing-Assets für professionelle Audiotechnik. Technische Tiefe zugänglich machen, ohne sie zu vereinfachen — der Sound-Hintergrund war der Vorteil.</p>
+        <p class="arch-card-result">Komplexe Tech, markenkonform und verständlich strukturiert</p>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">Brand · Logo · Print</span><span class="arch-card-year">2015–2022</span></div>
+        <h3 class="arch-card-title">Loki Genetics · Nekta · Soil Food</h3>
+        <p class="arch-card-body">Kleine Marken im Living-Soil-Umfeld. Jedes Logo eine Antwort auf die Frage, wem die Marke gehört und gegen wen sie sich abgrenzt.</p>
+        <p class="arch-card-result">Drei eigenständige Markensignets, alle in Verwendung</p>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-card-meta"><span class="arch-card-cat">Flyer · Club · Event</span><span class="arch-card-year">2008–2018</span></div>
+        <h3 class="arch-card-title">Eisenwaren · Urbalicious · Lauschig</h3>
+        <p class="arch-card-body">Düsseldorfer Nachtkultur. DJ-Booking-Materialien, Club-Flyer, Event-Branding. Print als Echtzeit-Kommunikation mit der Stadt.</p>
+        <p class="arch-card-result">Hunderte Drucksachen über zehn Jahre</p>
+      </article>
     </div>
-    <div id="cp0" class="cube-panel active fi" role="tabpanel" aria-labelledby="tab0"></div>
-    <div id="cp1" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab1"></div>
-    <div id="cp2" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab2"></div>
-    <div id="cp3" class="cube-panel fi"        role="tabpanel" aria-labelledby="tab3"></div>
+
     <div class="cube-manifesto fi">
       <p>Ich betrachte keinen Würfel von einer Seite.<br>
       <strong>Ich analysiere das gesamte System:</strong> User, Stakeholder, Umfeld, Nutzungskontext, Nebenwirkungen.<br><br>
@@ -1509,7 +1885,7 @@
   </div>
 </section>
 
-<section id="leistungen" aria-labelledby="leist-h">
+<section id="leistungen" class="sec-pad" aria-labelledby="leist-h">
   <div class="mw">
     <span class="sec-eyebrow fi" aria-hidden="true">Leistungen</span>
     <h2 id="leist-h" class="sec-h fi">Vier Disziplinen. <em>Ein System.</em></h2>
@@ -1523,13 +1899,13 @@
       </div>
       <div class="leist-card fi">
         <span class="leist-num" aria-hidden="true">02</span>
-        <h3 class="leist-title">UX &amp; Interface Design</h3>
-        <p class="leist-desc">Dein Produkt funktioniert, aber keiner versteht es. Ich baue Interfaces, die sich erklären.</p>
+        <h3 class="leist-title">UX &amp; Product Ownership</h3>
+        <p class="leist-desc">Euer Team baut Features, aber kein Produkt. Ich bringe Vision, Priorisierung und den roten Faden — und Interfaces, die sich erklären.</p>
       </div>
       <div class="leist-card fi">
         <span class="leist-num" aria-hidden="true">03</span>
-        <h3 class="leist-title">Product Ownership</h3>
-        <p class="leist-desc">Euer Team baut Features, aber kein Produkt. Ich bringe Vision, Priorisierung und den roten Faden.</p>
+        <h3 class="leist-title">KI-Automation (WRLZ)</h3>
+        <p class="leist-desc">Wo Menschen Konzentration verschwenden ohne ihr Urteil zu brauchen, gehört eine Pipeline hin. Claude API, n8n, EU-gehostet, mit Approval-Gates.</p>
       </div>
       <div class="leist-card fi">
         <span class="leist-num" aria-hidden="true">04</span>
@@ -1539,8 +1915,8 @@
     </div>
 
     <div class="leist-footer fi">
-      <p class="leist-rate">Stundensatz: <strong>90 €</strong> · Projektbasiert auf Anfrage</p>
-      <p class="leist-note">Remote oder vor Ort · Verfügbarkeit auf Anfrage</p>
+      <p class="leist-rate">Tagessatz und Projektpreise <strong>auf Anfrage</strong></p>
+      <p class="leist-note">Remote oder vor Ort · Heidelberg / Rhein-Neckar / DACH-weit · Verfügbarkeit auf Anfrage</p>
     </div>
   </div>
 </section>
@@ -1549,9 +1925,33 @@
   <div class="kontakt-inner">
     <span class="sec-eyebrow fi" style="color:rgba(137,196,162,.6)" aria-hidden="true">Kontakt</span>
     <h2 id="kontakt-h" class="kontakt-h fi">Klar gedacht.<br><em>Direkt gemacht.</em></h2>
-    <p class="kontakt-sub fi">Projekt im Kopf? Schreib mir — kein Anschreiben nötig.<br><span style="opacity:.6;">UX, Product Ownership oder beides. Remote oder vor Ort.</span></p>
+    <p class="kontakt-sub fi">Projekt im Kopf? Schreib direkt — oder buch dir einen Termin.<br><span style="opacity:.6;">UX, Product Ownership, KI-Automation. Remote oder vor Ort.</span></p>
+
+    <form class="kontakt-form fi" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" method="POST" novalidate>
+      <div class="kf-row">
+        <label class="kf-field">
+          <span class="kf-label">Name</span>
+          <input type="text" name="name" required autocomplete="name">
+        </label>
+        <label class="kf-field">
+          <span class="kf-label">E-Mail</span>
+          <input type="email" name="email" required autocomplete="email">
+        </label>
+      </div>
+      <label class="kf-field">
+        <span class="kf-label">Worum geht's?</span>
+        <textarea name="message" rows="4" required placeholder="Eine Sache, ein Kontext, eine Frage. Ich antworte innerhalb von zwei Werktagen."></textarea>
+      </label>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;" aria-hidden="true">
+      <button type="submit" class="kf-submit">Nachricht senden →</button>
+      <p class="kf-fallback">Lieber direkt? <a href="mailto:hello@pascaljaeger.de" data-mail>hello [at] pascaljaeger.de</a></p>
+    </form>
+
     <div class="kontakt-links fi">
-      <a href="mailto:hello@pascaljaeger.de" class="kontakt-mail" id="mail-btn">hello@pascaljaeger.de</a>
+      <a href="https://cal.com/pascaljaeger" class="kontakt-mail" id="cal-btn" target="_blank" rel="noopener noreferrer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="margin-right:.5rem;vertical-align:-2px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        20-Min Kennenlern-Call
+      </a>
       <a href="https://www.linkedin.com/in/pascaljäger/" class="li-link" target="_blank" rel="noopener noreferrer">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452H17.1v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.767V9.75h3.212v1.548h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v5.549zM5.337 8.2a1.857 1.857 0 0 1 0-3.714 1.857 1.857 0 0 1 0 3.714zm1.607 12.252H3.73V9.75h3.214zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
         LinkedIn
@@ -1566,8 +1966,12 @@
     <span class="fsig">∿ Frequenz · Boden · Produkt</span>
   </div>
   <div class="footer-legal">
-    <a href="#" class="flegal-link">Impressum</a>
-    <a href="#" class="flegal-link">Datenschutz</a>
+    <a href="impressum.html" class="flegal-link">Impressum</a>
+    <a href="datenschutz.html" class="flegal-link">Datenschutz</a>
+    <button type="button" class="flegal-link" id="theme-toggle" aria-label="Dark Mode umschalten">
+      <span data-theme-icon="light">☾ Dark</span>
+      <span data-theme-icon="dark" hidden>☀ Light</span>
+    </button>
   </div>
 </footer>
 
@@ -1647,14 +2051,10 @@
     els.forEach(function(el){ io.observe(el); });
   }
 
-  /* ACCORDION — handler on #projekte .mw; alle 4 items sind jetzt korrekt Kinder davon */
+  /* ACCORDION — handler on #projekte .mw */
   function initAccordion(){
     var container = document.querySelector('#projekte .mw');
     if(!container) return;
-
-    // DOM-Check: console.log zeigt 4 wenn fix korrekt
-    console.log('[Accordion] proj-items in .mw:', container.querySelectorAll('.proj-item').length);
-
     function toggle(header){
       var item = header.closest('.proj-item');
       var body = document.getElementById(header.getAttribute('aria-controls'));
@@ -1677,21 +2077,17 @@
     });
   }
 
-  /* CASE TOGGLE */
+  /* CASE TOGGLE — data-driven via [data-case-toggle] OR legacy id-based */
   function initCaseToggle(){
-    function wire(btnId, bodyId){
-      var btn = document.getElementById(btnId);
-      var body = document.getElementById(bodyId);
+    function wire(btn, body){
       if(!btn || !body) return;
       btn.addEventListener('click', function(){
         var isOpen = btn.getAttribute('aria-expanded') === 'true';
         if(isOpen){
-          /* Collapse: hide instantly, scroll to header */
           var caseItem = btn.closest('.case-item') || btn.parentElement;
           body.style.transition = 'none';
           body.style.maxHeight = '0';
           body.classList.remove('open'); btn.setAttribute('aria-expanded','false');
-          /* Force reflow then restore transition for future opens */
           body.offsetHeight;
           body.style.transition = '';
           caseItem.scrollIntoView({ behavior:'instant', block:'start' });
@@ -1703,12 +2099,51 @@
         }
       });
     }
-    wire('case-toggle', 'case-body');
-    wire('case-toggle-hntz', 'case-body-hntz');
+    /* Data-driven discovery: any button with [data-case-toggle="bodyId"] or [aria-controls] */
+    document.querySelectorAll('.case-toggle-btn').forEach(function(btn){
+      var bodyId = btn.getAttribute('data-case-toggle') || btn.getAttribute('aria-controls');
+      if(!bodyId) return;
+      var body = document.getElementById(bodyId);
+      wire(btn, body);
+    });
+    /* Legacy HNTZ wiring (still uses id="case-toggle-hntz") */
+    var legacy = document.getElementById('case-toggle-hntz');
+    if(legacy && !legacy.classList.contains('case-toggle-btn')){
+      wire(legacy, document.getElementById('case-body-hntz'));
+    }
   }
 
-  /* CUBES */
-  function initCubes(){
+  /* THEME TOGGLE — persisted in localStorage */
+  function initTheme(){
+    var btn = document.getElementById('theme-toggle');
+    var root = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem('pj-theme'); } catch(e){}
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = stored || (prefersDark ? 'dark' : 'light');
+    apply(theme);
+    function apply(t){
+      root.setAttribute('data-theme', t);
+      if(!btn) return;
+      var lightIcon = btn.querySelector('[data-theme-icon="light"]');
+      var darkIcon  = btn.querySelector('[data-theme-icon="dark"]');
+      if(lightIcon && darkIcon){
+        if(t === 'dark'){ lightIcon.hidden = true; darkIcon.hidden = false; }
+        else            { lightIcon.hidden = false; darkIcon.hidden = true; }
+      }
+    }
+    if(btn){
+      btn.addEventListener('click', function(){
+        var current = root.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        apply(next);
+        try { localStorage.setItem('pj-theme', next); } catch(e){}
+      });
+    }
+  }
+
+  /* CUBES — DEPRECATED: Replaced by flat archive grid in 2026 relaunch */
+  function initCubes_REMOVED(){
     var TABS = [
       {faces:[
         {cat:'Logoentwicklung',title:'Loki <em>Genetics.</em>',            bg:'#0e1a13', src:'assets/img/logos/loki-front.png'},
@@ -1854,12 +2289,12 @@
   }
 
   /* INIT */
+  initTheme();
   initSine();
   initNav();
   initFadeIn();
   initAccordion();
   initCaseToggle();
-  initCubes();
   initLightbox();
 })();
 </script>

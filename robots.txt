@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /og-generator.html
+
+Sitemap: https://pascaljaeger.de/sitemap.xml
