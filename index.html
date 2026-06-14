@@ -21,9 +21,6 @@
 @media (max-width: 640px){ .reel { height: 300vh; } }
 .reel-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center; }
 .reel-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
-/* Maskottchen lugt oben rein (nur der Kopf) */
-.hero-peek { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: clamp(96px, 12vw, 150px); height: clamp(40px, 5.2vw, 64px); overflow: hidden; z-index: 5; pointer-events: none; }
-.hero-peek img { width: 100%; display: block; filter: drop-shadow(0 8px 12px rgba(28,27,25,.25)); }
 /* 3D-Karton-Buchstaben (flach im Ruhezustand, kippen beim Scrollen in die Tiefe) */
 .reel-letters { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .rl3d { position: absolute; transform-style: preserve-3d; will-change: transform; }
@@ -160,7 +157,6 @@
 <section class="reel" id="reel">
   <h1 class="visually-hidden">Pascal Jäger — UX, Produkt &amp; KI-Automation aus Heidelberg</h1>
   <div class="reel-pin">
-    <div class="hero-peek" aria-hidden="true"><img src="assets/img/hntz/mascot.png" alt=""></div>
     <svg class="reel-svg" aria-hidden="true"></svg>
     <div class="reel-letters" aria-hidden="true"></div>
     <div class="reel-intro">

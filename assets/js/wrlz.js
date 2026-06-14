@@ -314,7 +314,6 @@
     const svg = reel.querySelector('.reel-svg');
     const intro = reel.querySelector('.reel-intro');
     const hint = reel.querySelector('.reel-hint');
-    const peek = reel.querySelector('.hero-peek');
     const NS = 'http://www.w3.org/2000/svg';
 
     const defs = document.createElementNS(NS, 'defs');
@@ -516,7 +515,6 @@
       intro.style.transform = `translateY(${(20 - 20 * io).toFixed(1)}px)`;
       intro.style.pointerEvents = io > 0.5 ? 'auto' : 'none';
       hint.style.opacity = clamp(0.55 - p * 6, 0, 0.55).toFixed(3);
-      if (peek) peek.style.opacity = clamp(1 - p * 2.5, 0, 1).toFixed(3);
     }
 
     function pulse(px, py) {
