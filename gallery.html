@@ -14,20 +14,19 @@
 <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
 <link rel="stylesheet" href="assets/css/wrlz.css">
 <style>
-/* ---------- Flyer-Hintergrund: übereinanderliegende Papierbänder ----------
-   Jede .sheet deckt von oben bis zu ihrer diagonalen Unterkante ab und liegt
-   über der darunterliegenden. Der drop-shadow an der Unterkante fällt nach
-   unten auf das nächste Band = sichtbare Papierkante. Richtungen wechseln. */
-.flyer-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #4A2540; }
-.flyer-bg .sheet { position: absolute; inset: 0; filter: drop-shadow(0 9px 12px rgba(24,12,8,.5)); }
-.s1 { background: #4A2540; filter: none; }
-.s2 { background: #9DB6AE; clip-path: polygon(0 0, 100% 0, 100% 86%, 0 92%); }
-.s3 { background: #C98A5E; clip-path: polygon(0 0, 100% 0, 100% 79%, 0 73%); }
-.s4 { background: #6E2E40; clip-path: polygon(0 0, 100% 0, 100% 60%, 0 66%); }
-.s5 { background: #D2868F; clip-path: polygon(0 0, 100% 0, 100% 53%, 0 47%); }
-.s6 { background: #CC7A4E; clip-path: polygon(0 0, 100% 0, 100% 34%, 0 40%); }
-.s7 { background: #9DB6AE; clip-path: polygon(0 0, 100% 0, 100% 27%, 0 21%); }
-.s8 { background: #ECE7DB; clip-path: polygon(0 0, 100% 0, 100% 8%, 0 14%); }
+/* ---------- Flyer-Hintergrund: gestapelte Papierlagen, scrollt mit ----------
+   Bänder werden per JS den ganzen Canvas runter gestapelt (wiederholt sich).
+   Jedes Band liegt über dem darunter und wirft genau dort seinen Schatten nach
+   unten = sichtbare Kante nur an der echten Überlappung. Slant wechselt. */
+.paper-stack { position: absolute; top: 0; left: 0; right: 0; z-index: -1; overflow: hidden; background: #ECE7DB; }
+.pband { position: absolute; left: 0; width: 100%; filter: drop-shadow(0 10px 11px rgba(22,11,7,.42)); }
+
+/* ---------- Lightbox ---------- */
+.lightbox { position: fixed; inset: 0; z-index: 9500; display: none; place-items: center; background: rgba(20,17,12,.93); padding: 4vmin; cursor: zoom-out; }
+.lightbox.on { display: grid; }
+.lightbox img { max-width: 92vw; max-height: 86vh; width: auto; height: auto; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.lb-cap { position: fixed; bottom: 3vmin; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .85; }
+.lb-close { position: fixed; top: 3vmin; right: 4vmin; width: 46px; height: 46px; border: 2px solid var(--chalk); border-radius: 50%; background: transparent; color: var(--chalk); font-size: 1.4rem; line-height: 1; cursor: pointer; }
 
 /* ---------- Hero ---------- */
 .g-hero { position: relative; padding: clamp(7rem,14vh,10rem) 0 clamp(1rem,3vw,2rem); text-align: center; }
@@ -78,7 +77,7 @@
 
 /* ---------- Chaos-Canvas ---------- */
 .g-canvas { position: relative; width: 100%; overflow: hidden; z-index: 1; }
-.g-item { position: absolute; display: block; border-radius: 10px; overflow: hidden;
+.g-item { position: absolute; display: block; border-radius: 10px; overflow: hidden; cursor: zoom-in;
   rotate: var(--r, 0deg); transition: rotate .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
   box-shadow: 0 14px 30px rgba(28,27,25,.22); background: var(--chalk); border: 1px solid rgba(28,27,25,.08); }
 .g-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -96,10 +95,7 @@
 </head>
 <body>
 
-<div class="flyer-bg" aria-hidden="true">
-  <div class="sheet s1"></div><div class="sheet s2"></div><div class="sheet s3"></div><div class="sheet s4"></div>
-  <div class="sheet s5"></div><div class="sheet s6"></div><div class="sheet s7"></div><div class="sheet s8"></div>
-</div>
+<div class="paper-stack" id="pstack" aria-hidden="true"></div>
 
 <nav class="nav">
   <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
@@ -150,6 +146,12 @@
 
 <div class="g-end wrap">
   <a class="btn" href="index.html#kontakt">Lust auf so was? <span class="arrow">→</span></a>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" type="button" aria-label="Schließen">✕</button>
+  <img alt="">
+  <div class="lb-cap"></div>
 </div>
 
 <footer class="foot">
@@ -243,7 +245,56 @@
     canvas.appendChild(a);
     y += rng(vh * 0.2, vh * 0.46);
   });
-  canvas.style.height = Math.round(y + vh * 0.4) + 'px';
+  const canvasH = Math.round(y + vh * 0.4);
+  canvas.style.height = canvasH + 'px';
+
+  /* ---------- Papierlagen: den ganzen Canvas runter gestapelt ---------- */
+  const stack = document.getElementById('pstack');
+  if (stack) {
+    const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#C98A5E', '#4A2540'];
+    const total = canvas.offsetTop + canvasH + 900;
+    stack.style.height = total + 'px';
+    const STEP = 158, OVER = 56, SL = 132, H = STEP + OVER;
+    const N = Math.ceil(total / STEP) + 1;
+    for (let i = 0; i < N; i++) {
+      const b = document.createElement('div');
+      b.className = 'pband';
+      b.style.top = (i * STEP) + 'px';
+      b.style.height = H + 'px';
+      b.style.background = pal[i % pal.length];
+      b.style.zIndex = String(N - i);             // oberes Band liegt über dem darunter
+      b.style.clipPath = (i % 2 === 0)
+        ? `polygon(0 0, 100% 0, 100% ${H}px, 0 ${H - SL}px)`   // Unterkante nach rechts unten
+        : `polygon(0 0, 100% 0, 100% ${H - SL}px, 0 ${H}px)`;  // Unterkante nach links unten
+      stack.appendChild(b);
+    }
+  }
+})();
+
+/* ---------- Lightbox: Klick auf ein Werk = groß ---------- */
+(() => {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  const lbImg = lb.querySelector('img');
+  const lbCap = lb.querySelector('.lb-cap');
+  const open = (src, cap) => {
+    lbImg.src = src; lbCap.textContent = cap || '';
+    lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false');
+  };
+  const close = () => {
+    lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true');
+    lbImg.removeAttribute('src');
+  };
+  document.getElementById('gcanvas').addEventListener('click', (e) => {
+    const item = e.target.closest('.g-item');
+    if (!item) return;
+    e.preventDefault();
+    const img = item.querySelector('img');
+    const cap = item.querySelector('.g-cap');
+    open(img.currentSrc || img.src, cap ? cap.textContent : '');
+  });
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 })();
 
 /* ---------- Technics 1210: Pride Tears + Waveform (wie der Hero) ---------- */
