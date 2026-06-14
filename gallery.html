@@ -19,7 +19,11 @@
    Jedes Band liegt über dem darunter und wirft genau dort seinen Schatten nach
    unten = sichtbare Kante nur an der echten Überlappung. Slant wechselt. */
 .paper-stack { position: absolute; top: 0; left: 0; right: 0; z-index: -1; overflow: hidden; background: #ECE7DB; }
-.pband { position: absolute; left: 0; width: 100%; filter: drop-shadow(0 10px 11px rgba(22,11,7,.42)); }
+/* Wrapper trägt den Schatten (ungeclippt), Kind die Raute. Sonst würde
+   clip-path den drop-shadow wieder wegschneiden. */
+.pband { position: absolute; }
+.pband > i { display: block; width: 100%; height: 100%; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.pband.raised { filter: drop-shadow(0 0 17px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(0,0,0,.7)); }
 
 /* ---------- Lightbox ---------- */
 .lightbox { position: fixed; inset: 0; z-index: 9500; display: none; place-items: center; background: rgba(20,17,12,.93); padding: 4vmin; cursor: zoom-out; }
@@ -219,7 +223,7 @@
   let y = vh * 0.4;
 
   items.forEach((it, i) => {
-    const baseW = (it.big ? rng(380, 540) : rng(210, 330)) * sf;
+    const baseW = (it.big ? rng(380, 540) : rng(210, 330)) * sf * 1.5;
     const w = Math.round(baseW), h = Math.round(w / it.a);
     const side = i % 3;
     const xpct = side === 0 ? rng(1, 24) : side === 1 ? rng(50, 78) : rng(22, 56);
@@ -248,26 +252,39 @@
   const canvasH = Math.round(y + vh * 0.4);
   canvas.style.height = canvasH + 'px';
 
-  /* ---------- Papierlagen: den ganzen Canvas runter gestapelt ---------- */
+  /* ---------- Rauten-Gitter aus gefaltetem Papier, scrollt mit ----------
+     Reihenfarbe steigt durch (sage, terracotta, rose, maroon ...). Jede zweite
+     Reihe liegt oben (.raised) und wirft Schatten nach oben und unten auf die
+     dazwischenliegenden Reihen. Die unteren Reihen tragen keinen eigenen Schatten. */
   const stack = document.getElementById('pstack');
   if (stack) {
-    const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#C98A5E', '#4A2540'];
+    const pal = ['#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#C98A5E', '#4A2540'];
     const total = canvas.offsetTop + canvasH + 900;
     stack.style.height = total + 'px';
-    const STEP = 158, OVER = 56, SL = 132, H = STEP + OVER;
-    const N = Math.ceil(total / STEP) + 1;
-    for (let i = 0; i < N; i++) {
-      const b = document.createElement('div');
-      b.className = 'pband';
-      b.style.top = (i * STEP) + 'px';
-      b.style.height = H + 'px';
-      b.style.background = pal[i % pal.length];
-      b.style.zIndex = String(N - i);             // oberes Band liegt über dem darunter
-      b.style.clipPath = (i % 2 === 0)
-        ? `polygon(0 0, 100% 0, 100% ${H}px, 0 ${H - SL}px)`   // Unterkante nach rechts unten
-        : `polygon(0 0, 100% 0, 100% ${H - SL}px, 0 ${H}px)`;  // Unterkante nach links unten
-      stack.appendChild(b);
+    stack.style.background = pal[3];               // dunkle Basis, kein helles Durchscheinen
+    const hw = 268, hh = 206;                      // halbe Rauten-Breite/-Höhe = große Flächen
+    const cols = Math.ceil(W / hw) + 3;
+    const rows = Math.ceil(total / hh) + 3;
+    const frag = document.createDocumentFragment();
+    for (let r = -1; r < rows; r++) {
+      const raised = r % 2 === 0;
+      const color = pal[((r % pal.length) + pal.length) % pal.length];
+      for (let c = -1; c < cols; c++) {
+        if (((r + c) % 2 + 2) % 2 !== 0) continue; // nur jede zweite Zelle = Rautenraster
+        const d = document.createElement('div');
+        d.className = raised ? 'pband raised' : 'pband';
+        d.style.left = (c * hw - hw) + 'px';
+        d.style.top = (r * hh - hh) + 'px';
+        d.style.width = (hw * 2) + 'px';
+        d.style.height = (hh * 2) + 'px';
+        d.style.zIndex = raised ? '40' : '10';
+        const inner = document.createElement('i');
+        inner.style.background = color;
+        d.appendChild(inner);
+        frag.appendChild(d);
+      }
     }
+    stack.appendChild(frag);
   }
 })();
 
