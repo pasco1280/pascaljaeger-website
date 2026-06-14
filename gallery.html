@@ -75,7 +75,9 @@
 .deck-brand { position: absolute; right: 9%; top: 56%; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: #5a5a5d; }
 .tt-credit { text-align: center; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; margin-top: 1.2rem; color: var(--ink); opacity: .7; }
 .tt-hint { text-align: center; font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; opacity: .5; margin-top: .4rem; }
-.wave { display: block; width: 100%; height: clamp(150px, 22vh, 210px); margin-top: 1rem; border-radius: 12px; background: #8FB1A6; border: 2px solid var(--ink); opacity: 0; transition: opacity .5s; }
+.wave { display: block; width: 100%; height: clamp(210px, 32vh, 320px); margin-top: .5rem; background: transparent; border: none; opacity: 0; transition: opacity .6s;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 88%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 88%, transparent 100%); }
 .wave.on { opacity: 1; }
 
 /* ---------- Chaos-Canvas ---------- */
@@ -343,17 +345,19 @@
     if (c.width !== Math.round(c.clientWidth * dpr)) { c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr; }
     const W = c.clientWidth, H = c.clientHeight;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#8FB1A6';
-    ctx.fillRect(0, 0, W, H);
+    ctx.clearRect(0, 0, W, H);                                 // transparent, verschmilzt mit dem Papier
     analyser.getByteFrequencyData(freq);
     twave += 0.05;
-    const ROWS = 16, SEG = 64, horizon = H * 0.24, USE = Math.min(freq.length, 256);
-    ctx.strokeStyle = '#0d0d0d'; ctx.lineJoin = 'round';
+    const ROWS = 18, SEG = 72, horizon = H * 0.16, USE = Math.min(freq.length, 256);
+    let sum = 0; for (let i = 0; i < USE; i++) sum += freq[i];
+    const energy = sum / (USE * 255);                          // 0..1, treibt das Pulsieren
+    const PAL = ['#8FB1A6', '#C0DF85', '#C77E52', '#D2868F', '#9DB6AE'];
+    ctx.lineJoin = 'round';
     for (let r = 0; r < ROWS; r++) {
       const z = r / (ROWS - 1);
-      const rowY = horizon + Math.pow(z, 1.6) * (H * 0.82);   // Perspektive: Reihen laufen in die Tiefe
-      const sx = 0.32 + z * 0.68;                              // nahe Reihen breiter
-      const amp = 8 + z * z * (H * 0.6);                       // nahe Reihen höher
+      const rowY = horizon + Math.pow(z, 1.6) * (H * 0.86);    // Perspektive: Reihen laufen in die Tiefe
+      const sx = 0.30 + z * 0.72;                              // nahe Reihen breiter
+      const amp = (8 + z * z * (H * 0.62)) * (0.7 + energy * 0.8); // pulsiert mit dem Beat
       ctx.beginPath();
       for (let i = 0; i <= SEG; i++) {
         const tx = i / SEG;
@@ -364,11 +368,15 @@
         const y = rowY - hgt;
         i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       }
-      ctx.lineWidth = 0.6 + z * 1.9;
-      ctx.globalAlpha = 0.22 + z * 0.78;
+      const col = PAL[(r + Math.floor(twave * 0.6)) % PAL.length]; // Farben fließen durchs Feld
+      ctx.strokeStyle = col;
+      ctx.shadowColor = col;
+      ctx.shadowBlur = (3 + energy * 16) * (0.4 + z);          // Glühen pulsiert mit dem Beat
+      ctx.lineWidth = (0.5 + z * 2.0) * (0.85 + energy * 0.7);
+      ctx.globalAlpha = (0.30 + z * 0.65) * (0.65 + energy * 0.5);
       ctx.stroke();
     }
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
     raf = requestAnimationFrame(draw3D);
   }
   function start() {
