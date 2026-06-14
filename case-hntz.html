@@ -38,6 +38,10 @@ body { background: #14110f; color: var(--linen); }
 .case-hero { position: relative; overflow: hidden; }
 .hero-tricho { position: absolute; right: clamp(0.5rem,4vw,4.5rem); bottom: 0; width: clamp(150px,24vw,360px); height: auto; z-index: 2; filter: drop-shadow(0 22px 36px rgba(0,0,0,.5)); pointer-events: none; }
 @media (max-width:760px){ .hero-tricho { width: 130px; right: 0; opacity: .9; } }
+.read-col { max-width:60ch; margin:0 auto; }
+.read-col p { font-size:clamp(1.05rem,1.5vw,1.25rem); line-height:1.7; margin:0 0 1.2rem; color:var(--linen); opacity:.88; }
+.read-col p:last-child { margin-bottom:0; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
 </style>
 </head>
 <body>
@@ -139,6 +143,19 @@ body { background: #14110f; color: var(--linen); }
         <p class="case-lede" style="max-width:22ch;margin-top:1.3rem">Neu: ein <span class="hl">Maskottchen</span>, geboren aus Trichomen.</p>
         <p class="body" style="opacity:.82;margin-top:1.2rem">Es hat schon einen Namen. Verraten wird er erst auf der Cannafair. Bis dahin steht es einfach da und grinst.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- LESEN -->
+<section class="section dark-section" style="padding-top:0">
+  <div class="wrap">
+    <div class="read-col reveal">
+      <span class="read-k">Zum Weiterlesen</span>
+      <p>Wer Pflanzen züchtet, sammelt über Jahre ein Wissen, das selten den Kopf verlässt. Welche Mutter welche Stärke weitergibt. Wann ein Geruch kippt. Welche Linie unter Stress stabil bleibt. Am Ende steht meist ein selbstgebautes Spreadsheet, das nur einer lesen kann.</p>
+      <p>HNTZ macht aus jeder Pflanze ein eigenes Datenobjekt, das über sieben Phasen mitwächst. Ein Foto, ein Messwert, eine Notiz, am Abend eine kurze Sprachnachricht. Aus dem Freitext werden Werte, aus den Werten eine Form, die man neben eine andere legen kann. Sechs Achsen, ein Blick, der Phänotyp ist lesbar.</p>
+      <p>Darüber liegt eine Engine, die Wahrscheinlichkeiten über Generationen gewichtet. Sie verfolgt Merkmale über viele Pflanzen und meldet, was vom Muster abweicht, bevor das Auge es bemerkt.</p>
+      <p>Gebaut habe ich das allein, vom Datenmodell bis zur Sprachoberfläche, rund zwanzigtausend Zeilen. Fünfzehn Züchter testen die Beta. Die Engine läuft, und sie findet schon Dinge, die vorher im Spreadsheet verschwunden wären.</p>
     </div>
   </div>
 </section>
