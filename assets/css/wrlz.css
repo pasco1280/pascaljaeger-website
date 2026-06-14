@@ -188,7 +188,8 @@ em { font-style: italic; }
 }
 .nav .links a:hover::after { width: 100%; }
 @media (max-width: 640px) {
-  .nav .links a:not(.nav-cta) { display: none; }
+  .nav .links { gap: 0.65rem; }
+  .nav .links a { font-size: 0.62rem; letter-spacing: .07em; }
 }
 
 /* ---------- Marquee (velocity) ---------- */
