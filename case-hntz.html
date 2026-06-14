@@ -36,6 +36,8 @@ body { background: #14110f; color: var(--linen); }
 @media (min-width:760px){ .mascot-row { grid-template-columns: 0.85fr 1fr; } }
 .shot-mascot img { width:100%; max-width:340px; height:auto; display:block; margin:0 auto; filter: drop-shadow(0 22px 34px rgba(28,27,25,.3)); }
 .case-hero { position: relative; overflow: hidden; }
+.hero-logo { left: -2%; top: 30%; width: min(40vw, 440px); opacity: .10; }
+@media (max-width:760px){ .hero-logo { display: none; } }
 .hero-tricho { position: absolute; right: clamp(0.5rem,4vw,4.5rem); bottom: 0; width: clamp(150px,24vw,360px); height: auto; z-index: 2; filter: drop-shadow(0 22px 36px rgba(0,0,0,.5)); pointer-events: none; }
 @media (max-width:760px){ .hero-tricho { width: 150px; right: 4%; top: 13%; bottom: auto; opacity: .95; } }
 .read-col { max-width:60ch; margin:0 auto; }
@@ -61,6 +63,7 @@ body { background: #14110f; color: var(--linen); }
   <div class="case-bg">
     <span class="hntz-glow" data-px="-0.15" data-depth="0.8"></span>
     <svg class="hntz-dots" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.18" data-depth="1.8"><g class="dotg"></g></svg>
+    <img class="hero-logo" src="assets/img/hntz/hntz_logo_golden.svg" alt="" aria-hidden="true" data-px="0.06" data-depth="0.5">
   </div>
   <div class="wrap">
     <p class="case-kicker" data-depth="0.3" style="color:var(--lime)">Case /02 · SaaS · Closed Beta</p>

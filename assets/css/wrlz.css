@@ -388,3 +388,6 @@ em { font-style: italic; }
 .sp .spn { font-weight: 800; font-size: clamp(1.25rem, 2.3vw, 1.95rem); letter-spacing: -.02em; line-height: 1; }
 .sp .spd { font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin-top: .55rem; line-height: 1.3; }
 @media (max-width: 460px) { .beat { grid-template-columns: 1fr; gap: .2rem; } }
+
+/* ---- Subtiles Brand-Wasserzeichen im Case-Hero ---- */
+.hero-logo { position: absolute; pointer-events: none; z-index: 1; height: auto; }
