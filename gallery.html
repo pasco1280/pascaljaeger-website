@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — Pascal Jäger · Illustration, Logo, Web, Sound, Produkt</title>
+<meta name="description" content="Alles von A bis Z: Illustrationen, Logodesign, Webdesign, Flyer, Sound-Cover, Apps und Produkte. Ein Kopf, viele Materien.">
+<meta name="theme-color" content="#EBE5D7">
+<link rel="canonical" href="https://pascaljaeger.de/gallery.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Gallery — Pascal Jäger">
+<meta property="og:description" content="Ein Kopf, viele Materien. Illustration, Logo, Web, Sound, Produkt.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+/* ---------- Flyer-Hintergrund: übereinanderliegende Papierbänder ---------- */
+.flyer-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #ECE7DB; }
+.flyer-bg .band { position: absolute; inset: 0; filter: drop-shadow(0 -5px 9px rgba(46,24,16,.30)); }
+.fb1 { background: #9DB6AE; clip-path: polygon(0 14%, 100% 7%, 100% 100%, 0 100%); }
+.fb2 { background: #CC7A4E; clip-path: polygon(0 27%, 100% 19%, 100% 100%, 0 100%); rotate: .3deg; }
+.fb3 { background: #D2868F; clip-path: polygon(0 40%, 100% 33%, 100% 100%, 0 100%); }
+.fb4 { background: #6E2E40; clip-path: polygon(0 54%, 100% 45%, 100% 100%, 0 100%); rotate: -.3deg; }
+.fb5 { background: #C98A5E; clip-path: polygon(0 67%, 100% 60%, 100% 100%, 0 100%); }
+.fb6 { background: #4A2540; clip-path: polygon(0 81%, 100% 73%, 100% 100%, 0 100%); }
+
+/* ---------- Hero ---------- */
+.g-hero { position: relative; padding: clamp(7rem,14vh,10rem) 0 clamp(1rem,3vw,2rem); text-align: center; }
+.g-hero .h2, .g-hero .kicker { color: var(--ink); }
+.g-hero .lead { max-width: 44ch; margin: 1.2rem auto 0; opacity: .82; color: var(--ink); }
+
+/* ---------- Nähkästchen ---------- */
+.g-words { position: relative; z-index: 2; max-width: 760px; margin: clamp(2rem,5vw,4rem) auto; padding: clamp(2rem,5vw,3.5rem);
+  background: rgba(244,239,229,.92); border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 12px 12px 0 var(--ink); }
+.g-words p { font-size: clamp(1.05rem,1.5vw,1.3rem); line-height: 1.62; margin-bottom: 1.1rem; }
+.g-words p:last-child { margin-bottom: 0; }
+.g-words .lead-line { font-weight: 700; font-size: clamp(1.4rem,2.6vw,2.1rem); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 1.4rem; }
+.g-words .hl { color: var(--hot); }
+
+/* ---------- Technics 1210 ---------- */
+.tt-wrap { position: relative; z-index: 2; width: min(480px, 92vw); margin: clamp(2.5rem,6vw,4rem) auto 0; }
+.deck { position: relative; width: 100%; aspect-ratio: 1.32; border-radius: 14px; cursor: pointer;
+  background: linear-gradient(160deg, #d7d7d9, #b9b9bc 60%, #a9a9ac);
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.6), inset 0 -3px 6px rgba(0,0,0,.25), 0 22px 40px rgba(28,27,25,.34);
+  border: 1px solid #9a9a9d; }
+.platter { position: absolute; left: 5%; top: 8%; width: 70%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #2a2a2c 0 16%, #0d0d0e 17%); box-shadow: 0 4px 10px rgba(0,0,0,.45), inset 0 0 0 2px #3a3a3d; }
+.strobe { position: absolute; inset: -3.5%; border-radius: 50%;
+  background: repeating-conic-gradient(#7a7a7d 0 1.6deg, transparent 1.6deg 5deg); -webkit-mask: radial-gradient(circle, transparent 49%, #000 50% 53%, transparent 54%); mask: radial-gradient(circle, transparent 49%, #000 50% 53%, transparent 54%); opacity: .5; }
+.vinyl { position: absolute; inset: 6%; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255,255,255,.10), transparent 22%, transparent 78%, rgba(255,255,255,.10)),
+              repeating-radial-gradient(circle at 50% 50%, #0b0b0c 0 2px, #18181a 2px 4px); }
+.label { position: absolute; inset: 34%; border-radius: 50%; background: var(--hot); display: grid; place-items: center; text-align: center;
+  color: var(--chalk); font-family: var(--mono); font-size: .5rem; line-height: 1.3; letter-spacing: .06em; padding: 6%; }
+.spindle { position: absolute; left: 50%; top: 50%; width: 3.5%; aspect-ratio: 1; transform: translate(-50%,-50%); border-radius: 50%; background: #cfcfcf; box-shadow: 0 0 2px #000; z-index: 3; }
+.platter, .strobe, .vinyl, .label, .spindle { pointer-events: none; }
+.deck.spin .vinyl, .deck.spin .label { animation: ttspin 1.8s linear infinite; }
+@keyframes ttspin { to { transform: rotate(360deg); } }
+.tonearm { position: absolute; right: 9%; top: 9%; width: 30%; height: 7px; background: linear-gradient(#3a3a3d,#1c1c1e); border-radius: 5px;
+  transform-origin: right center; rotate: -34deg; transition: rotate .6s cubic-bezier(.2,.8,.2,1); z-index: 4; }
+.tonearm::before { content: ''; position: absolute; right: -7px; top: -6px; width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #4a4a4d, #1a1a1c); }
+.tonearm::after { content: ''; position: absolute; left: -4px; top: -2px; width: 12px; height: 12px; background: #c8c8cb; border-radius: 2px; }
+.deck.spin .tonearm { rotate: -12deg; }
+.pitch { position: absolute; right: 7%; bottom: 9%; width: 9%; height: 34%; background: #9b9b9e; border-radius: 4px; box-shadow: inset 0 0 4px rgba(0,0,0,.4); }
+.pitch-h { position: absolute; left: 50%; top: 18%; width: 150%; height: 12px; transform: translateX(-50%); background: linear-gradient(#e9e9ec,#bdbdc0); border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.startstop { position: absolute; left: 8%; bottom: 11%; width: 13%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #d23a3a, #8a1f1f); box-shadow: inset 0 1px 2px rgba(255,255,255,.5), 0 3px 6px rgba(0,0,0,.4); }
+.deck.spin .startstop { background: radial-gradient(circle at 40% 35%, #4ad26a, #1f8a3a); }
+.deck-brand { position: absolute; right: 9%; top: 56%; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: #5a5a5d; }
+.tt-credit { text-align: center; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; margin-top: 1.2rem; color: var(--ink); opacity: .7; }
+.tt-hint { text-align: center; font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; opacity: .5; margin-top: .4rem; }
+.wave { display: block; width: 100%; height: 90px; margin-top: 1rem; border-radius: 12px; background: #14110e; border: 2px solid var(--ink); opacity: 0; transition: opacity .5s; }
+.wave.on { opacity: 1; }
+
+/* ---------- Chaos-Canvas ---------- */
+.g-canvas { position: relative; width: 100%; overflow: hidden; z-index: 1; }
+.g-item { position: absolute; display: block; border-radius: 10px; overflow: hidden;
+  rotate: var(--r, 0deg); transition: rotate .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+  box-shadow: 0 14px 30px rgba(28,27,25,.22); background: var(--chalk); border: 1px solid rgba(28,27,25,.08); }
+.g-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.g-item .g-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: .5rem .7rem;
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--chalk); background: linear-gradient(to top, rgba(20,17,12,.82), transparent); opacity: 0; transition: opacity .3s; }
+.g-item:hover { rotate: 0deg; transform: scale(1.06); z-index: 80; box-shadow: 18px 18px 0 var(--ink); }
+.g-item:hover .g-cap { opacity: 1; }
+.g-end { position: relative; z-index: 2; text-align: center; padding: clamp(4rem,9vh,7rem) 0 clamp(5rem,9vh,7rem); }
+@media (prefers-reduced-motion: reduce) {
+  .g-canvas { overflow: visible; display: flex; flex-direction: column; align-items: center; height: auto !important; }
+  .g-item { position: relative !important; left: auto !important; top: auto !important; width: min(82vw,460px) !important; height: auto !important; aspect-ratio: var(--ar,1); rotate: 0deg !important; margin: 1rem auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="flyer-bg" aria-hidden="true">
+  <div class="band fb1"></div><div class="band fb2"></div><div class="band fb3"></div>
+  <div class="band fb4"></div><div class="band fb5"></div><div class="band fb6"></div>
+</div>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="index.html#work">Arbeit</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<header class="g-hero wrap">
+  <span class="kicker" style="opacity:.55">Alles von A bis Z</span>
+  <h1 class="h2" style="margin-top:1rem">Buntkram.</h1>
+  <p class="lead">Illustration, Logo, Web, Flyer, Sound, Produkt. Ein Kopf, viele Materien.</p>
+</header>
+
+<!-- NÄHKÄSTCHEN -->
+<section class="wrap">
+  <div class="g-words">
+    <p class="lead-line">Ich habe ADHS. Lange hieß das, ein Kopf der nicht stillhält.</p>
+    <p>Irgendwann habe ich aufgehört, das Chaos zu bekämpfen, und angefangen es zu lenken. Ein Scanner springt zwischen den Dingen. Von einer Zeile Code zu einem Akkord, von dort zum Boden unter einer Tomate. Dabei gehe ich in eine Materie oft weiter hinein als jemand, der sie studiert hat. Ich betrachte sie selten von außen. Ich lebe eine Weile in ihr.</p>
+    <p>Ich war Koch. Später habe ich das Restaurant gebaut, das die Gerichte trägt, und das Sounddesign dazu, weil ein Farm-to-Table-Raum klingen muss, wenn der Teller kommt. Auch der Boden ist ein Entwurf. Ich arbeite an den Rezepten der Erde, bis die Frucht so schmeckt wie sie soll, und richte sie dann an, als hinge alles an diesem einen Teller.</p>
+    <p>Das nenne ich <span class="hl">Design</span>. Geschmack, der bis in die Wurzel reicht. Eine Sache so lange ernst nehmen, bis aus Sorgfalt Liebe wird und am Ende Genuss.</p>
+    <p>Die Arbeiten hier könnten verschiedener kaum sein. Sie verschwimmen, weil derselbe Kopf sie angefasst hat.</p>
+  </div>
+</section>
+
+<!-- TECHNICS 1210 + WAVEFORM -->
+<div class="tt-wrap">
+  <div class="deck" id="tt" role="button" tabindex="0" aria-label="Pride Tears abspielen">
+    <div class="platter">
+      <div class="strobe"></div>
+      <div class="vinyl"></div>
+      <div class="label">PRIDE&nbsp;TEARS<br>ADAMN&nbsp;SAMPLER</div>
+      <div class="spindle"></div>
+    </div>
+    <div class="tonearm"></div>
+    <div class="pitch"><div class="pitch-h"></div></div>
+    <div class="startstop"></div>
+    <div class="deck-brand">PJ&nbsp;1210</div>
+  </div>
+  <canvas class="wave" id="wave" aria-hidden="true"></canvas>
+  <p class="tt-credit">Pride Tears · Adamn Sampler · Beatport Charts 2012</p>
+  <p class="tt-hint">Klick die Platte = Beat</p>
+</div>
+
+<section class="g-canvas" id="gcanvas" aria-label="Werke"></section>
+
+<div class="g-end wrap">
+  <a class="btn" href="index.html#kontakt">Lust auf so was? <span class="arrow">→</span></a>
+</div>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">hello@<br>pascaljaeger.de</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-fairi.html">fairi</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-matchachin.html">Matchachin</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="index.html">Index</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>Ein Kopf, viele Materien.</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Chaos-Gallery ---------- */
+(() => {
+  const items = [
+    { s:'illustrationen/zushi.png', l:'Illustration', a:1, big:1 },
+    { s:'illustrationen/faces.png', l:'Illustration', a:1 },
+    { s:'illustrationen/cat_over_boat.png', l:'Illustration', a:1, big:1 },
+    { s:'illustrationen/fruits_and_candy_d.png', l:'Illustration', a:1 },
+    { s:'illustrationen/faces2.png', l:'Illustration', a:1 },
+    { s:'logos/parliament-1.png', l:'Logo', a:1 },
+    { s:'logos/loki-front.png', l:'Logo', a:1 },
+    { s:'logos/necta-candy-yellow-deckel-final.jpg', l:'Packaging', a:1 },
+    { s:'logos/Parlaiment_Vodka.jpg', l:'Packaging', a:333/500 },
+    { s:'logos/soil-food-logo-final-a.jpg', l:'Logo', a:478/425 },
+    { s:'web/akai.jpg', l:'Webdesign', a:1498/891, big:1 },
+    { s:'web/nachi.jpg', l:'Webdesign', a:1498/891 },
+    { s:'web/kyowa.jpg', l:'Webdesign', a:1498/891 },
+    { s:'web/1000kraut.jpg', l:'Webdesign', a:1498/891 },
+    { s:'web/akai-b.jpg', l:'Webdesign', a:1498/891 },
+    { s:'flyer/eisenwaren_cover_adamnsampler.jpg', l:'Sound · Cover', a:1, big:1 },
+    { s:'flyer/sg-2.jpg', l:'Flyer', a:1 },
+    { s:'flyer/forever_young.jpg', l:'Flyer', a:422/600 },
+    { s:'flyer/lauschig_party.jpg', l:'Flyer', a:851/315 },
+    { s:'flyer/urbalicious_party.jpg', l:'Flyer', a:339/720 },
+    { s:'hntz/home-dark.png', l:'App · HNTZ', a:487/795 },
+    { s:'hntz/stammbaum.jpeg', l:'App · HNTZ', a:945/2048 },
+    { s:'hntz/branding-exploration.png', l:'Branding', a:997/807 },
+    { s:'hntz/mockup2.jpg', l:'App · HNTZ', a:474/954 },
+    { s:'matchachin/bottle-lifestyle.jpg', l:'Produkt', a:800/534, big:1 },
+    { s:'matchachin/guayusa1.png', l:'Produkt', a:783/462 },
+    { s:'matchachin/matchachin_hp.png', l:'Webdesign', a:1395/1076 },
+  ];
+
+  let seed = 20120401;
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
+  const rng = (a, b) => a + (b - a) * rnd();
+
+  const W = Math.max(document.documentElement.clientWidth, 320);
+  const vh = window.innerHeight;
+  const sf = Math.min(1, W / 1240);
+  const canvas = document.getElementById('gcanvas');
+  let y = vh * 0.4;
+
+  items.forEach((it, i) => {
+    const baseW = (it.big ? rng(380, 540) : rng(210, 330)) * sf;
+    const w = Math.round(baseW), h = Math.round(w / it.a);
+    const side = i % 3;
+    const xpct = side === 0 ? rng(1, 24) : side === 1 ? rng(50, 78) : rng(22, 56);
+    const x = Math.round(W * xpct / 100);
+    const a = document.createElement('a');
+    a.className = 'g-item';
+    a.style.left = x + 'px'; a.style.top = Math.round(y) + 'px';
+    a.style.width = w + 'px'; a.style.height = h + 'px';
+    a.style.setProperty('--r', rng(-9, 9).toFixed(1) + 'deg');
+    a.style.setProperty('--ar', it.a.toFixed(3));
+    a.style.opacity = (it.big ? 1 : 0.94).toFixed(2);
+    a.style.zIndex = it.big ? 30 : 12;
+    // Richtung mischen: manche fliegen seitlich, manche von oben nach unten
+    const vertical = i % 2 === 0;
+    if (vertical) {
+      a.setAttribute('data-px', rng(0.26, 0.5).toFixed(3));   // starker vertikaler Drift
+      a.setAttribute('data-px-x', rng(-14, 14).toFixed(0));
+    } else {
+      a.setAttribute('data-px', (it.big ? rng(0.06, 0.14) : rng(0.14, 0.26)).toFixed(3));
+      a.setAttribute('data-px-x', rng(-60, 60).toFixed(0));   // starker seitlicher Drift
+    }
+    a.innerHTML = `<img src="assets/img/${it.s}" alt="${it.l}" loading="lazy"><figcaption class="g-cap">${it.l}</figcaption>`;
+    canvas.appendChild(a);
+    y += rng(vh * 0.2, vh * 0.46);
+  });
+  canvas.style.height = Math.round(y + vh * 0.4) + 'px';
+})();
+
+/* ---------- Technics 1210: Pride Tears + Waveform (wie der Hero) ---------- */
+(() => {
+  const tt = document.getElementById('tt');
+  const wave = document.getElementById('wave');
+  if (!tt) return;
+  let actx = null, src = null, analyser = null, audioEl = null, raf = 0, playing = false, data = null;
+
+  function ensureAudio() {
+    audioEl = new Audio('assets/audio/pride-tears.mp3');
+    audioEl.loop = true; audioEl.crossOrigin = 'anonymous';
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    src = actx.createMediaElementSource(audioEl);
+    analyser = actx.createAnalyser(); analyser.fftSize = 2048;
+    data = new Uint8Array(analyser.frequencyBinCount);
+    src.connect(analyser); analyser.connect(actx.destination);
+  }
+  function draw() {
+    const c = wave, ctx = c.getContext('2d');
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    if (c.width !== c.clientWidth * dpr) { c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr; }
+    const W = c.clientWidth, H = c.clientHeight;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    analyser.getByteTimeDomainData(data);
+    const cols = ['#8FB1A6', '#C0DF85', '#C77E52'];
+    for (let layer = 0; layer < 3; layer++) {
+      ctx.beginPath();
+      const off = (layer - 1) * 8;
+      for (let i = 0; i < data.length; i += 8) {
+        const x = (i / data.length) * W;
+        const v = (data[i] - 128) / 128;
+        const yv = H / 2 + v * (H * 0.36) + off;
+        i ? ctx.lineTo(x, yv) : ctx.moveTo(x, yv);
+      }
+      ctx.strokeStyle = cols[layer];
+      ctx.globalAlpha = layer === 0 ? 1 : 0.5;
+      ctx.lineWidth = layer === 0 ? 2 : 1.2;
+      ctx.shadowColor = cols[layer]; ctx.shadowBlur = 8;
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+    raf = requestAnimationFrame(draw);
+  }
+  function start() {
+    playing = true; tt.classList.add('spin'); wave.classList.add('on');
+    if (!src) { try { ensureAudio(); } catch (e) {} }
+    if (actx && actx.state === 'suspended') actx.resume();
+    if (audioEl) audioEl.play().catch(() => {});
+    cancelAnimationFrame(raf); draw();
+  }
+  function stop() {
+    playing = false; tt.classList.remove('spin'); wave.classList.remove('on');
+    if (audioEl) audioEl.pause();
+    cancelAnimationFrame(raf);
+  }
+  const toggle = () => playing ? stop() : start();
+  tt.addEventListener('click', toggle);
+  tt.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+})();
+</script>
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

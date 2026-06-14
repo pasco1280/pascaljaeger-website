@@ -1,0 +1,148 @@
+{
+  "works": [
+    {
+      "id": "fairi",
+      "name": "fairi",
+      "tagline": "Produkt, Safety-UX, Voice",
+      "year": "2026",
+      "description": "Das Kind wird zur Hauptfigur einer Gute-Nacht-Geschichte, vorgelesen mit der Stimme der Eltern. Die schwierigste Arbeit war nicht die Technik, sondern die Verantwortung.",
+      "polarity": "up",
+      "intensity": 0.95,
+      "bpm": 96,
+      "klangfarbe": "sampling",
+      "status": "live",
+      "material": [
+        "PWA, mobil zuerst",
+        "Claude für die Geschichten",
+        "Stimm-Klon aus 60 Sekunden",
+        "Dreischichtiges Safety-Konzept"
+      ],
+      "deeper": "#raum-fairi",
+      "external": "https://fairi.vercel.app"
+    },
+    {
+      "id": "tracev",
+      "name": "Trace V",
+      "tagline": "KI-Vektorisierung, SaaS",
+      "year": "2026",
+      "description": "KI-Bild rein, druckfertiges SVG raus. Versteht das Bild und fragt nach dem Zweck, statt blind Pixel zu tracen. Live mit Auth und Pricing.",
+      "polarity": "up",
+      "intensity": 0.9,
+      "bpm": 124,
+      "klangfarbe": "praezision",
+      "status": "live",
+      "material": [
+        "End-to-End-Pipeline",
+        "Claude Vision zur Bildanalyse",
+        "Color-Quantization + Bezier",
+        "Drei Versuche gratis, ohne Login"
+      ],
+      "deeper": "#raum-tracev",
+      "external": "https://tracev.wrlz.ai"
+    },
+    {
+      "id": "hntz",
+      "name": "HNTZ.app",
+      "tagline": "Anwendung, KI-Pipeline",
+      "year": "seit 2024",
+      "description": "Eine App, die mitläuft, wenn der Züchter durch das Gewächshaus geht. Voice, Foto, Notiz. Aus tausend Beobachtungen werden vier bis sechs Phänotypen. Reduktion als Methode.",
+      "polarity": "up",
+      "intensity": 0.85,
+      "bpm": 128,
+      "klangfarbe": "praezision",
+      "status": "closed beta",
+      "material": [
+        "Voice, Foto, Grow Report Import",
+        "Supabase, OpenAI, Claude",
+        "Bayesian Similarity Engine",
+        "6 Beta-Tester aktiv"
+      ],
+      "deeper": "#raum-hntz",
+      "external": "https://hntz.app"
+    },
+    {
+      "id": "wrlz",
+      "name": "WRLZ.ai",
+      "tagline": "KI-Automation, Systembau",
+      "year": "seit 2024",
+      "description": "Drei Pipelines, die täglich laufen. Content geht raus, Leads kommen rein, der Bericht schreibt sich selbst. Die meiste Arbeit ist nicht der Code, sie ist das Stillhalten, bis das System die Form findet.",
+      "polarity": "up",
+      "intensity": 0.8,
+      "bpm": 140,
+      "klangfarbe": "rhythmus",
+      "status": "läuft",
+      "material": [
+        "n8n als Runtime",
+        "Claude als Reasoning-Layer",
+        "Supabase als State",
+        "Drei aktive Klienten"
+      ],
+      "deeper": "#raum-wrlz",
+      "external": "https://wrlz.ai"
+    },
+    {
+      "id": "kanzlei",
+      "name": "Nill & Böhm",
+      "tagline": "Kanzlei-Digitalisierung",
+      "year": "seit 2023",
+      "description": "Familienrecht aus der Cloud. Drei Personas, ein Custom-KI-Cockpit, deutlich weniger Fixkosten. Heidelberger Kanzlei, Klient seit über einem Jahr.",
+      "polarity": "down",
+      "intensity": 0.55,
+      "bpm": 90,
+      "klangfarbe": "geduld",
+      "status": "in roll-out",
+      "material": [
+        "Actaport als Backend",
+        "n8n als Middleware",
+        "Claude als Logik-Schicht",
+        "DSGVO im Kern"
+      ],
+      "deeper": "#raum-kanzlei"
+    },
+    {
+      "id": "tausendkraut",
+      "name": "Tausendkraut",
+      "tagline": "Living Soil, Content-Pipeline",
+      "year": "seit 2010",
+      "description": "Eigene Marke. Der Boden lebt seit fünfzehn Jahren, die Schreibstimme kam dazu. Eine autonome Content-Pipeline postet fünfmal pro Woche.",
+      "polarity": "down",
+      "intensity": 0.4,
+      "bpm": 60,
+      "klangfarbe": "geduld",
+      "status": "läuft",
+      "material": [
+        "Living Soil seit 2010",
+        "Brand, Produkt, Stimme aus einer Hand",
+        "Content-Pipeline über n8n",
+        "Telegram-Approval"
+      ],
+      "deeper": "#raum-tausendkraut"
+    },
+    {
+      "id": "spotify",
+      "name": "VoiceFlow",
+      "tagline": "Voice-Interface, Skript",
+      "year": "2026",
+      "description": "Siri hat den Spotify-Support gekippt. Eine Woche später lief das hier. Lokales Whisper, n8n als Hub, Claude als Übersetzer. Latenz unter zwei Sekunden. Skript, kein Produkt.",
+      "polarity": "up",
+      "intensity": 0.6,
+      "bpm": 120,
+      "klangfarbe": "praezision",
+      "status": "case",
+      "material": [
+        "whisper-cpp lokal",
+        "n8n Webhook",
+        "Claude Intent-Parser",
+        "20 Befehle, DE und EN"
+      ],
+      "deeper": "#raum-spotify"
+    }
+  ],
+  "klangfarben": {
+    "wildheit":   { "label": "Wildheit",   "line": "Roher Strich, bevor Struktur greift." },
+    "rhythmus":   { "label": "Rhythmus",   "line": "Timing als Sprache." },
+    "sampling":   { "label": "Sampling",   "line": "Vorhandenes neu hören." },
+    "praezision": { "label": "Präzision",  "line": "Quantisierung als Haltung." },
+    "geduld":     { "label": "Geduld",     "line": "Fermentation lässt sich nicht beschleunigen." }
+  }
+}

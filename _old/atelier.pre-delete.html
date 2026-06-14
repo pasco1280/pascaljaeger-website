@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pascal Jäger · Atelier · Heidelberg</title>
+  <meta name="description" content="Atelier von Pascal Jäger. Sieben Werke, eine Werkbank. UX, Systeme, Klang. KI-Automation, Phenotype Discovery, Kanzlei-Digitalisierung, Voice-Interfaces, Projection Mapping, Living Soil, Roman.">
+  <meta name="author" content="Pascal Jäger">
+  <link rel="canonical" href="https://pascaljaeger.de/">
+  <meta name="theme-color" content="#1E271A">
+  <meta property="og:title" content="Pascal Jäger · Atelier · Heidelberg">
+  <meta property="og:description" content="Sieben Werke. Eine Welle. Eine Werkbank. Eintritt frei.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://pascaljaeger.de/">
+  <meta property="og:site_name" content="Pascal Jäger">
+  <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+  <meta property="og:image:width" content="1377">
+  <meta property="og:image:height" content="786">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Person","name":"Pascal Jäger","jobTitle":"UX Designer, Product Owner, Audio Engineer","url":"https://pascaljaeger.de/","email":"hello@pascaljaeger.de","address":{"@type":"PostalAddress","addressLocality":"Heidelberg","addressCountry":"DE"}}
+  </script>
+  <style>
+  @font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:300 600;font-display:swap;src:url('assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');}
+  @font-face{font-family:'Lora';font-style:italic;font-weight:400;font-display:swap;src:url('assets/fonts/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');}
+
+  :root{
+    --charcoal:#1E271A;
+    --teal:#028090;
+    --verd:#00A896;
+    --mint:#02C39A;
+    --cream:#F0F3BD;
+    --paper:#FAFCD8;
+    --ink:var(--charcoal);
+    --bg:var(--cream);
+    --text:var(--charcoal);
+    --muted:#5A6B57;
+    --line:rgba(30,39,26,.16);
+    --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+    --serif:'Lora',Georgia,serif;
+    --display:'Unbounded','Plus Jakarta Sans',system-ui,sans-serif;
+  }
+  html[data-theme="dark"]{
+    --ink:var(--cream);
+    --bg:var(--charcoal);
+    --text:var(--cream);
+    --paper:#273322;
+    --muted:#9CB57A;
+    --line:rgba(240,243,189,.16);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    background:var(--bg); color:var(--text);
+    font-weight:400; line-height:1.6; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+    transition:background .5s ease,color .5s ease;
+    overflow-x:hidden;
+  }
+  em,.em{font-family:var(--serif); font-style:italic; font-weight:400;}
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--mint); color:var(--charcoal);}
+
+  /* ═════════════════════════════════════════════════
+     NAV — Top Bar mit Werke-Menü
+     ═════════════════════════════════════════════════ */
+  .top{
+    position:fixed; top:0; left:0; right:0; z-index:80;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 28px;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(14px) saturate(1.3);
+    border-bottom:1px solid var(--line);
+  }
+  .top-logo{
+    font-family:var(--display); font-weight:500;
+    font-size:.78rem; letter-spacing:.18em;
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+  }
+  .top-logo::before{
+    content:""; width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(circle, #02C39A 30%, #028090 60%, transparent 80%);
+    box-shadow:0 0 16px #02C39A;
+  }
+  .top-menu{
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--display); font-size:.62rem; letter-spacing:.22em;
+    text-transform:uppercase;
+  }
+  .top-menu a{
+    padding:6px 10px; opacity:.7;
+    transition:opacity .2s ease, color .2s ease;
+    border-radius:4px;
+  }
+  .top-menu a:hover{ opacity:1; color:var(--mint); }
+  .top-tools{display:flex; align-items:center; gap:10px;}
+  .top-btn{
+    appearance:none; border:1px solid var(--line); background:transparent;
+    color:var(--text); padding:7px 14px; border-radius:999px;
+    font-family:var(--display); font-size:.6rem; letter-spacing:.2em;
+    font-weight:400; text-transform:uppercase; cursor:pointer;
+    transition:all .2s ease;
+    display:flex; align-items:center; gap:6px;
+  }
+  .top-btn::before{
+    content:""; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.4;
+  }
+  .top-btn[aria-pressed="true"]{ background:var(--mint); color:var(--charcoal); border-color:var(--mint); }
+  .top-btn[aria-pressed="true"]::before{ opacity:1; }
+  .top-btn:hover{ border-color:var(--text); }
+
+  @media (max-width: 920px){
+    .top-menu{ display:none; }
+    .top{ padding:12px 18px; }
+  }
+
+  /* ═════════════════════════════════════════════════
+     KORRIDOR — vertikale Welle links, durchlaufend
+     ═════════════════════════════════════════════════ */
+  .corridor{
+    position:fixed; left:0; top:0; bottom:0;
+    width:44px; pointer-events:none; z-index:5;
+    display:flex; align-items:stretch;
+  }
+  .corridor svg{ width:100%; height:100%; display:block; }
+  .corridor-path{
+    stroke:#028090; stroke-width:1.2; fill:none; opacity:.5;
+    vector-effect:non-scaling-stroke;
+  }
+  html[data-theme="dark"] .corridor-path{ stroke:#02C39A; opacity:.55; }
+  @media (max-width: 720px){ .corridor{ display:none; } }
+  @media (prefers-reduced-motion: reduce){ .corridor{ display:none; } }
+
+  /* ═════════════════════════════════════════════════
+     EINGANG / HERO
+     ═════════════════════════════════════════════════ */
+  #eingang{
+    min-height:100vh; position:relative;
+    padding:120px 28px 60px; padding-left:88px;
+    display:flex; flex-direction:column; justify-content:center;
+    background:
+      radial-gradient(ellipse at 80% 30%, color-mix(in srgb, #02C39A 12%, transparent) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, color-mix(in srgb, #028090 9%, transparent) 0%, transparent 50%),
+      var(--bg);
+  }
+  .hero-banner{
+    font-family:var(--display); font-size:.66rem; letter-spacing:.32em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:38px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .hero-banner::after{
+    content:""; flex:1; max-width:140px; height:1px;
+    background:linear-gradient(to right, var(--muted), transparent);
+  }
+  .hero-h{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(2.6rem, 7vw, 6.5rem);
+    line-height:.98; letter-spacing:.01em;
+    text-transform:uppercase;
+    margin:0; max-width:14ch;
+    color:var(--text);
+  }
+  .hero-h em{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    text-transform:none; letter-spacing:-.015em;
+    color:#02C39A;
+  }
+  .hero-h .frag{ display:block; }
+  .hero-sub{
+    margin-top:30px; max-width:52ch;
+    font-size:1.04rem; line-height:1.65;
+    color:var(--text);
+  }
+  .hero-sub strong{ color:var(--text); font-weight:500; }
+  .hero-meta{
+    margin-top:46px; display:flex; gap:36px; flex-wrap:wrap;
+    font-family:var(--display); font-size:.6rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .hero-meta span{ display:flex; align-items:center; gap:8px; }
+  .hero-meta span::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:#02C39A;
+  }
+  .hero-meta span:nth-child(2)::before{ background:#00A896; }
+  .hero-meta span:nth-child(3)::before{ background:#028090; }
+
+  /* Hero Welle */
+  .hero-wave-stage{
+    margin-top:60px;
+    position:relative;
+    width:100%; max-width:1200px;
+  }
+  .hero-wave-stage svg{
+    width:100%; height:42vh; min-height:300px; display:block;
+    overflow:visible;
+  }
+  .wave-line{
+    stroke:#00A896; stroke-width:2.4;
+    stroke-linecap:round; stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+  }
+  html[data-theme="dark"] .wave-line{ stroke:#02C39A; }
+  .wave-glow{
+    stroke:#02C39A; stroke-width:10;
+    stroke-linecap:round; stroke-linejoin:round;
+    opacity:.32; filter:blur(6px);
+    vector-effect:non-scaling-stroke;
+  }
+  html[data-theme="dark"] .wave-glow{ stroke:#00A896; opacity:.5; }
+  .wave-unu{
+    stroke:#028090; stroke-width:1.2; opacity:.75;
+    stroke-linecap:round; vector-effect:non-scaling-stroke;
+  }
+  .wave-point{cursor:pointer; outline:none;}
+  .wave-point-halo{
+    fill:#02C39A; opacity:.22;
+    transition:r .25s ease, opacity .25s ease;
+  }
+  .wave-point-dot{
+    fill:#028090; stroke:var(--bg); stroke-width:2.5;
+    transition:r .2s ease, fill .2s ease;
+  }
+  html[data-theme="dark"] .wave-point-dot{ fill:#02C39A; }
+  .wave-point:hover .wave-point-halo,
+  .wave-point:focus .wave-point-halo{ opacity:.55; r:24; }
+  .wave-point:hover .wave-point-dot,
+  .wave-point:focus .wave-point-dot{ r:8; }
+  .wave-point.active .wave-point-halo{ opacity:.75; r:32; fill:#00A896; }
+  .wave-point.active .wave-point-dot{ r:9; fill:#02C39A; stroke:var(--charcoal); }
+  .wave-tip{
+    position:absolute; transform:translate(-50%, -110%);
+    background:var(--charcoal); color:var(--cream);
+    padding:8px 14px; border-radius:6px;
+    font-family:var(--display); font-size:.62rem; letter-spacing:.18em;
+    text-transform:uppercase; pointer-events:none; opacity:0;
+    transition:opacity .18s ease; white-space:nowrap;
+    box-shadow:0 12px 40px rgba(0,0,0,.22);
+  }
+  html[data-theme="dark"] .wave-tip{background:var(--cream); color:var(--charcoal);}
+  .wave-tip strong{display:block;}
+  .wave-tip span{display:block; font-size:.58rem; opacity:.6; font-family:var(--display); margin-top:2px; letter-spacing:.18em;}
+  .wave-tip[data-visible="true"]{opacity:1;}
+
+  .hero-wave-label{
+    margin-top:18px; padding-top:14px; border-top:1px solid var(--line);
+    display:flex; gap:18px; align-items:baseline; flex-wrap:wrap;
+    max-width:720px;
+    font-family:var(--display); font-size:.62rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .hero-wave-label strong{ color:var(--text); font-weight:500; }
+  .hero-wave-label .em{ font-family:var(--serif); font-style:italic; text-transform:none; letter-spacing:-.005em; font-size:.85rem; color:var(--muted); }
+
+  /* ═════════════════════════════════════════════════
+     WERKVERZEICHNIS — Index der Räume
+     ═════════════════════════════════════════════════ */
+  #werkverzeichnis{
+    padding:120px 28px; padding-left:88px;
+    background:var(--paper);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:30px; margin-bottom:60px; flex-wrap:wrap;
+  }
+  .section-eyebrow{
+    font-family:var(--display); font-size:.62rem; letter-spacing:.32em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .section-title{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(2rem, 4.5vw, 3.8rem);
+    line-height:1; letter-spacing:.01em;
+    text-transform:uppercase;
+    margin:14px 0 0; color:var(--text);
+  }
+  .section-title em{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    text-transform:none; letter-spacing:-.015em; color:var(--muted);
+  }
+  .section-aside{
+    max-width:32ch; color:var(--muted); font-size:.95rem;
+    font-family:var(--serif); font-style:italic;
+  }
+
+  .verz{
+    display:grid; gap:0;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    border-top:1px solid var(--line);
+  }
+  .verz-item{
+    border-bottom:1px solid var(--line); border-right:1px solid var(--line);
+    padding:28px 24px;
+    background:var(--bg);
+    transition:background .2s ease;
+    cursor:pointer; display:block;
+    position:relative; overflow:hidden;
+  }
+  .verz-item:hover{ background:color-mix(in srgb, var(--mint) 8%, var(--bg)); }
+  .verz-item::after{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--vc, var(--mint));
+    transform:scaleY(0); transform-origin:top;
+    transition:transform .3s ease;
+  }
+  .verz-item:hover::after{ transform:scaleY(1); }
+  .verz-num{
+    font-family:var(--display); font-size:.62rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:18px;
+  }
+  .verz-name{
+    font-family:var(--display); font-size:1.4rem; font-weight:500;
+    letter-spacing:.01em; text-transform:uppercase; margin:0 0 8px;
+    color:var(--text);
+  }
+  .verz-medium{
+    font-family:var(--serif); font-style:italic;
+    color:var(--muted); font-size:.95rem;
+  }
+  .verz-meta{
+    margin-top:24px; display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--display); font-size:.58rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .verz-status{
+    display:flex; align-items:center; gap:6px;
+  }
+  .verz-status::before{
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:var(--vc, var(--mint));
+  }
+
+  /* ═════════════════════════════════════════════════
+     RAUM — pro Werk eine eigene Welt
+     ═════════════════════════════════════════════════ */
+  .room{
+    padding:140px 28px 120px; padding-left:88px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .room-inner{ max-width:1180px; margin:0 auto; position:relative; }
+  .room-head{
+    display:grid; gap:8px;
+    grid-template-columns:auto 1fr auto;
+    align-items:end;
+    margin-bottom:54px; padding-bottom:24px;
+    border-bottom:1px solid currentColor; opacity:.95;
+  }
+  .room-num{
+    font-family:var(--display); font-size:.66rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--vc);
+    grid-row:1;
+  }
+  .room-name{
+    grid-column:1 / -1; grid-row:2;
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(2.4rem, 6vw, 5.4rem); line-height:.98;
+    letter-spacing:.01em; text-transform:uppercase;
+    margin:0;
+  }
+  .room-name em{
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    text-transform:none; letter-spacing:-.015em;
+  }
+  .room-medium{
+    grid-column:1 / 3; grid-row:3;
+    font-family:var(--serif); font-style:italic;
+    color:var(--muted); font-size:1.1rem; margin:8px 0 0;
+  }
+  .room-year{
+    grid-column:3; grid-row:3; justify-self:end;
+    font-family:var(--display); font-size:.62rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--muted);
+  }
+
+  .room-body{
+    display:grid; gap:60px;
+    grid-template-columns:minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+  @media (max-width: 880px){
+    .room-body{ grid-template-columns:1fr; gap:40px; }
+  }
+  .room-notiz{
+    font-family:var(--serif); font-style:italic;
+    font-size:clamp(1.1rem, 1.8vw, 1.4rem); line-height:1.55;
+    color:var(--text);
+  }
+  .room-notiz p + p{ margin-top:1.1em; }
+
+  .room-side{
+    border-top:1px solid var(--line); padding-top:20px;
+  }
+  .room-side-label{
+    font-family:var(--display); font-size:.6rem; letter-spacing:.32em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:18px;
+  }
+  .room-material{ list-style:none; padding:0; margin:0; }
+  .room-material li{
+    padding:12px 0; border-bottom:1px solid var(--line);
+    display:flex; gap:14px; align-items:baseline;
+    font-size:.95rem;
+  }
+  .room-material li::before{
+    content:""; flex:0 0 auto; width:8px; height:8px;
+    transform:translateY(2px);
+    background:var(--vc, var(--mint));
+  }
+  .room-material li:last-child{ border-bottom:0; }
+
+  /* Anomalie pro Raum — die Dalí-Skulptur */
+  .room-anomaly{
+    margin:72px 0;
+    padding:40px 0;
+    border-top:1px dashed var(--line); border-bottom:1px dashed var(--line);
+  }
+  .room-anomaly svg{
+    width:100%; height:auto; max-height:340px; display:block;
+  }
+  .room-anomaly-caption{
+    margin-top:14px;
+    font-family:var(--display); font-size:.6rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--muted);
+    display:flex; gap:14px; align-items:center;
+  }
+  .room-anomaly-caption .em{
+    font-family:var(--serif); font-style:italic; text-transform:none; letter-spacing:-.005em;
+    font-size:.95rem;
+  }
+
+  /* Werkblatt / Case Substanz */
+  .case{
+    margin-top:50px; padding-top:60px;
+    border-top:2px solid var(--vc);
+  }
+  .case-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin-bottom:50px; flex-wrap:wrap; gap:20px;
+  }
+  .case-h{
+    font-family:var(--display); font-size:1.6rem; font-weight:500;
+    letter-spacing:.02em; text-transform:uppercase; margin:0;
+  }
+  .case-h em{
+    font-family:var(--serif); font-style:italic; text-transform:none; letter-spacing:-.015em; color:var(--muted);
+  }
+  .case-meta{
+    font-family:var(--display); font-size:.6rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .case-block{
+    margin-bottom:50px;
+    display:grid; gap:24px;
+    grid-template-columns:80px 1fr;
+  }
+  @media (max-width:720px){
+    .case-block{ grid-template-columns:1fr; gap:8px; }
+  }
+  .case-num{
+    font-family:var(--display); font-size:.62rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--vc);
+    padding-top:6px;
+  }
+  .case-body{ max-width:64ch; }
+  .case-body h4{
+    font-family:var(--display); font-size:1.1rem; font-weight:500;
+    letter-spacing:.01em; text-transform:uppercase; margin:0 0 16px;
+  }
+  .case-body p{ margin:0 0 14px; font-size:1rem; line-height:1.66; }
+  .case-body p:last-child{ margin-bottom:0; }
+  .case-body strong{ color:var(--text); font-weight:600; }
+
+  .hyp-list{ list-style:none; padding:0; margin:18px 0 0; display:grid; gap:12px; }
+  .hyp-list li{
+    display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:start;
+    padding:14px 18px; background:color-mix(in srgb, var(--vc) 8%, transparent);
+    border-left:3px solid var(--vc); font-size:.92rem;
+  }
+  .hyp-id{
+    font-family:var(--display); font-weight:500; font-size:.66rem; letter-spacing:.22em;
+    color:var(--vc); padding-top:2px;
+  }
+  .hyp-tag{
+    font-family:var(--display); font-size:.55rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--vc);
+    border:1px solid var(--vc); padding:3px 8px; border-radius:3px;
+    height:fit-content;
+  }
+
+  .pipes{ list-style:none; padding:0; margin:18px 0 0; display:grid; gap:18px; }
+  .pipes li{
+    display:grid; grid-template-columns:48px 1fr; gap:18px;
+    padding:18px 0; border-top:1px solid var(--line);
+  }
+  .pipes li:last-child{ border-bottom:1px solid var(--line); }
+  .pipes-letter{
+    font-family:var(--display); font-weight:500; font-size:1.6rem;
+    line-height:1; color:var(--vc);
+  }
+  .pipes h5{
+    font-family:var(--display); font-weight:500; font-size:.95rem;
+    letter-spacing:.02em; text-transform:uppercase; margin:0 0 8px;
+  }
+  .pipes p{ margin:0; font-size:.92rem; line-height:1.6; color:var(--text); }
+  .pipes p:not(:last-child){ margin-bottom:6px; }
+
+  .compare{
+    margin:18px 0 0;
+    display:grid; gap:18px; grid-template-columns:1fr auto 1fr; align-items:start;
+  }
+  @media (max-width: 700px){ .compare{ grid-template-columns:1fr; } }
+  .compare-side{ padding:18px; border:1px solid var(--line); }
+  .compare-old{ background:color-mix(in srgb, var(--charcoal) 5%, transparent); }
+  .compare-new{ background:color-mix(in srgb, var(--vc) 10%, transparent); border-color:var(--vc); }
+  .compare-label{
+    font-family:var(--display); font-size:.58rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--muted);
+    margin-bottom:14px;
+  }
+  .compare-new .compare-label{ color:var(--vc); }
+  .compare ul{ list-style:none; padding:0; margin:0; }
+  .compare li{ padding:6px 0; font-size:.88rem; line-height:1.5; border-bottom:1px dashed var(--line); }
+  .compare li:last-child{ border-bottom:0; }
+  .compare-vs{
+    font-family:var(--display); font-size:.72rem; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--muted);
+    align-self:center; text-align:center; padding:0 8px;
+  }
+
+  /* RAUM-AKZENT pro id */
+  #raum-wrlz{ --vc:#028090; }
+  #raum-hntz{ --vc:#02C39A; background:linear-gradient(to bottom, color-mix(in srgb, #02C39A 5%, var(--bg)), var(--bg) 40%); }
+  #raum-kanzlei{ --vc:#00A896; }
+  #raum-tausendkraut{
+    --vc:#02C39A;
+    background:var(--charcoal); color:var(--cream);
+    --text:var(--cream); --muted:rgba(240,243,189,.55); --line:rgba(240,243,189,.14);
+  }
+  html[data-theme="dark"] #raum-tausendkraut{ background:#0E1410; }
+  #raum-spotify{ --vc:#028090; background:linear-gradient(to bottom, color-mix(in srgb, #028090 6%, var(--bg)), var(--bg) 50%); }
+  #raum-fourdlumen{ --vc:#00A896; }
+  #raum-loop{
+    --vc:#028090;
+    background:var(--paper); color:var(--charcoal);
+    --text:var(--charcoal); --muted:#5A6B57;
+  }
+  html[data-theme="dark"] #raum-loop{ background:#2E3A2A; color:var(--cream); --text:var(--cream); --muted:#9CB57A; }
+
+  /* ═════════════════════════════════════════════════
+     WERKBANK
+     ═════════════════════════════════════════════════ */
+  #werkbank{
+    background:var(--charcoal); color:var(--cream);
+    padding:140px 28px 120px; padding-left:88px;
+    --text:var(--cream); --muted:rgba(240,243,189,.55); --line:rgba(240,243,189,.16);
+    position:relative;
+  }
+  html[data-theme="dark"] #werkbank{ background:#0A100D; }
+  #werkbank::before{
+    content:""; position:absolute; left:0; right:0; top:0; height:1px;
+    background:linear-gradient(to right, transparent, #02C39A 30%, #00A896 70%, transparent);
+  }
+  .wb-grid{
+    display:grid; gap:0;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    margin-top:60px;
+    border-top:1px solid var(--line);
+  }
+  .wb-tool{
+    padding:32px 24px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    transition:background .25s ease;
+  }
+  .wb-tool:hover{ background:color-mix(in srgb, var(--cream) 5%, transparent); }
+  .wb-tool-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    margin-bottom:14px;
+  }
+  .wb-name{
+    font-family:var(--display); font-size:1.1rem; font-weight:500;
+    letter-spacing:.02em; text-transform:uppercase;
+  }
+  .wb-tag{
+    font-family:var(--display); font-size:.55rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--vc, #02C39A);
+    border:1px solid currentColor; padding:3px 7px; border-radius:3px;
+  }
+  .wb-note{
+    font-family:var(--serif); font-style:italic;
+    font-size:.95rem; line-height:1.5;
+    color:var(--cream); opacity:.85;
+  }
+
+  /* ═════════════════════════════════════════════════
+     KLANGFARBEN
+     ═════════════════════════════════════════════════ */
+  #klangfarben{
+    padding:140px 28px 100px; padding-left:88px;
+    background:var(--paper);
+  }
+  html[data-theme="dark"] #klangfarben{ background:#273322; }
+  .kf-grid{
+    display:grid; gap:0;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    margin-top:60px;
+    border-top:1px solid var(--line);
+  }
+  .kf-cell{
+    padding:36px 24px;
+    border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .kf-cell::before{
+    content:""; position:absolute; left:0; top:0; width:48px; height:3px;
+    background:var(--kc);
+  }
+  .kf-cell[data-k="wildheit"]   { --kc:#00A896; }
+  .kf-cell[data-k="rhythmus"]   { --kc:#02C39A; }
+  .kf-cell[data-k="sampling"]   { --kc:#028090; }
+  .kf-cell[data-k="praezision"] { --kc:#1E271A; }
+  html[data-theme="dark"] .kf-cell[data-k="praezision"]{ --kc:#F0F3BD; }
+  .kf-cell[data-k="geduld"]     { --kc:#9CB57A; }
+  .kf-num{
+    font-family:var(--display); font-size:.55rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--muted); margin-bottom:14px;
+  }
+  .kf-cell h3{
+    font-family:var(--display); font-size:1.5rem; font-weight:500;
+    letter-spacing:.02em; text-transform:uppercase; margin:0 0 18px;
+    color:var(--kc);
+  }
+  .kf-line{
+    font-family:var(--serif); font-style:italic;
+    font-size:1.05rem; line-height:1.55; color:var(--text); margin:0;
+  }
+
+  /* ═════════════════════════════════════════════════
+     RESONANZ / FOOTER
+     ═════════════════════════════════════════════════ */
+  #resonanz{
+    background:var(--charcoal); color:var(--cream);
+    padding:140px 28px 60px; padding-left:88px;
+    --text:var(--cream); --muted:rgba(240,243,189,.5); --line:rgba(240,243,189,.14);
+    position:relative;
+  }
+  html[data-theme="dark"] #resonanz{ background:#0A100D; }
+  #resonanz::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(to right, transparent, #028090, #00A896, #02C39A, transparent);
+  }
+  .res-inner{ max-width:1180px; margin:0 auto; }
+  .res-title{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(2rem, 5vw, 4.4rem); line-height:1; letter-spacing:.01em;
+    text-transform:uppercase; margin:0 0 30px; max-width:14ch;
+  }
+  .res-title em{ font-family:var(--serif); font-style:italic; font-weight:400; text-transform:none; letter-spacing:-.015em; color:#02C39A; }
+  .res-body{ max-width:50ch; font-size:1.05rem; line-height:1.7; opacity:.85; margin:0 0 50px; }
+  .res-grid{ display:grid; gap:40px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); margin-bottom:80px; }
+  .res-card{ border-top:2px solid var(--vc, #02C39A); padding-top:18px; }
+  .res-card:nth-child(1){ --vc:#02C39A; }
+  .res-card:nth-child(2){ --vc:#00A896; }
+  .res-card:nth-child(3){ --vc:#028090; }
+  .res-card-label{
+    font-family:var(--display); font-size:.6rem; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--vc); margin-bottom:14px;
+  }
+  .res-card a{
+    font-family:var(--display); font-size:1.1rem; font-weight:400;
+    letter-spacing:.02em; text-transform:uppercase;
+    border-bottom:1px solid currentColor; padding-bottom:2px;
+    transition:color .2s ease;
+  }
+  .res-card a:hover{ color:var(--vc); }
+  .res-card-sub{ display:block; margin-top:10px; font-family:var(--serif); font-style:italic; font-size:.88rem; opacity:.7; }
+  .res-meta{
+    margin-top:24px; padding-top:24px; border-top:1px solid var(--line);
+    display:flex; gap:28px; flex-wrap:wrap; align-items:center;
+    font-family:var(--display); font-size:.58rem; letter-spacing:.26em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .res-meta a:hover{ color:#02C39A; }
+  .res-meta .copy{ margin-left:auto; }
+
+  /* ═════════════════════════════════════════════════
+     UTILS
+     ═════════════════════════════════════════════════ */
+  .skip{position:absolute; left:-9999px;}
+  .skip:focus{left:18px; top:18px; background:var(--charcoal); color:var(--cream); padding:10px 14px; z-index:99; border-radius:6px;}
+
+  @media (max-width: 720px){
+    #eingang,#werkverzeichnis,.room,#werkbank,#klangfarben,#resonanz{
+      padding-left:28px; padding-right:22px;
+    }
+    .room{ padding-top:90px; padding-bottom:80px; }
+    .hero-meta{ gap:18px; font-size:.55rem; }
+    .verz-item{ padding:24px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+    .wave-glow{ opacity:0; }
+  }
+  </style>
+</head>
+<body>
+<a class="skip" href="#eingang">Zum Inhalt springen</a>
+
+<!-- ────── KORRIDOR ────── -->
+<div class="corridor" aria-hidden="true">
+  <svg viewBox="0 0 44 1000" preserveAspectRatio="none">
+    <path class="corridor-path" id="corridor-path" d=""/>
+  </svg>
+</div>
+
+<!-- ────── NAV ────── -->
+<nav class="top" aria-label="Hauptnavigation">
+  <a class="top-logo" href="#eingang">Pascal Jäger</a>
+  <div class="top-menu" role="list">
+    <a href="#werkverzeichnis">Werke</a>
+    <a href="#werkbank">Werkbank</a>
+    <a href="#klangfarben">Klang</a>
+    <a href="#resonanz">Kontakt</a>
+  </div>
+  <div class="top-tools">
+    <button class="top-btn" id="sound-toggle" type="button" aria-pressed="false" aria-label="Sinus-Ton der Welle hörbar machen">Klang</button>
+    <button class="top-btn" id="theme-toggle" type="button" aria-label="Hell/Dunkel umschalten">Dunkel</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════
+     EINGANG
+     ════════════════════════════════════════════════════ -->
+<header id="eingang">
+  <div class="hero-banner"><span>UX Designer &amp; Product Owner · Heidelberg</span></div>
+  <h1 class="hero-h">
+    <span class="frag">Eine Linie.</span>
+    <em>Viele Amplituden.</em>
+  </h1>
+  <p class="hero-sub">
+    Ich denke, gestalte und baue digitale Produkte, von der ersten Hypothese bis zum Code, der live läuft. UX, Systeme und Klang als eine Handschrift. <strong>Drei eigene Produkte sind gerade online.</strong>
+  </p>
+  <div class="hero-meta">
+    <span>UX &amp; Product Ownership</span>
+    <span>Live: fairi · Trace&nbsp;V · HNTZ</span>
+    <span>Heidelberg · 2026</span>
+  </div>
+  <div class="hero-wave-stage">
+    <svg class="wave-svg" id="wave-svg" aria-label="Frequenzdiagramm der sieben Werke"></svg>
+    <div class="hero-wave-label">
+      <strong>Welle</strong>
+      <span class="em">2026 · SVG, Web Audio</span>
+      <span>Sieben Amplituden, eine Linie</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════
+     WERKVERZEICHNIS
+     ════════════════════════════════════════════════════ -->
+<section id="werkverzeichnis" aria-labelledby="verz-h">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">00 · Werkverzeichnis</div>
+      <h2 class="section-title" id="verz-h">Sieben <em>Räume.</em></h2>
+    </div>
+    <p class="section-aside">Jeder Raum trägt eine Frequenz. Die Welle moduliert, wenn man durchgeht.</p>
+  </div>
+  <div class="verz">
+    <a class="verz-item" href="#raum-fairi" style="--vc:#02C39A">
+      <div class="verz-num">01</div>
+      <div class="verz-name">fairi</div>
+      <div class="verz-medium">Produkt, Safety-UX, Voice</div>
+      <div class="verz-meta"><span class="verz-status">live</span><span>2026</span></div>
+    </a>
+    <a class="verz-item" href="#raum-tracev" style="--vc:#028090">
+      <div class="verz-num">02</div>
+      <div class="verz-name">Trace V</div>
+      <div class="verz-medium">KI-Vektorisierung, SaaS</div>
+      <div class="verz-meta"><span class="verz-status">live</span><span>2026</span></div>
+    </a>
+    <a class="verz-item" href="#raum-hntz" style="--vc:#02C39A">
+      <div class="verz-num">03</div>
+      <div class="verz-name">HNTZ.app</div>
+      <div class="verz-medium">Anwendung, KI-Pipeline</div>
+      <div class="verz-meta"><span class="verz-status">closed beta</span><span>seit 2024</span></div>
+    </a>
+    <a class="verz-item" href="#raum-wrlz" style="--vc:#028090">
+      <div class="verz-num">04</div>
+      <div class="verz-name">WRLZ.ai</div>
+      <div class="verz-medium">KI-Automation, Systembau</div>
+      <div class="verz-meta"><span class="verz-status">läuft</span><span>seit 2024</span></div>
+    </a>
+    <a class="verz-item" href="#raum-kanzlei" style="--vc:#00A896">
+      <div class="verz-num">05</div>
+      <div class="verz-name">Nill & Böhm</div>
+      <div class="verz-medium">Kanzlei-Digitalisierung</div>
+      <div class="verz-meta"><span class="verz-status">in roll-out</span><span>seit 2023</span></div>
+    </a>
+    <a class="verz-item" href="#raum-tausendkraut" style="--vc:#02C39A">
+      <div class="verz-num">06</div>
+      <div class="verz-name">Tausendkraut</div>
+      <div class="verz-medium">Living Soil, Content-Pipeline</div>
+      <div class="verz-meta"><span class="verz-status">läuft</span><span>seit 2010</span></div>
+    </a>
+    <a class="verz-item" href="#raum-spotify" style="--vc:#028090">
+      <div class="verz-num">07</div>
+      <div class="verz-name">VoiceFlow</div>
+      <div class="verz-medium">Voice-Interface, Skript</div>
+      <div class="verz-meta"><span class="verz-status">case</span><span>2026</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 01 — fairi
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-fairi" aria-labelledby="fairi-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">01 / Werk</span>
+      <h2 class="room-name" id="fairi-h">fairi</h2>
+      <p class="room-medium">Personalisierte Gute-Nacht-Geschichten · live</p>
+      <span class="room-year">2026</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p><strong>Was es ist:</strong> Das Kind wird zur Hauptfigur einer Gute-Nacht-Geschichte, vorgelesen mit der Stimme der Eltern. Für Eltern kleiner Kinder. Status: live.</p>
+        <p>Die schwierigste Arbeit war nicht die Technik, sondern die Verantwortung. Inhalte für Kinder dürfen nicht kippen. Genau da, wo andere ein nettes Feature sehen, beginnt die eigentliche Produktarbeit.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>PWA, mobil zuerst</li>
+          <li>Claude für die Geschichten</li>
+          <li>Stimm-Klon aus 60 Sekunden</li>
+          <li>Dreischichtiges Safety-Konzept</li>
+          <li>Vier-Schritt-Onboarding</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="case" aria-labelledby="fairi-case-h">
+      <div class="case-head">
+        <h3 class="case-h" id="fairi-case-h">Werkblatt <em>fairi</em></h3>
+        <span class="case-meta">3 Blöcke · live</span>
+      </div>
+      <div class="case-block">
+        <div class="case-num">01</div>
+        <div class="case-body">
+          <h4>Safety als Architektur, nicht als Filter</h4>
+          <ul class="hyp-list">
+            <li><span class="hyp-id">S1</span><span>Themen-Sperrlisten: was nie vorkommt, ist explizit definiert, nicht dem Modell überlassen.</span><span class="hyp-tag">tragend</span></li>
+            <li><span class="hyp-id">S2</span><span>System-Prompt-Leitplanken: Tonfall, Altersgerechtigkeit und Weltgrenzen fest verdrahtet.</span><span class="hyp-tag">tragend</span></li>
+            <li><span class="hyp-id">S3</span><span>Retry-Logik: kippt eine Ausgabe, wird sie verworfen und neu erzeugt, bevor das Kind sie hört.</span><span class="hyp-tag">tragend</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="case-block">
+        <div class="case-num">02</div>
+        <div class="case-body">
+          <h4>Onboarding für müde Eltern</h4>
+          <p>Vier Schritte, bewusst reduziert: Willkommen, Kind, Stimme, fertig. <strong>Wer das benutzt, ist müde. Jede überflüssige Entscheidung ist ein Abbruchgrund.</strong></p>
+          <p>Der Stimm-Klon entsteht aus einem 60-Sekunden-Skript. Kein Studio, kein Account-Marathon.</p>
+        </div>
+      </div>
+      <div class="case-block">
+        <div class="case-num">03</div>
+        <div class="case-body">
+          <h4>Rolle &amp; Stand</h4>
+          <p>Vision, UX, Safety-Design und Branding von mir verantwortet, vom Stakeholder-Kickoff mit fixiertem MVP-Scope bis zum laufenden Produkt. <strong>Live: Landing und Onboarding deployed, Geschichten-Engine mit Safety-Retry produktiv.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 02 — Trace V
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-tracev" aria-labelledby="tracev-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">02 / Werk</span>
+      <h2 class="room-name" id="tracev-h">Trace V</h2>
+      <p class="room-medium">KI-Vektorisierung, SaaS · live</p>
+      <span class="room-year">2026</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p><strong>Was es ist:</strong> KI-Bild rein, druckfertiges SVG raus. Für alle, die KI-Bilder drucken, lasern oder sticken wollen. Status: live mit Auth und Pricing.</p>
+        <p>Klassische Konverter erzeugen für vier Farben hunderttausende Ankerpunkte. Trace V versteht das Bild und fragt nach dem Zweck, statt blind Pixel zu tracen.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>End-to-End-Pipeline</li>
+          <li>Claude Vision zur Bildanalyse</li>
+          <li>Color-Quantization + Bezier</li>
+          <li>Drei Versuche gratis, ohne Login</li>
+          <li>Auth + Pricing live</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="case" aria-labelledby="tracev-case-h">
+      <div class="case-head">
+        <h3 class="case-h" id="tracev-case-h">Werkblatt <em>Trace V</em></h3>
+        <span class="case-meta">3 Blöcke · live</span>
+      </div>
+      <div class="case-block">
+        <div class="case-num">01</div>
+        <div class="case-body">
+          <h4>Das Problem</h4>
+          <p>Wer mit Midjourney, Flux oder Stable Diffusion arbeitet, steht beim Drucken vor derselben Wand: Rasterbilder brauchen Vektoren. <strong>Bestehende Tools tracen stumpf und erzeugen unbrauchbare SVGs.</strong></p>
+        </div>
+      </div>
+      <div class="case-block">
+        <div class="case-num">02</div>
+        <div class="case-body">
+          <h4>Der Ansatz</h4>
+          <p>Trace V dreht die Logik um: Bild analysieren, <strong>nach dem Verwendungszweck fragen</strong>, kontextabhängig zu sauberem SVG vereinfachen. So wie ein Mensch entscheiden würde.</p>
+          <p>Onboarding bewusst vor die Bezahlschranke: drei Versuche gratis, ohne Anmeldung.</p>
+        </div>
+      </div>
+      <div class="case-block">
+        <div class="case-num">03</div>
+        <div class="case-body">
+          <h4>Rolle &amp; Stand</h4>
+          <p>Produktidee, UX-Konzept, Architektur und Launch allein verantwortet. <strong>Live mit Auth und Pricing.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 04 — WRLZ.ai
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-wrlz" aria-labelledby="wrlz-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">04 / Werk</span>
+      <h2 class="room-name" id="wrlz-h">WRLZ.ai</h2>
+      <p class="room-medium">KI-Automation, Systembau</p>
+      <span class="room-year">seit 2024</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Drei Pipelines, die täglich laufen. Content geht raus, Leads kommen rein, der Bericht schreibt sich selbst.</p>
+        <p>Die meiste Arbeit ist nicht der Code. Sie ist das Stillhalten, bis das System die Form findet. Drei kleine Klienten lehren mehr als ein großer, weil jede Domäne eine eigene Compliance-Realität hat.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>n8n als Runtime</li>
+          <li>Claude als Reasoning-Layer</li>
+          <li>Supabase als State</li>
+          <li>Drei aktive Klienten</li>
+          <li>EU-gehostet, ohne Vendor-Lock-in</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: drei pulsierende Knoten -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 240">
+        <defs>
+          <radialGradient id="puls-grad" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#02C39A" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#02C39A" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- Verbindungslinien -->
+        <path d="M120,130 Q220,70 320,90" fill="none" stroke="#02C39A" stroke-width="1.4" stroke-dasharray="2,5" opacity="0.6"/>
+        <path d="M340,90 Q420,130 500,150" fill="none" stroke="#00A896" stroke-width="1.4" stroke-dasharray="2,5" opacity="0.6"/>
+        <path d="M120,130 Q260,200 500,150" fill="none" stroke="#028090" stroke-width="1" stroke-dasharray="2,8" opacity="0.4"/>
+        <!-- Knoten 1 — JustAI -->
+        <circle cx="120" cy="130" r="60" fill="url(#puls-grad)"/>
+        <circle cx="120" cy="130" r="42" fill="none" stroke="#02C39A" stroke-width="1.5"/>
+        <circle cx="120" cy="130" r="8" fill="#02C39A"/>
+        <text x="120" y="210" text-anchor="middle" font-family="Unbounded" font-size="11" letter-spacing="2" fill="currentColor" opacity="0.7">JUSTAI</text>
+        <!-- Knoten 2 — Tausendkraut -->
+        <circle cx="330" cy="90" r="60" fill="url(#puls-grad)" opacity="0.7"/>
+        <circle cx="330" cy="90" r="42" fill="none" stroke="#00A896" stroke-width="1.5"/>
+        <circle cx="330" cy="90" r="8" fill="#00A896"/>
+        <text x="330" y="170" text-anchor="middle" font-family="Unbounded" font-size="11" letter-spacing="2" fill="currentColor" opacity="0.7">TAUSENDKRAUT</text>
+        <!-- Knoten 3 — Lead Engine -->
+        <circle cx="510" cy="150" r="60" fill="url(#puls-grad)" opacity="0.5"/>
+        <circle cx="510" cy="150" r="42" fill="none" stroke="#028090" stroke-width="1.5"/>
+        <circle cx="510" cy="150" r="8" fill="#028090"/>
+        <text x="510" y="230" text-anchor="middle" font-family="Unbounded" font-size="11" letter-spacing="2" fill="currentColor" opacity="0.7">LEAD ENGINE</text>
+        <!-- Approval-Gate Symbol oben -->
+        <line x1="220" y1="20" x2="220" y2="40" stroke="currentColor" opacity="0.4"/>
+        <text x="225" y="32" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.5">APPROVAL GATE</text>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Drei Domänen, drei Pipelines</span>
+        <span class="em">Jede KI-Ausgabe ist Vorschlag, niemals Endprodukt.</span>
+      </p>
+    </div>
+
+    <!-- WERKBLATT / CASE -->
+    <div class="case" aria-labelledby="wrlz-case-h">
+      <div class="case-head">
+        <h3 class="case-h" id="wrlz-case-h">Werkblatt <em>WRLZ.ai</em></h3>
+        <span class="case-meta">5 Blöcke · Q1 2026</span>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">01</div>
+        <div class="case-body">
+          <h4>Ausgangslage</h4>
+          <p>Die Frage hinter WRLZ ist nicht, wie man Aufgaben automatisiert. Sie ist: <strong>welche Arbeit kostet einen Menschen Konzentration, ohne sein Urteil zu brauchen?</strong> Dort gehört KI hin. Als Schicht, die das Material vorsortiert.</p>
+          <p>Der Markt hat zwei Extreme. ChatGPT-Wrapper ohne Domänenwissen auf der einen Seite. Enterprise-Suiten, die für eine Vier-Personen-Tischlerei oder eine Drei-Personen-Kanzlei unbezahlbar sind, auf der anderen. WRLZ besetzt die Mitte: <strong>maßgeschneiderte Pipelines, EU-gehostet, ohne Vendor-Lock-in.</strong></p>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">02</div>
+        <div class="case-body">
+          <h4>Architekturprinzipien</h4>
+          <ul class="hyp-list">
+            <li><span class="hyp-id">P1</span><span>Human-in-the-Loop ist nicht optional. Jeder KI-Output ist Vorschlag, nie Endprodukt.</span><span class="hyp-tag">tragend</span></li>
+            <li><span class="hyp-id">P2</span><span>EU-Hosting plus offene APIs schlagen jede Vendor-KI mit Pay-per-Page-Logik.</span><span class="hyp-tag">tragend</span></li>
+            <li><span class="hyp-id">P3</span><span>n8n als Middleware, Claude als Reasoning-Layer, Supabase für State. Drei austauschbare Schichten.</span><span class="hyp-tag">tragend</span></li>
+            <li><span class="hyp-id">P4</span><span>Approval-Gates vor jeder externen Aktion. Besonders bei Content, der unter Marken-Account postet.</span><span class="hyp-tag">tragend</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">03</div>
+        <div class="case-body">
+          <h4>Drei Pipelines, drei Domänen</h4>
+          <ul class="pipes">
+            <li>
+              <div class="pipes-letter">A</div>
+              <div>
+                <h5>JustAI · KI-Schriftsatz-Assistent (Familienrecht)</h5>
+                <p>Split-Screen-Editor mit Claude API. Die Anwältin liest, Claude entwirft Schriftsatz-Bausteine. Fristen werden erkannt, Gehaltsbescheinigungen analysiert. Jede Ausgabe ist Vorschlag. Kein Paragraph wird halluziniert.</p>
+                <p>Demo-Backend live, Sprint 1 abgeschlossen.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">B</div>
+              <div>
+                <h5>Tausendkraut · Instagram-Content-Pipeline</h5>
+                <p>n8n-Workflow für eine Living-Soil-Marke. Content-Generierung, Approval-Gate (Kunde sagt ja oder nein), Publisher zu festen Slots um 9 und 18 Uhr. Pipeline läuft, Go-Live wartet auf die Meta-Verifizierung.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">C</div>
+              <div>
+                <h5>Lead Engine v2 · Akquise-System</h5>
+                <p>Automatisiertes Scraping mit Audit-Bewertung für Webdesign-Leads. n8n läuft täglich um 4 Uhr UTC, schreibt in Supabase. Über 250 qualifizierte Datensätze, 74 kommen pro Tag dazu.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">04</div>
+        <div class="case-body">
+          <h4>Was WRLZ <em>nicht</em> macht</h4>
+          <p><strong>Keine Chatbots auf Webseiten.</strong> Sie lösen kein Problem. Sie verschieben Frust.</p>
+          <p><strong>Keine vollautomatischen Outbound-Kanäle.</strong> Wer ohne Approval-Gate sendet, beschädigt Marken irgendwann garantiert. Das Approval ist kein Bremsklotz. Es ist eine Versicherung.</p>
+          <p><strong>Keine Pay-per-Token-Vendor-Suiten.</strong> Bei einer Akte mit 6.000 bis 10.000 Seiten im Monat wäre das Kostenexplosion. Direkter API-Zugang ist Pflicht.</p>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">05</div>
+        <div class="case-body">
+          <h4>Learnings Q1 2026</h4>
+          <p><strong>Approval-Gates sind UX-Arbeit, nicht Kontroll-Arbeit.</strong> Wenn die Bestätigung zu aufwendig ist, klickt der Kunde auf alles freigeben und das Gate verschwindet im Workflow. Das Interface muss schneller sein als der Reflex zur Abkürzung.</p>
+          <p><strong>Drei kleine Kunden lehren mehr als ein großer.</strong> Jede Domäne hat eigene Compliance-Realität, eigene Datenstruktur, eigene Schmerzpunkte. Die Architektur-Bibliothek wächst durch Vielfalt.</p>
+          <p><strong>Hetzner, n8n und Supabase sind kein Stack, sondern eine Haltung.</strong> Drei Schichten, alle EU, alle ersetzbar. Der Kunde besitzt seine Pipeline. Wenn ich morgen weg bin, steht alles weiter.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 02 — HNTZ.app
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-hntz" aria-labelledby="hntz-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">03 / Werk</span>
+      <h2 class="room-name" id="hntz-h">HNTZ.app</h2>
+      <p class="room-medium">Phenotype Discovery System</p>
+      <span class="room-year">seit 2024</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Eine App, die mitläuft, wenn der Züchter durch das Gewächshaus geht. Voice, Foto, Notiz.</p>
+        <p>Aus tausend Beobachtungen werden vier bis sechs Phänotypen. Reduktion als Methode. Das Interface existiert, um strukturierte Daten zu fangen, die später algorithmisch verglichen werden können.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>Voice Input, Foto-Analyse, Grow Report Import</li>
+          <li>29 Components, 7 Phasen, 6 DB Tables</li>
+          <li>Bayesian Similarity Engine</li>
+          <li>Supabase, OpenAI, Claude</li>
+          <li>6 Beta-Tester aktiv</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: Pflanze aus Welle -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 280">
+        <!-- Boden-Welle -->
+        <path d="M0,220 Q80,200 160,220 T320,220 T480,220 T600,220" fill="none" stroke="#02C39A" stroke-width="2.2"/>
+        <!-- Wurzel-Geflecht -->
+        <path d="M300,220 L300,260 M300,225 Q280,250 265,275 M300,225 Q320,250 335,275 M300,235 Q290,260 285,270 M300,235 Q310,260 315,270" stroke="#028090" stroke-width="1.1" fill="none" opacity="0.65"/>
+        <!-- Stamm -->
+        <path d="M300,220 L300,90" stroke="#00A896" stroke-width="2.5" fill="none"/>
+        <!-- Blätter -->
+        <ellipse cx="265" cy="180" rx="28" ry="11" fill="#00A896" opacity="0.7" transform="rotate(-28 265 180)"/>
+        <ellipse cx="335" cy="160" rx="28" ry="11" fill="#00A896" opacity="0.7" transform="rotate(28 335 160)"/>
+        <ellipse cx="278" cy="140" rx="26" ry="10" fill="#02C39A" opacity="0.85" transform="rotate(-32 278 140)"/>
+        <ellipse cx="322" cy="120" rx="26" ry="10" fill="#02C39A" opacity="0.85" transform="rotate(32 322 120)"/>
+        <circle cx="300" cy="92" r="9" fill="#02C39A"/>
+        <!-- Datenpunkte -->
+        <g font-family="Unbounded" font-size="9" letter-spacing="1.5" fill="currentColor" opacity="0.65">
+          <line x1="220" y1="160" x2="240" y2="170" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="220" cy="160" r="2.5" fill="#02C39A"/>
+          <text x="216" y="155" text-anchor="end">stretch · 7</text>
+
+          <line x1="380" y1="140" x2="362" y2="148" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="380" cy="140" r="2.5" fill="#02C39A"/>
+          <text x="384" y="135" text-anchor="start">terpene · citrus</text>
+
+          <line x1="210" y1="100" x2="270" y2="120" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="210" cy="100" r="2.5" fill="#02C39A"/>
+          <text x="206" y="95" text-anchor="end">bud density · 4</text>
+
+          <line x1="390" y1="80" x2="320" y2="100" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="390" cy="80" r="2.5" fill="#02C39A"/>
+          <text x="394" y="75" text-anchor="start">keeper · ja</text>
+        </g>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Observation → Keeper</span>
+        <span class="em">1.000 Pflanzen ergeben 4 bis 6 Phänotypen.</span>
+      </p>
+    </div>
+
+    <!-- WERKBLATT -->
+    <div class="case" aria-labelledby="hntz-case-h">
+      <div class="case-head">
+        <h3 class="case-h" id="hntz-case-h">Werkblatt <em>HNTZ.app</em></h3>
+        <span class="case-meta">4 Blöcke · Closed Beta</span>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">01</div>
+        <div class="case-body">
+          <h4>Problem</h4>
+          <p><strong>Professionelle Züchter haben ein Datenproblem, kein Tagebuch-Problem.</strong> Beim Phenotype Hunting werden 5 bis 20 genetisch verschiedene Pflanzen derselben Sorte parallel aufgezogen. Das Ziel: den einen überlegenen Phänotyp identifizieren, den sogenannten Keeper.</p>
+          <p>Die bestehenden Lösungen versagen daran. Journal-Apps sind Lifestyle-Tagebücher: ein Foto, ein Kommentar, fertig. Sie behandeln Pflanzen als Content, nicht als genetische Entitäten mit messbaren Attributen. Die Alternative ist Excel.</p>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">02</div>
+        <div class="case-body">
+          <h4>Konkurrenzanalyse</h4>
+          <p><strong>HNTZ konkurriert nicht mit Journal-Apps.</strong> HNTZ konkurriert mit dem selbstgebauten Spreadsheet erfahrener Züchter, das mächtig ist, aber kein Interface hat. Die echte Konkurrenz sind Happy Valley PhenoHunter, Grow with Jane und PLNTRK. Keines davon hat Similarity-Scoring auf Per-Plant-Basis.</p>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">03</div>
+        <div class="case-body">
+          <h4>Pipeline-Architektur</h4>
+          <ul class="pipes">
+            <li>
+              <div class="pipes-letter">V</div>
+              <div>
+                <h5>Voice Observations</h5>
+                <p>Grower spricht, KI parsed, Trait-Slider füllen sich automatisch. Aus "Plant 27, strong stretch, citrus terpene, slightly airy buds" werden Metriken: stretch 7, terpene citrus, bud_density 4.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">P</div>
+              <div>
+                <h5>Photo Analysis</h5>
+                <p>Bud density, color expression, internode distance, leaf morphology. Aus Fotos werden strukturierte Daten, die in die Similarity Engine fließen.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">I</div>
+              <div>
+                <h5>Grow Report Import</h5>
+                <p>Excel, CSV, PDF, Notizen. KI rekonstruiert die Grow-Struktur, erzeugt Pflanzen und Beobachtungen. Dokumente ohne Pheno-Daten werden abgewiesen.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">E</div>
+              <div>
+                <h5>Pheno Engine</h5>
+                <p>Observation → Working Group → Pheno Candidate → Confirmed Pheno → Keeper. Stabilität über Beobachtungs-Runden wird gemessen. So entsteht ein Atlas, kein Friedhof.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">04</div>
+        <div class="case-body">
+          <h4>Designprinzip</h4>
+          <p><strong>Niedrige Reibung am Eingang, hohe Strenge in der Mitte.</strong> Daten kommen leicht rein. Aber kein Phänotyp wird bestätigt, der nicht über mehrere Runden stabil ist. So bleibt der Atlas wertvoll.</p>
+          <p>Das Interface existiert nicht, um Erinnerungen zu sammeln. Es existiert, um Entscheidungen zu ermöglichen, die später algorithmisch nachgeprüft werden.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 03 — KANZLEI NILL & BÖHM
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-kanzlei" aria-labelledby="kanzlei-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">05 / Werk</span>
+      <h2 class="room-name" id="kanzlei-h">Nill <em>&amp;</em> Böhm</h2>
+      <p class="room-medium">Familienrecht aus der Cloud</p>
+      <span class="room-year">seit 2023</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Eine Heidelberger Familienrechtskanzlei verlässt den Citrix-Terminalserver. Drei Personas, ein Custom-KI-Cockpit, 70 Prozent Fixkosten weniger.</p>
+        <p>Das System ist nicht kaputt. Es ist aus einer anderen Zeit. Der Auftrag: cloud-nativ migrieren, ohne dass die Kanzlei ihren Workflow neu lernen muss.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>Actaport Professional (1 Lizenz)</li>
+          <li>n8n auf eigenem Server</li>
+          <li>Claude API direkt</li>
+          <li>Custom Web-App, drei Personas</li>
+          <li>1.500 €/mo → 420 €/mo</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: drei Aktenrücken als Personas -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 280">
+        <!-- Bookshelf -->
+        <line x1="40" y1="260" x2="560" y2="260" stroke="currentColor" stroke-width="2"/>
+        <!-- P1 — Anwältin -->
+        <g>
+          <rect x="100" y="100" width="80" height="160" fill="none" stroke="#028090" stroke-width="2"/>
+          <line x1="100" y1="130" x2="180" y2="130" stroke="#028090" stroke-width="1" opacity="0.4"/>
+          <line x1="100" y1="230" x2="180" y2="230" stroke="#028090" stroke-width="1" opacity="0.4"/>
+          <text x="140" y="190" text-anchor="middle" fill="#028090" font-family="Unbounded" font-size="11" letter-spacing="2" transform="rotate(-90 140 190)">P1 ANWÄLTIN</text>
+        </g>
+        <!-- P2 — Manager -->
+        <g>
+          <rect x="240" y="80" width="80" height="180" fill="none" stroke="#00A896" stroke-width="2"/>
+          <line x1="240" y1="110" x2="320" y2="110" stroke="#00A896" stroke-width="1" opacity="0.4"/>
+          <line x1="240" y1="230" x2="320" y2="230" stroke="#00A896" stroke-width="1" opacity="0.4"/>
+          <text x="280" y="180" text-anchor="middle" fill="#00A896" font-family="Unbounded" font-size="11" letter-spacing="2" transform="rotate(-90 280 180)">P2 MANAGER</text>
+        </g>
+        <!-- P3 — Aushilfe -->
+        <g>
+          <rect x="380" y="140" width="80" height="120" fill="none" stroke="#02C39A" stroke-width="2"/>
+          <line x1="380" y1="170" x2="460" y2="170" stroke="#02C39A" stroke-width="1" opacity="0.4"/>
+          <text x="420" y="210" text-anchor="middle" fill="#02C39A" font-family="Unbounded" font-size="11" letter-spacing="2" transform="rotate(-90 420 210)">P3 AUSHILFE</text>
+        </g>
+        <!-- Dalí-Spirale zwischen Rücken -->
+        <path d="M195,180 Q210,170 220,180 Q230,200 215,200 Q210,195 220,190" fill="none" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <path d="M335,170 Q360,160 370,170 Q378,200 360,200 Q352,195 365,185" fill="none" stroke="#00A896" stroke-width="1.2" opacity="0.7"/>
+        <!-- Token-Strahlen oben -->
+        <g font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.55">
+          <text x="140" y="80">IPHONE · VOICE</text>
+          <text x="280" y="60">DESKTOP · OUTLOOK</text>
+          <text x="420" y="120">CUSTOM TOOL</text>
+        </g>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Drei Personas, drei Geräte</span>
+        <span class="em">Die dritte Lizenz wird durch eine Oberfläche ersetzt.</span>
+      </p>
+    </div>
+
+    <!-- WERKBLATT -->
+    <div class="case" aria-labelledby="kanzlei-case-h">
+      <div class="case-head">
+        <h3 class="case-h" id="kanzlei-case-h">Werkblatt <em>Kanzlei</em></h3>
+        <span class="case-meta">5 Blöcke · in Roll-out</span>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">01</div>
+        <div class="case-body">
+          <h4>Ausgangslage</h4>
+          <p>Drei Mitarbeiterinnen. Drei Lizenzen Advoware, ausgeliefert über einen Citrix-Terminalserver. Monatliche Fixkosten: rund 1.500 Euro. Inkompatibel mit Google Workspace, inkompatibel mit Outlook-Add-ins.</p>
+          <p>Das KI-Modul Legal Twin rechnet pro Seite und macht selbst kleine Akten zu vierstelligen Beträgen. Familienrecht produziert 6.000 bis 10.000 Seiten pro Akte und Monat. Pay-per-Page wäre ruinös.</p>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">02</div>
+        <div class="case-body">
+          <h4>Drei Personas</h4>
+          <ul class="pipes">
+            <li>
+              <div class="pipes-letter">P1</div>
+              <div>
+                <h5>Die Anwältin</h5>
+                <p>Im Auto, im Gericht, im Mandatsgespräch. iPhone-zentrisch. <strong>Werkzeug:</strong> Voice-to-Action vom iPhone-Diktat in eine strukturierte Aktennotiz. Recherche-Bridge: PDF-Urteil hochladen, Argumentationsbaustein zurückbekommen.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">P2</div>
+              <div>
+                <h5>Die Kanzleimanagerin</h5>
+                <p>Stationär am Desktop. Outlook ist die Heimat. <strong>Werkzeug:</strong> Web-Dashboard mit Outlook-Add-in-Feeling. Die KI analysiert Scans und schlägt drei Quick Actions vor. Sie bestätigt nur.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">P3</div>
+              <div>
+                <h5>Die Aushilfskraft</h5>
+                <p>Übernimmt das physische Scannen und liefert das digitale Futter ans System. Arbeitet nur über das Custom-Tool. <strong>Effekt:</strong> spart die dritte Lizenz. Der größte Einzelhebel im Kostenmodell.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">03</div>
+        <div class="case-body">
+          <h4>Drei Kern-Features</h4>
+          <ul class="pipes">
+            <li>
+              <div class="pipes-letter">F1</div>
+              <div>
+                <h5>KI-Triage Posteingang</h5>
+                <p>n8n überwacht den Scan-Ordner. Jedes Dokument geht an Claude, dort werden Typ, Aktenzeichen und Frist erkannt. Das Frontend zeigt eine Zusammenfassung mit drei Quick-Action-Buttons. Bestätigung mit einem Klick.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">F2</div>
+              <div>
+                <h5>Recherche-Bridge</h5>
+                <p>Die Anwältin lädt das PDF eines Urteils in die Akte. Claude liest, extrahiert die juristisch tragenden Sätze und baut einen Argumentationsbaustein im Schriftsatz-Stil der Kanzlei. Niemals als Endprodukt. Als Vorschlag im Editor.</p>
+              </div>
+            </li>
+            <li>
+              <div class="pipes-letter">F3</div>
+              <div>
+                <h5>Smart Dictation</h5>
+                <p>Apple Speech-to-Text auf dem iPhone. n8n empfängt den Text. Claude strukturiert ihn in eine formelle Aktennotiz. Per API zurück in Actaport.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">04</div>
+        <div class="case-body">
+          <h4>Ergebnis</h4>
+          <div class="compare">
+            <div class="compare-side compare-old">
+              <div class="compare-label">Vorher</div>
+              <ul>
+                <li>3× Advoware-Lizenz via Citrix</li>
+                <li>1.500 €/Monat</li>
+                <li>Inkompatibel mit Google Workspace</li>
+                <li>Vendor-KI mit Pay-per-Page</li>
+                <li>Manuelles Zuordnen von Posteingängen</li>
+                <li>Notizen abtippen nach Termin</li>
+              </ul>
+            </div>
+            <div class="compare-vs">→</div>
+            <div class="compare-side compare-new">
+              <div class="compare-label">Nachher</div>
+              <ul>
+                <li>1× Actaport plus Custom-Tool</li>
+                <li>420 €/Monat</li>
+                <li>Native M365-Integration</li>
+                <li>Direkte Claude-API mit eigener Logik</li>
+                <li>KI-Triage mit Quick-Actions</li>
+                <li>Voice-to-Action im Auto</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-block">
+        <div class="case-num">05</div>
+        <div class="case-body">
+          <h4>Learnings</h4>
+          <p><strong>Personas first, Stack later.</strong> Die Kosteneinsparung kam nicht aus der Stack-Wahl. Sie kam daraus, dass die Aushilfskraft eine eigene Oberfläche bekommt, statt eine teure Anwalts-Lizenz zu belegen.</p>
+          <p><strong>Compliance ist UX-Anforderung, kein Footer.</strong> Jede KI-Ausgabe als Entwurf zu markieren ist nicht Disclaimer. Es ist Interface-Logik. Buttons heißen Vorschlag übernehmen, nie Speichern.</p>
+          <p><strong>Legacy-Migration ist Übersetzungsarbeit.</strong> Anwältinnen denken in Akten, Mandanten, Fristen. Spiegelt das neue System diese mentale Karte, wird die Migration unsichtbar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 04 — TAUSENDKRAUT (Dark Room)
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-tausendkraut" aria-labelledby="tk-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">06 / Werk</span>
+      <h2 class="room-name" id="tk-h">Tausendkraut</h2>
+      <p class="room-medium">Living Soil, Genetik, Schreiben</p>
+      <span class="room-year">seit 2010</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Eigene Cannabis-Marke. Der Boden lebt seit fünfzehn Jahren. Die Schreibstimme kam dazu.</p>
+        <p>Soil Goodman heißt der Teil von Pascal, der schreibt, wenn die Pflanzen warten. Fermentation lässt sich nicht beschleunigen. Man kann nur die Bedingungen schaffen. Und warten.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>Living Soil seit 2010</li>
+          <li>Genetik-Linien: Karma, Umami</li>
+          <li>Brand, Produkt, Stimme aus einer Hand</li>
+          <li>Content-Pipeline über n8n</li>
+          <li>Verbindung WRLZ ↔ Soil ↔ HNTZ</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: Wurzel, die in den Boden taucht -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 260">
+        <!-- Horizont -->
+        <line x1="0" y1="110" x2="600" y2="110" stroke="#02C39A" stroke-width="1" stroke-dasharray="6,8" opacity="0.4"/>
+        <text x="20" y="100" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#02C39A" opacity="0.6">OBEN · BLATT</text>
+        <text x="20" y="130" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#02C39A" opacity="0.6">UNTEN · WURZEL · MYCEL</text>
+        <!-- Stamm oben -->
+        <path d="M300,30 L300,110" stroke="#02C39A" stroke-width="2.5"/>
+        <ellipse cx="280" cy="80" rx="22" ry="8" fill="#02C39A" opacity="0.7" transform="rotate(-25 280 80)"/>
+        <ellipse cx="320" cy="65" rx="22" ry="8" fill="#02C39A" opacity="0.7" transform="rotate(25 320 65)"/>
+        <ellipse cx="290" cy="50" rx="20" ry="7" fill="#02C39A" opacity="0.9" transform="rotate(-30 290 50)"/>
+        <!-- Wurzelwerk unten -->
+        <g stroke="#00A896" stroke-width="1.5" fill="none">
+          <path d="M300,110 Q280,140 270,170 Q260,200 250,235"/>
+          <path d="M300,110 Q320,140 330,170 Q340,200 350,235"/>
+          <path d="M300,115 Q300,170 300,240"/>
+          <path d="M300,130 Q260,160 220,180 Q190,195 170,220"/>
+          <path d="M300,130 Q340,160 380,180 Q410,195 430,220"/>
+          <path d="M300,150 Q240,180 200,210"/>
+          <path d="M300,150 Q360,180 400,210"/>
+        </g>
+        <!-- Mycel-Netz (feine Linien) -->
+        <g stroke="#028090" stroke-width="0.6" fill="none" opacity="0.6">
+          <path d="M200,210 L180,225 L195,235 L210,228"/>
+          <path d="M250,235 L260,250 L240,253"/>
+          <path d="M350,235 L335,250 L355,253"/>
+          <path d="M400,210 L420,225 L405,235 L390,228"/>
+          <path d="M170,220 L155,235 M430,220 L445,235"/>
+        </g>
+        <!-- Sporen-Punkte -->
+        <g fill="#F0F3BD" opacity="0.6">
+          <circle cx="160" cy="200" r="1.5"/>
+          <circle cx="440" cy="200" r="1.5"/>
+          <circle cx="180" cy="240" r="1.5"/>
+          <circle cx="420" cy="240" r="1.5"/>
+          <circle cx="300" cy="250" r="1.5"/>
+        </g>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Pflanze, Wurzel, Mycel</span>
+        <span class="em">Der Boden ist nicht Substrat. Er ist Mitarbeiter.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 05 — SPOTIFY VOICEFLOW
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-spotify" aria-labelledby="sp-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">07 / Werk</span>
+      <h2 class="room-name" id="sp-h">VoiceFlow</h2>
+      <p class="room-medium">Voice-Interface für Spotify auf macOS</p>
+      <span class="room-year">2026</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Siri hat den Spotify-Support gekippt. Eine Woche später lief das hier.</p>
+        <p>Lokales Whisper, n8n als Hub, Claude als Übersetzer, Spotify Web API als Ziel. Latenz unter zwei Sekunden. Kein Cloud-Audio. Skript, nicht Produkt.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>whisper-cpp lokal</li>
+          <li>n8n Webhook plus Claude Intent-Parser</li>
+          <li>20 Befehle, DE und EN</li>
+          <li>Hotkey-Trigger via macOS</li>
+          <li>Latenz ~1,5 s</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: Wellenform die zu Text wird -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 220">
+        <!-- Mikrofon-Pfad links -->
+        <text x="20" y="40" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">MAC MIKRO</text>
+        <!-- Audio-Wellenform Bars -->
+        <g fill="#02C39A">
+          <rect x="100" y="100" width="3" height="20" rx="1"/>
+          <rect x="108" y="90" width="3" height="40" rx="1"/>
+          <rect x="116" y="80" width="3" height="60" rx="1"/>
+          <rect x="124" y="70" width="3" height="80" rx="1"/>
+          <rect x="132" y="60" width="3" height="100" rx="1"/>
+          <rect x="140" y="50" width="3" height="120" rx="1"/>
+          <rect x="148" y="65" width="3" height="90" rx="1"/>
+          <rect x="156" y="75" width="3" height="70" rx="1"/>
+          <rect x="164" y="55" width="3" height="110" rx="1"/>
+          <rect x="172" y="80" width="3" height="60" rx="1"/>
+          <rect x="180" y="95" width="3" height="30" rx="1"/>
+          <rect x="188" y="85" width="3" height="50" rx="1"/>
+          <rect x="196" y="70" width="3" height="80" rx="1"/>
+          <rect x="204" y="60" width="3" height="100" rx="1"/>
+          <rect x="212" y="80" width="3" height="60" rx="1"/>
+          <rect x="220" y="90" width="3" height="40" rx="1"/>
+          <rect x="228" y="100" width="3" height="20" rx="1"/>
+        </g>
+        <!-- Übergang -->
+        <path d="M240,110 Q260,80 290,110" fill="none" stroke="#00A896" stroke-width="1.5" stroke-dasharray="3,4"/>
+        <text x="265" y="80" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.7">WHISPER</text>
+        <!-- Text-Phrase mitte -->
+        <text x="320" y="115" font-family="Lora" font-style="italic" font-size="20" fill="#00A896">"spiel was von kendrick"</text>
+        <!-- Pfeil zu Intent -->
+        <path d="M320,140 Q400,170 580,170" fill="none" stroke="#028090" stroke-width="1.5" stroke-dasharray="3,4"/>
+        <text x="450" y="160" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.7">CLAUDE · INTENT</text>
+        <!-- Spotify Symbol rechts -->
+        <text x="580" y="180" text-anchor="end" font-family="Unbounded" font-size="11" letter-spacing="2" fill="#02C39A">SPOTIFY API</text>
+        <text x="580" y="200" text-anchor="end" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">play_artist · kendrick lamar</text>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Stimme → Intent → Spotify</span>
+        <span class="em">Wir sind faul. Also haben wir das automatisiert, was kaputtging.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 06 — 4DLUMEN
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-fourdlumen" aria-labelledby="fd-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">06 / Werk</span>
+      <h2 class="room-name" id="fd-h">4dlumen</h2>
+      <p class="room-medium">Projection Mapping Studio</p>
+      <span class="room-year">2026</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Mit einem Freund gegründet. Laser, Projektion, Klang im Raum.</p>
+        <p>Die Landing Page steht, die ersten Gespräche laufen. Studio sucht Wand.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>Next.js, Tailwind, shadcn/ui</li>
+          <li>Landing Page live</li>
+          <li>Laser-Kontur-Mapping</li>
+          <li>Immersives Sounddesign</li>
+          <li>Zwei Gründer, Akquise in Vorbereitung</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: Laser-Geometrie auf Wand -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 240">
+        <!-- Wand-Rechteck -->
+        <rect x="100" y="40" width="400" height="180" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+        <text x="100" y="35" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.5">WAND · 4×2M</text>
+        <!-- Laserlinien -->
+        <line x1="120" y1="60" x2="480" y2="60" stroke="#00A896" stroke-width="1.5"/>
+        <line x1="480" y1="60" x2="480" y2="200" stroke="#00A896" stroke-width="1.5"/>
+        <line x1="480" y1="200" x2="120" y2="200" stroke="#00A896" stroke-width="1.5"/>
+        <line x1="120" y1="200" x2="120" y2="60" stroke="#00A896" stroke-width="1.5"/>
+        <!-- Diagonale Strahlen -->
+        <line x1="300" y1="130" x2="120" y2="60" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="300" y1="130" x2="480" y2="60" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="300" y1="130" x2="480" y2="200" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <line x1="300" y1="130" x2="120" y2="200" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <!-- Zentrum -->
+        <circle cx="300" cy="130" r="6" fill="#02C39A"/>
+        <circle cx="300" cy="130" r="14" fill="none" stroke="#02C39A" stroke-width="1.2" opacity="0.7"/>
+        <circle cx="300" cy="130" r="26" fill="none" stroke="#028090" stroke-width="1" opacity="0.5"/>
+        <!-- Sound-Wellen unten -->
+        <path d="M50,220 L70,210 L90,220 L110,210" stroke="#028090" stroke-width="1.2" fill="none" opacity="0.6"/>
+        <text x="50" y="235" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.5">SOUND</text>
+        <!-- Labels -->
+        <text x="500" y="65" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#00A896">A</text>
+        <text x="500" y="205" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#00A896">B</text>
+        <text x="105" y="65" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#00A896">D</text>
+        <text x="105" y="205" font-family="Unbounded" font-size="9" letter-spacing="2" fill="#00A896">C</text>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Laser, Projektion, Sound</span>
+        <span class="em">Raum wird Bild wird Klang wird Erinnerung.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RAUM 07 — LOOP (Light Paper Room)
+     ════════════════════════════════════════════════════ -->
+<section class="room" id="raum-loop" aria-labelledby="loop-h">
+  <div class="room-inner">
+    <header class="room-head">
+      <span class="room-num">07 / Werk</span>
+      <h2 class="room-name" id="loop-h">LOOP</h2>
+      <p class="room-medium">Autobiografischer Roman</p>
+      <span class="room-year">seit 2026</span>
+    </header>
+
+    <div class="room-body">
+      <div class="room-notiz">
+        <p>Buch im Bau. Neun Kapitel, aufgebaut wie ein Track. Intro, Build, Drop, Bridge, Drop, Outro.</p>
+        <p>Die Sinuswelle als Form für ein Leben, das ohne Loop nicht funktioniert. Erkenntnis ist, wenn der Loop abbricht und neu anfängt.</p>
+      </div>
+      <aside class="room-side">
+        <div class="room-side-label">Material</div>
+        <ul class="room-material">
+          <li>200 bis 300 Seiten</li>
+          <li>9 Kapitel als Track-Struktur</li>
+          <li>Frequenz als Form</li>
+          <li>Schreibphase aktiv</li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- DALÍ-ANOMALIE: Möbius-Welle / Loop -->
+    <div class="room-anomaly" aria-hidden="true">
+      <svg viewBox="0 0 600 240">
+        <!-- Möbius-artige Welle, schließt sich -->
+        <path d="M80,120 C 140,40 240,40 300,120 C 360,200 460,200 520,120 C 460,40 360,40 300,120 C 240,200 140,200 80,120 Z" fill="none" stroke="#028090" stroke-width="1.8"/>
+        <!-- Innere dünnere Linie -->
+        <path d="M120,120 C 170,70 230,70 280,120 C 330,170 400,170 450,120 C 400,70 330,70 280,120 C 230,170 170,170 120,120 Z" fill="none" stroke="#02C39A" stroke-width="1" opacity="0.6"/>
+        <!-- Kapitel-Marker -->
+        <g fill="#028090">
+          <circle cx="80" cy="120" r="5"/>
+          <circle cx="170" cy="60" r="4"/>
+          <circle cx="260" cy="100" r="4"/>
+          <circle cx="300" cy="120" r="5"/>
+          <circle cx="340" cy="140" r="4"/>
+          <circle cx="430" cy="180" r="4"/>
+          <circle cx="520" cy="120" r="5"/>
+        </g>
+        <text x="60" y="115" text-anchor="end" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">INTRO</text>
+        <text x="170" y="50" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">BUILD</text>
+        <text x="260" y="92" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">DROP 1</text>
+        <text x="300" y="148" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">BRIDGE</text>
+        <text x="430" y="200" text-anchor="middle" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">DROP 2</text>
+        <text x="540" y="115" font-family="Unbounded" font-size="9" letter-spacing="2" fill="currentColor" opacity="0.6">OUTRO</text>
+      </svg>
+      <p class="room-anomaly-caption">
+        <span>Track-Struktur, neun Kapitel</span>
+        <span class="em">Das Buch hat kein Ende. Nur Wiederkehr.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     WERKBANK
+     ════════════════════════════════════════════════════ -->
+<section id="werkbank" aria-labelledby="wb-h">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">08 · Werkbank</div>
+      <h2 class="section-title" id="wb-h">Werkzeuge <em>auf dem Tisch.</em></h2>
+    </div>
+    <p class="section-aside">Womit gebaut wird. Keine Logos, keine Tier-Listen. Was wirklich benutzt wird.</p>
+  </div>
+  <div class="wb-grid">
+    <div class="wb-tool" style="--vc:#02C39A">
+      <div class="wb-tool-head"><span class="wb-name">Claude</span><span class="wb-tag">Reasoning</span></div>
+      <p class="wb-note">Übersetzt zwischen Mensch und System. Jeder Output ein Entwurf. Niemals letztes Wort.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#00A896">
+      <div class="wb-tool-head"><span class="wb-name">n8n</span><span class="wb-tag">Orchestrierung</span></div>
+      <p class="wb-note">Die Mittelschicht. Webhooks, Timer, Approval-Gates. Läuft auf eigenem Server in der EU.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#028090">
+      <div class="wb-tool-head"><span class="wb-name">Supabase</span><span class="wb-tag">State</span></div>
+      <p class="wb-note">Postgres mit gutem Manieren. Was zwischen den Aufrufen liegt, liegt hier.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#02C39A">
+      <div class="wb-tool-head"><span class="wb-name">Figma</span><span class="wb-tag">Skizze</span></div>
+      <p class="wb-note">Wo Form vor Code entsteht. Prototypen für Tablet, Desktop, Telefon.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#00A896">
+      <div class="wb-tool-head"><span class="wb-name">Ableton</span><span class="wb-tag">Klang</span></div>
+      <p class="wb-note">Seit 1999. Wo der Reflex für Rhythmus, Layering und Mix trainiert wurde.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#028090">
+      <div class="wb-tool-head"><span class="wb-name">Obsidian</span><span class="wb-tag">Brain</span></div>
+      <p class="wb-note">Markdown-Vault in OneDrive. Notizen, Pläne, Kontexte für KI-Agenten. Lebenslang.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#02C39A">
+      <div class="wb-tool-head"><span class="wb-name">MidJourney</span><span class="wb-tag">Bild</span></div>
+      <p class="wb-note">Bildideen, Moodboards, Atmosphären. Nie für Produktion. Immer für Richtung.</p>
+    </div>
+    <div class="wb-tool" style="--vc:#00A896">
+      <div class="wb-tool-head"><span class="wb-name">whisper-cpp</span><span class="wb-tag">Voice</span></div>
+      <p class="wb-note">Lokales Speech-to-Text. Kein Cloud-Audio. Schneller als alle Cloud-Alternativen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     KLANGFARBEN
+     ════════════════════════════════════════════════════ -->
+<section id="klangfarben" aria-labelledby="kf-h">
+  <div class="section-head">
+    <div>
+      <div class="section-eyebrow">09 · Klangfarben</div>
+      <h2 class="section-title" id="kf-h">Fünf Frequenzen, <em>eine Welle.</em></h2>
+    </div>
+    <p class="section-aside">Wie die Linie moduliert. Welche Qualität an welcher Stelle.</p>
+  </div>
+  <div class="kf-grid">
+    <div class="kf-cell" data-k="wildheit">
+      <div class="kf-num">01</div>
+      <h3>Wildheit</h3>
+      <p class="kf-line">Roher Strich, bevor Struktur greift. Notwendige Unsauberkeit am Anfang. Ohne sie keine Form.</p>
+    </div>
+    <div class="kf-cell" data-k="rhythmus">
+      <div class="kf-num">02</div>
+      <h3>Rhythmus</h3>
+      <p class="kf-line">Timing als Sprache. Wann das eine Element kommt und wann das nächste. Mehr als die Hälfte der Wirkung.</p>
+    </div>
+    <div class="kf-cell" data-k="sampling">
+      <div class="kf-num">03</div>
+      <h3>Sampling</h3>
+      <p class="kf-line">Vorhandenes neu hören. Das, was schon da ist, in neuen Kontext schieben, bis es etwas anderes wird.</p>
+    </div>
+    <div class="kf-cell" data-k="praezision">
+      <div class="kf-num">04</div>
+      <h3>Präzision</h3>
+      <p class="kf-line">Quantisierung als Haltung. Wenn die ersten Striche stehen, gehört jeder Punkt auf seinen Platz.</p>
+    </div>
+    <div class="kf-cell" data-k="geduld">
+      <div class="kf-num">05</div>
+      <h3>Geduld</h3>
+      <p class="kf-line">Fermentation lässt sich nicht beschleunigen. Man kann nur die Bedingungen schaffen. Und warten.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     RESONANZ
+     ════════════════════════════════════════════════════ -->
+<footer id="resonanz" aria-labelledby="res-h">
+  <div class="res-inner">
+    <h2 class="res-title" id="res-h">Werkstatt offen. <em>Komm vorbei.</em></h2>
+    <p class="res-body">Schreib mir, ruf an, oder buch dir ein Fenster. Die Tür steht offen, das Licht ist an.</p>
+    <div class="res-grid">
+      <div class="res-card">
+        <div class="res-card-label">Schreib</div>
+        <a href="mailto:hello@pascaljaeger.de">hello@pascaljaeger.de</a>
+        <span class="res-card-sub">Antwort innerhalb von 24 Stunden, meistens weniger.</span>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Termin</div>
+        <a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Calendly · 30 Minuten</a>
+        <span class="res-card-sub">Erstgespräch. Frequenz-Check. Kein Sales-Pitch.</span>
+      </div>
+      <div class="res-card">
+        <div class="res-card-label">Ort</div>
+        <a href="https://maps.google.com/?q=Heidelberg+Germany" target="_blank" rel="noopener">Heidelberg, DE</a>
+        <span class="res-card-sub">Werkstatt remote, Studio Heidelberg, Sprachen DE · FR · EN.</span>
+      </div>
+    </div>
+    <div class="res-meta">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="v2/">Archiv v2</a>
+      <a href="v1/">Archiv v1</a>
+      <span class="copy">© Pascal Jäger · 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/wave.js"></script>
+<script>
+(function(){
+  'use strict';
+  const SVG = document.getElementById('wave-svg');
+  const themeBtn = document.getElementById('theme-toggle');
+  const soundBtn = document.getElementById('sound-toggle');
+  const corridorPath = document.getElementById('corridor-path');
+
+  // theme
+  const saved = localStorage.getItem('pj-theme');
+  if (saved === 'dark' || (!saved && matchMedia('(prefers-color-scheme: dark)').matches)){
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeBtn.textContent = 'Hell';
+  }
+  themeBtn.addEventListener('click', function(){
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeBtn.textContent = isDark ? 'Dunkel' : 'Hell';
+    localStorage.setItem('pj-theme', isDark ? 'light' : 'dark');
+  });
+
+  // sound (lazy)
+  soundBtn.addEventListener('click', function(){
+    const pressed = soundBtn.getAttribute('aria-pressed') === 'true';
+    if (!pressed){
+      if (!window.WaveSound){
+        const s = document.createElement('script');
+        s.src = 'assets/wave-sound.js';
+        s.onload = function(){ window.WaveSound.start(); };
+        document.head.appendChild(s);
+      } else {
+        window.WaveSound.start();
+      }
+      soundBtn.setAttribute('aria-pressed', 'true');
+      soundBtn.textContent = 'Klang an';
+    } else {
+      if (window.WaveSound) window.WaveSound.stop();
+      soundBtn.setAttribute('aria-pressed', 'false');
+      soundBtn.textContent = 'Klang';
+    }
+  });
+
+  // Corridor — vertikale Welle, geht über die volle Seitenhöhe
+  function buildCorridor(){
+    const H = 1000, samples = 200;
+    let d = '';
+    const t = performance.now() / 4000;
+    for (let i = 0; i <= samples; i++){
+      const y = (i/samples) * H;
+      const x = 22 + 14 * Math.sin(y * 0.035 + t);
+      d += (i === 0 ? 'M' : 'L') + x.toFixed(2) + ',' + y.toFixed(2) + ' ';
+    }
+    if (corridorPath) corridorPath.setAttribute('d', d);
+    requestAnimationFrame(buildCorridor);
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    requestAnimationFrame(buildCorridor);
+  }
+
+  // Welle init mit Werken
+  fetch('assets/works.json', { cache: 'no-cache' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      window.Wave.init({
+        svg: SVG,
+        works: data.works,
+        onSelect: function(id){
+          const target = document.getElementById('raum-' + id);
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    })
+    .catch(function(err){ console.error('works.json:', err); });
+
+  // ESC: kein detail layer hier — aber Smooth scroll to top on logo handled by anchor
+
+  // Werkverzeichnis: highlight active room while scrolling
+  const rooms = document.querySelectorAll('.room');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          const id = e.target.id;
+          document.querySelectorAll('.verz-item').forEach(function(v){
+            v.classList.toggle('active', v.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    rooms.forEach(function(r){ io.observe(r); });
+  }
+})();
+</script>
+</body>
+</html>

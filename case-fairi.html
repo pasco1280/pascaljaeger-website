@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fairi — KI-Gutenachtgeschichten · Pascal Jäger</title>
+<meta name="description" content="fairi: personalisierte KI-Gutenachtgeschichten als App. Jede Nacht eine neue Welt, in der das Kind die Hauptrolle spielt. Konzept, UX und Build.">
+<meta name="theme-color" content="#16132b">
+<link rel="canonical" href="https://pascaljaeger.de/case-fairi.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="fairi — KI-Gutenachtgeschichten">
+<meta property="og:description" content="Gutenachtgeschichten, die das Kind beim Namen nennen.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: var(--bubble); --accent2: var(--grass); --cta: var(--bubble); }
+body { background: #16132b; color: #efeafa; }
+::selection { background: var(--bubble); color: #16132b; }
+.case-hero { background: #16132b; color: #efeafa; min-height: 96svh; }
+.case-hero .case-title { color: var(--bubble); }
+.fairi-sky { position:absolute; inset:0; }
+.fairi-moon { position:absolute; top:14%; right:10%; width:clamp(80px,12vw,200px); aspect-ratio:1; border-radius:50%;
+  background: radial-gradient(circle at 35% 35%, #fff7f0, #f3d9c9 60%, #d9b8c0); box-shadow:0 0 80px rgba(243,217,201,.35); }
+.fairi-glow { position:absolute; width:55vw; height:55vw; border-radius:50%; left:-15vw; bottom:-20vw;
+  background: radial-gradient(circle, rgba(219,108,121,.4), transparent 65%); filter:blur(20px); }
+.invert-block { background: var(--linen); color: var(--ink); }
+.invert-block .case-lede .hl { color: var(--bubble); -webkit-text-stroke:1px var(--ink); }
+.invert-block .case-meta { border-color: var(--ink); }
+.night { background:#16132b; color:#efeafa; }
+.night .case-point { border-color: rgba(239,234,250,.22); }
+.night .case-point p { opacity:.8; }
+.night .result { background:#1e1a3a; border-color:rgba(239,234,250,.22); color:#efeafa; }
+.story {
+  border:2px solid rgba(239,234,250,.3); border-radius:var(--radius);
+  padding:clamp(1.6rem,4vw,3rem); background:#1e1a3a;
+  font-size:clamp(1.2rem,2.4vw,1.9rem); line-height:1.5; font-weight:500;
+}
+.story .nm { color:var(--bubble); }
+.story .cap { display:block; margin-top:1.2rem; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-hntz.html">HNTZ</a>
+    <a href="case-wrlz.html">WRLZ</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <span class="fairi-glow" data-px="-0.12" data-depth="0.8"></span>
+    <div class="fairi-moon" data-px="0.16" data-depth="1.4"></div>
+    <svg class="fairi-sky" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.2" data-depth="1.8"><g class="starg"></g></svg>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3" style="color:var(--lime)">Case /01 · App · KI-Gutenachtgeschichten</p>
+    <h1 class="case-title" data-fall data-depth="1">fairi</h1>
+    <p class="case-sub" data-depth="0.6" style="color:#efeafa">Gutenachtgeschichten, die das Kind beim Namen nennen. Jede Nacht eine neue Welt.</p>
+  </div>
+</header>
+
+<!-- META on linen -->
+<section class="section invert-block" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Konzept · UX · Product</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">React · Claude API · Supabase · Web Audio</div></div>
+      <div><div class="m-k">Idee</div><div class="m-v">Einschlaf-Ritual statt Bildschirm</div></div>
+      <div><div class="m-k">Für</div><div class="m-v">Eltern &amp; Kinder</div></div>
+    </div>
+    <p class="case-lede reveal" style="margin-top:clamp(2.5rem,5vw,4rem)">Kinder wollen keine App. <span class="hl">Sie wollen eine Geschichte.</span></p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" data-dir="left" aria-hidden="true" style="background:var(--bubble);color:#16132b">
+  <div class="track"><span class="item">PERSONALISIERT <span class="sep">✶</span> VORGELESEN <span class="sep">✶</span> JEDE NACHT NEU <span class="sep">✶</span> KIND IN DER HAUPTROLLE <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- STORY -->
+<section class="section night">
+  <div class="wrap">
+    <div class="story reveal" data-px="0.05">
+      „Heute reist <span class="nm">Mia</span> auf einem Papierboot über den Mond, weil sie nicht einschlafen kann …"
+      <span class="cap">Jede Geschichte beginnt mit dem echten Namen, der Stimmung und dem Lieblingstier des Kindes.</span>
+    </div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section night" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Persönlich</h3>
+        <p>Name, Lieblingstier, Tageslaune fließen in jede Geschichte. Das Kind ist nie Zuschauer, sondern Held.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Jede Nacht neu</h3>
+        <p>Keine 20 wiederholten Bücher. Die KI schreibt jeden Abend eine frische Welt, passend zur Stimmung.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Ruhe, kein Reiz</h3>
+        <p>Warme Stimme, sanftes Tempo, kein blinkender Bildschirm. Ein Ritual, das beim Einschlafen hilft.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS (qualitativ) -->
+<section class="section night" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num" style="opacity:.5">Was zählt</span></div>
+    <div class="result-grid" data-reveal-stagger>
+      <div class="result reveal"><div class="r-n">∞</div><div class="r-d">Geschichten, nie zweimal gleich</div></div>
+      <div class="result reveal"><div class="r-n">1</div><div class="r-d">Held: dein Kind</div></div>
+      <div class="result reveal"><div class="r-n">0</div><div class="r-d">Bildschirm-Flackern</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full night">
+  <div class="wrap">
+    <div class="next-case" style="border-color:rgba(239,234,250,.22)">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-hntz.html"><div class="nc-t">HNTZ →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html" style="color:#efeafa;border-color:#efeafa">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Idee für<br>fairi?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-fairi.html">fairi</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-kanzlei.html">Kanzlei</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>fairi · KI-Gutenachtgeschichten</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const g = document.querySelector('.starg');
+  if (!g) return;
+  for (let i=0;i<70;i++){
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',Math.random()*1200);
+    c.setAttribute('cy',Math.random()*800);
+    c.setAttribute('r',(Math.random()*1.8+0.4).toFixed(2));
+    c.setAttribute('fill','#efeafa');
+    c.setAttribute('opacity',(0.2+Math.random()*0.7).toFixed(2));
+    g.appendChild(c);
+  }
+})();
+</script>
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

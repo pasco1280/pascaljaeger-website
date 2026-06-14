@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HNTZ — Phenotype Discovery System · Pascal Jäger</title>
+<meta name="description" content="HNTZ: Phenotype Discovery als SaaS. Jede Pflanze ein Datenobjekt, Bayesian Pheno Engine, 20.000 Zeilen, solo. Closed Beta mit 15 Testern, neue Landing live.">
+<meta name="theme-color" content="#111111">
+<link rel="canonical" href="https://pascaljaeger.de/case-hntz.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="HNTZ — Phenotype Discovery System">
+<meta property="og:description" content="Jede Pflanze ein Datenobjekt. Bayesian Pheno Engine. 20.000 Zeilen. Solo.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: var(--hot); --accent2: var(--grass); --cta: var(--grass); }
+body { background: #14110f; color: var(--linen); }
+::selection { background: var(--hot); color: var(--linen); }
+.case-hero { background: #14110f; color: var(--linen); min-height: 96svh; }
+.case-hero .case-lede .hl { color: var(--hot); }
+.hntz-dots { position: absolute; inset: 0; }
+.hntz-dots circle { mix-blend-mode: screen; }
+.hntz-glow { position: absolute; width: 60vw; height: 60vw; border-radius: 50%; background: radial-gradient(circle, rgba(199,126,82,.45), transparent 65%); top: -20vw; right: -15vw; filter: blur(20px); }
+.case-hero .case-title { color: var(--hot); }
+.invert-block { background: var(--linen); color: var(--ink); }
+.invert-block .case-lede .hl { color: var(--hot); -webkit-text-stroke: 1px var(--ink); }
+.invert-block .case-point, .invert-block .case-meta { border-color: var(--ink); }
+.dark-section { background: #14110f; color: var(--linen); }
+.dark-section .case-point { border-color: rgba(243,233,219,.25); }
+.dark-section .result { background: #1d1916; border-color: rgba(243,233,219,.25); color: var(--linen); }
+.cap { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; margin-top: .8rem; }
+.radar-row { display:grid; gap: clamp(1.5rem,3vw,3rem); align-items:center; }
+@media (min-width:860px){ .radar-row { grid-template-columns: 1fr 1fr; } }
+.mascot-row { display:grid; gap:clamp(1.5rem,4vw,3.5rem); align-items:center; }
+@media (min-width:760px){ .mascot-row { grid-template-columns: 0.85fr 1fr; } }
+.shot-mascot img { width:100%; max-width:340px; height:auto; display:block; margin:0 auto; filter: drop-shadow(0 22px 34px rgba(28,27,25,.3)); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-wrlz.html">WRLZ</a>
+    <a href="case-kanzlei.html">Kanzlei</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <span class="hntz-glow" data-px="-0.15" data-depth="0.8"></span>
+    <svg class="hntz-dots" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.18" data-depth="1.8"><g class="dotg"></g></svg>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3" style="color:var(--lime)">Case /02 · SaaS · Closed Beta</p>
+    <h1 class="case-title" data-fall data-depth="1">HNTZ</h1>
+    <p class="case-sub" data-depth="0.6" style="color:var(--linen)">Jede Pflanze ein Datenobjekt. Eine Engine, die Anomalien erkennt, bevor du sie siehst.</p>
+  </div>
+</header>
+
+<!-- META on linen -->
+<section class="section invert-block" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Solo · Konzept bis Code</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">React 18 · Supabase · Cloudflare · Claude API</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Beta läuft · 15 Tester · neue Landing live</div></div>
+      <div><div class="m-k">Umfang</div><div class="m-v">20.000 Zeilen · 4 Eingabekanäle</div></div>
+    </div>
+    <p class="case-lede reveal" style="margin-top:clamp(2.5rem,5vw,4rem)">Pflanzen lügen nicht. <span class="hl">Tabellen schon.</span> Also wurde jede Pflanze zum Objekt.</p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" data-dir="left" aria-hidden="true" style="background:var(--hot)">
+  <div class="track"><span class="item">BAYESIAN PHENO ENGINE <span class="sep">✶</span> LIVING ENGINE <span class="sep">✶</span> STAMMBAUM <span class="sep">✶</span> ANOMALIE-RADAR <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- SHOTS dark -->
+<section class="section dark-section">
+  <div class="wrap">
+    <div class="sec-head"><span class="num" style="opacity:.5">Das Produkt</span></div>
+    <div class="shot-grid two">
+      <div class="shot reveal" data-px="0.05"><img src="assets/img/hntz/home-dark.png" alt="HNTZ Dashboard" loading="lazy"></div>
+      <div class="shot reveal" data-px="0.09"><img src="assets/img/hntz/stammbaum.jpeg" alt="HNTZ Stammbaum-Ansicht" loading="lazy"></div>
+    </div>
+    <p class="cap">Dashboard &amp; Stammbaum. Jede Linie eine Entscheidung über tausende Datenpunkte.</p>
+  </div>
+</section>
+
+<!-- POINTS dark -->
+<section class="section dark-section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>4 Eingabekanäle</h3>
+        <p>Foto, Messwert, Notiz, Sensor. Alles fließt in dasselbe Datenobjekt pro Pflanze.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Bayesian Pheno Engine</h3>
+        <p>Wahrscheinlichkeiten statt Bauchgefühl. Die Engine gewichtet Merkmale über Generationen.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Living Engine</h3>
+        <p>Erkennt Anomalien selbstständig und meldet, was vom Muster abweicht.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RADAR -->
+<section class="section dark-section" style="padding-top:0">
+  <div class="wrap">
+    <div class="radar-row">
+      <div class="shot reveal" data-px="0.06"><img src="assets/img/hntz/radar-chart.png" alt="HNTZ Phänotyp Radar-Chart" loading="lazy"></div>
+      <div class="reveal">
+        <p class="case-lede" style="max-width:24ch">Sechs Achsen pro Pflanze. Ein Blick, und der Phänotyp ist <span style="color:var(--lime)">lesbar</span>.</p>
+        <p class="body" style="opacity:.8;margin-top:1.2rem;color:var(--linen)">Der Radar verdichtet Wuchs, Aroma, Resistenz, Ertrag, Blütezeit und Stabilität zu einer Form, die man vergleichen kann. Discovery wird visuell.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MASKOTTCHEN (Teaser) -->
+<section class="section invert-block">
+  <div class="wrap">
+    <div class="mascot-row">
+      <div class="shot-mascot reveal" data-px="0.06"><img src="assets/img/hntz/mascot.png" alt="HNTZ Maskottchen, geboren aus Trichomen" loading="lazy"></div>
+      <div class="reveal">
+        <span class="sticker hot" style="box-shadow:4px 4px 0 var(--ink)">● Reveal: Cannafair</span>
+        <p class="case-lede" style="max-width:22ch;margin-top:1.3rem">Neu: ein <span class="hl">Maskottchen</span>, geboren aus Trichomen.</p>
+        <p class="body" style="opacity:.82;margin-top:1.2rem">Es hat schon einen Namen. Verraten wird er erst auf der Cannafair. Bis dahin steht es einfach da und grinst.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section dark-section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num" style="opacity:.5">Stand</span></div>
+    <div class="result-grid" data-reveal-stagger>
+      <div class="result reveal"><div class="r-n"><span data-count="20000">0</span></div><div class="r-d">Zeilen · solo</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="15">0</span></div><div class="r-d">Beta-Tester</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="4">0</span></div><div class="r-d">Eingabekanäle</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full dark-section">
+  <div class="wrap">
+    <div class="next-case" style="border-color:rgba(243,233,219,.25)">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-kanzlei.html"><div class="nc-t">KANZLEI →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html" style="color:var(--linen);border-color:var(--linen)">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Beta-Zugang?<br>Schreib mir.</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-kanzlei.html">Kanzlei</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>HNTZ · Phenotype Discovery</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const g = document.querySelector('.dotg');
+  if (!g) return;
+  const cols = ['#C77E52','#8FB1A6','#B7C8B6','#C98792'];
+  for (let i=0;i<46;i++){
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',Math.random()*1200);
+    c.setAttribute('cy',Math.random()*800);
+    c.setAttribute('r',1+Math.random()*6);
+    c.setAttribute('fill',cols[(Math.random()*cols.length)|0]);
+    c.setAttribute('opacity',(.25+Math.random()*.6).toFixed(2));
+    g.appendChild(c);
+  }
+})();
+</script>
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

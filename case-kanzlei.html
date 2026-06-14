@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanzlei — Familienrecht in der Cloud · Pascal Jäger</title>
+<meta name="description" content="Familienrecht-Kanzlei von Citrix in die Cloud migriert. 1.500 auf 420 Euro im Monat, eigenes KI-Cockpit, drei Personas. Actaport, n8n, Claude API.">
+<meta name="theme-color" content="#8FB1A6">
+<link rel="canonical" href="https://pascaljaeger.de/case-kanzlei.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Kanzlei — Familienrecht in der Cloud">
+<meta property="og:description" content="Citrix raus, Cloud rein. 1.500€ auf 420€/Monat. Eigenes KI-Cockpit.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: var(--grass); --accent2: var(--hot); --cta: var(--hot); }
+.case-hero { background: var(--lime); }
+.kz-grid { position: absolute; inset: 0; background-image:
+  linear-gradient(rgba(17,17,17,.07) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(17,17,17,.07) 1px, transparent 1px);
+  background-size: 56px 56px; }
+.kz-paper { position:absolute; border:2px solid var(--ink); background: var(--chalk); border-radius: 8px; box-shadow: 6px 6px 0 rgba(17,17,17,.18); }
+.kz-p1 { width: 130px; height: 168px; top: 14%; right: 8%; rotate: 8deg; }
+.kz-p2 { width: 110px; height: 142px; top: 30%; right: 20%; rotate: -6deg; }
+.kz-p3 { width: 90px; height: 116px; top: 22%; right: 30%; rotate: 4deg; }
+@media (max-width:760px){ .kz-p2,.kz-p3 { display:none; } .kz-p1{ right:-4%; opacity:.6; } }
+
+/* Kosten-Vergleich */
+.cost { display:grid; gap: clamp(1rem,2.5vw,2rem); }
+@media (min-width:760px){ .cost { grid-template-columns: 1fr 1fr; align-items:end; } }
+.cost .bar { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,3vw,2.2rem); position:relative; overflow:hidden; }
+.cost .bar.old { background: var(--chalk); min-height: clamp(260px,34vw,380px); }
+.cost .bar.new { background: var(--grass); min-height: clamp(110px,15vw,170px); }
+.cost .bar .label { font-family: var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.6; }
+.cost .bar .price { font-weight:800; font-size: clamp(2.4rem,6vw,4.4rem); letter-spacing:-.04em; line-height:.9; margin-top:.4rem; }
+.cost .bar .sub { font-size:.92rem; opacity:.75; margin-top:.6rem; }
+.cost .bar.old::before { content:'CITRIX'; position:absolute; right:-2%; bottom:-8%; font-weight:800; font-size:30%; color:rgba(17,17,17,.05); }
+
+.personas { display:grid; gap:1rem; }
+@media (min-width:800px){ .personas { grid-template-columns: repeat(3,1fr); } }
+.persona { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,2.5vw,2rem); background: var(--chalk); }
+.persona .pe { font-size: 2rem; }
+.persona h4 { font-weight:800; font-size:1.3rem; margin:.6rem 0 .3rem; letter-spacing:-.02em; }
+.persona .role { font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; }
+.persona p { font-size:.95rem; opacity:.82; line-height:1.5; margin-top:.7rem; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-wrlz.html">WRLZ</a>
+    <a href="case-hntz.html">HNTZ</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <div class="kz-grid" data-px="0.05" data-depth="0.4"></div>
+    <div class="kz-paper kz-p1" data-px="0.22" data-depth="2.2"></div>
+    <div class="kz-paper kz-p2" data-px="0.3" data-depth="2.8"></div>
+    <div class="kz-paper kz-p3" data-px="0.16" data-depth="1.6"></div>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3">Case /03 · Enterprise · Legacy-Migration</p>
+    <h1 class="case-title" data-fall data-depth="1">KANZLEI</h1>
+    <p class="case-sub" data-depth="0.6">Familienrecht raus aus dem Citrix-Käfig. Rein in die Cloud, mit eigenem KI-Cockpit.</p>
+  </div>
+</header>
+
+<!-- META -->
+<section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Discovery · Migration · Tooling</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">Actaport · n8n · Claude API · Custom Web</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Im Roll-out · JustAI live</div></div>
+      <div><div class="m-k">Domäne</div><div class="m-v">Familienrecht</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee alt" data-dir="left" aria-hidden="true">
+  <div class="track"><span class="item">CITRIX RAUS <span class="sep">✶</span> CLOUD REIN <span class="sep">✶</span> JUSTAI LIVE <span class="sep">✶</span> 72% KOSTEN RUNTER <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- LEDE -->
+<section class="section">
+  <div class="wrap">
+    <p class="case-lede reveal">Eine Kanzlei zahlte für <span class="hl">Software von gestern</span>. Heute zahlt sie ein Viertel.</p>
+  </div>
+</section>
+
+<!-- COST COMPARE -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="cost">
+      <div class="bar old reveal" data-px="0.04">
+        <div class="label">Vorher · Citrix &amp; Lizenzen</div>
+        <div class="price">1.500&nbsp;€</div>
+        <div class="sub">pro Monat · träge · ortsgebunden · Wartung extern</div>
+      </div>
+      <div class="bar new reveal" data-px="0.08">
+        <div class="label">Nachher · Cloud &amp; eigenes Cockpit</div>
+        <div class="price">420&nbsp;€</div>
+        <div class="sub">pro Monat · überall · KI an Bord</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Discovery zuerst</h3>
+        <p>Bevor eine Lizenz gekündigt wurde, wurde der echte Workflow verstanden. Drei Rollen, drei Realitäten.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Saubere Migration</h3>
+        <p>Citrix raus, Actaport und Cloud rein. Ohne dass an einem einzigen Tag die Arbeit stillstand.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Eigenes KI-Cockpit</h3>
+        <p>JustAI: ein Tool, das Schriftsätze versteht und vorbereitet. Auf die Kanzlei zugeschnitten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Drei Personas, ein Tool</span></div>
+    <div class="personas" data-reveal-stagger>
+      <div class="persona reveal"><div class="pe">⚖️</div><h4>Die Partnerin</h4><div class="role">Entscheidet</div><p>Will Überblick und Tempo. Sieht im Cockpit den Stand jedes Mandats auf einen Blick.</p></div>
+      <div class="persona reveal"><div class="pe">📑</div><h4>Der Anwalt</h4><div class="role">Arbeitet am Fall</div><p>Will Schriftsätze schneller. JustAI liefert den Entwurf, er den Feinschliff.</p></div>
+      <div class="persona reveal"><div class="pe">🗂️</div><h4>Das Office</h4><div class="role">Hält zusammen</div><p>Will weniger Klicks. Fristen und Akten laufen automatisch ins richtige Fach.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Ergebnis</span></div>
+    <div class="result-grid" data-reveal-stagger>
+      <div class="result reveal"><div class="r-n"><span data-count="72">0</span>%</div><div class="r-d">Kosten runter</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="3">0</span></div><div class="r-d">Personas bedient</div></div>
+      <div class="result reveal"><div class="r-n">live</div><div class="r-d">JustAI im Einsatz</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full">
+  <div class="wrap">
+    <div class="next-case">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-wrlz.html"><div class="nc-t">WRLZ →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Legacy<br>im Weg?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-kanzlei.html">Kanzlei</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>Kanzlei · Familienrecht Cloud</span>
+  </div>
+</footer>
+
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

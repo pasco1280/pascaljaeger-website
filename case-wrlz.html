@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WRLZ — KI-Automation für Wissensarbeit · Pascal Jäger</title>
+<meta name="description" content="WRLZ: KI-Automation, die echte Arbeit übernimmt. Claude API, n8n, Supabase. Bis zu 70% weniger Fixkosten, drei laufende Pipelines.">
+<meta name="theme-color" content="#8FB1A6">
+<link rel="canonical" href="https://pascaljaeger.de/case-wrlz.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="WRLZ — KI-Automation für Wissensarbeit">
+<meta property="og:description" content="Werkzeuge statt Chatbots. Bis zu 70% weniger Fixkosten.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: var(--grass); --accent2: var(--hot); --cta: var(--hot); }
+.case-hero { background: var(--grass); }
+.wrlz-grid { position: absolute; inset: 0; opacity: .5; }
+.wrlz-grid line { stroke: rgba(17,17,17,.18); stroke-width: 1; }
+.wrlz-node { fill: var(--ink); }
+.wrlz-pulse { fill: var(--hot); }
+.term {
+  font-family: var(--mono); font-size: clamp(.8rem,1.1vw,1rem); line-height: 1.9;
+  background: var(--ink); color: var(--grass); border-radius: var(--radius);
+  padding: clamp(1.4rem,3vw,2.4rem); border: 2.5px solid var(--ink); overflow-x: auto;
+}
+.term .c { color: #7d8a7d; }
+.term .h { color: var(--hot); }
+.term .w { color: var(--linen); }
+.flow { display: grid; gap: 1rem; }
+@media (min-width:800px){ .flow { grid-template-columns: repeat(4,1fr); align-items: stretch; } }
+.flow .step { border: 2.5px solid var(--ink); border-radius: var(--radius); padding: 1.4rem; background: var(--chalk); position: relative; }
+.flow .step .si { font-family: var(--mono); font-size: .68rem; letter-spacing: .14em; opacity: .5; }
+.flow .step h4 { font-weight: 800; font-size: 1.2rem; margin: .6rem 0 .4rem; letter-spacing: -.02em; }
+.flow .step p { font-size: .92rem; opacity: .8; line-height: 1.45; }
+.flow .step:not(:last-child)::after { content: '→'; position: absolute; right: -1.05rem; top: 50%; transform: translateY(-50%); font-weight: 800; z-index: 3; }
+@media (max-width:799px){ .flow .step::after{ display:none; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-hntz.html">HNTZ</a>
+    <a href="case-kanzlei.html">Kanzlei</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <svg class="wrlz-grid" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.1" data-depth="0.6">
+      <g class="wrlz-net"></g>
+    </svg>
+    <svg class="wrlz-grid" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.26" data-depth="1.6" style="opacity:.9">
+      <circle class="wrlz-pulse" cx="240" cy="180" r="7"><animate attributeName="opacity" values="1;.2;1" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle class="wrlz-pulse" cx="900" cy="430" r="7"><animate attributeName="opacity" values=".3;1;.3" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle class="wrlz-pulse" cx="620" cy="120" r="5"><animate attributeName="opacity" values="1;.3;1" dur="1.9s" repeatCount="indefinite"/></circle>
+    </svg>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3">Case /01 · Agentur · Claude API · n8n</p>
+    <h1 class="case-title" data-fall data-depth="1">WRLZ</h1>
+    <p class="case-sub" data-depth="0.6">KI-Automation, die echte Arbeit übernimmt. Werkzeuge statt Chatbots.</p>
+  </div>
+</header>
+
+<!-- META -->
+<section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Gründer · Product · Build</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">Claude API · n8n · Supabase · Hetzner</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">3 aktive Kunden · live</div></div>
+      <div><div class="m-k">Jahr</div><div class="m-v">2025 – heute</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee alt" data-dir="left" aria-hidden="true">
+  <div class="track"><span class="item">FAMILIENRECHT <span class="sep">✶</span> MARKEN-CONTENT <span class="sep">✶</span> LEAD-ENGINE <span class="sep">✶</span> 70% FIXKOSTEN RAUS <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- LEDE -->
+<section class="section">
+  <div class="wrap">
+    <p class="case-lede reveal">Die meisten verkaufen <span class="hl">Chatbots</span>. Ich baue Pipelines, die abends weiterlaufen.</p>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="term reveal">
+      <span class="c"># was eine WRLZ-Pipeline am Tag erledigt</span><br>
+      <span class="h">$</span> <span class="w">wrlz run</span> --client kanzlei --task intake<br>
+      <span class="c">› 142 Mails klassifiziert</span><br>
+      <span class="c">› 38 Fristen erkannt &amp; eingetragen</span><br>
+      <span class="c">› 9 Schriftsätze vorformuliert</span><br>
+      <span class="h">✓</span> <span class="w">erledigt in 4 min · 0 Klicks vom Team</span>
+    </div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Familienrecht</h3>
+        <p>Mandats-Intake, Fristen und Schriftsatz-Entwürfe automatisiert. Das Team entscheidet, die Maschine tippt.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Marken-Content</h3>
+        <p>Eine Stimme, hundert Posts. Content-Engine mit Markenleitfaden im Prompt, kein generischer Brei.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Lead-Engine</h3>
+        <p>Recherche, Anreicherung, Ansprache. 3.321 qualifizierte Leads pro Monat, vollautomatisch sortiert.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">So läuft eine Pipeline</span></div>
+    <div class="flow" data-reveal-stagger>
+      <div class="step reveal"><div class="si">/01 Trigger</div><h4>Input</h4><p>Mail, Formular, Upload oder Webhook. Egal woher, alles wird zum Datenobjekt.</p></div>
+      <div class="step reveal"><div class="si">/02 Denken</div><h4>Claude</h4><p>Klassifizieren, extrahieren, formulieren. Mit Kontext und Markenstimme.</p></div>
+      <div class="step reveal"><div class="si">/03 Handeln</div><h4>n8n</h4><p>Eintragen, verschicken, ablegen. In die echten Systeme der Kunden.</p></div>
+      <div class="step reveal"><div class="si">/04 Kontrolle</div><h4>Mensch</h4><p>Ein Blick, ein Klick. Freigeben statt selbst tippen.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Ergebnis</span></div>
+    <div class="result-grid" data-reveal-stagger>
+      <div class="result reveal"><div class="r-n"><span data-count="70">0</span>%</div><div class="r-d">weniger Fixkosten</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="3">0</span></div><div class="r-d">laufende Pipelines</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="3321">0</span></div><div class="r-d">Leads / Monat</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full">
+  <div class="wrap">
+    <div class="next-case">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-hntz.html"><div class="nc-t">HNTZ →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Pipeline<br>gefällig?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-kanzlei.html">Kanzlei</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>WRLZ.ai · KI-Automation</span>
+  </div>
+</footer>
+
+<script>
+// Node-Netz für den Hero generieren
+(() => {
+  const g = document.querySelector('.wrlz-net');
+  if (!g) return;
+  const nodes = [];
+  for (let i=0;i<14;i++) nodes.push({x: 40+Math.random()*1120, y: 40+Math.random()*620});
+  nodes.forEach((n,i)=>{
+    // verbinde mit 2 nächsten
+    const dist = nodes.map((m,j)=>({j,d:(m.x-n.x)**2+(m.y-n.y)**2})).sort((a,b)=>a.d-b.d).slice(1,3);
+    dist.forEach(({j})=>{
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+      l.setAttribute('x1',n.x);l.setAttribute('y1',n.y);l.setAttribute('x2',nodes[j].x);l.setAttribute('y2',nodes[j].y);
+      g.appendChild(l);
+    });
+  });
+  nodes.forEach(n=>{
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x);c.setAttribute('cy',n.y);c.setAttribute('r',4);c.setAttribute('class','wrlz-node');
+    g.appendChild(c);
+  });
+})();
+</script>
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>
