@@ -263,31 +263,29 @@
     stack.style.height = total + 'px';
     stack.style.background = pal[0];               // helle Basis (Hero/Footer hell)
     // Ping-Pong durch die Palette: hell -> dunkel -> hell, immer wieder.
-    // Dadurch viele kleinere Bahnen mit dunklen Trapez-Mitten und hellen Wenden.
     const seq = [0, 1, 2, 3, 4, 5, 4, 3, 2, 1];    // Periode 10, dunkel bei Index 5
-    const bandH = 320;                             // kleinere Flächen
-    const s = 150;                                 // Diagonale (Trapez-Schräge)
-    const PAD = 120;                               // Platz für weiche, lange Schatten
+    const bandH = 320;                             // Abstand der Blätter (Flächengröße)
+    const s = 90;                                  // dezenter Zickzack
+    const OV = 170;                                // Überlappung -> keine Lücken an Wenden
+    const PAD = 120;                               // Platz für die Schräge oben
+    const EH = bandH + OV + PAD;                   // jedes Blatt ist größer als der Abstand
     const frag = document.createDocumentFragment();
     const N = Math.ceil(total / bandH) + 2;
+    const tilt = (b) => (b % 2 === 0 ? s : -s);    // Naht kippt abwechselnd links/rechts hoch
 
     for (let b = 0; b < N; b++) {
-      const pos = b % seq.length;
-      const color = pal[seq[pos]];
-      const down = pos < 5;                        // absteigend = down, aufsteigend = up
+      const color = pal[seq[b % seq.length]];
+      const tb = tilt(b);
       const w = document.createElement('div');
       w.className = 'pband';
       w.style.top = (b * bandH - PAD) + 'px';
-      w.style.height = (bandH + 2 * PAD) + 'px';
-      w.style.zIndex = String(N - b);              // obere Bahn liegt über der darunter
-      w.style.filter = down
-        ? 'drop-shadow(0 20px 40px rgba(16,8,4,.4))'
-        : 'drop-shadow(0 -20px 40px rgba(16,8,4,.4))';
+      w.style.height = EH + 'px';
+      w.style.zIndex = String(b + 1);             // tieferes Blatt liegt oben, überlappt das vorige
+      w.style.filter = 'drop-shadow(0 -14px 30px rgba(16,8,4,.42))'; // Schatten aufs Blatt darüber
       const i = document.createElement('i');
       i.style.background = color;
-      i.style.clipPath = down
-        ? `polygon(0 ${PAD}px, 100% ${PAD + s}px, 100% ${PAD + bandH + s}px, 0 ${PAD + bandH}px)`
-        : `polygon(0 ${PAD + s}px, 100% ${PAD}px, 100% ${PAD + bandH}px, 0 ${PAD + bandH + s}px)`;
+      // diagonale Oberkante (Naht), darunter voll gefüllt bis übers nächste Blatt
+      i.style.clipPath = `polygon(0 ${PAD}px, 100% ${PAD + tb}px, 100% ${EH}px, 0 ${EH}px)`;
       w.appendChild(i);
       frag.appendChild(w);
     }
