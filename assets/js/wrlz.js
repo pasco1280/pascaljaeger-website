@@ -359,7 +359,7 @@
       return Object.assign({}, cfg, { el, cx: 0 });
     });
 
-    let W = 0, H = 0, fontPx = 0, sCx = 0, baseY = 0, ax = 0, ay = 0, coverR = 0, paths = [], pulsing = false, pulseStart = 0, pulseX = 0, pulseY = 0, lastP = -1;
+    let W = 0, H = 0, fontPx = 0, sCx = 0, baseY = 0, ax = 0, ay = 0, coverR = 0, paths = [], pulses = [], pulsing = false, lastP = -1;
 
     // Tiefster Punkt des s-Strichs via Distanztransform, als Bruchteil der
     // Ink-Bounding-Box (wird auf die echte SVG-Glyph-Box gemappt → kein Versatz)
@@ -517,19 +517,30 @@
       hint.style.opacity = clamp(0.55 - p * 6, 0, 0.55).toFixed(3);
     }
 
+    // Jeder Klick fügt einen Atempunkt hinzu. Mehrere laufen gleichzeitig und
+    // klingen unabhängig aus, ein neuer Klick stoppt die anderen nicht.
     function pulse(px, py) {
-      pulseX = (px == null) ? sCx : px;
-      pulseY = (py == null) ? H / 2 : py;
-      pulseStart = performance.now();
+      pulses.push({ x: (px == null) ? sCx : px, y: (py == null) ? H / 2 : py, start: performance.now() });
+      if (pulses.length > 24) pulses.shift();
       if (!pulsing) { pulsing = true; requestAnimationFrame(pulseTick); }
     }
     function pulseTick(now) {
-      const t = (now - pulseStart) / 1700;
-      if (t >= 1 || reduced) { drawWaves(); pulsing = false; return; }
-      const frontR = t * coverR * 0.7;
-      const env = Math.sin(t * Math.PI);
-      const ringW = H * 0.14, boostAmp = H * 0.13;
-      const fn = (x, y) => env * Math.exp(-Math.pow((Math.hypot(x - pulseX, y - pulseY) - frontR) / ringW, 2)) * boostAmp;
+      if (reduced) { drawWaves(); pulses.length = 0; pulsing = false; return; }
+      const LIFE = 1700, ringW = H * 0.14, boostAmp = H * 0.13;
+      pulses = pulses.filter(pl => (now - pl.start) < LIFE);
+      if (!pulses.length) { drawWaves(); pulsing = false; return; }
+      const active = pulses.map(pl => {
+        const t = (now - pl.start) / LIFE;
+        return { x: pl.x, y: pl.y, frontR: t * coverR * 0.7, env: Math.sin(t * Math.PI) };
+      });
+      const fn = (x, y) => {
+        let sum = 0;
+        for (let k = 0; k < active.length; k++) {
+          const a = active[k];
+          sum += a.env * Math.exp(-Math.pow((Math.hypot(x - a.x, y - a.y) - a.frontR) / ringW, 2)) * boostAmp;
+        }
+        return sum;
+      };
       drawWaves(fn);
       requestAnimationFrame(pulseTick);
     }
