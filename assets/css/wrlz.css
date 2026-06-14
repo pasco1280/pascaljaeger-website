@@ -375,3 +375,16 @@ em { font-style: italic; }
   .breath { height: 40vh !important; }
   * { animation: none !important; }
 }
+
+/* ---- Rückgrat: Drei-Schlag + Beweise (alle Cases gleich) ---- */
+.case-spine { display: grid; gap: clamp(1.6rem, 4vw, 3rem); }
+@media (min-width: 880px) { .case-spine { grid-template-columns: 1.25fr 1fr; align-items: start; } }
+.spine-beats { display: flex; flex-direction: column; gap: 1.1rem; }
+.beat { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; align-items: baseline; }
+.beat .bk { font-family: var(--mono); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; opacity: .5; }
+.beat .bv { font-size: clamp(1.05rem, 1.5vw, 1.28rem); line-height: 1.45; }
+.spine-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; align-self: start; }
+.sp { border: 2px solid currentColor; border-radius: 12px; padding: 1rem .85rem; }
+.sp .spn { font-weight: 800; font-size: clamp(1.25rem, 2.3vw, 1.95rem); letter-spacing: -.02em; line-height: 1; }
+.sp .spd { font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; margin-top: .55rem; line-height: 1.3; }
+@media (max-width: 460px) { .beat { grid-template-columns: 1fr; gap: .2rem; } }
