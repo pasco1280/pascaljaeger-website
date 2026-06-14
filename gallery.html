@@ -75,7 +75,7 @@
 .deck-brand { position: absolute; right: 9%; top: 56%; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: #5a5a5d; }
 .tt-credit { text-align: center; font-family: var(--mono); font-size: .68rem; letter-spacing: .1em; margin-top: 1.2rem; color: var(--ink); opacity: .7; }
 .tt-hint { text-align: center; font-family: var(--mono); font-size: .64rem; letter-spacing: .18em; text-transform: uppercase; opacity: .5; margin-top: .4rem; }
-.wave { display: block; width: 100%; height: 90px; margin-top: 1rem; border-radius: 12px; background: #14110e; border: 2px solid var(--ink); opacity: 0; transition: opacity .5s; }
+.wave { display: block; width: 100%; height: clamp(150px, 22vh, 210px); margin-top: 1rem; border-radius: 12px; background: #8FB1A6; border: 2px solid var(--ink); opacity: 0; transition: opacity .5s; }
 .wave.on { opacity: 1; }
 
 /* ---------- Chaos-Canvas ---------- */
@@ -325,50 +325,58 @@
   const tt = document.getElementById('tt');
   const wave = document.getElementById('wave');
   if (!tt) return;
-  let actx = null, src = null, analyser = null, audioEl = null, raf = 0, playing = false, data = null;
+  let actx = null, src = null, analyser = null, audioEl = null, raf = 0, playing = false, freq = null, twave = 0;
 
   function ensureAudio() {
     audioEl = new Audio('assets/audio/pride-tears.mp3');
     audioEl.loop = true; audioEl.crossOrigin = 'anonymous';
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
     src = actx.createMediaElementSource(audioEl);
-    analyser = actx.createAnalyser(); analyser.fftSize = 2048;
-    data = new Uint8Array(analyser.frequencyBinCount);
+    analyser = actx.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0.78;
+    freq = new Uint8Array(analyser.frequencyBinCount);
     src.connect(analyser); analyser.connect(actx.destination);
   }
-  function draw() {
+  // 3D-Equalizer-Feld wie das Sinus-Feld im Hero, getrieben vom Frequenzspektrum
+  function draw3D() {
     const c = wave, ctx = c.getContext('2d');
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    if (c.width !== c.clientWidth * dpr) { c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr; }
+    if (c.width !== Math.round(c.clientWidth * dpr)) { c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr; }
     const W = c.clientWidth, H = c.clientHeight;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    analyser.getByteTimeDomainData(data);
-    const cols = ['#8FB1A6', '#C0DF85', '#C77E52'];
-    for (let layer = 0; layer < 3; layer++) {
+    ctx.fillStyle = '#8FB1A6';
+    ctx.fillRect(0, 0, W, H);
+    analyser.getByteFrequencyData(freq);
+    twave += 0.05;
+    const ROWS = 16, SEG = 64, horizon = H * 0.24, USE = Math.min(freq.length, 256);
+    ctx.strokeStyle = '#0d0d0d'; ctx.lineJoin = 'round';
+    for (let r = 0; r < ROWS; r++) {
+      const z = r / (ROWS - 1);
+      const rowY = horizon + Math.pow(z, 1.6) * (H * 0.82);   // Perspektive: Reihen laufen in die Tiefe
+      const sx = 0.32 + z * 0.68;                              // nahe Reihen breiter
+      const amp = 8 + z * z * (H * 0.6);                       // nahe Reihen höher
       ctx.beginPath();
-      const off = (layer - 1) * 8;
-      for (let i = 0; i < data.length; i += 8) {
-        const x = (i / data.length) * W;
-        const v = (data[i] - 128) / 128;
-        const yv = H / 2 + v * (H * 0.36) + off;
-        i ? ctx.lineTo(x, yv) : ctx.moveTo(x, yv);
+      for (let i = 0; i <= SEG; i++) {
+        const tx = i / SEG;
+        const fv = freq[Math.floor(tx * USE)] / 255;          // Spektrum über die Breite
+        const ripple = Math.sin(tx * 6.283 * 1.3 + z * 3.0 - twave) * 0.16;
+        const hgt = (fv * 0.92 + ripple) * amp;
+        const x = W / 2 + (tx - 0.5) * W * sx;
+        const y = rowY - hgt;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       }
-      ctx.strokeStyle = cols[layer];
-      ctx.globalAlpha = layer === 0 ? 1 : 0.5;
-      ctx.lineWidth = layer === 0 ? 2 : 1.2;
-      ctx.shadowColor = cols[layer]; ctx.shadowBlur = 8;
+      ctx.lineWidth = 0.6 + z * 1.9;
+      ctx.globalAlpha = 0.22 + z * 0.78;
       ctx.stroke();
     }
-    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
-    raf = requestAnimationFrame(draw);
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(draw3D);
   }
   function start() {
     playing = true; tt.classList.add('spin'); wave.classList.add('on');
     if (!src) { try { ensureAudio(); } catch (e) {} }
     if (actx && actx.state === 'suspended') actx.resume();
     if (audioEl) audioEl.play().catch(() => {});
-    cancelAnimationFrame(raf); draw();
+    cancelAnimationFrame(raf); draw3D();
   }
   function stop() {
     playing = false; tt.classList.remove('spin'); wave.classList.remove('on');
