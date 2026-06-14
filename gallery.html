@@ -19,11 +19,10 @@
    Jedes Band liegt über dem darunter und wirft genau dort seinen Schatten nach
    unten = sichtbare Kante nur an der echten Überlappung. Slant wechselt. */
 .paper-stack { position: absolute; top: 0; left: 0; right: 0; z-index: -1; overflow: hidden; background: #ECE7DB; }
-/* Wrapper trägt den Schatten (ungeclippt), Kind die Raute. Sonst würde
-   clip-path den drop-shadow wieder wegschneiden. */
-.pband { position: absolute; }
-.pband > i { display: block; width: 100%; height: 100%; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
-.pband.raised { filter: drop-shadow(0 0 17px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(0,0,0,.7)); }
+/* Wrapper trägt den (weichen) Schatten ungeclippt, Kind die geclippte Bahn.
+   Sonst schneidet clip-path den drop-shadow wieder weg. */
+.pband { position: absolute; left: 0; width: 100%; }
+.pband > i { display: block; width: 100%; height: 100%; }
 
 /* ---------- Lightbox ---------- */
 .lightbox { position: fixed; inset: 0; z-index: 9500; display: none; place-items: center; background: rgba(20,17,12,.93); padding: 4vmin; cursor: zoom-out; }
@@ -252,38 +251,47 @@
   const canvasH = Math.round(y + vh * 0.4);
   canvas.style.height = canvasH + 'px';
 
-  /* ---------- Rauten-Gitter aus gefaltetem Papier, scrollt mit ----------
-     Reihenfarbe steigt durch (sage, terracotta, rose, maroon ...). Jede zweite
-     Reihe liegt oben (.raised) und wirft Schatten nach oben und unten auf die
-     dazwischenliegenden Reihen. Die unteren Reihen tragen keinen eigenen Schatten. */
+  /* ---------- Flyer-Aufbau: gespiegelter Papierstapel, scrollt mit ----------
+     Wie der Flyer: oben hell (Hero), unten hell (Footer), dazwischen Farbe von
+     außen (hell) nach innen (dunkel). Obere Hälfte und untere Hälfte sind an der
+     Mitte gespiegelt, die Diagonalen laufen dort zu einem Trapez zusammen.
+     Schatten weich und lang, zur Mitte hin tiefer. */
   const stack = document.getElementById('pstack');
   if (stack) {
-    const pal = ['#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#C98A5E', '#4A2540'];
+    const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#4A2540']; // hell -> dunkel
+    const M = pal.length;
     const total = canvas.offsetTop + canvasH + 900;
     stack.style.height = total + 'px';
-    stack.style.background = pal[3];               // dunkle Basis, kein helles Durchscheinen
-    const hw = 268, hh = 206;                      // halbe Rauten-Breite/-Höhe = große Flächen
-    const cols = Math.ceil(W / hw) + 3;
-    const rows = Math.ceil(total / hh) + 3;
+    stack.style.background = pal[0];               // helle Basis (Hero/Footer hell)
+    const center = total / 2;
+    const bandH = center / M;
+    const s = 170;                                 // Diagonale (Trapez-Schräge)
+    const PAD = 130;                               // Platz für weiche, lange Schatten
     const frag = document.createDocumentFragment();
-    for (let r = -1; r < rows; r++) {
-      const raised = r % 2 === 0;
-      const color = pal[((r % pal.length) + pal.length) % pal.length];
-      for (let c = -1; c < cols; c++) {
-        if (((r + c) % 2 + 2) % 2 !== 0) continue; // nur jede zweite Zelle = Rautenraster
-        const d = document.createElement('div');
-        d.className = raised ? 'pband raised' : 'pband';
-        d.style.left = (c * hw - hw) + 'px';
-        d.style.top = (r * hh - hh) + 'px';
-        d.style.width = (hw * 2) + 'px';
-        d.style.height = (hh * 2) + 'px';
-        d.style.zIndex = raised ? '40' : '10';
-        const inner = document.createElement('i');
-        inner.style.background = color;
-        d.appendChild(inner);
-        frag.appendChild(d);
-      }
-    }
+    const soft = 'drop-shadow(0 22px 46px rgba(16,8,4,.45))';
+    const softUp = 'drop-shadow(0 -22px 46px rgba(16,8,4,.45))';
+
+    const band = (yTop, color, down, z) => {
+      const w = document.createElement('div');
+      w.className = 'pband';
+      w.style.top = (yTop - PAD) + 'px';
+      w.style.height = (bandH + 2 * PAD) + 'px';
+      w.style.zIndex = String(z);
+      w.style.filter = down ? soft : softUp;       // Schatten zur Mitte
+      const i = document.createElement('i');
+      i.style.background = color;
+      i.style.clipPath = down
+        ? `polygon(0 ${PAD}px, 100% ${PAD + s}px, 100% ${PAD + bandH + s}px, 0 ${PAD + bandH}px)`
+        : `polygon(0 ${PAD + s}px, 100% ${PAD}px, 100% ${PAD + bandH}px, 0 ${PAD + bandH + s}px)`;
+      w.appendChild(i);
+      frag.appendChild(w);
+    };
+
+    // obere Hälfte: hell oben -> dunkel zur Mitte, jede Bahn liegt über der darunter
+    for (let j = 0; j < M; j++) band(j * bandH, pal[j], true, M - j);
+    // untere Hälfte: gespiegelt, dunkel an der Mitte -> hell zum Footer
+    for (let k = 0; k < M; k++) band(center + k * bandH, pal[M - 1 - k], false, k + 1);
+
     stack.appendChild(frag);
   }
 })();
