@@ -139,6 +139,10 @@
 .contact .btn.ghost { background: transparent; color: var(--linen); }
 .contact .btn.ghost:hover { background: var(--linen); color: var(--hot); }
 .contact-ghost { position: absolute; right: -4vw; bottom: -10vw; font-weight: 800; font-size: 30vw; color: rgba(243,233,219,.12); letter-spacing: -.05em; pointer-events: none; z-index: 0; }
+/* ---- Credo (ruhiger Block im About) ---- */
+.credo { margin-top: clamp(3.5rem,8vw,6rem); max-width: 46ch; border-left: 3px solid var(--hot); padding-left: clamp(1.2rem,3vw,2rem); }
+.credo p { font-size: clamp(1.3rem,2.3vw,1.85rem); line-height: 1.5; letter-spacing: -.01em; font-weight: 500; }
+.credo .hl { color: var(--hot); }
 /* ---- KI-Orchestrierung (Diagramm) ---- */
 .orch-intro { max-width: 52ch; opacity: .8; margin: 0 0 clamp(2rem,4vw,3rem); font-size: clamp(1rem,1.4vw,1.2rem); }
 .orch { position: relative; }
@@ -323,6 +327,9 @@
         <div class="stat reveal"><div class="n"><span data-count="10000">0</span>+</div><div class="d">Zeilen System-Prompt</div></div>
         <div class="stat reveal"><div class="n"><span data-count="3">0</span></div><div class="d">KI-Pipelines live</div></div>
       </div>
+    </div>
+    <div class="credo reveal">
+      <p>Ich mag Produkte, in denen <span class="hl">Liebe</span> steckt. Ich kenne das vor allem aus dem Kleinen. Aus kleinen Küchen, oder aus wenigen Spuren in einem Beat, der sechs Stunden im Loop läuft. Vier Takte halten manchmal länger als zehn Minuten Lärm. Ein Gericht kann sich an sich selbst reiben und im selben Bissen ruhig werden, allein durch zwei Zutaten, die sich finden und harmonieren. Wo ein Projekt diese Luft atmet, atme ich mit.</p>
     </div>
   </div>
 </section>
