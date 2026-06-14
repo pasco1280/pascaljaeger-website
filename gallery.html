@@ -259,25 +259,30 @@
   const stack = document.getElementById('pstack');
   if (stack) {
     const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#4A2540']; // hell -> dunkel
-    const M = pal.length;
     const total = canvas.offsetTop + canvasH + 900;
     stack.style.height = total + 'px';
     stack.style.background = pal[0];               // helle Basis (Hero/Footer hell)
-    const center = total / 2;
-    const bandH = center / M;
-    const s = 170;                                 // Diagonale (Trapez-Schräge)
-    const PAD = 130;                               // Platz für weiche, lange Schatten
+    // Ping-Pong durch die Palette: hell -> dunkel -> hell, immer wieder.
+    // Dadurch viele kleinere Bahnen mit dunklen Trapez-Mitten und hellen Wenden.
+    const seq = [0, 1, 2, 3, 4, 5, 4, 3, 2, 1];    // Periode 10, dunkel bei Index 5
+    const bandH = 320;                             // kleinere Flächen
+    const s = 150;                                 // Diagonale (Trapez-Schräge)
+    const PAD = 120;                               // Platz für weiche, lange Schatten
     const frag = document.createDocumentFragment();
-    const soft = 'drop-shadow(0 22px 46px rgba(16,8,4,.45))';
-    const softUp = 'drop-shadow(0 -22px 46px rgba(16,8,4,.45))';
+    const N = Math.ceil(total / bandH) + 2;
 
-    const band = (yTop, color, down, z) => {
+    for (let b = 0; b < N; b++) {
+      const pos = b % seq.length;
+      const color = pal[seq[pos]];
+      const down = pos < 5;                        // absteigend = down, aufsteigend = up
       const w = document.createElement('div');
       w.className = 'pband';
-      w.style.top = (yTop - PAD) + 'px';
+      w.style.top = (b * bandH - PAD) + 'px';
       w.style.height = (bandH + 2 * PAD) + 'px';
-      w.style.zIndex = String(z);
-      w.style.filter = down ? soft : softUp;       // Schatten zur Mitte
+      w.style.zIndex = String(N - b);              // obere Bahn liegt über der darunter
+      w.style.filter = down
+        ? 'drop-shadow(0 20px 40px rgba(16,8,4,.4))'
+        : 'drop-shadow(0 -20px 40px rgba(16,8,4,.4))';
       const i = document.createElement('i');
       i.style.background = color;
       i.style.clipPath = down
@@ -285,12 +290,7 @@
         : `polygon(0 ${PAD + s}px, 100% ${PAD}px, 100% ${PAD + bandH}px, 0 ${PAD + bandH + s}px)`;
       w.appendChild(i);
       frag.appendChild(w);
-    };
-
-    // obere Hälfte: hell oben -> dunkel zur Mitte, jede Bahn liegt über der darunter
-    for (let j = 0; j < M; j++) band(j * bandH, pal[j], true, M - j);
-    // untere Hälfte: gespiegelt, dunkel an der Mitte -> hell zum Footer
-    for (let k = 0; k < M; k++) band(center + k * bandH, pal[M - 1 - k], false, k + 1);
+    }
 
     stack.appendChild(frag);
   }
