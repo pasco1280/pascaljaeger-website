@@ -14,15 +14,20 @@
 <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
 <link rel="stylesheet" href="assets/css/wrlz.css">
 <style>
-/* ---------- Flyer-Hintergrund: übereinanderliegende Papierbänder ---------- */
-.flyer-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #ECE7DB; }
-.flyer-bg .band { position: absolute; inset: 0; filter: drop-shadow(0 -5px 9px rgba(46,24,16,.30)); }
-.fb1 { background: #9DB6AE; clip-path: polygon(0 14%, 100% 7%, 100% 100%, 0 100%); }
-.fb2 { background: #CC7A4E; clip-path: polygon(0 27%, 100% 19%, 100% 100%, 0 100%); rotate: .3deg; }
-.fb3 { background: #D2868F; clip-path: polygon(0 40%, 100% 33%, 100% 100%, 0 100%); }
-.fb4 { background: #6E2E40; clip-path: polygon(0 54%, 100% 45%, 100% 100%, 0 100%); rotate: -.3deg; }
-.fb5 { background: #C98A5E; clip-path: polygon(0 67%, 100% 60%, 100% 100%, 0 100%); }
-.fb6 { background: #4A2540; clip-path: polygon(0 81%, 100% 73%, 100% 100%, 0 100%); }
+/* ---------- Flyer-Hintergrund: übereinanderliegende Papierbänder ----------
+   Jede .sheet deckt von oben bis zu ihrer diagonalen Unterkante ab und liegt
+   über der darunterliegenden. Der drop-shadow an der Unterkante fällt nach
+   unten auf das nächste Band = sichtbare Papierkante. Richtungen wechseln. */
+.flyer-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #4A2540; }
+.flyer-bg .sheet { position: absolute; inset: 0; filter: drop-shadow(0 9px 12px rgba(24,12,8,.5)); }
+.s1 { background: #4A2540; filter: none; }
+.s2 { background: #9DB6AE; clip-path: polygon(0 0, 100% 0, 100% 86%, 0 92%); }
+.s3 { background: #C98A5E; clip-path: polygon(0 0, 100% 0, 100% 79%, 0 73%); }
+.s4 { background: #6E2E40; clip-path: polygon(0 0, 100% 0, 100% 60%, 0 66%); }
+.s5 { background: #D2868F; clip-path: polygon(0 0, 100% 0, 100% 53%, 0 47%); }
+.s6 { background: #CC7A4E; clip-path: polygon(0 0, 100% 0, 100% 34%, 0 40%); }
+.s7 { background: #9DB6AE; clip-path: polygon(0 0, 100% 0, 100% 27%, 0 21%); }
+.s8 { background: #ECE7DB; clip-path: polygon(0 0, 100% 0, 100% 8%, 0 14%); }
 
 /* ---------- Hero ---------- */
 .g-hero { position: relative; padding: clamp(7rem,14vh,10rem) 0 clamp(1rem,3vw,2rem); text-align: center; }
@@ -92,8 +97,8 @@
 <body>
 
 <div class="flyer-bg" aria-hidden="true">
-  <div class="band fb1"></div><div class="band fb2"></div><div class="band fb3"></div>
-  <div class="band fb4"></div><div class="band fb5"></div><div class="band fb6"></div>
+  <div class="sheet s1"></div><div class="sheet s2"></div><div class="sheet s3"></div><div class="sheet s4"></div>
+  <div class="sheet s5"></div><div class="sheet s6"></div><div class="sheet s7"></div><div class="sheet s8"></div>
 </div>
 
 <nav class="nav">
