@@ -35,6 +35,9 @@ body { background: #14110f; color: var(--linen); }
 .mascot-row { display:grid; gap:clamp(1.5rem,4vw,3.5rem); align-items:center; }
 @media (min-width:760px){ .mascot-row { grid-template-columns: 0.85fr 1fr; } }
 .shot-mascot img { width:100%; max-width:340px; height:auto; display:block; margin:0 auto; filter: drop-shadow(0 22px 34px rgba(28,27,25,.3)); }
+.case-hero { position: relative; overflow: hidden; }
+.hero-tricho { position: absolute; right: clamp(0.5rem,4vw,4.5rem); bottom: 0; width: clamp(150px,24vw,360px); height: auto; z-index: 2; filter: drop-shadow(0 22px 36px rgba(0,0,0,.5)); pointer-events: none; }
+@media (max-width:760px){ .hero-tricho { width: 130px; right: 0; opacity: .9; } }
 </style>
 </head>
 <body>
@@ -60,6 +63,7 @@ body { background: #14110f; color: var(--linen); }
     <h1 class="case-title" data-fall data-depth="1">HNTZ</h1>
     <p class="case-sub" data-depth="0.6" style="color:var(--linen)">Jede Pflanze ein Datenobjekt. Eine Engine, die Anomalien erkennt, bevor du sie siehst.</p>
   </div>
+  <img class="hero-tricho" src="assets/img/hntz/mascot.png" alt="Tricho Jenkins, das HNTZ-Maskottchen" data-px="0.08" data-depth="0.6">
 </header>
 
 <!-- META on linen -->
