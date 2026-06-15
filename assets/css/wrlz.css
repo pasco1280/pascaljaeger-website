@@ -391,3 +391,9 @@ em { font-style: italic; }
 
 /* ---- Subtiles Brand-Wasserzeichen im Case-Hero ---- */
 .hero-logo { position: absolute; pointer-events: none; z-index: 1; height: auto; }
+
+/* ---- Live-Link im Case-Hero ("anfassen") ---- */
+.case-live { display: inline-flex; align-items: center; gap: .55em; margin-top: clamp(1.4rem,3vw,2rem); font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; padding: .75em 1.2em; border: 2px solid currentColor; border-radius: 999px; transition: transform .25s, opacity .25s; }
+.case-live:hover { transform: translateY(-2px); }
+.case-live .ar { transition: transform .25s; }
+.case-live:hover .ar { transform: translateX(3px); }
