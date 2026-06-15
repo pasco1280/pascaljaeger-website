@@ -165,6 +165,7 @@ em { font-style: italic; }
 /* ---------- Nav ---------- */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 8000;
+  max-width: var(--maxw); margin-inline: auto;
   display: flex; justify-content: space-between; align-items: center;
   padding: clamp(1rem,2vw,1.5rem) var(--gutter);
   mix-blend-mode: difference;

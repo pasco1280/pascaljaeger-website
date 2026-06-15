@@ -11,3 +11,15 @@ og-generator.html
 v1
 
 _old
+_notes
+
+# Ungenutzte Fonts (nur Plus Jakarta Sans VariableFont wird referenziert)
+assets/fonts/Inter
+assets/fonts/Lora
+assets/fonts/Plus_Jakarta_Sans/static
+
+# Komplett ungenutzte Bild-Ordner + KI-Reste (nirgends referenziert)
+assets/img/icons
+assets/img/projects
+assets/img/ui
+assets/img/illustrationen/soilgoodman_*
