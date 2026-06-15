@@ -285,7 +285,7 @@ em { font-style: italic; }
 .statement .st-line .hl { color: var(--hot); }
 .statement .st-line .out { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
 .statement .st-tag {
-  position: absolute; left: var(--gutter); bottom: clamp(3rem,8vw,6rem);
+  position: absolute; left: max(var(--gutter), calc(50% - var(--maxw) / 2 + var(--gutter))); bottom: clamp(3rem,8vw,6rem);
   font-family: var(--mono); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; opacity: .4;
 }
 @media (max-width: 640px){ .statement .b, .statement .c { margin-left: 0; text-align: left; } }
