@@ -1,9 +1,6 @@
 name = "pascaljaeger"
 compatibility_date = "2026-04-25"
-
-routes = [
-  { pattern = "pascaljaeger.online", custom_domain = true }
-]
+workers_dev = true
 
 [assets]
 directory = "./"
