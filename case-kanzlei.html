@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kanzlei — Familienrecht in der Cloud · Pascal Jäger</title>
-<meta name="description" content="Familienrecht-Kanzlei von Citrix in die Cloud migriert. 1.500 auf 420 Euro im Monat, eigenes KI-Cockpit, drei Personas. Actaport, n8n, Claude API.">
+<title>Kanzlei — JustAI, DSGVO-konforme KI-Assistenz · Pascal Jäger</title>
+<meta name="description" content="JustAI: KI-gestützte Schutz- und Automatikschicht für eine Familienrechtskanzlei. §203 StGB technisch durchgesetzt, reversible Pseudonymisierung, Anbindung an Actaport in Vorbereitung.">
 <meta name="theme-color" content="#8FB1A6">
 <link rel="canonical" href="https://pascaljaeger.de/case-kanzlei.html">
 <meta name="author" content="Pascal Jäger">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Kanzlei — Familienrecht in der Cloud">
-<meta property="og:description" content="Citrix raus, Cloud rein. 1.500€ auf 420€/Monat. Eigenes KI-Cockpit.">
+<meta property="og:title" content="Kanzlei — JustAI, DSGVO-konforme KI-Assistenz">
+<meta property="og:description" content="§203 by design. Reversible Pseudonymisierung. Die KI bereitet vor, der Mensch entscheidet.">
 <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
 <link rel="stylesheet" href="assets/css/wrlz.css">
 <style>
@@ -26,24 +26,25 @@
 .kz-p3 { width: 90px; height: 116px; top: 22%; right: 30%; rotate: 4deg; }
 @media (max-width:760px){ .kz-p2,.kz-p3 { display:none; } .kz-p1{ right:-4%; opacity:.6; } }
 
-/* Kosten-Vergleich */
-.cost { display:grid; gap: clamp(1rem,2.5vw,2rem); }
-@media (min-width:760px){ .cost { grid-template-columns: 1fr 1fr; align-items:end; } }
-.cost .bar { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,3vw,2.2rem); position:relative; overflow:hidden; }
-.cost .bar.old { background: var(--chalk); min-height: clamp(260px,34vw,380px); }
-.cost .bar.new { background: var(--grass); min-height: clamp(110px,15vw,170px); }
-.cost .bar .label { font-family: var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.6; }
-.cost .bar .price { font-weight:800; font-size: clamp(2.4rem,6vw,4.4rem); letter-spacing:-.04em; line-height:.9; margin-top:.4rem; }
-.cost .bar .sub { font-size:.92rem; opacity:.75; margin-top:.6rem; }
-.cost .bar.old::before { content:'CITRIX'; position:absolute; right:-2%; bottom:-8%; font-weight:800; font-size:30%; color:rgba(17,17,17,.05); }
+/* Der §203-Türsteher (Kern) */
+.kz-core { border:2.5px solid var(--ink); border-radius: var(--radius); background: var(--grass); padding: clamp(1.6rem,3.5vw,2.6rem); }
+.kz-core h3 { font-weight:800; font-size: clamp(1.4rem,3vw,2.2rem); letter-spacing:-.02em; line-height:1.1; }
+.kz-core p { font-size: clamp(1rem,1.4vw,1.15rem); line-height:1.55; margin-top:.8rem; max-width:62ch; }
+.kz-flow { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .4rem; margin-top:1.5rem; }
+.kz-flow .step { font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; border:2px solid var(--ink); border-radius:999px; padding:.5em .9em; background:var(--chalk); }
+.kz-flow .step.key { background:var(--ink); color:var(--chalk); }
+.kz-flow .arr { font-weight:800; opacity:.45; }
+.kz-note { font-family:var(--mono); font-size:.7rem; letter-spacing:.04em; opacity:.72; margin-top:1.1rem; }
 
-.personas { display:grid; gap:1rem; }
-@media (min-width:800px){ .personas { grid-template-columns: repeat(3,1fr); } }
-.persona { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,2.5vw,2rem); background: var(--chalk); }
-.persona .pe { font-size: 2rem; }
-.persona h4 { font-weight:800; font-size:1.3rem; margin:.6rem 0 .3rem; letter-spacing:-.02em; }
-.persona .role { font-family:var(--mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; }
-.persona p { font-size:.95rem; opacity:.82; line-height:1.5; margin-top:.7rem; }
+/* Werkzeuge */
+.tools { display:grid; gap:1rem; }
+@media (min-width:760px){ .tools { grid-template-columns: repeat(2,1fr); } }
+@media (min-width:1040px){ .tools { grid-template-columns: repeat(4,1fr); } }
+.tool { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,2.5vw,1.9rem); background: var(--chalk); }
+.tool .te { font-size: 1.7rem; }
+.tool h4 { font-weight:800; font-size:1.2rem; margin:.6rem 0 .25rem; letter-spacing:-.02em; }
+.tool .role { font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; }
+.tool p { font-size:.92rem; opacity:.82; line-height:1.5; margin-top:.7rem; }
 </style>
 </head>
 <body>
@@ -68,9 +69,9 @@
     <div class="kz-paper kz-p3" data-px="0.16" data-depth="1.6"></div>
   </div>
   <div class="wrap">
-    <p class="case-kicker" data-depth="0.3">Case /03 · Enterprise · Legacy-Migration</p>
+    <p class="case-kicker" data-depth="0.3">Case /03 · Recht · DSGVO &amp; §203 by design</p>
     <h1 class="case-title" data-fall data-depth="1">KANZLEI</h1>
-    <p class="case-sub" data-depth="0.6">Familienrecht raus aus dem Citrix-Käfig. Rein in die Cloud, mit eigenem KI-Cockpit.</p>
+    <p class="case-sub" data-depth="0.6">JustAI: eine Schutz- und Automatikschicht für eine Familienrechtskanzlei. Die KI bereitet vor, der Mensch entscheidet.</p>
   </div>
 </header>
 
@@ -78,10 +79,10 @@
 <section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
   <div class="wrap">
     <div class="case-meta">
-      <div><div class="m-k">Rolle</div><div class="m-v">Discovery · Migration · Tooling</div></div>
-      <div><div class="m-k">Stack</div><div class="m-v">Actaport · n8n · Claude API · Custom Web</div></div>
-      <div><div class="m-k">Status</div><div class="m-v">Im Roll-out · JustAI live</div></div>
-      <div><div class="m-k">Domäne</div><div class="m-v">Familienrecht</div></div>
+      <div><div class="m-k">Rolle</div><div class="m-v">Discovery · Architektur · Build</div></div>
+      <div><div class="m-k">Stack</div><div class="m-v">React · FastAPI · Supabase/pgvector · Claude · Whisper · n8n</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Kernkomponenten gebaut · Anbindung in Vorbereitung</div></div>
+      <div><div class="m-k">Domäne</div><div class="m-v">Familienrecht · §203 StGB</div></div>
     </div>
   </div>
 </section>
@@ -91,14 +92,14 @@
   <div class="wrap">
     <div class="case-spine reveal">
       <div class="spine-beats">
-        <div class="beat"><div class="bk">Problem</div><div class="bv">Eine Kanzlei saß in teurer Legacy-Software fest, Familienrecht im Citrix-Käfig.</div></div>
-        <div class="beat"><div class="bk">Ansatz</div><div class="bv">Migration in die Cloud, dazu ein eigenes KI-Cockpit auf Actaport und n8n.</div></div>
-        <div class="beat"><div class="bk">Ergebnis</div><div class="bv">Im Roll-out, JustAI ist live, die Kosten ein Viertel von vorher.</div></div>
+        <div class="beat"><div class="bk">Problem</div><div class="bv">Eine kleine Kanzlei will Routine loswerden, ohne den anwaltlichen Geheimnisschutz nach §203 StGB zu riskieren.</div></div>
+        <div class="beat"><div class="bk">Ansatz</div><div class="bv">Eine additive Schicht über die Kanzleisoftware Actaport, die Klarnamen technisch im Haus hält und Vorarbeit übernimmt.</div></div>
+        <div class="beat"><div class="bk">Ergebnis</div><div class="bv">Kernkomponenten gebaut und getestet. Die Anbindung an die Kanzleisoftware ist in Vorbereitung.</div></div>
       </div>
       <div class="spine-proof">
-        <div class="sp"><div class="spn">72%</div><div class="spd">Kosten runter</div></div>
-        <div class="sp"><div class="spn">live</div><div class="spd">JustAI im Einsatz</div></div>
-        <div class="sp"><div class="spn">3</div><div class="spd">Personas bedient</div></div>
+        <div class="sp"><div class="spn">§203</div><div class="spd">by design</div></div>
+        <div class="sp"><div class="spn">0</div><div class="spd">Klarnamen raus</div></div>
+        <div class="sp"><div class="spn">fail-closed</div><div class="spd">Pseudonymisierer</div></div>
       </div>
     </div>
   </div>
@@ -106,74 +107,76 @@
 
 <!-- MARQUEE -->
 <div class="marquee alt" data-dir="left" aria-hidden="true">
-  <div class="track"><span class="item">CITRIX RAUS <span class="sep">✶</span> CLOUD REIN <span class="sep">✶</span> JUSTAI LIVE <span class="sep">✶</span> 72% KOSTEN RUNTER <span class="sep">✶</span>&nbsp;</span></div>
+  <div class="track"><span class="item">DSGVO BY DESIGN <span class="sep">✶</span> §203 DURCHGESETZT <span class="sep">✶</span> KLARNAME BLEIBT IM HAUS <span class="sep">✶</span> DIE KI BEREITET VOR, DER MENSCH ENTSCHEIDET <span class="sep">✶</span>&nbsp;</span></div>
 </div>
 
 <!-- LEDE -->
 <section class="section">
   <div class="wrap">
-    <p class="case-lede reveal">Eine Kanzlei zahlte für <span class="hl">Software von gestern</span>. Heute zahlt sie ein Viertel.</p>
+    <p class="case-lede reveal">Kein Klarname verlässt das Haus, bevor ein Text an ein <span class="hl">Cloud-Modell</span> geht.</p>
   </div>
 </section>
 
-<!-- COST COMPARE -->
+<!-- INTRO -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="cost">
-      <div class="bar old reveal" data-px="0.04">
-        <div class="label">Vorher · Citrix &amp; Lizenzen</div>
-        <div class="price">1.500&nbsp;€</div>
-        <div class="sub">pro Monat · träge · ortsgebunden · Wartung extern</div>
+    <p class="body reveal">JustAI nimmt einer Familienrechtskanzlei zeitintensive Routine ab und setzt dabei den anwaltlichen Geheimnisschutz nach §203 StGB technisch durch. Das System sitzt als zusätzliche Schicht über der Kanzleisoftware Actaport und dockt per API, Webhooks und n8n an. Gehostet wird in Deutschland.</p>
+  </div>
+</section>
+
+<!-- KERN: §203-TÜRSTEHER -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="kz-core reveal" data-px="0.03">
+      <h3>Im Zentrum: der §203-Türsteher</h3>
+      <p>Ein reversibler Pseudonymisierer. Bevor ein Text an ein Cloud-Sprachmodell geht, ersetzt er alle Klarnamen, Adressen, Aktenzeichen und Kontodaten durch Platzhalter. Erst die fertige Antwort wird innerhalb der Kanzlei wieder mit den echten Daten zusammengeführt. Fehlt die Erkennungs-Engine, bricht der Vorgang ab und sendet nichts.</p>
+      <div class="kz-flow">
+        <span class="step">Akte · Klarnamen</span>
+        <span class="arr">›</span>
+        <span class="step key">§203-Türsteher</span>
+        <span class="arr">›</span>
+        <span class="step">Platzhalter</span>
+        <span class="arr">›</span>
+        <span class="step">Cloud-Claude</span>
+        <span class="arr">›</span>
+        <span class="step">Antwort</span>
+        <span class="arr">›</span>
+        <span class="step">in der Kanzlei zusammengeführt</span>
       </div>
-      <div class="bar new reveal" data-px="0.08">
-        <div class="label">Nachher · Cloud &amp; eigenes Cockpit</div>
-        <div class="price">420&nbsp;€</div>
-        <div class="sub">pro Monat · überall · KI an Bord</div>
-      </div>
+      <p class="kz-note">Fail-closed by default. Ohne Erkennung kein Versand.</p>
     </div>
   </div>
 </section>
 
-<!-- POINTS -->
+<!-- WERKZEUGE -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="case-points" data-reveal-stagger>
-      <div class="case-point reveal">
-        <h3>Discovery zuerst</h3>
-        <p>Bevor eine Lizenz gekündigt wurde, wurde der echte Workflow verstanden. Drei Rollen, drei Realitäten.</p>
-      </div>
-      <div class="case-point reveal">
-        <h3>Saubere Migration</h3>
-        <p>Citrix raus, Actaport und Cloud rein. Ohne dass an einem einzigen Tag die Arbeit stillstand.</p>
-      </div>
-      <div class="case-point reveal">
-        <h3>Eigenes KI-Cockpit</h3>
-        <p>JustAI: ein Tool, das Schriftsätze versteht und vorbereitet. Auf die Kanzlei zugeschnitten.</p>
-      </div>
+    <div class="sec-head"><span class="num">Darauf baut auf</span></div>
+    <div class="tools" data-reveal-stagger>
+      <div class="tool reveal"><div class="te">🔒</div><h4>Pseudonymisierer</h4><div class="role">§203-Türsteher · 13 Tests</div><p>Reversibel und fail-closed. Hält jeden Klarnamen im Haus.</p></div>
+      <div class="tool reveal"><div class="te">🧱</div><h4>Prompt-System</h4><div class="role">Schriftsätze · 34 Tests</div><p>Modularer Block-Aufbau mit Rollen und Stil-Einschub für juristische Schriftsätze.</p></div>
+      <div class="tool reveal"><div class="te">📚</div><h4>RAG-Stilbibliothek</h4><div class="role">Retrieval · 8 Tests</div><p>Anonymisierte Beispiel-Schriftsätze als Stilvorlage, abrufbar beim Entwurf.</p></div>
+      <div class="tool reveal"><div class="te">⏰</div><h4>Erinnerungs-Assistent</h4><div class="role">Fristen · 17 Tests</div><p>Erkennt offene Vorgänge, priorisiert nach Frist und Liegedauer, erinnert im passenden Ton.</p></div>
     </div>
   </div>
 </section>
 
-<!-- PERSONAS -->
+<!-- PRINZIP -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><span class="num">Drei Personas, ein Tool</span></div>
-    <div class="personas" data-reveal-stagger>
-      <div class="persona reveal"><div class="pe">⚖️</div><h4>Die Partnerin</h4><div class="role">Entscheidet</div><p>Will Überblick und Tempo. Sieht im Cockpit den Stand jedes Mandats auf einen Blick.</p></div>
-      <div class="persona reveal"><div class="pe">📑</div><h4>Der Anwalt</h4><div class="role">Arbeitet am Fall</div><p>Will Schriftsätze schneller. JustAI liefert den Entwurf, er den Feinschliff.</p></div>
-      <div class="persona reveal"><div class="pe">🗂️</div><h4>Das Office</h4><div class="role">Hält zusammen</div><p>Will weniger Klicks. Fristen und Akten laufen automatisch ins richtige Fach.</p></div>
-    </div>
+    <p class="case-lede reveal">Die KI bereitet vor, <span class="hl">der Mensch entscheidet</span>.</p>
+    <p class="body reveal" style="margin-top:1.2rem">Der KI-Schriftsatz-Workflow erzwingt die Pseudonymisierung bei Erstellung und Überarbeitung. Die Architektur steht: Cloud-Claude plus Pseudonymisierung plus Auftragsverarbeitungsvertrag, höchste Qualität bei voller Datenschutzsicherheit. Als Nächstes: den Actaport-Zugang beantragen, die Umgebung scharf schalten und echte Aktendaten anbinden.</p>
   </div>
 </section>
 
 <!-- RESULTS -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><span class="num">Ergebnis</span></div>
+    <div class="sec-head"><span class="num">Stand</span></div>
     <div class="result-grid" data-reveal-stagger>
-      <div class="result reveal"><div class="r-n"><span data-count="72">0</span>%</div><div class="r-d">Kosten runter</div></div>
-      <div class="result reveal"><div class="r-n"><span data-count="3">0</span></div><div class="r-d">Personas bedient</div></div>
-      <div class="result reveal"><div class="r-n">live</div><div class="r-d">JustAI im Einsatz</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="4">0</span></div><div class="r-d">Kernkomponenten gebaut</div></div>
+      <div class="result reveal"><div class="r-n"><span data-count="72">0</span></div><div class="r-d">Tests grün</div></div>
+      <div class="result reveal"><div class="r-n">DE</div><div class="r-d">Hosting in Deutschland</div></div>
     </div>
   </div>
 </section>
@@ -193,7 +196,7 @@
 
 <footer class="foot">
   <div class="foot-grid">
-    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Legacy<br>im Weg?</a></div></div>
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Geheimnis<br>schützen?</a></div></div>
     <div><h4>Arbeit</h4><ul>
       <li><a href="case-wrlz.html">WRLZ</a></li>
       <li><a href="case-hntz.html">HNTZ</a></li>
@@ -207,7 +210,7 @@
   </div>
   <div class="foot-base">
     <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
-    <span>Kanzlei · Familienrecht Cloud</span>
+    <span>Kanzlei · JustAI · §203 by design</span>
   </div>
 </footer>
 
