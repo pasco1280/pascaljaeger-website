@@ -112,6 +112,13 @@
 .stat .n { font-weight: 800; font-size: clamp(2.4rem,5vw,3.6rem); letter-spacing: -.03em; line-height: 1; }
 .stat .d { font-family: var(--mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; margin-top: .4rem; }
 
+/* Marken-Background (Akai, Numark) */
+.brands { margin-top: clamp(2.5rem,5vw,4rem); border-top: 2px solid var(--ink); padding-top: clamp(1.4rem,3vw,2rem); }
+.brands .brands-lbl { display: block; font-family: var(--mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; opacity: .6; margin-bottom: clamp(1.3rem,2.6vw,2rem); }
+.brands-row { display: flex; align-items: center; gap: clamp(2.2rem,6vw,5rem); flex-wrap: wrap; }
+.brand-logo { height: clamp(30px,3.6vw,46px); width: auto; opacity: .82; transition: opacity .3s, transform .3s; }
+.brand-logo:hover { opacity: 1; transform: translateY(-2px); }
+
 /* ---------- LEISTUNGEN ---------- */
 .serv { border-top: 2px solid var(--ink); }
 .serv-row {
@@ -261,8 +268,8 @@
     </div>
 
     <a class="slim reveal" href="case-kanzlei.html">
-      <span><span class="s-l">/04 · Enterprise</span><br><span class="s-t" data-flip>Kanzlei · Familienrecht Cloud</span></span>
-      <span class="s-go">Citrix raus, 1.500&nbsp;€ → 420&nbsp;€ &nbsp;→</span>
+      <span><span class="s-l">/04 · Recht · DSGVO</span><br><span class="s-t" data-flip>Kanzlei · JustAI, §203 by design</span></span>
+      <span class="s-go">Klarname bleibt im Haus &nbsp;→</span>
     </a>
 
     <a class="slim reveal" href="case-matchachin.html">
@@ -327,6 +334,13 @@
         <div class="stat reveal"><div class="n"><span data-count="30">0</span>+</div><div class="d">Jahre am Code</div></div>
         <div class="stat reveal"><div class="n"><span data-count="10000">0</span>+</div><div class="d">Zeilen System-Prompt</div></div>
         <div class="stat reveal"><div class="n"><span data-count="3">0</span></div><div class="d">KI-Pipelines live</div></div>
+      </div>
+    </div>
+    <div class="brands reveal">
+      <span class="brands-lbl">Davor · Marketing, Webdesign, Messe &amp; Produktdesign für</span>
+      <div class="brands-row">
+        <img class="brand-logo" src="assets/img/clients/akai.png" alt="AKAI Professional" loading="lazy" decoding="async">
+        <img class="brand-logo" src="assets/img/clients/numark.png" alt="Numark" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="credo reveal">
@@ -441,7 +455,7 @@
         <li><a href="case-fairi.html">fairi · KI-Gutenachtgeschichten</a></li>
         <li><a href="case-hntz.html">HNTZ · Phenotype Discovery</a></li>
         <li><a href="case-wrlz.html">WRLZ · KI-Automation</a></li>
-        <li><a href="case-kanzlei.html">Kanzlei · Familienrecht Cloud</a></li>
+        <li><a href="case-kanzlei.html">Kanzlei · JustAI, §203 by design</a></li>
         <li><a href="case-matchachin.html">Matchachin · Marke &amp; Produkt</a></li>
       </ul>
     </div>
