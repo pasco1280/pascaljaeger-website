@@ -52,8 +52,8 @@ img.reel-endbild { object-fit: cover; }
 @keyframes cueslide { 0%{ transform: translateX(-100%);} 60%,100%{ transform: translateX(100%);} }
 
 /* ---------- ATEMPAUSE (Raum für die Katze) ---------- */
-.breath { position: relative; height: 115vh; display: grid; place-items: center; background: transparent; }
-.breath { z-index: 2; }   /* Pfoten dürfen über das folgende Element huschen */
+/* Kurzer Puffer zwischen Film und Werk (Maya lebt in Szene 06 im Hero, nicht hier) */
+.breath { position: relative; height: 60vh; display: grid; place-items: center; background: transparent; z-index: 2; }
 .breath .whisper {
   font-family: var(--mono); font-size: var(--fs-mono);
   letter-spacing: .3em; text-transform: uppercase; color: var(--ink);

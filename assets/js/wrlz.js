@@ -346,13 +346,15 @@
       zoom:    [0.42, 0.68],   // Kamerafahrt in das s, camZ 1 → zMax
       release: 0.68,           // Clip-Freigabe: zMax wird in layout() so bestimmt, dass hier Ink-Abdeckung 100 % erreicht ist
       portal:  [0.30, 0.52],   // Strand-Sichtbarkeit im Portal (Alpha 0 → 1)
-      strand:  [0.55, 1.00],   // Frame-Fenster Strand
-      intro:   [0.78, 0.96],
+      strand:  [0.55, 0.78],   // Frame-Fenster Strand (hält danach das letzte Bild)
+      maya:    [0.78, 0.985],  // Szene 06: Rauch-Maya läuft über den Sand
+      mayaFade: [0.78, 0.815], // weicher Take-Übergang (beide Takes, gleicher Ort, andere Wellen)
+      intro:   [0.90, 0.99],   // Title Card erst, wenn Maya sich auflöst
     };
     const GRASS = 'rgba(143,177,166,';   // #8FB1A6, hartkodierte Nahtfarbe
-    const SEQ = window.matchMedia('(orientation: portrait)').matches
-      ? { stadt: ['m_stadt/m_stadt_', 60], strand: ['m_strand/m_strand_', 45], end: 'endbild/endbild_mobil' }
-      : { stadt: ['stadt/stadt_', 65],     strand: ['strand/strand_', 50],     end: 'endbild/endbild' };
+    const SEQ = (window.matchMedia('(orientation: portrait)').matches && window.innerWidth < 820)
+      ? { stadt: ['m_stadt/m_stadt_', 60], strand: ['m_strand/m_strand_', 45], maya: null, end: 'endbild/endbild_mobil' }
+      : { stadt: ['stadt/stadt_', 65],     strand: ['strand/strand_', 50],     maya: ['maya/maya_', 48], end: 'endbild/endbild' };
     const staticHero = reduced ||
       (navigator.connection && navigator.connection.saveData) ||
       window.matchMedia('(prefers-reduced-data: reduce)').matches ||
@@ -394,6 +396,7 @@
     }
     const citySeq  = makeSeq(SEQ.stadt[0], SEQ.stadt[1]);
     const beachSeq = makeSeq(SEQ.strand[0], SEQ.strand[1]);
+    const mayaSeq  = SEQ.maya ? makeSeq(SEQ.maya[0], SEQ.maya[1]) : null;
 
     const segT = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
     const seqPos = (p, a, b, n) => { const f = segT(p, a, b) * (n - 1); const i = Math.floor(f); return { i, frac: f - i }; };
@@ -535,6 +538,13 @@
       const beachPos = seqPos(p, PM.strand[0], PM.strand[1], beachSeq.n);
       const bAlpha = segT(p, PM.portal[0], PM.portal[1]);
       if (bAlpha > 0) drawSeq(beachCtx, beachSeq, beachPos, bAlpha);
+      // Szene 06: Maya (eigener Take, gleicher Ort) blendet über den gehaltenen Strand
+      if (mayaSeq) {
+        const mAlpha = segT(p, PM.mayaFade[0], PM.mayaFade[1]);
+        const mayaPos = seqPos(p, PM.maya[0], PM.maya[1], mayaSeq.n);
+        if (mAlpha > 0) drawSeq(beachCtx, mayaSeq, mayaPos, mAlpha);
+        if (p > 0.6) mayaSeq.prefetch(mayaPos.i);
+      }
       if (p < PM.release && bAlpha > 0) {                              // Grass-Gegenlicht vermittelt zur Naht
         const ring = beachCtx.createRadialGradient(fx, fy, Math.min(W, H) * 0.1, fx, fy, Math.hypot(W, H) * 0.55);
         ring.addColorStop(0, GRASS + '0)');
@@ -601,6 +611,7 @@
       requestAnimationFrame(tick);
       beachSeq.prefetch(0);              // Portal-Fenster früh dekodieren (Umschlag ist der kritische Moment)
       citySeq.warm(); beachSeq.warm();   // Blobs im Hintergrund vorziehen, Decode bleibt im Gleitfenster
+      if (mayaSeq) mayaSeq.warm();
     }
 
     // Test-Hook: rendert synchron (Preview pausiert rAF, der Loop allein reicht nicht)
@@ -733,7 +744,8 @@
       }
     });
   }
-  initPaws();
+  // initPaws() ruht: die Abziehbild-Pfoten sind raus. Szene 06 portiert den
+  // sandpress-Filter auf den Film-Strand, wenn Maya kommt (Spur entsteht im Hero).
 
   /* ---------------------------------------------------------
      MAIN RAF LOOP

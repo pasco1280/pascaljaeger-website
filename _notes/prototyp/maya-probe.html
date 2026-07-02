@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maya-Probe v2 — echte Silhouette, lebender Rauch</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #1C1B19; overflow: hidden; }
+  .stage { position: relative; width: 100vw; height: 100vh; }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hud { position: fixed; left: 12px; bottom: 10px; font: 11px/1.4 ui-monospace, monospace;
+         color: #F4EFE4; opacity: .55; letter-spacing: .08em; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <img src="../../assets/frames/endbild/endbild.jpg" alt="">
+  <canvas id="cv"></canvas>
+</div>
+<div class="hud">MAYA-PROBE v2 · 49 echte Gangposen aus deinem Video · __maya.set({größe, dichte, tempo, wisps})</div>
+<script>
+(() => {
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const CHALK = '244,239,228';
+  const N_POSEN = 49, MASK_W = 360;
+
+  const P = { größe: 0.17, dichte: 1.0, tempo: 1.0, wisps: 1.0, bodenY: 0.945, x0: 0.12, x1: 0.80, laufzeit: 16 };
+
+  // Weicher Partikel-Sprite einmal vorrendern (Gradient pro Partikel wäre zu teuer)
+  const sprite = document.createElement('canvas'); sprite.width = sprite.height = 64;
+  {
+    const s = sprite.getContext('2d');
+    const g = s.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, `rgba(${CHALK},1)`);
+    g.addColorStop(0.45, `rgba(${CHALK},.35)`);
+    g.addColorStop(1, `rgba(${CHALK},0)`);
+    s.fillStyle = g; s.fillRect(0, 0, 64, 64);
+  }
+
+  // Posen laden, auf Arbeitsgröße bringen, Bounding-Box + Pixel-Lookup + Oberkante je Spalte
+  const posen = [];
+  let geladen = 0;
+  for (let i = 1; i <= N_POSEN; i++) {
+    const img = new Image();
+    img.src = `maya-masken/pose_${String(i).padStart(2, '0')}.png`;
+    img.onload = () => {
+      const w = MASK_W, h = Math.round(img.height * MASK_W / img.width);   // natives Seitenverhältnis
+      const oc = document.createElement('canvas'); oc.width = w; oc.height = h;
+      const c = oc.getContext('2d', { willReadFrequently: true });
+      c.drawImage(img, 0, 0, w, h);
+      const id = c.getImageData(0, 0, w, h);
+      const d = id.data;
+      let x0 = w, x1 = 0, y0 = h, y1 = 0;
+      const top = new Array(w).fill(-1);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const v = d[(y * w + x) * 4];
+        if (v > 128) {
+          if (x < x0) x0 = x; if (x > x1) x1 = x;
+          if (y < y0) y0 = y; if (y > y1) y1 = y;
+          if (top[x] < 0) top[x] = y;
+        }
+        // Maske → Chalk mit Alpha (statt Weiß auf Schwarz, sonst malt der Kern ein Rechteck)
+        const j = (y * w + x) * 4;
+        d[j] = 244; d[j + 1] = 239; d[j + 2] = 228; d[j + 3] = v;
+      }
+      c.putImageData(id, 0, 0);
+      const d2 = c.getImageData(0, 0, w, h).data;   // Lookup nach dem Umbau: Alpha-Kanal
+      posen[i - 1] = { oc, d: d2, w, h, x0, x1, y0, y1, top };
+      geladen++;
+    };
+  }
+
+  const istInk = (p, x, y) => x >= 0 && x < p.w && y >= 0 && y < p.h && p.d[((y | 0) * p.w + (x | 0)) * 4 + 3] > 128;
+
+  // Schwarm: Heimatpunkte in Maskenraum; wandert eine Pose weiter, sucht sich
+  // jeder verlorene Partikel ein neues Zuhause in der neuen Pose.
+  const N_KOERPER = 520, N_WISP = 90;
+  const koerper = [], wispe = [];
+  function neuesZuhause(p, alt) {
+    for (let k = 0; k < 40; k++) {
+      const x = p.x0 + Math.random() * (p.x1 - p.x0);
+      const y = p.y0 + Math.random() * (p.y1 - p.y0);
+      if (istInk(p, x, y)) return { hx: x, hy: y };
+    }
+    return alt || { hx: (p.x0 + p.x1) / 2, hy: (p.y0 + p.y1) / 2 };
+  }
+  for (let i = 0; i < N_KOERPER; i++) {
+    koerper.push({ hx: 0, hy: 0, ph: Math.random() * 7, r: 2 + Math.random() * 4.5,
+                   a: 0.05 + Math.random() * 0.07, frisch: true });
+  }
+  for (let i = 0; i < N_WISP; i++) wispe.push({ t: Math.random(), sx: null });
+
+  let letztePose = -1;
+
+  function loop(now) { requestAnimationFrame(loop); draw(now); }
+  function draw(now) {
+    if (geladen < N_POSEN) return;
+    const W = cv.width = innerWidth, H = cv.height = innerHeight;
+    ctx.clearRect(0, 0, W, H);
+    const t = now / 1000 * P.tempo;
+
+    // Lauf von links nach rechts (Video läuft links → gespiegelt zeichnen)
+    const u = (t / P.laufzeit) % 1;
+    const wx = W * (P.x0 + (P.x1 - P.x0) * u);
+    const wy = H * P.bodenY;
+
+    const poseF = (t * 7) % N_POSEN;
+    const pi = poseF | 0;
+    const pose = posen[pi];
+    const zielH = H * P.größe;
+    const skal = zielH / (pose.y1 - pose.y0);
+
+    // Schwarm auf neue Pose umziehen
+    if (pi !== letztePose) {
+      koerper.forEach(k => { if (!istInk(pose, k.hx, k.hy)) Object.assign(k, neuesZuhause(pose, k)); });
+      letztePose = pi;
+    }
+
+    const mx = mxIn => wx + (pose.x1 - mxIn) * skal - (pose.x1 - pose.x0) * skal / 2;  // gespiegelt
+    const my = myIn => wy - (pose.y1 - myIn) * skal;
+
+    // Bodenschatten, damit sie nicht schwebt
+    ctx.save();
+    ctx.translate(wx, wy + zielH * 0.015);
+    ctx.scale(1, 0.22);
+    const sg = ctx.createRadialGradient(0, 0, 0, 0, 0, zielH * 0.62);
+    sg.addColorStop(0, 'rgba(20,15,10,.28)'); sg.addColorStop(1, 'rgba(20,15,10,0)');
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, zielH * 0.62, 0, 7); ctx.fill();
+    ctx.restore();
+
+    // Hauch von Kern (nur Kohärenz, bewusst schwach)
+    ctx.save();
+    ctx.globalAlpha = 0.22 * P.dichte;
+    ctx.filter = 'blur(2.5px)';
+    ctx.translate(mx(pose.x1), my(pose.y1) - (pose.y1 - pose.y0) * skal * 0);
+    ctx.scale(-skal, skal);
+    ctx.translate(-pose.x1, -pose.y1);
+    ctx.drawImage(pose.oc, 0, 0);
+    ctx.restore();
+
+    // Rauchkörper: der Schwarm formt die Pose, oben löst er sich auf
+    koerper.forEach(k => {
+      const relY = (k.hy - pose.y0) / (pose.y1 - pose.y0);       // 0 oben … 1 Pfoten
+      const aufl = 1 - relY;                                      // oben mehr Drift
+      const jx = Math.sin(t * 1.3 + k.ph) * (0.8 + aufl * 3);
+      const jy = -Math.sin(t * 0.9 + k.ph * 1.7) * aufl * 4 - aufl * aufl * 7 * (0.6 + 0.4 * Math.sin(t + k.ph));
+      const px = mx(k.hx) + jx * skal * 0.4;
+      const py = my(k.hy) + jy * skal * 0.4;
+      const r = k.r * (zielH / 100) * 0.62 * (1 + aufl * 0.8);
+      ctx.globalAlpha = Math.min(1, k.a * 1.35 * P.dichte * (0.75 + relY * 0.45));
+      ctx.drawImage(sprite, px - r, py - r, r * 2, r * 2);
+    });
+
+    // Wisps: reißen an der Oberkante ab, driften hoch und hinter sie
+    wispe.forEach(w => {
+      w.t += 0.0035 * P.tempo;
+      if (w.t >= 1 || w.sx == null) { w.t = w.sx == null ? w.t : 0; w.sx = pose.x0 + Math.random() * (pose.x1 - pose.x0); }
+      const sx = w.sx;
+      const topY = pose.top[sx | 0] >= 0 ? pose.top[sx | 0] : pose.y0;
+      const drift = w.t;
+      const px = mx(sx) + Math.sin(drift * 9 + sx) * 8 * skal * 0.3 + drift * 46 * skal * 0.4;  // nach hinten
+      const py = my(topY) - drift * 70 * skal * 0.55;
+      const r = (3 + drift * 13) * (zielH / 100) * 1.1;
+      ctx.globalAlpha = (1 - drift) * drift * 4 * 0.075 * P.dichte * P.wisps;
+      ctx.drawImage(sprite, px - r, py - r, r * 2, r * 2);
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  window.__maya = { set(o) { Object.assign(P, o); }, frame(ms) { draw(ms); }, bereit: () => geladen, P };
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
