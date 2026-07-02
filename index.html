@@ -20,7 +20,9 @@
 .reel { position: relative; height: 340vh; background: var(--linen); }
 @media (max-width: 640px){ .reel { height: 300vh; } }
 .reel-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center; }
-.reel-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+.reel-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; display: block; }
+.reel-frames { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+img.reel-endbild { object-fit: cover; }
 /* 3D-Karton-Buchstaben (flach im Ruhezustand, kippen beim Scrollen in die Tiefe) */
 .reel-letters { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .rl3d { position: absolute; transform-style: preserve-3d; will-change: transform; }
@@ -34,8 +36,9 @@
   padding-inline: var(--gutter); color: var(--ink);
   opacity: 0; transform: translateY(20px); pointer-events: none;
 }
-.reel-intro .kicker { margin-bottom: .9rem; color: var(--ink); opacity: .65; }
-.reel-tag { font-weight: 800; font-size: clamp(1.7rem, 4.8vw, 4rem); letter-spacing: -.03em; line-height: 1.02; margin-bottom: 1.4rem; max-width: 20ch; color: var(--ink); }
+/* Title Card liegt auf dem Dämmerungs-Strand: Chalk mit weichem Schatten */
+.reel-intro .kicker { margin-bottom: .9rem; color: var(--chalk); opacity: .8; text-shadow: 0 1px 18px rgba(20,17,12,.5); }
+.reel-tag { font-weight: 800; font-size: clamp(1.7rem, 4.8vw, 4rem); letter-spacing: -.03em; line-height: 1.02; margin-bottom: 1.4rem; max-width: 20ch; color: var(--chalk); text-shadow: 0 2px 28px rgba(20,17,12,.55); }
 .reel-tag .hl { color: var(--hot); }
 .reel-cta { background: var(--ink); color: var(--chalk); border-color: var(--ink); }
 .reel-cta:hover { background: var(--hot); border-color: var(--hot); color: var(--chalk); }
@@ -198,7 +201,7 @@
       <p class="reel-tag">Produkte denken.<br><span class="hl">KI orchestrieren.</span></p>
       <a class="btn reel-cta" href="#kontakt">Projekt starten <span class="arrow">→</span></a>
     </div>
-    <div class="reel-hint" aria-hidden="true">klick = puls · scroll <span class="reel-hint-bar"></span></div>
+    <div class="reel-hint" aria-hidden="true">scroll <span class="reel-hint-bar"></span></div>
   </div>
 </section>
 

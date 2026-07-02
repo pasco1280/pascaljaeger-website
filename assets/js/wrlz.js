@@ -295,35 +295,34 @@
     const hint = reel.querySelector('.reel-hint');
     const NS = 'http://www.w3.org/2000/svg';
 
-    const defs = document.createElementNS(NS, 'defs');
-    const clip = document.createElementNS(NS, 'clipPath'); clip.id = 'sClip';
-    const clipText = document.createElementNS(NS, 'text'); clipText.textContent = 's';
-    clip.appendChild(clipText); defs.appendChild(clip);
-    // Wellen-Inhalt einmal definieren, zweimal referenzieren (s-Fenster + Voll-Flut)
-    const waveContent = document.createElementNS(NS, 'g'); waveContent.id = 'waveContent';
-    const waveBg = document.createElementNS(NS, 'rect'); waveBg.setAttribute('fill', '#8FB1A6');
-    const waveLines = document.createElementNS(NS, 'g');
-    waveContent.appendChild(waveBg); waveContent.appendChild(waveLines);
-    defs.appendChild(waveContent);
-    const waveFull = document.createElementNS(NS, 'g'); waveFull.setAttribute('opacity', '0');
-    const useFull = document.createElementNS(NS, 'use'); useFull.setAttribute('href', '#waveContent'); waveFull.appendChild(useFull);
-    const clippedGroup = document.createElementNS(NS, 'g'); clippedGroup.setAttribute('clip-path', 'url(#sClip)');
-    const useClip = document.createElementNS(NS, 'use'); useClip.setAttribute('href', '#waveContent'); clippedGroup.appendChild(useClip);
+    // Das s steht im Wort: Ink-Füllung in Ruhe, weicht als Tor dem Portal-Licht
+    const sFill = document.createElementNS(NS, 'text'); sFill.textContent = 's';
+    sFill.setAttribute('fill', '#1C1B19');
     const sOutline = document.createElementNS(NS, 'text'); sOutline.textContent = 's';
     sOutline.setAttribute('fill', 'none'); sOutline.setAttribute('stroke', '#111');
     sOutline.setAttribute('stroke-width', '3'); sOutline.setAttribute('vector-effect', 'non-scaling-stroke');
     const ref = document.createElementNS(NS, 'text'); ref.textContent = 'Pascal'; ref.setAttribute('opacity', '0');
-    svg.appendChild(defs); svg.appendChild(waveFull); svg.appendChild(clippedGroup); svg.appendChild(sOutline); svg.appendChild(ref);
+    svg.appendChild(sFill); svg.appendChild(sOutline); svg.appendChild(ref);
+
+    // Frame-Layer: Stadt als Bühne hinter allem, Strand nur im s-Portal.
+    // Das Portal wird als Canvas-Maske geschnitten (destination-in mit der
+    // Glyphe selbst): ein CSS-clip auf SVG-Text kollabiert bei camZ > ~40,
+    // weil die Transform-Koordinaten die Clip-Rasterung sprengen.
+    const cityCv = document.createElement('canvas');  cityCv.className = 'reel-frames';
+    const beachCv = document.createElement('canvas'); beachCv.className = 'reel-frames';
+    pin.insertBefore(cityCv, svg); pin.insertBefore(beachCv, svg);
+    const cityCtx = cityCv.getContext('2d'), beachCtx = beachCv.getContext('2d');
 
     // 3D-Karton-Buchstaben (HTML, CSS-3D) — Stirnseite ink, Tiefe in Kraftbraun
     const lettersHost = reel.querySelector('.reel-letters');
     const DEPTH_N = 9, DEPTH_STEP = 2.4;
+    // Retimed: Szene 01 steht (bis 0.08), der Bruch läuft vor der Kamerafahrt (0.42) aus
     const fallCfg = [
-      { i: 0, ch: 'P', s: 0.00, sp: 0.42, dist: 1.25, dx: -55, rz: -95, rx: 150, bounce: false },
-      { i: 1, ch: 'a', s: 0.05, sp: 0.46, dist: 1.10, dx: 18,  rz: 80,  rx: 210, bounce: false },
-      { i: 3, ch: 'c', s: 0.10, sp: 0.54, dist: 1.32, dx: 30,  rz: 170, rx: 120, bounce: false },
-      { i: 4, ch: 'a', s: 0.06, sp: 0.50, dist: 1.00, dx: -18, rz: -70, rx: 280, bounce: true  },
-      { i: 5, ch: 'l', s: 0.14, sp: 0.60, dist: 1.05, dx: 64,  rz: -45, rx: 95,  bounce: false },
+      { i: 0, ch: 'P', s: 0.08, sp: 0.32, dist: 1.25, dx: -55, rz: -95, rx: 150, bounce: false },
+      { i: 1, ch: 'a', s: 0.12, sp: 0.35, dist: 1.10, dx: 18,  rz: 80,  rx: 210, bounce: false },
+      { i: 3, ch: 'c', s: 0.16, sp: 0.41, dist: 1.32, dx: 30,  rz: 170, rx: 120, bounce: false },
+      { i: 4, ch: 'a', s: 0.13, sp: 0.38, dist: 1.00, dx: -18, rz: -70, rx: 280, bounce: true  },
+      { i: 5, ch: 'l', s: 0.19, sp: 0.45, dist: 1.05, dx: 64,  rz: -45, rx: 95,  bounce: false },
     ];
     const letters = fallCfg.map(cfg => {
       const el = document.createElement('div'); el.className = 'rl3d';
@@ -338,7 +337,83 @@
       return Object.assign({}, cfg, { el, cx: 0 });
     });
 
-    let W = 0, H = 0, fontPx = 0, sCx = 0, baseY = 0, ax = 0, ay = 0, coverR = 0, paths = [], pulses = [], pulsing = false, lastP = -1;
+    let W = 0, H = 0, fontPx = 0, baseY = 0, sX = 0, ax = 0, ay = 0, coverR = 0, rCss = 0, zMax = 40, dpr = 1, lastP = -1, framesDirty = false, freezeP = null;
+
+    /* ---- KULISSENBRUCH: Phase-Map — alles ist reine Funktion von p ---- */
+    const PM = {
+      stadt:   [0.05, 0.52],   // Frame-Fenster Stadt (davor Frame 0, danach letztes halten)
+      tor:     [0.28, 0.42],   // Ink-Füllung des s weicht dem Portal-Licht
+      zoom:    [0.42, 0.68],   // Kamerafahrt in das s, camZ 1 → zMax
+      release: 0.68,           // Clip-Freigabe: zMax wird in layout() so bestimmt, dass hier Ink-Abdeckung 100 % erreicht ist
+      portal:  [0.30, 0.52],   // Strand-Sichtbarkeit im Portal (Alpha 0 → 1)
+      strand:  [0.55, 1.00],   // Frame-Fenster Strand
+      intro:   [0.78, 0.96],
+    };
+    const GRASS = 'rgba(143,177,166,';   // #8FB1A6, hartkodierte Nahtfarbe
+    const SEQ = window.matchMedia('(orientation: portrait)').matches
+      ? { stadt: ['m_stadt/m_stadt_', 60], strand: ['m_strand/m_strand_', 45], end: 'endbild/endbild_mobil' }
+      : { stadt: ['stadt/stadt_', 65],     strand: ['strand/strand_', 50],     end: 'endbild/endbild' };
+    const staticHero = reduced ||
+      (navigator.connection && navigator.connection.saveData) ||
+      window.matchMedia('(prefers-reduced-data: reduce)').matches ||
+      new URLSearchParams(location.search).has('endbild');   // QA-Weiche für den statischen Pfad
+
+    // Blobs komplett im Speicher (≤ 3,8 MB), Bitmaps nur im Gleitfenster um das aktuelle Frame
+    const DECODE_WIN = 10;
+    function makeSeq(pre, n) {
+      const bufs = new Array(n), bmps = new Map(), busy = new Set();
+      const url = i => `assets/frames/${pre}${String(i + 1).padStart(4, '0')}.avif`;
+      const buf = i => bufs[i] || (bufs[i] = fetch(url(i)).then(r => r.blob()));
+      function ensure(i) {
+        if (i < 0 || i >= n || bmps.has(i) || busy.has(i)) return;
+        busy.add(i);
+        buf(i).then(b => createImageBitmap(b)).then(bm => {
+          bmps.set(i, bm); framesDirty = true;
+          if (freezeP != null) repaintFrozen();   // eingefrorene Previews rendern ohne rAF
+        }).catch(() => {}).finally(() => busy.delete(i));
+      }
+      return {
+        n,
+        prefetch(center) {
+          for (let d = 0; d <= DECODE_WIN; d++) { ensure(center + d); ensure(center - d); }
+          if (bmps.size > DECODE_WIN * 2 + 6) {
+            bmps.forEach((bm, k) => { if (Math.abs(k - center) > DECODE_WIN + 3) { bm.close(); bmps.delete(k); } });
+          }
+        },
+        exact(i) { return bmps.get(i) || null; },
+        nearest(i) {
+          if (bmps.has(i)) return bmps.get(i);
+          for (let d = 1; d < n; d++) {
+            if (bmps.has(i - d)) return bmps.get(i - d);
+            if (bmps.has(i + d)) return bmps.get(i + d);
+          }
+          return null;                       // nichts dekodiert → Layer bleibt leer, nie Schwarz
+        },
+        warm() { let q = Promise.resolve(); for (let i = 0; i < n; i++) { const k = i; q = q.then(() => buf(k)).catch(() => {}); } },
+      };
+    }
+    const citySeq  = makeSeq(SEQ.stadt[0], SEQ.stadt[1]);
+    const beachSeq = makeSeq(SEQ.strand[0], SEQ.strand[1]);
+
+    const segT = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+    const seqPos = (p, a, b, n) => { const f = segT(p, a, b) * (n - 1); const i = Math.floor(f); return { i, frac: f - i }; };
+    function camZAt(p) { return 1 + Math.pow(segT(p, PM.zoom[0], PM.zoom[1]), 2.3) * (zMax - 1); }
+    function drawCover(ctx, bm, alpha) {
+      const s = Math.max(W / bm.width, H / bm.height);
+      const dw = bm.width * s, dh = bm.height * s;
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(bm, (W - dw) / 2, (H - dh) / 2, dw, dh);
+    }
+    // Frame + Nachbar-Crossfade: vor und zurück pixelidentisch (Prototyp-validiert)
+    function drawSeq(ctx, seq, pos, alpha) {
+      const a = seq.exact(pos.i) || seq.nearest(pos.i);
+      if (!a) return;
+      drawCover(ctx, a, alpha);
+      if (pos.frac > 0.01) {
+        const b = seq.exact(pos.i + 1);
+        if (b) drawCover(ctx, b, alpha * pos.frac);
+      }
+    }
 
     // Tiefster Punkt des s-Strichs via Distanztransform, als Bruchteil der
     // Ink-Bounding-Box (wird auf die echte SVG-Glyph-Box gemappt → kein Versatz)
@@ -375,55 +450,19 @@
       }
       let bi = -1, bm = -1;
       for (let i = 0; i < w * h; i++) if (dt[i] < INF && dt[i] > bm) { bm = dt[i]; bi = i; }
-      if (!any || bi < 0) return { fx: 0.5, fy: 0.55, clearFrac: 0.15 };
-      const bx = bi % w, by = (bi / w) | 0;
-      return { fx: (bx - minX) / (maxX - minX), fy: (by - minY) / (maxY - minY), clearFrac: bm / (maxY - minY) };
+      if (!any || bi < 0) return null;
+      // Raster-px = CSS-px (gleiche Schrift, gleiche Größe): direkt mappen, kein Em-Box-Umweg
+      return { bx: bi % w, by: (bi / w) | 0, r: bm };
     }
     const setFont = el => { el.setAttribute('font-family', "'Jakarta', system-ui, sans-serif"); el.setAttribute('font-weight', '800'); el.setAttribute('font-size', fontPx); };
-
-    function buildWaves() {
-      waveLines.textContent = '';
-      paths = [];
-      const rows = 56;
-      for (let r = 0; r < rows; r++) {
-        const p = document.createElementNS(NS, 'path');
-        p.setAttribute('fill', 'none'); p.setAttribute('stroke', '#0d0d0d');
-        p.setAttribute('stroke-width', (0.6 + (r / rows) * 1.7).toFixed(2));
-        p.setAttribute('stroke-linecap', 'round');
-        waveLines.appendChild(p); paths.push(p);
-      }
-    }
-    function terrain(tx, z) {
-      const ridge = Math.exp(-Math.pow((tx - 0.5) / 0.34, 2));
-      const h = Math.sin(tx * 6.283 * 1.4 + z * 2.6) * 0.5
-              + Math.sin(tx * 6.283 * 0.7 - z * 1.8) * 0.45
-              + Math.sin(tx * 6.283 * 2.7 + z * 1.3) * 0.18
-              + Math.sin(z * 6.283 * 1.1 + tx * 5) * 0.25;
-      return h * (0.35 + ridge);
-    }
-    function drawWaves(boost) {
-      const rows = paths.length, horizon = H * 0.40, seg = 84;
-      for (let r = 0; r < rows; r++) {
-        const z = r / (rows - 1);
-        const yBase = horizon + Math.pow(z, 1.4) * (H * 0.64);
-        const amp = 12 + z * z * 135;
-        let d = '';
-        for (let i = 0; i <= seg; i++) {
-          const tx = i / seg; const x = tx * W;
-          let y = yBase - terrain(tx, z) * amp;
-          if (boost) y -= boost(x, yBase);
-          d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
-        }
-        paths[r].setAttribute('d', d);
-      }
-    }
 
     function layout() {
       W = Math.round(window.innerWidth); H = Math.round(window.innerHeight);
       svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
       fontPx = Math.min(W * 0.155, 230);
-      [clipText, sOutline, ref].forEach(setFont);
-      waveBg.setAttribute('x', 0); waveBg.setAttribute('y', 0); waveBg.setAttribute('width', W); waveBg.setAttribute('height', H);
+      [sFill, sOutline, ref].forEach(setFont);
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      [cityCv, beachCv].forEach(cv => { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); });
       const total = ref.getComputedTextLength();
       baseY = H / 2 + fontPx * 0.34;
       const x0 = (W - total) / 2;
@@ -437,14 +476,22 @@
         l.el.style.top = (baseY - fontPx * 0.80).toFixed(1) + 'px';
         l.el.style.transformOrigin = '50% 46%';
       });
-      sCx = pos[2].cx;
-      clipText.setAttribute('x', pos[2].x); clipText.setAttribute('y', baseY);
-      sOutline.setAttribute('x', pos[2].x); sOutline.setAttribute('y', baseY);
+      sX = pos[2].x;
+      [sFill, sOutline].forEach(el => { el.setAttribute('x', sX); el.setAttribute('y', baseY); });
       const a = findInkAnchor();
-      const bb = sOutline.getBBox();
-      ax = bb.x + a.fx * bb.width; ay = bb.y + a.fy * bb.height;   // Fokus = tiefster Punkt (Mitte) des s
+      if (a) {   // Fokus = tiefster Punkt im Buchstaben-Fleisch, exakt in SVG-Koordinaten
+        ax = pos[2].x + a.bx;
+        ay = baseY + (a.by - Math.round(fontPx * 1.3));
+        rCss = Math.max(4, a.r);
+      } else {
+        const bb = sOutline.getBBox();
+        ax = bb.x + bb.width / 2; ay = bb.y + bb.height * 0.55;
+        rCss = fontPx * 0.08;
+      }
       coverR = Math.hypot(W / 2, H / 2) * 1.06;
-      buildWaves(); drawWaves();
+      // Ink-Abdeckung rechnerisch: Viewport-Umkreis muss bei PM.release in den
+      // Inkreis des Buchstaben-Fleischs passen, erst dann gibt der Clip frei
+      zMax = coverR / rCss;
     }
 
     // "Karton"-Physik: fällt schräg, trifft die Kante, springt gedreht zurück
@@ -457,20 +504,54 @@
     function physX(lp) { return lp < 0.5 ? lp * 60 : 30 - (lp - 0.5) * 210; }
     function physRot(lp) { return lp < 0.5 ? -lp * 70 : -35 + (lp - 0.5) * 190; }
 
-    // TUNNELFAHRT: Buchstaben fallen als 3D-Kartons weg; die Kamera fährt
-    // in die Mitte des s; dahinter taucht die Sinus-Fläche auf.
-    const ZMAX = 34;
+    // KULISSENBRUCH: Stadt bricht hinter den fallenden Buchstaben, das s bleibt
+    // stehen, die Kamera fliegt durch das s auf den Strand (alles Funktion von p).
     function applyScroll(p) {
-      const ease = Math.pow(p, 2.3);                       // beschleunigen (in den Tunnel)
-      const camZ = 1 + ease * (ZMAX - 1);
-      const dp = clamp(p / 0.5, 0, 1), de = dp * dp * (3 - 2 * dp);
+      const zq = segT(p, PM.zoom[0], PM.zoom[1]);
+      const camZ = camZAt(p);
+      const dd = Math.min(1, zq / 0.6), de = dd * dd * (3 - 2 * dd);
       const fx = ax + (W / 2 - ax) * de, fy = ay + (H / 2 - ay) * de;   // Fokus driftet in die Bildmitte
 
-      // s-Fenster (Tunnelmund) + schwarzer Rand zoomen mit der Kamera
+      // Stadt UND s zoomen gemeinsam zum Anker im Buchstaben-Fleisch (kein seitliches Wandern)
       const camTf = `translate(${fx.toFixed(1)} ${fy.toFixed(1)}) scale(${camZ.toFixed(3)}) translate(${(-ax).toFixed(1)} ${(-ay).toFixed(1)})`;
-      clipText.setAttribute('transform', camTf);
+      sFill.setAttribute('transform', camTf);
       sOutline.setAttribute('transform', camTf);
-      sOutline.setAttribute('opacity', clamp(1 - p / 0.5, 0, 1).toFixed(3));
+      sFill.setAttribute('opacity', (1 - segT(p, PM.tor[0], PM.tor[1])).toFixed(3));   // das Tor öffnet sich
+      sOutline.setAttribute('opacity', (1 - segT(p, 0.30, 0.50)).toFixed(3));
+
+      // Stadt-Frames: Kollaps hinter den Buchstaben, ab dem Durchtritt unsichtbar
+      cityCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cityCtx.clearRect(0, 0, W, H);
+      const cityPos = seqPos(p, PM.stadt[0], PM.stadt[1], citySeq.n);
+      if (p < PM.release) {
+        cityCtx.setTransform(dpr * camZ, 0, 0, dpr * camZ, dpr * (fx - camZ * ax), dpr * (fy - camZ * ay));
+        drawSeq(cityCtx, citySeq, cityPos, 1);
+      }
+
+      // Strand: Portal-Licht + Frames in der Glyphe, nach der Freigabe voller Viewport
+      beachCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      beachCtx.clearRect(0, 0, W, H);
+      beachCtx.globalAlpha = 1; beachCtx.fillStyle = GRASS + '1)'; beachCtx.fillRect(0, 0, W, H);   // Naht-Grundton, nie Schwarz
+      const beachPos = seqPos(p, PM.strand[0], PM.strand[1], beachSeq.n);
+      const bAlpha = segT(p, PM.portal[0], PM.portal[1]);
+      if (bAlpha > 0) drawSeq(beachCtx, beachSeq, beachPos, bAlpha);
+      if (p < PM.release && bAlpha > 0) {                              // Grass-Gegenlicht vermittelt zur Naht
+        const ring = beachCtx.createRadialGradient(fx, fy, Math.min(W, H) * 0.1, fx, fy, Math.hypot(W, H) * 0.55);
+        ring.addColorStop(0, GRASS + '0)');
+        ring.addColorStop(1, GRASS + (0.55 * (1 - zq)).toFixed(3) + ')');
+        beachCtx.globalAlpha = 1; beachCtx.fillStyle = ring; beachCtx.fillRect(0, 0, W, H);
+      }
+      if (p < PM.release) {   // Portal-Schnitt: die Glyphe selbst maskiert, gleiche Kamera wie Stadt und s
+        beachCtx.globalCompositeOperation = 'destination-in';
+        beachCtx.setTransform(dpr * camZ, 0, 0, dpr * camZ, dpr * (fx - camZ * ax), dpr * (fy - camZ * ay));
+        beachCtx.font = `800 ${fontPx}px 'Jakarta', system-ui, sans-serif`;
+        beachCtx.textAlign = 'left'; beachCtx.textBaseline = 'alphabetic';
+        beachCtx.fillStyle = '#000';
+        beachCtx.fillText('s', sX, baseY);
+        beachCtx.globalCompositeOperation = 'source-over';
+      }
+      citySeq.prefetch(cityPos.i);
+      if (p > 0.2) beachSeq.prefetch(beachPos.i);
 
       // Buchstaben fallen wie 3D-Kartons weg; beim Kippen wird die Karton-Tiefe sichtbar
       letters.forEach(l => {
@@ -484,69 +565,57 @@
         l.el.style.opacity = op.toFixed(3);
       });
 
-      // Die Sinus-Oberfläche auf der anderen Seite taucht auf und füllt rund ums s (nahtlos, gleiches Grün)
-      const wf = clamp((p - 0.5) / 0.38, 0, 1);
-      waveFull.setAttribute('opacity', wf.toFixed(3));
-      waveFull.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${(1 + (1 - wf) * 0.12).toFixed(3)}) translate(${-W / 2} ${-H / 2})`);
-
-      const io = clamp((p - 0.74) / 0.22, 0, 1);
+      const io = segT(p, PM.intro[0], PM.intro[1]);
       intro.style.opacity = io.toFixed(3);
       intro.style.transform = `translateY(${(20 - 20 * io).toFixed(1)}px)`;
       intro.style.pointerEvents = io > 0.5 ? 'auto' : 'none';
       hint.style.opacity = clamp(0.55 - p * 6, 0, 0.55).toFixed(3);
     }
 
-    // Jeder Klick fügt einen Atempunkt hinzu. Mehrere laufen gleichzeitig und
-    // klingen unabhängig aus, ein neuer Klick stoppt die anderen nicht.
-    function pulse(px, py) {
-      pulses.push({ x: (px == null) ? sCx : px, y: (py == null) ? H / 2 : py, start: performance.now() });
-      if (pulses.length > 24) pulses.shift();
-      if (!pulsing) { pulsing = true; requestAnimationFrame(pulseTick); }
-    }
-    function pulseTick(now) {
-      if (reduced) { drawWaves(); pulses.length = 0; pulsing = false; return; }
-      const LIFE = 1700, ringW = H * 0.14, boostAmp = H * 0.13;
-      pulses = pulses.filter(pl => (now - pl.start) < LIFE);
-      if (!pulses.length) { drawWaves(); pulsing = false; return; }
-      const active = pulses.map(pl => {
-        const t = (now - pl.start) / LIFE;
-        return { x: pl.x, y: pl.y, frontR: t * coverR * 0.7, env: Math.sin(t * Math.PI) };
-      });
-      const fn = (x, y) => {
-        let sum = 0;
-        for (let k = 0; k < active.length; k++) {
-          const a = active[k];
-          sum += a.env * Math.exp(-Math.pow((Math.hypot(x - a.x, y - a.y) - a.frontR) / ringW, 2)) * boostAmp;
-        }
-        return sum;
-      };
-      drawWaves(fn);
-      requestAnimationFrame(pulseTick);
-    }
-
     function tick() {
       const rect = reel.getBoundingClientRect();
       const dist = reel.offsetHeight - H;
-      const p = (dist > 0) ? clamp(-rect.top / dist, 0, 1) : 0;
-      if (p !== lastP) { applyScroll(p); lastP = p; }
+      const p = (freezeP != null) ? freezeP : ((dist > 0) ? clamp(-rect.top / dist, 0, 1) : 0);
+      if (p !== lastP || framesDirty) { framesDirty = false; applyScroll(p); lastP = p; }
       requestAnimationFrame(tick);
     }
 
     function start() {
-      layout();
-      window.addEventListener('resize', () => { layout(); lastP = -1; }, { passive: true });
-      pin.addEventListener('click', e => { if (e.target.closest('a, button')) return; pulse(e.clientX, e.clientY); });
-      if (reduced) {
+      if (staticHero) {
+        // Vollwertiges statisches Endbild inkl. Title Card (reduced-motion / Save-Data)
         reel.style.height = '100svh';
-        applyScroll(0);
+        const img = document.createElement('img');
+        img.className = 'reel-frames reel-endbild'; img.alt = '';
+        img.src = `assets/frames/${SEQ.end}.avif`;
+        img.onerror = () => { img.onerror = null; img.src = `assets/frames/${SEQ.end}.jpg`; };
+        pin.insertBefore(img, svg);
+        cityCv.remove(); beachCv.remove();
+        lettersHost.style.display = 'none'; svg.style.display = 'none';
         intro.style.opacity = '1'; intro.style.transform = 'none'; intro.style.pointerEvents = 'auto';
         hint.style.opacity = '0';
         return;
       }
+      layout();
+      window.addEventListener('resize', () => { layout(); lastP = -1; }, { passive: true });
       applyScroll(0);
       requestAnimationFrame(tick);
-      setTimeout(() => pulse(), 700);
+      beachSeq.prefetch(0);              // Portal-Fenster früh dekodieren (Umschlag ist der kritische Moment)
+      citySeq.warm(); beachSeq.warm();   // Blobs im Hintergrund vorziehen, Decode bleibt im Gleitfenster
     }
+
+    // Test-Hook: rendert synchron (Preview pausiert rAF, der Loop allein reicht nicht)
+    function repaintFrozen() { if (W > 0 && freezeP != null) { framesDirty = false; lastP = freezeP; applyScroll(freezeP); } }
+    window.__reel = {
+      setP(p) { freezeP = clamp(p, 0, 1); repaintFrozen(); },
+      free() { freezeP = null; lastP = -1; },
+      info() {
+        return {
+          zMax: +zMax.toFixed(2), rCss: +rCss.toFixed(1),
+          releaseZ: +camZAt(PM.release).toFixed(2),
+          inkCovered: camZAt(PM.release) * rCss >= Math.hypot(W / 2, H / 2),
+        };
+      },
+    };
 
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
     else window.addEventListener('load', start);
