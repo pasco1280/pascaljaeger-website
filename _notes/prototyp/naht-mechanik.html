@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototyp Tor-Mechanik, KULISSENBRUCH</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@700,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --karton:#B5885A; --umbra:#57432E; --ink:#1C1B19; --chalk:#F4EFE4;
+    --grass:#8FB1A6; --aegaeis:#2F6B66; --linen:#EBE5D7; --hot:#C77E52;
+    --plum:#6E2E40; --glut:#DFA75C;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --serif:'Zodiak',Georgia,'Times New Roman',serif;
+  }
+  *{margin:0;box-sizing:border-box}
+  body{background:var(--linen);color:var(--ink);font-family:var(--serif)}
+  .reel{height:560vh;position:relative}
+  .pin{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink)}
+  canvas.layer{position:absolute;inset:0;width:100%;height:100%}
+  #city{z-index:1}
+  #beach{z-index:2;clip-path:url(#sClip)}
+  #sEdge{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+  #edgeG text{font-family:var(--serif);font-weight:800}
+  #lett{z-index:4;pointer-events:none}
+  nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;
+    padding:20px 28px;font-family:var(--mono);font-size:13px;letter-spacing:.06em;
+    color:var(--chalk);transition:color .25s}
+  nav.light{color:var(--ink)}
+  nav a{color:inherit;text-decoration:none;margin-left:18px}
+  .slate{position:fixed;bottom:22px;left:28px;z-index:10;font-family:var(--mono);font-size:12px;
+    letter-spacing:.14em;color:var(--chalk);transition:color .25s}
+  .slate.light{color:var(--ink)}
+  .skip{position:fixed;bottom:22px;right:28px;z-index:10;font-family:var(--mono);font-size:12px;
+    letter-spacing:.08em;color:var(--chalk);text-decoration:underline;text-underline-offset:4px}
+  .skip.light{color:var(--ink)}
+  .title{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;opacity:0;pointer-events:none;padding:0 6vw}
+  .title .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.3em;color:var(--ink)}
+  .title h1{font-size:clamp(34px,6vw,84px);line-height:1.05;margin:18px 0 26px;color:var(--ink);font-weight:700}
+  .title .cta{font-family:var(--mono);font-size:14px;padding:14px 26px;border:1.5px solid var(--ink);
+    color:var(--ink);text-decoration:none;background:transparent}
+  .title .way{margin-top:26px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--umbra)}
+  .title.chalk .kicker,.title.chalk h1{color:var(--chalk)}
+  .title.chalk h1{text-shadow:0 2px 24px rgba(28,27,25,.45)}
+  .title.chalk .cta{color:var(--chalk);border-color:var(--chalk)}
+  .title.chalk .way{color:var(--linen)}
+  #arbeit{min-height:70vh;background:var(--linen);display:flex;flex-direction:column;gap:12px;
+    align-items:center;justify-content:center;font-family:var(--mono);color:var(--umbra);font-size:13px}
+  .note{position:fixed;top:64px;left:28px;z-index:10;font-family:var(--mono);font-size:11px;
+    color:var(--chalk);opacity:.55;max-width:300px;transition:color .25s}
+  .note.light{color:var(--ink)}
+  @media (prefers-reduced-motion: reduce){ .reel{height:100vh} }
+</style>
+</head>
+<body>
+<nav id="nav" aria-hidden="false">
+  <span>Pascal Jäger</span>
+  <span><a href="#arbeit">Arbeit</a><a href="#arbeit">Atelier</a><a href="#arbeit">Kontakt</a></span>
+</nav>
+<div class="note" id="note">PROTOTYP v4: Der Name entsteht aus den Trümmern, nur das S bleibt stehen.</div>
+
+<div class="reel" id="reel">
+  <div class="pin">
+    <canvas class="layer" id="city" aria-hidden="true"></canvas>
+    <canvas class="layer" id="beach" aria-hidden="true"></canvas>
+    <svg id="sEdge" aria-hidden="true">
+      <defs>
+        <clipPath id="sClip" clipPathUnits="userSpaceOnUse">
+          <text id="sGlyphClip" font-family="Zodiak,Georgia,serif" font-weight="800" text-anchor="middle">S</text>
+        </clipPath>
+        <filter id="fShadow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1C1B19" flood-opacity="0.5"/>
+        </filter>
+      </defs>
+      <g id="edgeG">
+        <text id="sGlyphFill" text-anchor="middle" fill="#B5885A" filter="url(#fShadow)">S</text>
+        <text id="sGlyphEdgeOut" text-anchor="middle" fill="none" stroke="#1C1B19" stroke-opacity="0.35">S</text>
+        <text id="sGlyphCore" text-anchor="middle" fill="none" stroke="#F4EFE4" stroke-opacity="0.9">S</text>
+      </g>
+    </svg>
+    <canvas class="layer" id="lett" aria-hidden="true"></canvas>
+    <div class="title" id="title">
+      <span class="kicker">PASCAL JÄGER</span>
+      <h1>Tagline folgt in Phase 4.</h1>
+      <a class="cta" href="#arbeit">Projekt starten</a>
+      <span class="way">01 / Arbeit</span>
+    </div>
+  </div>
+</div>
+
+<section id="arbeit">
+  <span>Atempause.</span>
+  <span>Hier übernimmt der normale Dokumentfluss (Work-Grid, Diagramm, Kontakt).</span>
+</section>
+
+<div class="slate" id="slate">01 / 07 STADT</div>
+<a class="skip" id="skip" href="#arbeit">Direkt zur Arbeit</a>
+
+<script>
+'use strict';
+/* Prototyp v4, KULISSENBRUCH.
+   Pascals Idee vom 2.7.: Der Name PaScal ENTSTEHT aus den fliegenden Truemmern der
+   einstuerzenden Stadt, steht einen Moment, dann zerfallen die Buchstaben wieder.
+   Nur das S haelt stand und wird zum Tor, durch das die Kamera fliegt.
+   Choreografie (p):
+   0.00-0.05  STADT      intakte Gasse
+   0.05-0.16  BRUCH      Stadt bricht, Teile fliegen
+   0.07-0.28  NAME       Fragmente sammeln sich zum Schriftzug (gestaffelt), Wort steht
+   0.30-0.42  SOG        Buchstaben zerbroeseln und stuerzen, das S bleibt, Tor glueht auf
+   0.46-0.70  UMSCHLAG   Kamera fliegt durch das S (Stadt+S zoomen gemeinsam), Durchtritt
+   0.70-0.92  STILLE     Strand, spaeter Maya
+   0.92-1.00  UEBERGABE  Title Card
+   Alles deterministisch und reine Funktion von p, rueckwaerts identisch. */
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const smooth=t=>t*t*(3-2*t);
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+const C={karton:'#B5885A',umbra:'#57432E',ink:'#1C1B19',chalk:'#F4EFE4',grass:'#8FB1A6',
+         aegaeis:'#2F6B66',linen:'#EBE5D7',hot:'#C77E52',plum:'#6E2E40',glut:'#DFA75C'};
+
+const SCENES=[
+  {p:0.00,name:'01 / 07 STADT'},
+  {p:0.05,name:'02 / 07 BRUCH'},
+  {p:0.16,name:'03 / 07 NAME'},
+  {p:0.30,name:'04 / 07 SOG'},
+  {p:0.46,name:'05 / 07 UMSCHLAG'},
+  {p:0.70,name:'06 / 07 STILLE'},
+  {p:0.92,name:'07 / 07 ÜBERGABE'},
+];
+const CITY_MAP=[[0.00,0.05,0,4],[0.05,0.30,4,58],[0.30,0.62,58,64]];
+const BEACH_MAP=[[0.30,0.70,0,22],[0.70,0.80,22,34],[0.80,1.00,34,47]];
+const CITY_N=65, BEACH_N=48;
+const VID_COUNT=50, CITY_VID_COUNT=65;
+
+function mapFrame(map,p,n){
+  if(p<=map[0][0])return map[0][2];
+  for(const[a,b,f0,f1]of map){ if(p>=a&&p<=b) return lerp(f0,f1,seg(p,a,b)); }
+  return map[map.length-1][3];
+}
+
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DPR=Math.min(devicePixelRatio||1,1.5);
+let W=innerWidth,H=innerHeight,FS=100,AX=0,AY=0,BASEY=0;
+
+const cityCv=document.getElementById('city'),beachCv=document.getElementById('beach'),
+      lettCv=document.getElementById('lett');
+const cityCx=cityCv.getContext('2d'),beachCx=beachCv.getContext('2d'),
+      lettCx=lettCv.getContext('2d');
+const svg=document.getElementById('sEdge');
+const glyphClip=document.getElementById('sGlyphClip'),edgeG=document.getElementById('edgeG'),
+      glyphFill=document.getElementById('sGlyphFill'),glyphOut=document.getElementById('sGlyphEdgeOut'),
+      glyphCore=document.getElementById('sGlyphCore');
+const nav=document.getElementById('nav'),slate=document.getElementById('slate'),
+      skip=document.getElementById('skip'),note=document.getElementById('note'),
+      title=document.getElementById('title'),reel=document.getElementById('reel');
+
+/* ---------- Der Name aus den Truemmern ---------- */
+const WORD=[
+  {ch:'P',x:.135,in:.070},
+  {ch:'a',x:.295,in:.092},
+  {ch:'S',x:.468,in:.114,isGate:true},
+  {ch:'c',x:.615,in:.136},
+  {ch:'a',x:.745,in:.158},
+  {ch:'l',x:.865,in:.180},
+];
+const IN_DUR=0.085, CROSS=0.018;
+const OUT0=0.30, OUT_STAG=0.014, OUT_DUR=0.10;
+const SHADES=['#B5885A','#a97e50','#8f6a45','#57432E','#c9a071','#7a5c3d'];
+
+function buildFragments(){
+  const off=document.createElement('canvas');
+  off.width=Math.ceil(FS*1.6);off.height=Math.ceil(FS*1.8);
+  const ox=off.getContext('2d');
+  const step=Math.max(5,Math.round(FS/13));
+  for(const L of WORD){
+    ox.clearRect(0,0,off.width,off.height);
+    ox.font='800 '+FS+'px Zodiak,Georgia,serif';
+    ox.textAlign='center';ox.textBaseline='alphabetic';
+    ox.fillStyle='#fff';ox.fillText(L.ch,off.width/2,FS*1.2);
+    const d=ox.getImageData(0,0,off.width,off.height).data;
+    const rng=mulberry32(1013+L.ch.charCodeAt(0)*17+Math.round(L.x*1000));
+    L.pts=[];
+    for(let y=0;y<off.height;y+=step)for(let x=0;x<off.width;x+=step){
+      if(d[(y*off.width+x)*4+3]>128){
+        const tx=L.x*W+(x-off.width/2), ty=BASEY+(y-FS*1.2);
+        const r1=rng(),r2=rng(),r3=rng(),r4=rng(),r5=rng(),r6=rng();
+        L.pts.push({tx,ty,
+          sx:tx+(r1-0.5)*1.5*W, sy:ty-(0.25+r2*0.9)*H,
+          rot:(r3-0.5)*7, fall:(0.5+r4)*1.1*H, drift:(r5-0.5)*0.25*W,
+          size:step*(1.0+r6*0.5), shade:SHADES[Math.floor(rng()*SHADES.length)]});
+      }
+    }
+  }
+}
+
+function drawWord(p){
+  const x=lettCx;x.clearRect(0,0,W,H);
+  for(let i=0;i<WORD.length;i++){
+    const L=WORD[i];
+    const e=smooth(seg(p,L.in,L.in+IN_DUR));
+    if(e<=0)continue;
+    const cross=seg(p,L.in+IN_DUR,L.in+IN_DUR+CROSS);
+    let outE=0;
+    if(!L.isGate){const o0=OUT0+OUT_STAG*i;outE=smooth(seg(p,o0,o0+OUT_DUR));}
+    /* klare Glyphe, sobald die Fragmente eingerastet sind */
+    const gateHand=L.isGate?1-seg(p,0.26,0.30):1; /* das S uebergibt an die SVG-Torglyphe */
+    const glyphA=cross*(1-outE)*gateHand;
+    if(glyphA>0.01){
+      x.save();
+      x.globalAlpha=glyphA;
+      x.font='800 '+FS+'px Zodiak,Georgia,serif';
+      x.textAlign='center';x.textBaseline='alphabetic';
+      x.shadowColor='rgba(28,27,25,.5)';x.shadowOffsetY=6;x.shadowBlur=8;
+      x.fillStyle=C.karton;
+      x.fillText(L.ch,L.x*W,BASEY);
+      x.restore();
+    }
+    /* Fragmente: beim Sammeln und beim Zerfall */
+    let mode=null;
+    if(outE>0&&outE<1)mode='out';
+    else if(cross<1&&e>0)mode='in';
+    if(!mode)continue;
+    for(const f of L.pts){
+      let px,py,rot,a;
+      if(mode==='in'){
+        px=lerp(f.sx,f.tx,e);py=lerp(f.sy,f.ty,e);rot=f.rot*(1-e);
+        a=Math.min(1,e*3)*(1-cross);
+      }else{
+        px=f.tx+f.drift*outE;py=f.ty+f.fall*outE*outE;rot=f.rot*(0.3+outE*1.8);
+        a=1-seg(outE,0.7,1);
+      }
+      if(a<=0.01)continue;
+      x.save();x.translate(px,py);x.rotate(rot);
+      x.globalAlpha=a;x.fillStyle=f.shade;
+      x.fillRect(-f.size/2,-f.size/2,f.size,f.size*0.82);
+      x.restore();
+    }
+  }
+}
+
+const ASSETS={city:'../material/m02b_startframe.png',beach:'../material/m06b_strand.png'};
+let imgCity=null,imgBeach=null,beachVid=[],cityVid=[];
+function loadImg(src){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src=src;});}
+function drawCover(x,img,zoom){const s=Math.max(W/img.naturalWidth,H/img.naturalHeight)*zoom;
+  const dw=img.naturalWidth*s,dh=img.naturalHeight*s;x.drawImage(img,(W-dw)/2,(H-dh)/2,dw,dh);}
+
+function sceneCanvas(){const c=document.createElement('canvas');c.width=Math.round(W*DPR);c.height=Math.round(H*DPR);
+  const x=c.getContext('2d');x.scale(DPR,DPR);return[c,x];}
+function drawCityFallback(x,t){
+  x.clearRect(0,0,W,H);
+  const g=x.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,C.ink);g.addColorStop(.75,'#2A2118');g.addColorStop(1,C.umbra);
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+}
+function drawBeachFallback(x,t){
+  x.clearRect(0,0,W,H);
+  const hor=H*0.62;
+  const sky=x.createLinearGradient(0,0,0,hor);
+  sky.addColorStop(0,C.chalk);sky.addColorStop(1,C.grass);
+  x.fillStyle=sky;x.fillRect(0,0,W,hor);
+  x.fillStyle=C.aegaeis;x.fillRect(0,hor,W,H*0.16);
+  x.fillStyle=C.linen;x.fillRect(0,hor+H*0.16,W,H);
+}
+let cityFrames=[],beachFrames=[];
+async function buildFrames(){
+  const cf=[],bf=[];
+  if(!cityVid.length)for(let i=0;i<CITY_N;i++){const[c,x]=sceneCanvas();drawCityFallback(x,i/(CITY_N-1));cf.push(createImageBitmap(c));}
+  if(!beachVid.length)for(let i=0;i<BEACH_N;i++){const[c,x]=sceneCanvas();drawBeachFallback(x,i/(BEACH_N-1));bf.push(createImageBitmap(c));}
+  cityFrames=await Promise.all(cf);beachFrames=await Promise.all(bf);
+}
+
+/* ---------- Kamera fliegt durch das S ---------- */
+function camZoom(p){
+  if(p<0.46)return 1;
+  if(p<0.70)return lerp(1,55,Math.pow(seg(p,0.46,0.70),2.1));
+  return 55;
+}
+function drawCityLive(t,k){
+  const x=cityCx,f=t*(cityVid.length-1),i0=Math.floor(f),i1=Math.min(cityVid.length-1,i0+1),fr=f-i0;
+  x.clearRect(0,0,W,H);
+  x.save();
+  x.translate(AX,AY);x.scale(k,k);x.translate(-AX,-AY);
+  x.globalAlpha=1;drawCover(x,cityVid[i0],1.0);
+  if(fr>0.01){x.globalAlpha=fr;drawCover(x,cityVid[i1],1.0);x.globalAlpha=1;}
+  x.restore();
+  x.fillStyle='rgba(28,27,25,'+(0.08+0.42*t)+')';x.fillRect(0,0,W,H);
+}
+function drawBeachLive(t,push){
+  const x=beachCx,f=t*(beachVid.length-1),i0=Math.floor(f),i1=Math.min(beachVid.length-1,i0+1),fr=f-i0;
+  x.clearRect(0,0,W,H);
+  x.save();
+  const z=1+0.08*push;
+  x.translate(W/2,H/2);x.scale(z,z);x.translate(-W/2,-H/2);
+  x.globalAlpha=1;drawCover(x,beachVid[i0],1.0);
+  if(fr>0.01){x.globalAlpha=fr;drawCover(x,beachVid[i1],1.0);x.globalAlpha=1;}
+  x.restore();
+  const glow=1-smooth(seg(t,0.10,0.45));
+  if(glow>0){const gg=x.createRadialGradient(AX,AY,10,AX,AY,Math.max(W,H)*0.6);
+    gg.addColorStop(0,'rgba(143,177,166,'+(0.9*glow)+')');
+    gg.addColorStop(0.5,'rgba(143,177,166,'+(0.5*glow)+')');
+    gg.addColorStop(1,'rgba(143,177,166,0)');
+    x.fillStyle=gg;x.fillRect(0,0,W,H);}
+}
+function blit(cx,frames,idx){
+  const i0=Math.floor(idx),i1=Math.min(frames.length-1,i0+1),f=idx-i0;
+  cx.clearRect(0,0,W,H);
+  cx.globalAlpha=1;cx.drawImage(frames[i0],0,0,W,H);
+  if(f>0.01){cx.globalAlpha=f;cx.drawImage(frames[i1],0,0,W,H);cx.globalAlpha=1;}
+}
+
+/* ---------- Das Tor ---------- */
+function setPortal(p){
+  const k=camZoom(p);
+  const tf=`translate(${AX},${AY}) scale(${k}) translate(${-AX},${-AY})`;
+  glyphClip.setAttribute('transform',tf);
+  edgeG.setAttribute('transform',tf);
+  /* das S erscheint erst, wenn die Fragmente es geformt haben (Uebergabe 0.26-0.30) */
+  const sThere=seg(p,0.26,0.30);
+  const open=seg(p,0.34,0.44); /* Tor oeffnet sich: Karton weicht dem Licht */
+  glyphFill.style.opacity=String(sThere*(1-open));
+  beachCv.style.visibility=(p>=0.30)?'visible':'hidden';
+  beachCv.style.clipPath=(p>=0.70)?'none':'url(#sClip)';
+  const edgeVis=seg(p,0.34,0.44)*(1-seg(p,0.62,0.69));
+  glyphOut.style.opacity=String(0.35*edgeVis);
+  glyphCore.style.opacity=String(0.9*edgeVis);
+  glyphOut.setAttribute('stroke-width',String(Math.min(3.2,26/k)));
+  glyphCore.setAttribute('stroke-width',String(Math.min(1.5,12/k)));
+}
+
+let lastP=-1;
+function render(p){
+  if(cityFrames.length===0&&cityVid.length===0)return;
+  const k=camZoom(p);
+  if(cityVid.length)drawCityLive(mapFrame(CITY_MAP,p,CITY_N)/(CITY_N-1),k);
+  else blit(cityCx,cityFrames,mapFrame(CITY_MAP,p,CITY_N));
+  const trans=seg(p,0.54,0.64)*(1-seg(p,0.66,0.72));
+  if(trans>0.02){
+    const R=Math.min(Math.max(W,H),FS*0.6*k);
+    const gg=cityCx.createRadialGradient(AX,AY,R*0.5,AX,AY,R*2.0);
+    gg.addColorStop(0,'rgba(143,177,166,'+(0.7*trans).toFixed(3)+')');
+    gg.addColorStop(0.5,'rgba(143,177,166,'+(0.25*trans).toFixed(3)+')');
+    gg.addColorStop(1,'rgba(143,177,166,0)');
+    cityCx.fillStyle=gg;cityCx.fillRect(0,0,W,H);
+  }
+  if(p>=0.30){
+    const vt=mapFrame(BEACH_MAP,p,BEACH_N)/(BEACH_N-1);
+    if(beachVid.length)drawBeachLive(vt,seg(p,0.46,0.70));
+    else blit(beachCx,beachFrames,mapFrame(BEACH_MAP,p,BEACH_N));
+  }
+  drawWord(p);
+  setPortal(p);
+  const light=false; /* Chalk durchgehend, siehe Brief 7.7 */
+  nav.classList.toggle('light',light);slate.classList.toggle('light',light);
+  skip.classList.toggle('light',light);note.classList.toggle('light',light);
+  let sc=SCENES[0];for(const s of SCENES)if(p>=s.p)sc=s;
+  if(slate.textContent!==sc.name)slate.textContent=sc.name;
+  const to=seg(p,0.90,0.96);
+  title.style.opacity=String(to);
+  title.style.pointerEvents=to>0.5?'auto':'none';
+  cityCv.style.opacity=String(1-seg(p,0.64,0.72));
+}
+
+function currentP(){
+  const r=reel.getBoundingClientRect();
+  const dist=reel.offsetHeight-innerHeight;
+  return dist>0?clamp(-r.top/dist,0,1):1;
+}
+
+function layout(){
+  W=innerWidth;H=innerHeight;
+  for(const cv of[cityCv,beachCv,lettCv]){cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+    cv.getContext('2d').setTransform(DPR,0,0,DPR,0,0);}
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  FS=clamp(0.16*W,68,210);
+  BASEY=0.80*H;
+  for(const g of[glyphClip,glyphFill,glyphOut,glyphCore]){
+    g.setAttribute('x',0.468*W);g.setAttribute('y',BASEY);g.setAttribute('font-size',FS);
+  }
+  AX=0.468*W;AY=BASEY-0.34*FS;
+  buildFragments();
+}
+
+async function start(){
+  await new Promise(res=>{const chk=()=>{ (innerWidth>0&&innerHeight>0)?res():setTimeout(chk,120);};chk();});
+  [imgCity,imgBeach]=await Promise.all([loadImg(ASSETS.city),loadImg(ASSETS.beach)]);
+  beachVid=(await Promise.all(Array.from({length:VID_COUNT},(_,i)=>
+    loadImg('../frames/strand/strand_'+String(i+1).padStart(4,'0')+'.avif')))).filter(Boolean);
+  if(beachVid.length<VID_COUNT*0.9)beachVid=[];
+  cityVid=(await Promise.all(Array.from({length:CITY_VID_COUNT},(_,i)=>
+    loadImg('../frames/stadt/stadt_'+String(i+1).padStart(4,'0')+'.avif')))).filter(Boolean);
+  if(cityVid.length<CITY_VID_COUNT*0.9)cityVid=[];
+  if(imgBeach)title.classList.add('chalk');
+  layout();
+  await buildFrames();
+  try{await document.fonts.ready;}catch(e){}
+  layout();lastP=-1;
+  if(reduced){render(1);slate.textContent='07 / 07 ÜBERGABE (reduced motion)';return;}
+  (function tick(){
+    const p=(window.__freezeP!=null)?window.__freezeP:currentP();
+    if(p!==lastP){render(p);lastP=p;}
+    requestAnimationFrame(tick);
+  })();
+}
+let rsT;addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(async()=>{layout();await buildFrames();lastP=-1;},200);});
+window.__pr={
+  info:()=>({vw:innerWidth,vh:innerHeight,vid:beachVid.length,cvid:cityVid.length,slate:slate.textContent,fs:FS,frags:WORD.reduce((n,L)=>n+(L.pts?L.pts.length:0),0)}),
+  setP:async p=>{if(innerWidth>0&&(cityVid.length===0&&cityFrames.length===0)){layout();await buildFrames();}
+    window.__freezeP=p;render(p);lastP=p;return window.__pr.info();},
+  unfreeze:()=>{window.__freezeP=null;}
+};
+start();
+</script>
+</body>
+</html>

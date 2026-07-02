@@ -11,3 +11,8 @@ dist/
 build/
 .claude/
 .wrangler/
+
+# Schwere Rohdaten (Platte ist das Archiv, nicht Git)
+_notes/video/
+_notes/maya/
+_notes/material/

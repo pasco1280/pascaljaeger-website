@@ -1,0 +1,1329 @@
+{
+  "recon": [
+    {
+      "dim": "hero",
+      "summary": "Hero = drei verkettete Systeme: (1) gepinnter Reel (.reel 340vh, sticky .reel-pin 100svh, index.html:20-22) mit eigenem rAF-Scrubber tick() (wrlz.js:548-554), der p=−rect.top/(offsetHeight−H) berechnet und applyScroll(p) (wrlz.js:484-518) alles treiben lässt; (2) darin fallen 5 HTML-3D-Pappbuchstaben (9 Layer à 2.4px translateZ, per-Letter perspective(720px), fallCfg-Tabelle wrlz.js:342-348) während die Kamera per Dolly (camTf, ZMAX=34, p^2.3) in den per Canvas-Distanztransform gefundenen s-Ankerpunkt zoomt und ab p=0.5 die Vollbild-Welle via <use href=\"#waveContent\"> crossfadet (wrlz.js:509-511); (3) danach die 115vh-.breath-Sektion mit 8 scroll-gescrubbten Sand-Pfoten (SVG-Filter #sandpress, dokumentfluss-basiertes reveal(), Klick-Flucht via window-pointerdown, wrlz.js:585-687). Das Scrub-Skelett (tick+applyScroll), die fallCfg-Staffelung und der camTf-Dolly sind direkt für Stadtszene/Strand-Framesequenz wiederverwendbar; strukturell eng wird es bei der <use>-Doppelreferenz (Canvas kann nicht in SVG-clipPath ge-used werden), bei der Pfoten-Logik (scrollY/offsetTop bricht im Sticky-Pin) und beim Klick-Konflikt Puls vs. Katzenflucht.",
+      "confirmed": [
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 329,
+          "what": "Der waveFull-Crossfade ist nur nahtlos, weil s-Fenster und Vollbild denselben SVG-Knoten #waveContent zweimal per <use> referenzieren; eine Canvas-Framesequenz kann so nicht dupliziert werden.",
+          "category": "conflict",
+          "severity": "high",
+          "evidence": "useFull.setAttribute('href','#waveContent') (Z.330) + useClip in clippedGroup mit clip-path url(#sClip) (Z.331-332); Crossfade wf=clamp((p-0.5)/0.38) mit Scale 1.12→1 um Bildmitte (Z.509-511). Alternative: Canvas als HTML-Layer mit CSS clip-path:url(#sClip), camTf bleibt am clipText wirksam.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:323-332 (Kommentar \"einmal definieren, zweimal referenzieren\"; waveContent in <defs>, useFull href='#waveContent' Z.330, clippedGroup clip-path url(#sClip) + useClip Z.331-332); Z.491-493 (camTf nur auf clipText/sOutline); Z.509-511 (wf=clamp((p-0.5)/0.38), Scale 1.12→1 um W/2,H/2); Z.527-546 (pulseTick schreibt d-Attribute pro Frame in waveLines, wirkt via <use> synchron auf beide Instanzen)",
+            "correction": "Kern bestätigt, zwei Präzisierungen: (1) Pixelidentisch sind die zwei Instanzen erst bei wf=1; während des Fades ist waveFull bis 12% größer skaliert. Nahtlos macht es der geteilte Knoten (identischer Inhalt + synchroner Puls-Animationszustand) plus Scale-Konvergenz auf 1 und identisches Grün #8FB1A6. (2) Eine Canvas-Framesequenz ist nicht per <use> duplizierbar (Canvas ist kein SVG-Element), wohl aber generell z.B. via drawImage in zwei Canvases pro Frame; der Konflikt betrifft also die bestehende <use>-Architektur, nicht Duplikation an sich. Die vorgeschlagene Alternative (ein Canvas-HTML-Layer mit CSS clip-path:url(#sClip), camTf bleibt auf clipText) ist plausibel, da viewBox 0 0 W H mit W/H=innerWidth/innerHeight (Z.443-444) 1:1 auf CSS-Pixel mappt."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 643,
+          "what": "Pfoten-Reveal ist dokumentfluss-basiert (docY=breath.offsetTop+cyp, trig=scrollY+vh*0.6, band=vh*0.26); im sticky .reel-pin ist offsetTop konstant, die Logik bricht, wenn die Pfoten in die gepinnte Strandszene wandern.",
+          "category": "conflict",
+          "severity": "high",
+          "evidence": "prints.push({el, docY: breath.offsetTop + cyp, ...}) (Z.643); reveal(): const trig=window.scrollY+vh()*0.6, band=vh()*0.26 (Z.655); fled-Reset bei scrollY < breath.offsetTop - vh() (Z.649). Muss auf Reel-p umgestellt werden.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:643 (docY: breath.offsetTop + cyp), :655 (trig = window.scrollY + vh()*0.6, band = vh()*0.26), :649 (fled-Reset scrollY < breath.offsetTop - vh()), :626-627 (build() basiert auf breath.clientWidth/offsetHeight); index.html:22 (.reel-pin position: sticky; top: 0; height: 100svh; overflow: hidden), index.html:20 (.reel height: 340vh), index.html:206 + :52 (.breath ist separate Flow-Section, position: relative, height: 115vh)",
+            "correction": "Befund technisch korrekt, aber als latenter Migrations-Konflikt, nicht als aktueller Bug: heute liegen die Pfoten in der Flow-Section .breath, wo die docY-Logik funktioniert. Eine Strandszene im reel-pin existiert im Repo noch nicht. Erst beim Verschieben in den sticky .reel-pin bricht die Logik (offsetTop bleibt waehrend der ~240vh Pin-Phase konstant, Reveal-Band kollabiert auf einen Punkt am Reel-Anfang). Zusaetzlich zum Reveal muessten auch build()-Masse (clientWidth/offsetHeight des neuen Containers) und der fled-Reset umgestellt werden."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 559,
+          "what": "Klick-Konflikt beim Umzug der Pfoten in den Pin: pin-Click feuert pulse() für jeden Klick außer a/button, die Katzenflucht hört parallel auf window-pointerdown mit 80px-Hit-Radius.",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "pin.addEventListener('click', e => { if (e.target.closest('a, button')) return; pulse(...) }) (Z.559) vs. window.addEventListener('pointerdown', ...) mit Math.hypot(...)<80 (Z.670-686). Heute getrennt, weil .breath nach .reel kommt; im selben Container feuern beide.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:559 (pin-Click mit a/button-Guard → pulse), assets/js/wrlz.js:670-686 (window-pointerdown, Math.hypot < 80 in Z.675), assets/js/wrlz.js:311/313 (pin = .reel-pin), assets/js/wrlz.js:619-620 (paw-layer in .breath), index.html:191/206 (.reel vor .breath), index.html:52 (.breath 115vh), assets/js/wrlz.js:627 (y0 = bh*0.26)",
+            "correction": "Kern bestätigt, kleine Präzisierung: Die heutige Trennung ist rein geometrisch, nicht durch Event-Scoping. Der Flucht-Listener hängt auf window und feuert schon heute bei Klicks im Pin; er tut nur nichts, weil keine sichtbare Pfote (Opacity >= 0.3) in 80px-Reichweite liegt (erste Pfote sitzt ~30vh tief in der 115vh hohen .breath-Section). Beim Umzug der Pfoten in den Pin feuern beide Handler: .paw-Div fällt nicht unter den a/button-Guard von Z.559, also pulse() plus Katzenflucht gleichzeitig."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 522,
+          "what": "Das Klick-Puls-System ist fest an drawWaves gekoppelt; ersetzt die Canvas-Strandszene die SVG-Wellen, verliert der reel-hint 'klick = puls' sein Ziel.",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "pulse()/pulseTick(): pulses[] max 24, Gauss-Ring-Boost als fn(x,y) direkt in drawWaves(fn) injiziert (Z.522-546); Auto-Puls nach 700ms (Z.569); Hint-Text 'klick = puls · scroll' (index.html:201).",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:522-546 (pulse/pulseTick, Gauss-Ring-fn → drawWaves(fn) bei :544), :524 (Cap 24), :559 (Klick-Listener am pin), :569 (Auto-Puls 700ms), :425-440 + :405-416 (drawWaves mutiert ausschließlich SVG-paths[] aus buildWaves), index.html:201 (Hint 'klick = puls · scroll')",
+            "correction": "Kleine Präzisierung: Der Klick-Listener hängt am .reel-pin (:559), nicht am SVG selbst — eine Canvas-Ersatzszene bekäme die Klicks weiterhin, aber pulse()/pulseTick rendern nur über drawWaves auf die SVG-paths[]; ohne Portierung wäre der Puls wirkungslos und der Hint irreführend. Kernaussage des Befunds bleibt korrekt."
+          }
+        }
+      ],
+      "unconfirmed": [],
+      "other": [
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 548,
+          "what": "Der Scrub-Kern ist ein sauberes generisches Skelett: eigener rAF-Loop tick() berechnet p aus getBoundingClientRect und ruft applyScroll nur bei Änderung; Framesequenz dockt als frame=round(p*(N-1)) direkt an.",
+          "category": "opportunity",
+          "severity": "high",
+          "evidence": "const p=(dist>0)?clamp(-rect.top/dist,0,1):0; if(p!==lastP){applyScroll(p);lastP=p;} (Z.549-552); Scrollweg = reel.offsetHeight-H = 240vh (bei .reel 340vh, index.html:20). Lenis-Glättung (lerp 0.085, Z.21) liefert gratis weiche p-Werte fürs Scrubbing."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 342,
+          "what": "Die fallCfg-Tabelle plus per-Letter-Progression lp=clamp((p-l.s)/l.sp) traegt das geplante Stadtszene-Aufbrechen ohne Strukturaenderung, nur Ziel-Transforms und Timings anpassen.",
+          "category": "opportunity",
+          "severity": "high",
+          "evidence": "fallCfg: {i,ch,s:0.00-0.14,sp:0.42-0.60,dist,dx,rz,rx,bounce} (Z.342-348); non-bounce dy=lp²*dist*H, bounce via physY/physX/physRot 3-Phasen-Karton-Physik (Z.472-479); rx=l.rx*smoothstep(lp) offenbart Karton-Tiefe, Opacity-Fade lp 0.9→1.0 (Z.497-506); 9 Tiefen-Layer à 2.4px, Layer 0 ink #1C1B19, Rest hsl(33 38% ...) Kraftbraun (Z.341,351-355)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 484,
+          "what": "Der camTf-Dolly (translate(fokus) scale(camZ) translate(-anker)) inkl. findInkAnchor-Distanztransform ist als Zoom-in-die-Oeffnung-Pattern wiederverwendbar, solange das s eine Text-Glyphe bleibt.",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "ease=p^2.3, camZ=1+ease*(ZMAX-1), ZMAX=34 (Z.483-486); Fokusdrift smoothstep von (ax,ay)→(W/2,H/2) ueber p 0-0.5 (Z.487-488); findInkAnchor: Canvas-Rendering + 2-Pass-Chamfer-Distanztransform, tiefster Punkt als BBox-Fraktion auf sOutline.getBBox() gemappt (Z.366-402, 464-466)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 484,
+          "what": "Die Phasen-Kette besteht komplett aus verstreuten Magic Numbers ohne zentrale Timeline; beim Umbau sollte eine Phase-Map her.",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "sOutline-Fade 1-p/0.5 (Z.494), waveFull (p-0.5)/0.38 (Z.509), Intro (p-0.74)/0.22 (Z.513), Hint 0.55-p*6 → weg bei p≈0.09 (Z.517), Buchstaben-Starts 0.00-0.14/Dauern 0.42-0.60 → letzter fertig bei p≈0.74 (Z.342-348), Wellen: horizon H*0.40, amp 12+z²*135, 56 rows, 84 seg (Z.408,426-430), Pulse LIFE 1700ms/ringW H*0.14/boost H*0.13/frontR t*coverR*0.7 (Z.529-534)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 572,
+          "what": "layout() haengt an document.fonts.ready und SVG-Textmetriken; der unsichtbare ref-Text 'Pascal' ist die einzige Positionsquelle fuer Buchstaben, s-Clip und Anker und muss beim Umbau erhalten bleiben.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "ref.getComputedTextLength(), getStartPositionOfChar(i)/getExtentOfChar(i) fuer alle 6 Zeichen (Z.448-453); fontPx=min(W*0.155,230), baseY=H/2+fontPx*0.34, letters top=baseY-fontPx*0.80, origin '50% 46%' (Z.445-459); Start erst via document.fonts.ready.then(start) (Z.572)."
+        },
+        {
+          "file": "index.html",
+          "line": 23,
+          "what": "z-index-Slot fuer die Frame-Canvas ist eng aber vorhanden: reel-svg 1, reel-letters 3, intro/hint 4 — Canvas gehoert auf 2; global liegen grain 9000 (multiply) und nav 8000 (mix-blend difference) drueber, eine helle Strandszene invertiert die Nav-Farbe.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": ".reel-svg z-index:1 (index.html:23), .reel-letters z-index:3 (index.html:25), .reel-intro z-index:4 (index.html:32), .reel-hint z-index:4 (index.html:43); body::after grain z-index 9000 mix-blend-mode multiply (wrlz.css:76-84); .nav z-index 8000 mix-blend-mode difference (wrlz.css:167,171)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 560,
+          "what": "reduced-motion hat drei getrennte Pfade (Reel kollabiert auf 100svh mit applyScroll(0), Pfoten komplett deaktiviert, breath auf 40vh) — der Umbau braucht einen definierten statischen Fallback, z.B. letzter Strand-Frame.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "if(reduced){reel.style.height='100svh';applyScroll(0);intro sofort sichtbar} (Z.560-565); initPaws: if(reduced) return (Z.586); CSS: .paw-layer display:none (wrlz.css:316), .breath height:40vh !important (wrlz.css:376)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 627,
+          "what": "Die Pfotenspur endet bewusst 4% UNTER der breath-Sektion (y1=bh*1.04) und funktioniert nur wegen .breath z-index:2 plus transparentem Background; beim Umzug in die Strandszene muss dieser Overlap-Hack bewusst zurueckgebaut werden.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "const x0=bw*0.16,x1=bw*0.82,y0=bh*0.26,y1=bh*1.04 (Z.627); .breath{z-index:2} mit Kommentar 'Pfoten duerfen ueber das folgende Element huschen' (index.html:53), background:transparent (index.html:52); .paw-layer z-index:0 pointer-events:none (wrlz.css:309)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 590,
+          "what": "Der Sand-Imprint-Filter #sandpress und die Pfoten-Geometrie sind vollstaendig portabel (JS-Strings, an body gehaengt) und koennen 1:1 in die Strandszene mitwandern.",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "FILTER: feTurbulence fractalNoise baseFrequency 0.075/0.085 numOctaves 4 seed 7 → feDisplacementMap scale 7 auf SourceAlpha, Innenschatten #bdb094, Rim #fffdf8, Fill #ddd4bf (Z.590-608); PAW viewBox 0 0 100 90, Ballen-Pfad + 4 Zehen-Ellipsen (Z.609-616); Roll-Reveal via clip-path inset(0 0 86%→0 0) smoothstep (Z.641,656-664); Flucht: transition-Delay i*0.04s, translate dir*90px scale 1.15 (Z.677-682)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 548,
+          "what": "Es laufen bereits zwei parallele rAF-Loops (tick fuer Reel, frame fuer Lenis/Parallax/Marquee); die Canvas-Framesequenz sollte in tick() integriert werden statt eine dritte Loop zu starten.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "requestAnimationFrame(tick) in start() (Z.568) mit getBoundingClientRect pro Frame (Z.549) + requestAnimationFrame(frame) als Main-Loop mit lenis.raf(ts) (Z.701-777); dazu on-demand pulseTick (Z.527) und Spotlight-paint (Z.113)."
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 325,
+          "what": "Die Nahtfarbe des Tunnels ist hartkodiert Palette-sage #8FB1A6 (waveBg) — die Strand-Framesequenz muss farblich an diese Naht bzw. an die Flyer-Palette anschliessen, sonst springt der Crossfade sichtbar.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "waveBg.setAttribute('fill','#8FB1A6') (Z.325), Wellenlinien stroke #0d0d0d (Z.411), sOutline stroke #111 width 3 non-scaling-stroke (Z.334-335); Crossfade-Fenster p 0.5-0.88 zeigt s-Fenster und Vollbild gleichzeitig."
+        }
+      ],
+      "preserve": [
+        "Die fallenden 3D-Pappbuchstaben als Signature-Gimmick (Skill-Regel: 'Nie die fallenden Buchstaben beim Refactor loeschen') — Umbau zur Stadtszene ok, Entfernen nicht.",
+        "Katzen-Pfoten komplett (Sand-Imprint-Filter #sandpress, Direct-Register-Spur, scroll-gescrubbter Zehen-zuerst-Roll, Klick-Flucht) — wandern in die Strandszene, werden nicht geloescht.",
+        "Solange .breath existiert: Background transparent + z-index:2 (sonst verdeckt sie die Pfoten, index.html:52-53).",
+        "Kein Build, kein Framework, keine npm-Dependency; alles bleibt in index.html-Inline-CSS + assets/css/wrlz.css + assets/js/wrlz.js; Lenis bleibt selbst gehostet (assets/js/lenis.min.js).",
+        "prefers-reduced-motion-Verhalten: statischer Hero (100svh, Intro sichtbar), Pfoten aus, Animationen aus (wrlz.js:560-565, wrlz.css:370-378) — beim Umbau statischen Frame-Fallback definieren.",
+        "SEO/A11y: visually-hidden h1 (index.html:192), aria-hidden auf allen Deko-Layern (reel-svg, reel-letters, breath, hint).",
+        "Parallax-Konvention: data-px-Elemente ueber translate/rotate-Props, NICHT ueber transform (Kernmechanik wrlz.js:40-61).",
+        "Der reel-hint verspricht 'klick = puls' (index.html:201) — beim Wegfall der SVG-Wellen entweder Puls-Aequivalent in der Strandszene bauen oder Hint-Text anpassen, nicht stumm brechen.",
+        "reel-intro (Kicker/Tagline/CTA 'Projekt starten' → #kontakt) muss am Ende der Hero-Phase weiter einfaden und klickbar sein (pointerEvents-Gate io>0.5, wrlz.js:513-516).",
+        "Flyer-Palette (sage #8FB1A6 u.a. aus wrlz.css-Vars) als Farbrahmen der neuen Szenen.",
+        "Kein wrangler deploy ohne explizites 'deploy' von Pascal; _notes/HANDOFF.md nach dem Umbau aktualisieren."
+      ]
+    },
+    {
+      "dim": "bugs",
+      "summary": "Die Site ist funktional weitgehend sauber: keine doppelten IDs, keine toten Anker, alle 170+ lokalen src/href-Referenzen existieren im Dateisystem, alle externen Links liefern 200, keine Event-Listener-Leaks. Der Counter-Verdacht ('0+') bestaetigt sich im Normalbetrieb nicht — die Logik in wrlz.js:256-276 ist korrekt; '0+' erscheint nur ohne JS, weil das Markup-Fallback '0' ist und .reveal-Inhalte dann komplett unsichtbar bleiben (groesstes strukturelles Risiko). Echte Fehlfunktionen: invertierte Marquee-Richtung (data-dir='left' laeuft nach rechts, wrlz.js:169+750), kollidierende Case-Nummern (WRLZ und fairi beide '/01', Kanzlei '/03' statt '/04'), 404-Handling ohne 404.html sowie ein ungeschuetzter analyser-Zugriff in der Gallery-Waveform. Dazu kleinere Risiken (Gallery ohne Resize-Handling, Lightbox nicht tastaturbedienbar, Lazy-Images ohne Dimensionen) und Dead Code (Spotlight/Scatter/reveal-line).",
+      "confirmed": [
+        {
+          "file": "case-wrlz.html",
+          "line": 82,
+          "what": "Case-Nummerierung kollidiert: WRLZ nennt sich 'Case /01' wie fairi, obwohl der Index WRLZ als /03 fuehrt; Kanzlei nennt sich 'Case /03' statt /04",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "case-wrlz.html:82 'Case /01 · Agentur' vs. case-fairi.html:70 'Case /01 · App' vs. index.html:258 card-idx '/03' (WRLZ); case-kanzlei.html:72 'Case /03' vs. index.html:271 '/04 · Recht · DSGVO'",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-wrlz.html:82 'Case /01 · Agentur · Claude API · n8n' vs. index.html:258 card-idx '/03' (WRLZ-Card, index.html:256 href=case-wrlz.html); case-fairi.html:70 'Case /01 · App' (index.html:232 '/01' fairi — Kollision); case-kanzlei.html:72 'Case /03 · Recht' vs. index.html:271 '/04 · Recht · DSGVO'; korrekt dagegen: case-hntz.html:70 'Case /02' = index.html:245 '/02', case-matchachin.html:57 'Case /05' = index.html:276 '/05'",
+            "correction": "Befund stimmt in allen Punkten. Keine absichtliche Alt-Nummerierung auffindbar (_notes/HANDOFF.md und Session-Notes dokumentieren keine Case-Reihenfolge-Konvention); da fairi und WRLZ beide '/01' tragen, ist eine bewusste Doppelvergabe ausgeschlossen. Fix: case-wrlz.html:82 auf 'Case /03', case-kanzlei.html:72 auf 'Case /04'."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 750,
+          "what": "Marquee-Richtungslogik ist invertiert: data-dir='left' laesst den Track im Ruhezustand und beim Runterscrollen nach rechts laufen",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "wrlz.js:169 baseDir = dir==='left' ? -1 : 1; wrlz.js:750-753: speed = 0.5*baseDir = -0.5, m.pos -= speed erhoeht pos, translate3d laeuft von -single Richtung 0 = Bewegung nach rechts. Alle Marquees (index.html:211, alle Case-Seiten) nutzen data-dir='left'",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:169 (baseDir = dir==='left' ? -1 : 1), wrlz.js:750-754 (speed=0.5*baseDir=-0.5; m.pos-=speed erhoeht pos; Wrap in Zeile 753 haelt pos in (-single,0]; translate3d laeuft von -single Richtung 0 = Bewegung nach rechts), wrlz.js:705-708 (dir=1 beim Runterscrollen, dir*baseDir=-1 = gleiches Vorzeichen wie Ruhe). Verwendung: index.html:211, case-kanzlei.html:109, case-fairi.html:109, case-wrlz.html:120, case-hntz.html:110, case-matchachin.html:96 — alle data-dir='left', 'right' existiert nirgends.",
+            "correction": "Praezisierung: Es ist eine invertierte Attribut-Semantik, kein sichtbar kaputtes Verhalten. Da ausnahmslos alle Marquees data-dir='left' nutzen und kein 'right' existiert, ist das gerenderte Ergebnis ueberall konsistent und wurde vermutlich visuell so abgenommen. Kein dokumentierter Soll-Zustand in _notes/ oder CSS (wrlz.css:204 hat kein rtl). Fix waere Umbenennung/Vorzeichentausch ohne visuelle Aenderung, oder bewusst so lassen."
+          }
+        },
+        {
+          "file": "wrangler.toml",
+          "line": 7,
+          "what": "not_found_handling = '404-page' konfiguriert, aber es existiert keine 404.html im Root, tote URLs liefern eine leere 404-Antwort statt einer Seite",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "wrangler.toml: [assets] not_found_handling = \"404-page\"; ls 404.html ergibt 'NO 404.html' (nur 9 HTML-Seiten im Root)",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "wrangler.toml:6-7 (directory = \"./\", not_found_handling = \"404-page\"); find nach 404* im gesamten Repo (außer .git) liefert 0 Treffer; _redirects:1-6 enthält keinen Catch-all; grep \"404\" in _notes und _headers ohne Treffer (kein dokumentierter Absichts-Hinweis)",
+            "correction": "Befund hält der Prüfung stand. Zeile 7 stimmt exakt, es gibt weder eine 404.html im Asset-Root (\"./\") noch in einem Unterordner, und Cloudflare Workers Static Assets liefert bei \"404-page\" ohne vorhandene 404.html eine 404-Response mit leerem Body. Kein Hinweis auf Absicht in _notes/_redirects. Severity \"low\" ist angemessen: rein kosmetisch, keine Funktionsstörung."
+          }
+        },
+        {
+          "file": "gallery.html",
+          "line": 349,
+          "what": "draw3D() greift ohne Guard auf analyser zu; schlaegt ensureAudio() fehl (Exception wird in start() geschluckt), wirft draw3D einen uncaught TypeError und Deck dreht ohne Waveform",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "gallery.html:349 analyser.getByteFrequencyData(freq) mit analyser=null moeglich, weil gallery.html:382 'if (!src) { try { ensureAudio(); } catch (e) {} }' den Fehler schluckt und Zeile 385 draw3D() trotzdem aufruft",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "gallery.html:349 `analyser.getByteFrequencyData(freq);` ohne Null-Guard; gallery.html:330 `analyser = null, freq = null` initial; gallery.html:382 `if (!src) { try { ensureAudio(); } catch (e) {} }` schluckt Fehler; gallery.html:385 `cancelAnimationFrame(raf); draw3D();` ruft draw3D bedingungslos; gallery.html:381 setzt vorher spin/on-Klassen, daher dreht das Deck trotz TypeError ohne Waveform",
+            "correction": "Befund bestätigt. Einzige Präzisierung: Der TypeError tritt nur auf, wenn ensureAudio() tatsächlich wirft (z.B. AudioContext-Konstruktor Zeile 335 oder createMediaElementSource Zeile 336), was in modernen Browsern selten ist — severity \"low\" passt. Der erste draw3D-Aufruf wirft synchron im Click-Handler, requestAnimationFrame (Zeile 378) wird nie erreicht, es bleibt bei einem einzelnen uncaught Error pro Klick."
+          }
+        }
+      ],
+      "unconfirmed": [],
+      "other": [
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 265,
+          "what": "Ohne JS (oder bei JS-Fehler/Blocker) bleibt fast der gesamte Seiteninhalt unsichtbar und die Stat-Counter zeigen dauerhaft '0+', weil das Markup-Fallback wortwoertlich '0' ist",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": ".reveal { opacity: 0; transform: translateY(26px) } wird nur durch JS-IntersectionObserver (wrlz.js:236-251, Klasse 'in') aufgehoben; Counter-Fallback: index.html:334-336 '<span data-count=\"30\">0</span>+'. Die Counter-Logik selbst (wrlz.js:256-276) ist korrekt, der '0+'-Verdacht materialisiert sich nur auf diesem Pfad"
+        },
+        {
+          "file": "gallery.html",
+          "line": 226,
+          "what": "Chaos-Canvas-Layout wird nur einmal beim Load mit W und vh berechnet, kein Resize-/Orientation-Handler, danach passen Positionen, Papierstapel-Hoehe und Clipping nicht mehr",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "gallery.html:220-254: const W = document.documentElement.clientWidth (einmalig), absolute px-Positionen; .g-canvas { overflow: hidden } (gallery.html:84) clippt Items nach Orientation-Change; kein window.resize-Listener im Gallery-Script"
+        },
+        {
+          "file": "gallery.html",
+          "line": 232,
+          "what": "Gallery-Items sind <a>-Elemente ohne href und ohne tabindex, die Lightbox ist per Tastatur nicht erreichbar; zusaetzlich figcaption ohne figure-Elternelement (invalides HTML)",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "gallery.html:232 'const a = document.createElement(&quot;a&quot;)' ohne href-Attribut; gallery.html:249 innerHTML mit '<figcaption class=\"g-cap\">' direkt im <a>"
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 119,
+          "what": "Lazy-Images ohne width/height-Attribute erzeugen Layout-Shift beim Nachladen; die einmal gemessenen Parallax-Anker in wrlz.js veralten dadurch und Parallax-Elemente unterhalb sitzen versetzt",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "case-hntz.html:119-120, case-matchachin.html:116-117: <img ... loading=\"lazy\"> ohne Dimensionen; wrlz.js:53-61 measurePx() speichert n.base einmalig, Re-Messung nur bei resize/load (wrlz.js:696-699), nicht nach Lazy-Load"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 105,
+          "what": "Totes Feature-Set in wrlz.js: Spotlight, data-scatter und .reveal-line werden auf keiner der 9 Seiten genutzt",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "grep ueber alle *.html: kein data-spotlight, kein data-scatter, kein reveal-line, kein data-px-rot Treffer; Code existiert in wrlz.js:105-124 (Spotlight, inkl. permanenter rAF-Schleife pro Container), wrlz.js:160+736-746 (Scatter), wrlz.css:267-269 und :306"
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 221,
+          "what": "Die 'Naechster Case'-Kette erreicht Matchachin nie (fairi zu HNTZ zu Kanzlei zu WRLZ zu HNTZ = Loop) und die Case-Footer listen die Arbeiten uneinheitlich",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "case-wrlz.html:221 next=HNTZ, case-hntz.html:204 next=Kanzlei, case-kanzlei.html:190 next=WRLZ; Footer: case-fairi.html:184-189 ohne Matchachin, case-hntz.html:214-218 / case-wrlz.html:231-235 / case-kanzlei.html:200-204 ohne fairi und Matchachin, gallery.html:165-170 ohne Kanzlei"
+        },
+        {
+          "file": "assets/img/illustrationen/zushi.png",
+          "what": "Schwere Assets in der Gallery: 4,9 MB PNG plus weitere 1-1,4 MB Bilder und 16 MB MP3, mobil teuer trotz lazy loading",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "du -h: zushi.png 4.9M, matchachin_hp.png 1.4M, fruits_and_candy_d.png 1.4M, faces.png 1.3M, sg-2.jpg 1.3M, faces2.png 1.2M; assets/audio/pride-tears.mp3 16M (wird erst bei Klick via new Audio geladen, gallery.html:334)"
+        },
+        {
+          "file": "robots.txt",
+          "line": 3,
+          "what": "Disallow-Regel fuer /og-generator.html, die Datei liegt aber nur in _old/ und wird via .assetsignore gar nicht deployed",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "robots.txt:3 'Disallow: /og-generator.html'; Datei existiert nur als _old/og-generator.html; .assetsignore enthaelt 'og-generator.html' und '_old'"
+        }
+      ],
+      "preserve": [
+        "Skript-Ladereihenfolge: Inline-Skripte (z.B. Gallery-Items mit data-px, gallery.html:183-297) muessen VOR lenis.min.js und wrlz.js laufen, sonst scannt wrlz.js die generierten [data-px]-Elemente nicht; ebenso muss lenis.min.js vor wrlz.js stehen (window.Lenis-Check wrlz.js:19)",
+        "Bewusste CSS-Prop-Trennung: Parallax schreibt translate/rotate, Tilt schreibt transform (wrlz.js Kopfkommentar) — beim Refactor nicht auf eine transform-Property zusammenlegen, sonst ueberschreiben sich Hover/Tilt/Parallax",
+        "Counter- und Reveal-Logik (wrlz.js:236-276) funktioniert korrekt — data-count-Spans und .reveal/in-Paarung beibehalten; der '0+'-Verdacht bestaetigte sich im Normalbetrieb NICHT",
+        "Reel-Hero (initReel, wrlz.js:310-575): Start haengt an document.fonts.ready, SVG-Clip 'sClip', Canvas-Distanztransform fuer den s-Anker — fragil, nur als Ganzes anfassen",
+        "prefers-reduced-motion-Pfade in CSS (wrlz.css:371-378) und allen JS-Guards (reduced-Variable) erhalten",
+        ".assetsignore-Ausschluesse (Inter/Lora-Fonts, Plus_Jakarta_Sans/static, _old, _notes, assets/img/projects|ui|icons, soilgoodman_*) — aktuell wird nichts Ausgeschlossenes referenziert; neue Referenzen dagegen pruefen",
+        "Alle externen Live-Links liefern HTTP 200 (fairi.app, hntz.app/beta.html, wrlz.ai, calendly.com/pasco1280/30min, YouTube b27ubyZfq4g) — nicht veraendern",
+        "Keine doppelten IDs, keine toten Datei-Referenzen, keine toten Anker auf allen 9 Seiten — dieser Zustand ist Baseline und darf beim Umbau nicht regressieren",
+        "Inhaltliche Regeln: Matchachin = Guayusa (nie Matcha), Tricho-Maskottchen nur im HNTZ-Case, keine Gedankenstriche/Antithesen in Texten"
+      ]
+    },
+    {
+      "dim": "css",
+      "summary": "Solide Slot-basierte CSS-Architektur: 8 Farb-Vars (--grass #8FB1A6, --lime #B7C8B6, --linen #EBE5D7, --bubble #C98792, --hot #C77E52, --plum #6E2E40, --ink #1C1B19, --chalk #F4EFE4) plus 5 Theme-Slots, die jede Case-Seite per :root-Override umbelegt — das Muster traegt, haengt aber komplett an der Ladereihenfolge, weil Overrides identische Spezifitaet haben. Typografie: nur Jakarta (variable) + System-Mono, Grossgroessen sauber als clamp()-Skala, darunter Wildwuchs mit 66 distinkten font-size-Werten und keinerlei Spacing-Tokens. Reduced-Motion ist per JS-Guard und CSS-Block gut abgedeckt bis auf vier Luecken: Orchestrierungs-Pulse (index.html), scrollIntoView-smooth-Fallback, Binary-Flipper und Turntable-Canvas. !important nur zweckgebunden (Lenis + Reduced-Motion, 8 Stellen); groesste Schulden sind hartcodierte Palette-Fast-Duplikate in gallery.html/wrlz.js und dreifach kopierte Case-Bausteine (.read-col, .invert-block, Legal-CSS).",
+      "confirmed": [
+        {
+          "file": "index.html",
+          "line": 480,
+          "what": "Die KI-Orchestrierungs-Animation (fliessende SVG-Pulse) hat keinerlei prefers-reduced-motion-Check und laeuft als Dauer-rAF-Loop, sobald die Sektion sichtbar ist.",
+          "category": "bug",
+          "severity": "medium",
+          "evidence": "index.html:549-577: tick() + startLoop via IntersectionObserver, kein matchMedia/reduced im gesamten IIFE (Z.480-581); alle anderen Loops in wrlz.js pruefen `reduced` (wrlz.js:9, 710)",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "index.html:549-557 (tick + rAF-Selbstaufruf), index.html:558 (startLoop), index.html:573-577 (IntersectionObserver startet/stoppt Loop); grep \"reduced|matchMedia\" in index.html ohne Treffer; assets/js/wrlz.js:9 (const reduced = matchMedia(...)), wrlz.js:528/560/710 (Loops gaten mit reduced); wrlz.css:371-378 (reduced-motion killt nur CSS-Animationen, nicht JS-gesetzte cx/cy-Attribute); index.html:170-174 (display:none auf .orch-svg nur bei max-width:760px, kein Motion-Schutz)",
+            "correction": "Befund korrekt. Kleine Präzisierung: unter 760px Breite ist die SVG per CSS versteckt (index.html:174), das Problem betrifft visuell also Desktop; der rAF-Loop selbst liefe auf Mobile trotzdem, solange .orch sichtbar ist."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 36,
+          "what": "Anker-Klick-Fallback erzwingt scrollIntoView({behavior:'smooth'}) — bei reduced-motion ist lenis null, der Fallback greift und ueberschreibt das CSS `scroll-behavior:auto` aus dem Reduced-Block.",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "wrlz.js:35-36 `if (lenis) ... else target.scrollIntoView({ behavior: 'smooth' })` vs. wrlz.css:372 `html { scroll-behavior: auto; }`",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:18-19 (`let lenis = null; if (!reduced && ...)` — bei reduced-motion bleibt lenis null), wrlz.js:34-36 (`e.preventDefault(); if (lenis) ... else target.scrollIntoView({ behavior: 'smooth' });`), assets/css/wrlz.css:371-372 (`@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }`), wrlz.css:49-51 (Basis `html { scroll-behavior: smooth; }`)",
+            "correction": "Nur Wording-Präzisierung: scrollIntoView({behavior:'smooth'}) überschreibt das CSS nicht, es umgeht es — bei explizitem behavior:'smooth' wird die CSS-Property scroll-behavior per Spec gar nicht konsultiert. Effekt identisch: reduced-motion-Nutzer verlieren durch preventDefault den nativen Instant-Sprung und bekommen eine erzwungene Smooth-Animation. Fix: behavior: reduced ? 'auto' : 'smooth' (oder 'instant')."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 210,
+          "what": "Binary-Flipper [data-flip] (Text-Scramble auf den Projekt-Karten) prueft nur isTouch, nicht reduced — Animation laeuft bei reduced-motion weiter.",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "wrlz.js:211 `if (isTouch) return;`, kein reduced-Check; getriggert auf index.html:236,237,249,250,262,263,271,276",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "assets/js/wrlz.js:210-211 (`document.querySelectorAll('[data-flip]').forEach(el => { if (isTouch) return;`) — kein `reduced`-Check; Scramble laeuft als setInterval-textContent-Manipulation (wrlz.js:218-226), getriggert per mouseenter auf .card (wrlz.js:229-230). index.html:236,237,249,250,262,263,271,276 wie behauptet.",
+            "correction": "Befund haelt Widerlegungsversuchen stand: (1) Zeile stimmt exakt. (2) Kein Fallback anderswo — die CSS-reduced-motion-Regel wrlz.css:371-378 (`* { animation: none !important; }`) greift nicht, weil der Flipper kein CSS animiert, sondern per JS textContent ersetzt. (3) Absicht unwahrscheinlich: JEDER andere Effekt in wrlz.js prueft `reduced` (Lenis:19, Tilt:93, Spotlight:107, Fall:148, Counter:263, Cursor:281, Reel:560, Paws:586, RAF-Loop:710) — der Flipper ist die einzige Ausnahme, klares Versehen. Einzige Relativierung: Effekt ist hover-initiiert (nicht autoplay), daher severity=low korrekt."
+          }
+        },
+        {
+          "file": "gallery.html",
+          "line": 342,
+          "what": "Turntable-Canvas draw3D() (Equalizer-Feld) laeuft ohne reduced-Check als rAF-Dauerloop; nur der CSS-Spin (ttspin) wird vom globalen animation-Kill erfasst, der Canvas nicht.",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "gallery.html:342-395, kein matchMedia; ttspin (gallery.html:64-65) wird von wrlz.css:377 `* { animation: none !important }` abgedeckt, der Canvas-Loop nicht (immerhin klick-initiiert)",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "gallery.html:342-379 (draw3D, rAF-Selbst-Rescheduling in Zeile 378, kein matchMedia in der IIFE 326-395); gallery.html:385 (start() ruft draw3D nach Klick); gallery.html:64-65 (ttspin-CSS-Animation); assets/css/wrlz.css:371+377 (@media prefers-reduced-motion mit * { animation: none !important; }); assets/js/wrlz.js:9+528+560 (Hero-Pendant checkt reduced, Gallery-Kopie nicht)",
+            "correction": "Nur Praezisierung: CSS-Pfad ist assets/css/wrlz.css (nicht wrlz.css im Root), Zeile 377 stimmt. Zudem klick-initiiert = User hat die Animation explizit angefordert, daher ist severity=low angemessen; die Inkonsistenz ist real, da das Hero-Pendant in wrlz.js reduced respektiert."
+          }
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 38,
+          "what": ".case-hero doppelt deklariert im selben Inline-Block (Z.20 und Z.38); Z.38 setzt overflow:hidden und ueberschreibt still overflow:clip aus wrlz.css — hidden erzeugt einen Scroll-Container, clip nicht.",
+          "category": "conflict",
+          "severity": "low",
+          "evidence": "case-hntz.html:20 `.case-hero { background:#14110f ... }`, case-hntz.html:38 `.case-hero { position: relative; overflow: hidden; }` vs. wrlz.css:322 `overflow: clip`",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-hntz.html:20 `.case-hero { background: #14110f; color: var(--linen); min-height: 96svh; }`; case-hntz.html:38 `.case-hero { position: relative; overflow: hidden; }` (gleicher Inline-Style-Block Z.16-47, nach dem Stylesheet-Link Z.15); assets/css/wrlz.css:321-322 `.case-hero { position: relative; overflow: clip; ... }`. Gleiche Spezifitaet, spaetere Quelle gewinnt: hidden ueberschreibt clip. Kein anderes Case-HTML hat dieses Duplikat (grep ueber case-*.html), spricht gegen Absicht.",
+            "correction": "Befund bestaetigt. Einzige Praezisierung: praktische Auswirkung nur bei programmatischem Scrollen (scrollIntoView, Fokus, Find-in-Page) sichtbar, rein visuell identisch — severity low passt. Zusatz: das `position: relative` in Z.38 ist komplett redundant zu wrlz.css:322."
+          }
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 186,
+          "what": "Soundbar-Farben hartcodiert als ['#8FB1A6','#C77E52','#C98792'] — exakte Duplikate von --grass/--hot/--bubble; Palettenaenderung in wrlz.css erreicht das JS nicht.",
+          "category": "conflict",
+          "severity": "low",
+          "evidence": "wrlz.js:186 `const palette = ['#8FB1A6', '#C77E52', '#C98792']` identisch mit wrlz.css:23,27,26",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "wrlz.js:186 `const palette = ['#8FB1A6', '#C77E52', '#C98792'];` und wrlz.js:191 setzt sie als Inline-Style `b.style.background = ...`; wrlz.css:23 `--grass: #8FB1A6`, wrlz.css:27 `--hot: #C77E52`, wrlz.css:26 `--bubble: #C98792`. Kein getComputedStyle in wrlz.js (grep leer), und wrlz.css:215 `.bars .bar` definiert kein background — die Inline-Hexwerte sind die einzige Farbquelle der Soundbars. Palettenänderung in CSS erreicht die Bars also tatsächlich nicht. Widerlegungsversuche (falsche Zeile, CSS-Override, dynamisches Auslesen) alle negativ. Nebenbefund: wrlz.js:325 hartcodiert `#8FB1A6` ebenfalls (waveBg-Fill), gleiche Kategorie. Einordnung als severity=low ist angemessen, da rein hypothetisch bis zur nächsten Palettenänderung."
+          }
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 259,
+          "what": "Phantomfarbe rgba(243,233,219,...) (= #F3E9DB) dreifach verwendet, entspricht aber keiner Palette-Var (weder --linen #EBE5D7 noch --chalk #F4EFE4).",
+          "category": "conflict",
+          "severity": "low",
+          "evidence": "wrlz.css:259 (foot-base Border), index.html:149 (contact-ghost), case-hntz.html:30-31 (Border/BG dark-section)",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "wrlz.css:259 `border-top: 1px solid rgba(243,233,219,.16)`; Palette in wrlz.css:21-30: --linen #EBE5D7 (rgb 235,229,215), --chalk #F4EFE4 (rgb 244,239,228) — rgba(243,233,219)=#F3E9DB entspricht keiner der acht Palette-Vars. Weitere Fundstellen: index.html:149 (.contact-ghost, alpha .12), case-hntz.html:30 (.dark-section .case-point, .25), case-hntz.html:31 (.dark-section .result, .25).",
+            "correction": "Kern bestätigt, aber Zählung untertrieben: nicht dreifach, sondern 5 Vorkommen auf 4 Fundstellen — der Agent hat case-hntz.html:201 übersehen (Inline-Style `style=\"border-color:rgba(243,233,219,.25)\"` am .next-case-Div). Keine Doku/Notes im Repo erwähnen #F3E9DB, also keine belegte Absicht. Einschränkung zur Severity: alle Verwendungen haben Alpha .12-.25 auf dunklem Grund, visuell praktisch nicht von --linen/--chalk unterscheidbar — rein ein Konsistenz-/Wartungsproblem, low passt."
+          }
+        }
+      ],
+      "unconfirmed": [
+        {
+          "file": "index.html",
+          "line": 52,
+          "what": ".breath doppelt deklariert (Layout in Z.52, z-index separat in Z.53); zusaetzlich koppelt wrlz.css:376 `.breath { height: 40vh !important }` das Core-Stylesheet an eine Klasse, die nur im Inline-Style der Startseite definiert ist.",
+          "category": "conflict",
+          "severity": "low",
+          "evidence": "index.html:52-53 zwei `.breath`-Regeln; wrlz.css:376 referenziert .breath, obwohl die Basisdefinition in index.html liegt",
+          "verdict": {
+            "confirmed": false,
+            "correction": "Fakten stimmen, Interpretation als \"conflict\" nicht. (1) Die zwei .breath-Regeln in index.html:52-53 haben disjunkte Properties (Z.52 Layout ohne z-index, Z.53 nur z-index) und Z.53 traegt einen erklaerenden Kommentar (\"Pfoten duerfen ueber das folgende Element huschen\") — bewusste Aufteilung, kein Kaskaden-Konflikt. (2) wrlz.css:376 steht innerhalb von @media (prefers-reduced-motion: reduce) (Z.371-378), was der Befund unterschlaegt: es ist ein absichtliches Accessibility-Override (ohne Pfoten-Animation wird der 115vh-Leerraum auf 40vh geschrumpft). Das !important ist funktional noetig, weil das Inline-<style> (index.html:18) NACH dem wrlz.css-Link (index.html:17) geladen wird und bei gleicher Spezifitaet sonst gewinnen wuerde. (3) Die Kopplung existiert faktisch: wrlz.css wird von 8 weiteren Seiten geladen, .breath gibt es nur auf index.html, und .breath ist der einzige Selektor im reduced-motion-Block, dessen Basisdefinition nicht in wrlz.css liegt (.marquee z.B. ist in wrlz.css:197 definiert). Auf anderen Seiten matcht der Selektor aber nichts — null Laufzeiteffekt. Rest ist eine rein organisatorische Notiz, kein Bug.",
+            "evidence": "index.html:52 \".breath { position: relative; height: 115vh; ... }\"; index.html:53 \".breath { z-index: 2; } /* Pfoten duerfen ueber das folgende Element huschen */\"; index.html:17-18 (wrlz.css-Link vor Inline-<style>); wrlz.css:371 \"@media (prefers-reduced-motion: reduce) {\" mit Z.376 \".breath { height: 40vh !important; }\"; wrlz.css:197 \".marquee {\" (Core-Definition); .breath-Markup nur index.html:206"
+          }
+        },
+        {
+          "file": "gallery.html",
+          "line": 263,
+          "what": "Palette-Drift durch hartcodierte Fast-Duplikate der CSS-Vars: Papierstapel nutzt ['#ECE7DB','#9DB6AE','#CC7A4E','#D2868F','#6E2E40','#4A2540'] statt linen/grass/hot/bubble/plum; Waveform-PAL (Z.354) mischt #8FB1A6 mit fremden #C0DF85/#D2868F/#9DB6AE; auch .paper-stack-BG #ECE7DB (Z.21) weicht von --linen #EBE5D7 ab.",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "gallery.html:21, 263, 354; Vergleich: --linen #EBE5D7 vs #ECE7DB, --grass #8FB1A6 vs #9DB6AE, --hot #C77E52 vs #CC7A4E, --bubble #C98792 vs #D2868F",
+          "verdict": {
+            "confirmed": false,
+            "evidence": "gallery.html:21 (background #ECE7DB), gallery.html:263 (pal-Array), gallery.html:354 (PAL-Array), assets/css/wrlz.css:22-30 (Vars, Kommentar 'Flyer-inspiriert'), ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:40 (Flyer-Bandfarben der Gallery inkl. #ECE7DB/#9DB6AE/#CC7A4E/#D2868F/#4A2540 als dokumentierte eigene Palette), _notes/session-2026-06-14.md:8 (1:1-Nachbau des HELL/DUNKEL-AM-SEE-Flyers), assets/js/wrlz.js:411 (Hero-Feld monochrom #0d0d0d)",
+            "correction": "Kein Palette-Drift: Die Hexwerte in gallery.html:21/263 sind die im Projekt-Skill (SKILL.md:40) und in _notes/session-2026-06-14.md:8 explizit dokumentierten \"Flyer-Bandfarben der Gallery\" — eine absichtliche zweite Palette (1:1-Nachbau des physischen Flyers), die den CSS-Vars nur deshalb ähnelt, weil die Site-Palette laut wrlz.css:22 selbst \"Flyer-inspiriert\" ist. Zudem Faktenfehler im Befund: #6E2E40 ist exakt --plum, und in der Waveform-PAL (Z.354) ist #C77E52 exakt --hot; #D2868F/#9DB6AE sind dort die dokumentierten Flyer-Farben rose/sage, nicht \"fremd\". Einziger unbelegter Wert ist #C0DF85 (nur in Z.354, nirgends dokumentiert) — als Einzelakzent im \"farbig pulsierend\" beschriebenen Equalizer (SKILL.md:53) aber kein belegter Konflikt, allenfalls eine Randnotiz weit unter severity medium."
+          }
+        }
+      ],
+      "other": [
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 23,
+          "what": "Palette komplett als Vars: --grass #8FB1A6, --lime #B7C8B6, --linen #EBE5D7, --bubble #C98792, --hot #C77E52, --plum #6E2E40, --ink #1C1B19, --chalk #F4EFE4; dazu 5 Theme-Slots --bg/--text/--accent/--accent2/--cta (Z.33-37), die jede Case-Seite per :root-Override im Inline-Style umbelegt (z.B. case-fairi.html:17, case-hntz.html:17).",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "wrlz.css:23-30 Hex-Definitionen, wrlz.css:33-37 Slots; Override-Pattern case-*.html jeweils Zeile 17/18"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 377,
+          "what": "`* { animation: none !important }` matcht keine Pseudo-Elemente — die cueslide-Animation auf .reel-hint-bar::after laeuft bei reduced-motion technisch weiter (praktisch unsichtbar, weil wrlz.js:564 hint auf opacity 0 setzt).",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "index.html:48-49 `.reel-hint-bar::after { animation: cueslide 1.8s infinite }`; Universalselektor selektiert nur Elemente, nicht ::before/::after"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 371,
+          "what": "Reduced-Motion-Block deaktiviert Transitions nur fuer .reveal — alle Hover-Bewegungen bleiben aktiv: .btn:hover translateY (wrlz.css:159), .card:hover translateY(-8px) (wrlz.css:233), .g-item:hover scale(1.06) (gallery.html:92), .slim:hover Padding-Shift (index.html:69), Tonarm-Rotation (gallery.html:66-70).",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "wrlz.css:373 killt transition nur fuer `.reveal, .reveal-line > span`; kein generisches `transition: none` im Block Z.371-378"
+        },
+        {
+          "file": "case-fairi.html",
+          "line": 20,
+          "what": "Alle Case-Hero-Overrides haben identische Spezifitaet (0,1,0) wie die Basisregel in wrlz.css und gewinnen nur durch Ladereihenfolge (<link> vor <style>) — kein echter Konflikt heute, aber reine Kaskadenordnungs-Abhaengigkeit.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "wrlz.css:321-327 `.case-hero { background: var(--accent); min-height: 92svh }` vs. case-fairi.html:20 (96svh, #16132b), case-hntz.html:20, case-kanzlei.html:18, case-matchachin.html:18, case-wrlz.html:18 — alle gleiche Spezifitaet"
+        },
+        {
+          "file": "index.html",
+          "line": 97,
+          "what": "Redundante Abwehr-Overrides am Flip-Sektionsuebergang: `.flip-top .num` und `.flip-top .h2` setzen color:var(--ink), obwohl .flip-top (Z.91) die Farbe bereits vererbt — Schutz gegen `.identity { color: var(--linen) }` (Z.75), der nicht noetig ist.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "index.html:91 `.flip-top { ... color: var(--ink) }`; index.html:97-98 wiederholen dieselbe Farbe pro Kind"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 106,
+          "what": "Totes CSS/JS: .display (Z.106-111), .reveal-line (Z.267-269), [data-spotlight] (Z.306) inkl. komplettem Spotlight-JS (wrlz.js:105-124), .sticker.solid (Z.146) sowie data-px-rot/data-scatter-Codepfade (wrlz.js:49, 160, 736-746) werden auf keiner Seite verwendet.",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "grep ueber index.html, case-*.html, gallery.html, impressum.html, datenschutz.html: 0 Treffer fuer class=display, reveal-line, data-spotlight, data-scatter, data-px-rot, sticker solid"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 302,
+          "what": "Reste der alten Neon-Gruen-Palette: #cursor-dot.big nutzt rgba(125,223,100,.18) (= #7DDF64) und wrlz.js hat '#7DDF64' als Spotlight-Default — beides nicht im aktuellen Farbsystem.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.css:302 `background: rgba(125,223,100,.18)`; wrlz.js:106 `dataset.spotlight || '#7DDF64'`; Kommentar wrlz.js:103 'radioaktiv gruen'"
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 18,
+          "what": "Vier fast identische Dunkeltoene ohne gemeinsames Token: #16132b (fairi), #14110f (hntz), #14110e (matchachin), #2a201e (case-wrlz.html:43), dazu rgba(20,17,12,...) (gallery.html:28) und rgba(20,16,12,...) (case-matchachin.html:24).",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "case-fairi.html:18, case-hntz.html:18, case-matchachin.html:18, case-wrlz.html:43, gallery.html:28 — kein --dark/--night in :root (wrlz.css:21-45)"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 139,
+          "what": "Typografie-Wildwuchs bei Mono-Micro-Labels: 66 distinkte font-size-Werte site-weit, davon 16 Mono-Groessen zwischen .5rem und .95rem (.5/.56/.58/.6/.62/.64/.66/.68/.7/.72/.74/.76/.78/.8/.9/.92) ohne Token — .72rem allein 12x definiert.",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "grep-Zaehlung ueber wrlz.css + alle Inline-Styles: 66 unique font-size; Beispiele wrlz.css:139 (.7rem), :234 (.72), :253 (.68), :385 (.66), :390 (.58); index.html:161 (.58); gallery.html:61 (.5)"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 42,
+          "what": "Kein Spacing-System: einzige Layout-Tokens sind --maxw/--gutter/--radius; saemtliche Abstaende sind einmalige ad-hoc clamp()-Werte (Sektion clamp(5rem,12vh,11rem), Statement clamp(9rem,26vh,20rem), Flip clamp(6rem,15vh,11rem) usw.).",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "wrlz.css:42-44 einzige Tokens; wrlz.css:95, wrlz.css:276, index.html:92 — jeweils unterschiedliche, nirgends geteilte clamp()-Werte"
+        },
+        {
+          "file": "case-fairi.html",
+          "line": 42,
+          "what": "Copy-Paste-Duplikate ueber Case-Seiten: .read-col/.read-k-Block dreifach (fairi:42-45, hntz:43-46, matchachin:30-33, nur opacity/color minimal anders), .invert-block doppelt (fairi:28-30, hntz:26-28), Legal-CSS fast identisch doppelt (impressum.html:15-24 vs datenschutz.html:15-26) — Kandidaten fuer wrlz.css.",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "case-fairi.html:42-45 vs case-hntz.html:43-46 vs case-matchachin.html:30-33 wortgleich bis auf `opacity:.9/.88/.85`; impressum/datenschutz unterscheiden sich nur in Z.16 (h1-clamp) und 2 Zusatzregeln"
+        },
+        {
+          "file": "index.html",
+          "line": 239,
+          "what": "15 style=\"\"-Attribute allein auf der Startseite (case-hntz: 19) mit Maximal-Spezifitaet: Karten-Slots via --card sind sauber, aber direkte Overrides wie font-size:1rem/opacity auf .body (Z.239,252,265), margin/text-align auf .h2 (Z.297,437) und Sticker-Umfaerbungen (Z.233,246) hebeln die Klassen-Skala aus.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "index.html:230,233,239,243,246,252,256,265,297,330,435,437; case-hntz.html: 19 style-Attribute (grep -c)"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 91,
+          "what": "Alle ::selection-Regeln sind tote Dekoration: body hat user-select:none, nichts ist selektierbar — betrifft wrlz.css:91 sowie die per-Sektion-Overrides; Nebeneffekt: Mail-Adresse laesst sich nicht per Auswahl kopieren.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.css:70-71 `user-select: none` auf body vs. ::selection in wrlz.css:91, index.html:76 (.identity), index.html:137 (.contact), case-fairi.html:19, case-hntz.html:19"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 55,
+          "what": "!important-Inventar vollstaendig: wrlz.css:55 (Lenis scroll-behavior), wrlz.css:373-377 (Reduced-Motion, 5 Deklarationen), gallery.html:96-97 (Reduced-Motion-Fallback des Chaos-Canvas) — alle zweckgebunden, keine Spezifitaets-Notloesungen im normalen Styling.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "grep '!important': genau 8 Zeilen, ausschliesslich in Lenis-Integration und prefers-reduced-motion-Bloecken"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 374,
+          "what": "Reduced-Motion-CSS deckt nur [data-px] ab, nicht [data-seesaw]/[data-depth] — faktisch trotzdem sicher, weil wrlz.js alle diese Writer im Frame-Loop hinter `if (!reduced)` haelt; Pfoten (initPaws) und Reel steigen bei reduced sauber aus.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "wrlz.css:374 `[data-px] { translate/rotate: none !important }`; wrlz.js:710 Guard fuer px/seesaw/tilt/marquee/bars/flip, wrlz.js:586 `if (reduced) return` (Paws), wrlz.js:560-565 (Reel statisch)"
+        }
+      ],
+      "preserve": [
+        "Theme-Slot-Mechanik: jede Case-Seite ueberschreibt --accent/--accent2/--cta per :root im Inline-Style (case-*.html Zeile 17/18) — wrlz.css-Bausteine (.case-hero, .case-lede, .btn) haengen daran",
+        "Ladereihenfolge <link wrlz.css> VOR dem Inline-<style>: saemtliche Case-Hero-Overrides gewinnen nur ueber Kaskadenordnung bei gleicher Spezifitaet",
+        "Reduced-Motion-Dreiklang: JS-Guard `reduced` in wrlz.js:9 (Lenis, Parallax, Cursor, Paws, Reel, Counter), CSS-Block wrlz.css:371-378, Gallery-Fallback gallery.html:95-98 — bei Umbau alle drei synchron halten",
+        "Nav mit mix-blend-mode:difference + color:#fff (wrlz.css:171-172): funktioniert ohne per-Sektion-Overrides ueber allen Hintergruenden (linen, ink, plum, Case-Darks)",
+        "Parallax-Architektur: wrlz.js schreibt translate/rotate als individuelle CSS-Props, damit Hover-transform der Cards konfliktfrei bleibt (Kommentar wrlz.js:3-4) — nicht auf transform umstellen",
+        "--card-Slot mit Fallback var(--card, var(--lime)) (wrlz.css:228) + Inline-Belegung auf den Karten (index.html:230,243,256)",
+        "Z-Index-Ordnung: paw-layer 0 < .breath 2 < nav 8000 < Film-Grain body::after 9000 < Lightbox/Cursor 9500 — Grain liegt bewusst ueber der Nav (multiply)",
+        "Flip-Schnitt (.flip-top clip-path + --flip-Custom-Property, index.html:93 + wrlz.js:767-771): Sektionsuebergang hell/dunkel haengt an genau diesem Zusammenspiel",
+        "Jakarta Variable Font (wght 200-800) als einzige geladene Schrift; --mono ist reiner System-Stack ohne Webfont (wrlz.css:39-40)"
+      ]
+    },
+    {
+      "dim": "motion",
+      "summary": "Die Site hat ein starkes Signature-Piece (Reel-Hero) und mehrere Interaktionen mit echter Erzählfunktion (Orchestrierungs-Diagramm, TraceV-Slider, Technics-Deck, Katzenpfoten), darum herum aber eine hohe Dichte an kleinen Drifts ohne Funktion: 33 statische data-px-Elemente plus 27 zur Laufzeit generierte in der Gallery, dazu 32 data-depth-Tilt-Layer, 6 Marquees und 94 Reveal-Elemente. Parallax-Zählung pro Seite (data-px / data-px-x / data-px-rot): index 8/0/0, case-fairi 5/0/0, case-hntz 8/0/0, case-wrlz 3/0/0, case-kanzlei 5/0/0, case-matchachin 4/0/0, gallery 0 statisch aber 27/27/0 per JS generiert (gallery.html:243-247), impressum+datenschutz 0. data-px-rot ist implementiert, wird aber nirgends genutzt. Groesste Unruhe-Quellen: die Statement-Sektion (5 gleichzeitige Bewegungen auf einer Text-Aussage), die Gallery-Drifts (lateral bis 1.2x Scroll-Distanz) und die doppelte Bewegung Tilt+Parallax auf denselben Hero-Layern aller 5 Cases.",
+      "confirmed": [],
+      "unconfirmed": [
+        {
+          "file": "case-fairi.html",
+          "line": 62,
+          "what": "Alle 5 Case-Heroes kombinieren data-tilt (Maus) und data-px (Scroll) auf denselben 5-7 Layern — jede Ebene bewegt sich doppelt (transform + translate parallel), Tiefe wird zu Wackeln statt Praezision",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "z.B. case-fairi.html:64-67 fairi-glow/moon/sky/logo je data-px UND data-depth; identisches Muster case-hntz.html:65-75, case-wrlz.html:71-79, case-kanzlei.html:66-69, case-matchachin.html:52-54; Tilt schreibt transform wrlz.js:728-733, Parallax schreibt translate wrlz.js:712-719",
+          "verdict": {
+            "confirmed": false,
+            "correction": "Kein Konflikt: Tilt schreibt die CSS-Property transform (wrlz.js:732), Parallax die individuelle Property translate (wrlz.js:717) — die komponieren per CSS Transforms Level 2 additiv, nichts ueberschreibt sich. Der Split ist absichtlich und im Code kommentiert ('PARALLAX — schreibt translate/rotate' wrlz.js:41-42, 'MOUSE TILT — schreibt transform' wrlz.js:84-85). Beide Signale sind unabhaengig (Scroll vs. Maus), beide gelerpt (0.08/0.06) im selben rAF-Loop; die Summe ist glatt. 'Bewegt sich doppelt' ist das gewollte Tiefen-Design (Scroll-Parallax + Maus-Tilt), kein Defekt. Einziger echter Randpunkt (nicht der behauptete Befund): measurePx (wrlz.js:53-61) nullt beim Remeasure nur style.translate, nicht style.transform, wodurch der Tilt-Offset (max ~±25px) die Basis-Messung bei Resize minimal verfaelschen kann.",
+            "evidence": "assets/js/wrlz.js:41-42 und 84-85 (Kommentare dokumentieren den bewussten Property-Split), wrlz.js:717 (style.translate), wrlz.js:732 (style.transform), case-fairi.html:62-67 (data-tilt + data-px/data-depth wie behauptet vorhanden)"
+          }
+        }
+      ],
+      "other": [
+        {
+          "file": "index.html",
+          "line": 284,
+          "what": "Statement-Sektion faehrt 5 Bewegungen gleichzeitig: drei Zeilen mit data-px 0.16/0.30/0.10, st-tag mit data-px -0.12 und der ganze Wrap mit data-seesaw=4 (Rotation) — ausgerechnet unter der Botschaft 'Gute Systeme machen sich unsichtbar'",
+          "category": "decoration",
+          "severity": "high",
+          "evidence": "index.html:284-289 data-seesaw=\"4\" auf .wrap + data-px auf allen 4 Kindern; Rotation in wrlz.js:722-726, Drift wrlz.js:712-719"
+        },
+        {
+          "file": "gallery.html",
+          "line": 243,
+          "what": "Chaos-Canvas gibt allen 27 Werken Runtime-Parallax: vertikal data-px 0.26-0.5, lateral data-px-x bis +-60, was tx = 1.2x Distanz-zur-Mitte ergibt — Bilder fliegen seitlich schneller durchs Bild als man scrollt und sind kaum betrachtbar",
+          "category": "decoration",
+          "severity": "high",
+          "evidence": "gallery.html:243-247 setAttribute('data-px', rng(0.26,0.5)) bzw. data-px-x rng(-60,60); wrlz.js:716 tx = -n.cur * 0.02 * n.x → bei x=60 Faktor 1.2"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 310,
+          "what": "Reel-Hero (index): gepinnter 340vh-Scroll-Scrub, Buchstaben fallen als 3D-Kartons, Kamera faehrt durchs 's' in ein 56-Zeilen-Wellenfeld, Klick loest Puls-Wellen aus — reversibel, praezise, das Signature-Piece der Site",
+          "category": "opportunity",
+          "severity": "high",
+          "evidence": "wrlz.js:310-575 initReel(), index.html:20 .reel{height:340vh}, applyScroll() scrubbt Buchstaben-Physik + Kamera-Zoom, pulse() wrlz.js:522-546"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 748,
+          "what": "6 Marquees (index + alle 5 Cases) mit Velocity-Kopplung, die beim Hochscrollen die Laufrichtung umkehren — identisches Pattern auf jeder Seite wirkt templatig, Richtungswechsel macht den Text mitten im Lesen unruhig",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "wrlz.js:750 speed = (0.5 + absV*0.16) * (velocity===0 ? m.baseDir : dir*m.baseDir); Marquees: index.html:211, case-fairi:109, case-hntz:110, case-wrlz:120, case-kanzlei:109, case-matchachin:96"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 763,
+          "what": "Sound-Bars (index, 32 Balken) zappeln sinusgetrieben ohne Datenbezug und schreiben style.height pro Frame — jede Aenderung erzwingt Layout, dazu ist der Effekt reines Ambient-Gezappel in der Frequenz-Sektion",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "wrlz.js:758-764 b.style.height = (4 + wave*(26+boost))+'px' in der RAF-Loop; index.html:303 data-bars=\"32\"; height statt transform = Layout-Thrash"
+        },
+        {
+          "file": "index.html",
+          "line": 230,
+          "what": "Die 3 Projekt-Karten driften mit unterschiedlichen data-px-Werten (0.04/0.09/0.04) aus dem Grid-Raster — das sauber gesetzte Karten-Raster verschiebt sich beim Scrollen sichtbar gegeneinander, ohne etwas zu erzaehlen",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "index.html:230,243,256 data-px auf den drei .card-Links im selben CSS-Grid (.cards, wrlz.css:218)"
+        },
+        {
+          "file": "index.html",
+          "line": 479,
+          "what": "Orchestrierungs-Diagramm: SVG-Kanten mit fliessenden Pulsen + Hover-Beschreibungen pro Knoten, IO-gated (laeuft nur im Viewport) — Bewegung mit Erklaerfunktion, zeigt den tatsaechlichen Arbeitsprozess",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "index.html:479-581 Inline-Script: edges/dots-RAF nur bei isIntersecting (Z.573-577), Hover setzt .lit + data-desc in die Caption (Z.562-570)"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 585,
+          "what": "Katzenpfoten im Sand (index-Atempause): scroll-gescrubbtes Abrollen, anatomische SVG-Emboss-Pfoten, Klick laesst die Katze fliehen — persoenliche Handschrift mit Interaktion, kostet aber 115vh Leerlauf zwischen Hero und Arbeit",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "wrlz.js:585-688 initPaws() mit reveal()-Scrub + pointerdown-Flucht; index.html:52 .breath{height:115vh}, index.html:206"
+        },
+        {
+          "file": "gallery.html",
+          "line": 380,
+          "what": "Technics-1210-Deck mit Audio-getriebenem 3D-Equalizer-Canvas: komplett opt-in (Klick startet Beat + Visualizer, RAF nur waehrend Wiedergabe), erzaehlt die Sound-Historie (Beatport 2012) — Bewegung als Beleg",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "gallery.html:325-395: start() erst bei Klick, cancelAnimationFrame bei stop(), draw3D() vom Frequenzspektrum getrieben; ttspin-Keyframe gallery.html:65 nur bei .spin"
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 271,
+          "what": "TraceV Vorher/Nachher-Slider (Pointer-Drag, 1,3 MB Pixel vs. 14 KB Vektor): Interaktion, die das Produktversprechen direkt beweisbar macht",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "case-wrlz.html:271-286 pointerdown/move setzt --pos, clip-path inset zeigt Vorher/Nachher; case-wrlz.html:43-50"
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 75,
+          "what": "3 SMIL-Blink-Pulse im WRLZ-Hero blinken endlos und ignorieren prefers-reduced-motion, da CSS '* {animation:none}' SMIL-<animate> nicht stoppt",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "case-wrlz.html:75-77 <animate attributeName=\"opacity\" repeatCount=\"indefinite\">; Reduced-Motion-Block wrlz.css:371-378 greift nur bei CSS-Animationen"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 105,
+          "what": "Toter Effekt-Code: data-spotlight (Cursor-Spotlight), data-scatter (Buchstaben-Streuung) und data-px-rot sind vollstaendig implementiert, werden aber auf keiner einzigen Seite verwendet",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.js:105-124 (spotlight), 160+736-746 (scatter), 44-49+718 (px-rot); grep ueber alle 9 HTML-Seiten: 0 Treffer fuer data-spotlight/data-scatter/data-px-rot; dazu wrlz.css:306"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 93,
+          "what": "Tilt-Listener haengen pro Hero am window und mx/my sind nicht geclampt — die Hero-Layer bekommen auch weit ausserhalb des Viewports jede Mausbewegung als wachsende Transforms geschrieben",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "wrlz.js:94-98 window.addEventListener('mousemove', ...) ohne clamp: ((e.clientY - r.top)/r.height - 0.5)*2 waechst beliebig, wenn der Hero gescrollt ist; Transform-Write jede Frame wrlz.js:728-733"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 281,
+          "what": "Custom-Cursor-Ring laeuft auf allen 9 Seiten inkl. Impressum/Datenschutz, nirgends cursor:none — der Ring laeuft dem nativen Pfeil nur hinterher (Doppel-Cursor) und traegt nichts",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.js:281-300 eigener RAF moveDot(); wrlz.css:294-303 ohne cursor:none am body; impressum.html:83-84 und datenschutz.html:93-94 laden lenis+wrlz.js"
+        },
+        {
+          "file": "index.html",
+          "line": 87,
+          "what": "Flip-Schnitt-Wippe: die Diagonale zwischen Hell- und Dunkel-Sektion kippt scrollabhaengig um +-70px — huebsches Detail, aber es liest pro Frame getBoundingClientRect nach den Style-Writes (forced reflow) fuer einen kaum wahrnehmbaren Effekt",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.js:767-771 flipTop.getBoundingClientRect() in der RAF-Loop nach translate/rotate/height-Writes; index.html:93 clip-path mit var(--flip)"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 209,
+          "what": "Binary-Flipper scrambelt Card-Labels bei Hover mit Zufallszeichen (setInterval 36ms) — Gimmick, das den Titel kurz unlesbar macht, ohne Bezug zum Inhalt der Karte",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "wrlz.js:209-231, CHARS='01ABCDEF!?#@%'; 8x data-flip auf index.html (Karten-Labels/-Titel Z.238-276)"
+        },
+        {
+          "file": "index.html",
+          "line": 434,
+          "what": "Contact-Ghost-Pfeil (30vw gross) mit data-px=0.1 driftet hinter der Kontakt-Sektion — reines Beiwerk, faellt bei 12% Opazitaet kaum auf",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "index.html:434 <span class=\"contact-ghost\" data-px=\"0.1\">→</span>, index.html:149 color:rgba(243,233,219,.12)"
+        },
+        {
+          "file": "index.html",
+          "line": 226,
+          "what": "Reveal-Inflation: 29 .reveal-Elemente auf der Startseite plus 2 Stagger-Gruppen — praktisch jedes Element fadet einzeln ein, wodurch der Effekt seine Betonung verliert",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "grep class=reveal: index 29, case-hntz 15, case-wrlz 15, case-kanzlei 13, case-matchachin 12, case-fairi 10; Transition 1.2s wrlz.css:265"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 146,
+          "what": "data-fall auf den 5 Case-Titeln (Buchstaben fallen einmalig beim Laden ein, gestaffelt) — ein praeziser Auftritt pro Seite, genau die Sorte Bewegung, die traegt",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "wrlz.js:146-159 splitChars + einmalige Transition; je 1x data-fall auf case-fairi.html:71, case-hntz.html:71, case-wrlz.html:83, case-kanzlei.html:73, case-matchachin.html:58"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 256,
+          "what": "Counter (11 Stueck site-weit) zaehlen belegbare Zahlen hoch (20.000 Zeilen, 15 Tester, 72 Tests) — Standard-Effekt, aber an Inhalte gebunden und reduced-motion-sauber",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "wrlz.js:256-276 mit reduced-Fallback; data-count: index 3, case-hntz 3, case-wrlz 3, case-kanzlei 2"
+        },
+        {
+          "file": "assets/js/wrlz.js",
+          "line": 701,
+          "what": "Auf index laufen bis zu 4 parallele endlose RAF-Loops (Haupt-Frame, Reel-Tick, Cursor, Orch-Pulse) plus Puls-Loop bei Klick; die Haupt-Loop laeuft auch auf Impressum/Datenschutz ohne einen einzigen animierten Knoten",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "wrlz.js:701-777 frame(), wrlz.js:548-554 tick() (laeuft unabhaengig weiter), wrlz.js:290-295 moveDot(), index.html:549-558 orch tick(); nur marquee/bars/orch sind IO-gated"
+        },
+        {
+          "file": "index.html",
+          "line": 48,
+          "what": "Scroll-Hint-Keyframe cueslide im gepinnten Hero: einzige CSS-Keyframe-Dauerschleife der Startseite, als Scroll-Affordance im 340vh-Pin aber funktional",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "index.html:47-49 .reel-hint-bar::after mit animation: cueslide 1.8s infinite; Hint wird ab p>0 ausgeblendet (wrlz.js:517)"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 233,
+          "what": "Hover-Sprache ist konsistent und praezise (Card-Lift + harter 14px-Schatten, Nav-Underline, g-item richtet sich auf + skaliert, serv-row/slim schieben, big-mail wird Outline) — traegt die Neo-Print-Designsprache, nicht anfassen",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "wrlz.css:233 .card:hover translateY(-8px) + box-shadow 14px 14px 0; gallery.html:92 .g-item:hover rotate 0 + scale(1.06); wrlz.css:159,186-190,367-368; index.html:69,129"
+        }
+      ],
+      "preserve": [
+        "Reel-Hero auf index (wrlz.js:310-575): das Signature-Piece, scroll-gescrubbt und reversibel inkl. Klick-Puls — nicht anfassen, hoechstens schaerfen",
+        "Die Architektur-Entscheidung Parallax via translate/rotate-Props getrennt von Hover-transform (wrlz.js:1-5, wrlz.css:272-273) — verhindert Transform-Konflikte",
+        "prefers-reduced-motion-Behandlung: reduced-Flag in JS (wrlz.js:9) + CSS-Overrides (wrlz.css:371-378) + Gallery-Fallback-Layout (gallery.html:95-98) — bei jedem Umbau mitfuehren",
+        "IntersectionObserver-Gating fuer Marquee, Bars und Orch-Diagramm (wrlz.js:200-204, index.html:573-577)",
+        "Katzenpfoten inkl. Flucht-Interaktion und Sand-Emboss-Filter (wrlz.js:585-688) — persoenliche Handschrift",
+        "Technics-Deck + Audio-Visualizer in der Gallery (opt-in, Audio-getrieben, sauberes Start/Stop)",
+        "TraceV Vorher/Nachher-Slider auf case-wrlz (Pointer-Capture-Logik case-wrlz.html:271-286)",
+        "Orchestrierungs-Diagramm mit Hover-Beschreibungen und Selbstcheck-Loop (index.html:479-581)",
+        "data-fall-Einstieg der Case-Titel (einmalig, gestaffelt, reversibel bei reduced-motion)",
+        "Counter mit de-DE-Formatierung und reduced-Fallback (wrlz.js:256-276)",
+        "Hover-Design-Sprache (harte Schatten, Lifts, Nav-Underline) als konsistentes System",
+        "Lenis Smooth-Scroll inkl. Anker-Handling (wrlz.js:18-38) — Grundgefuehl der Site",
+        "Seeded RNG der Gallery (seed 20120401, gallery.html:216-218): Layout ist deterministisch, bleibt bei jedem Besuch gleich"
+      ]
+    },
+    {
+      "dim": "gallery",
+      "summary": "gallery.html ist nicht versteckt (Nav-Link auf allen 9 Seiten, Index-Footer, Sitemap). Die Seite wiegt voll gescrollt ~19,5 MB (27 Grid-Bilder = 19,0 MB, davon zushi.png allein 5,1 MB), plus 16,5 MB MP3 nur nach Klick aufs Deck. Interaktion ist beim Turntable/EQ-Feld stark, bei Lightbox und Grid flach (nur Klick, kein Keyboard, keine Prev/Next, Captions hover-only). Kleinster Eingriff mit größter Wirkung: Bilder rekomprimieren (Asset-only, 19 auf ~2-3 MB) plus Lightbox um Pfeil-Navigation/Caption/Zähler und fokussierbare Grid-Items erweitern.",
+      "confirmed": [
+        {
+          "file": "gallery.html",
+          "what": "Grid-Items sind <a>-Elemente ohne href: nicht fokussierbar, Lightbox per Tastatur nicht erreichbar; ausserdem figcaption ohne figure-Elternelement (invalides HTML)",
+          "category": "bug",
+          "severity": "medium",
+          "evidence": "gallery.html:232 document.createElement('a') ohne href/tabindex; gallery.html:249 figcaption direkt in <a>; Lightbox-Open nur ueber click-Delegation gallery.html:313",
+          "line": 232,
+          "verdict": {
+            "confirmed": true,
+            "evidence": "gallery.html:232-249 (createElement('a') ohne href/tabindex; figcaption in innerHTML direkt im <a>, kein <figure> in der Datei), gallery.html:313 (Lightbox-Open nur via click-Delegation auf #gcanvas, kein Enter/Space-Handler; einziges tabindex in der Datei ist Z. 133 fürs Turntable)",
+            "correction": "Kleine Präzisierung: <a> ohne href ist per se valides HTML (placeholder link), nur das figcaption ohne figure-Eltern ist invalide; der Kern des Befunds (keine Tastatur-Fokussierbarkeit, Lightbox nur per Maus erreichbar) stimmt vollständig."
+          }
+        },
+        {
+          "file": "gallery.html",
+          "what": "Chaos-Layout wird einmalig aus initialem clientWidth/innerHeight berechnet, kein Resize/Orientation-Rebuild; Items koennen rechts aus overflow:hidden geclippt werden (x bis 78% von W bei bis zu ~810px Breite)",
+          "category": "bug",
+          "severity": "low",
+          "evidence": "gallery.html:220-221 W/vh einmalig; gallery.html:230 xpct rng(50,78); .g-canvas overflow:hidden gallery.html:84; kein resize-Listener im Gallery-IIFE",
+          "line": 220,
+          "verdict": {
+            "confirmed": true,
+            "evidence": "gallery.html:220-221 (W/vh einmalig gelesen), gallery.html:234-235 + 253-254 (px-Positionen und feste Canvas-Hoehe), gallery.html:84 (.g-canvas overflow:hidden), gallery.html:227 (big max 540*1.5*sf=810px), gallery.html:230 (xpct rng(50,78)), kein resize/orientationchange-Listener in gallery.html:185-297; wrlz.js:696-698 remeasure() misst nur Parallax-Basen (wrlz.js:53-61), rebaut die Gallery nicht.",
+            "correction": "Kern bestaetigt, aber Worst Case ueberzeichnet: Der PRNG ist deterministisch geseedet (gallery.html:216-217, seed 20120401), das Layout ist bei jedem Load identisch. Die Kombination xpct=78% mit w=810px tritt nie auf. Simulation des exakten Draw-Streams zeigt als einzigen nennenswerten Fall Item i=10 (web/akai.jpg, big, side 1): xpct=66.4, w=661px bei sf=1 -> bei W=1240 244px geclippt (63% sichtbar), bei W=1920 nur 15px; bei W=390 proportional gleich. Seitlicher Bleed ist beim Chaos-Canvas plausibel teils Absicht (overflow:hidden verhindert horizontale Scrollbar). Der harte Teil des Befunds bleibt: einmalige Berechnung ohne Rebuild, nach Orientation-Wechsel steht das Layout fuer die alte Breite/Hoehe. Severity low korrekt."
+          }
+        },
+        {
+          "file": "index.html",
+          "what": "Gallery ist nicht versteckt: Nav-Link auf allen 9 Seiten, Index-Footer und Sitemap; nur die Footer der Unterseiten (inkl. gallery.html selbst) listen sie nicht",
+          "category": "conflict",
+          "severity": "low",
+          "evidence": "index.html:184 und :465, alle case-*.html Navs, impressum.html:33, datenschutz.html:35, sitemap.xml:40; Footer gallery.html:171-175 ohne Gallery-Eintrag",
+          "line": 184,
+          "verdict": {
+            "confirmed": true,
+            "evidence": "index.html:184 '<a href=\"gallery.html\">Gallery</a>' (Nav), index.html:465 (Footer), case-fairi.html:56, case-hntz.html:57, case-kanzlei.html:58, case-matchachin.html:44, case-wrlz.html:63, impressum.html:33, datenschutz.html:35 (jeweils Nav), sitemap.xml:40 '<loc>https://pascaljaeger.de/gallery.html</loc>'; gallery.html:171-175 Footer \"Sonst\" nur Index/Impressum/Datenschutz",
+            "correction": "Kernbefund stimmt, aber Detail ungenau: gallery.htmls eigene Nav (gallery.html:105-112) enthaelt KEINEN Gallery-Link (nur Index, Arbeit, Kontakt). Nav-Link existiert also auf 8 von 9 Seiten, nicht auf allen 9. Rest korrekt: Footer aller Unterseiten inkl. gallery.html listen Gallery nicht, nur der Index-Footer (index.html:465) tut es; Sitemap-Eintrag vorhanden."
+          }
+        }
+      ],
+      "unconfirmed": [],
+      "other": [
+        {
+          "file": "assets/img/illustrationen/zushi.png",
+          "what": "5,09 MB PNG (2048x2048) fuer ein Grid-Item, das mit max ~810px Breite angezeigt wird",
+          "category": "risk",
+          "severity": "high",
+          "evidence": "stat: 5087774 Bytes; sips: 2048x2048; Anzeige-Breite gallery.html:227 rng(380,540)*sf*1.5",
+          "line": 187
+        },
+        {
+          "file": "gallery.html",
+          "what": "Grid laedt insgesamt 19.035.340 Bytes (~19,0 MB) Bilder, 7 Dateien ueber 900 KB, Illustrationen und Screenshots als unkomprimierte PNG/grosse JPG",
+          "category": "risk",
+          "severity": "high",
+          "evidence": "stat-Summe aller 27 items[] aus gallery.html:186-214: illustrationen 9,92 MB + web 4,31 MB + matchachin 2,11 MB + flyer 1,69 MB + logos 0,62 MB + hntz 0,39 MB; loading=lazy in gallery.html:249 mildert nur den Initial-Load",
+          "line": 186
+        },
+        {
+          "file": "gallery.html",
+          "what": "Lightbox ist flach: nur Klick oeffnet/schliesst, kein Prev/Next, kein Zoom, kein Fokus-Management, kein Zaehler",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "gallery.html:299-323: open/close plus Escape sind die gesamte Logik; Klick auf lb (auch aufs Bild) schliesst sofort (Zeile 321)",
+          "line": 299
+        },
+        {
+          "file": "gallery.html",
+          "what": "Captions der Werke sind hover-only, auf Touch-Geraeten nie sichtbar; Hover-Aufrichten/Scale entfaellt mobil komplett",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "gallery.html:91 .g-cap opacity:0, nur .g-item:hover .g-cap opacity:1 (Zeile 93); kein Touch-Fallback",
+          "line": 91
+        },
+        {
+          "file": "gallery.html",
+          "what": "Pitch-Fader und Start/Stop-Button des Technics-Decks sind reine Deko, der ganze Deck-Body ist ein einziger Toggle; playbackRate-Kopplung des Faders waere ein ~15-Zeilen-Eingriff",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "gallery.html:71-74 .pitch/.startstop ohne Event-Handler; gallery.html:393 tt.addEventListener('click', toggle) auf dem gesamten Deck",
+          "line": 71
+        },
+        {
+          "file": "gallery.html",
+          "what": "pride-tears.mp3 ist 16,5 MB (320kbps-aequivalent von 2013) und loopt als ganzer Track; eine 128kbps- oder gekuerzte Loop-Version wuerde ~10-12 MB sparen ohne hoerbaren Unterschied ueber Laptop-Speaker",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "stat: 16460332 Bytes, Datei von Dez 2013; Laden korrekt lazy erst in ensureAudio() nach Klick (gallery.html:332-340, aufgerufen in start() Zeile 382)",
+          "line": 333
+        },
+        {
+          "file": "gallery.html",
+          "what": "Kein GainNode/Fade-in beim Start: Analyser haengt direkt an destination, Beat setzt hart mit voller Lautstaerke ein",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "gallery.html:339 src.connect(analyser); analyser.connect(actx.destination); kein Gain, kein Ramp in start() (Zeile 380-386)",
+          "line": 339
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "what": "Fonts als variable TTF statt WOFF2 ausgeliefert (352 KB statt geschaetzt ~140 KB), betrifft alle Seiten inkl. Gallery",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "wrlz.css:6-18 zwei @font-face mit .ttf; stat: 173760 + 178708 Bytes; _headers cached immerhin immutable 1 Jahr",
+          "line": 6
+        },
+        {
+          "file": "gallery.html",
+          "what": "crossOrigin='anonymous' auf same-origin Audio ist unnoetig (harmlos, aber ohne Funktion)",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "gallery.html:334 audioEl.crossOrigin = 'anonymous' bei relativem Pfad assets/audio/pride-tears.mp3",
+          "line": 334
+        }
+      ],
+      "preserve": [
+        "Lazy-Audio-Pattern: die 16,5-MB-MP3 laedt erst beim Klick aufs Deck (ensureAudio in start(), gallery.html:332/382), niemals beim Seitenload",
+        "Seeded RNG mit seed 20120401 (gallery.html:216-218): deterministisches Chaos-Layout, bei jedem Besuch identisch",
+        "prefers-reduced-motion-Fallback (gallery.html:95-98): Grid wird zur linearen Spalte, Rotation aus; wrlz.js respektiert reduced ebenfalls global",
+        "EQ-Feld-Performance-Tricks: dpr-Cap 1.5 (gallery.html:344) und globalCompositeOperation 'lighter' statt shadowBlur (gallery.html:356) — shadowBlur war laut _notes/session-2026-06-15.md die Lag-Ursache",
+        "Papierstapel-Konstruktion: drop-shadow auf Wrapper, clip-path auf Kind-Element getrennt (gallery.html:22-25, 286-290), sonst schneidet clip-path den Schatten weg",
+        "Keyboard-Support am Deck: tabindex=0, role=button, Enter/Space-Toggle (gallery.html:133, 394)",
+        "Tricho-Regel: kein HNTZ-Maskottchen in der Gallery (bewusst entfernt, _notes/session-2026-06-14.md)",
+        "Naehkaestchen-Text (gallery.html:122-128): Precht-Stil, keine Gedankenstriche, ADHS/Scanner-Positionierung — inhaltlich nicht anfassen",
+        "Farb-Palette der Papierbaender und des EQ-Felds (gallery.html:263, 354) entspricht der Flyer-Palette der Site",
+        "data-px/data-px-x-Parallax-Vertrag mit wrlz.js: translate/rotate-Props statt transform, konfliktfrei mit Hover-transform (wrlz.js:701-719)"
+      ]
+    },
+    {
+      "dim": "perf",
+      "summary": "Die Startseite ist mit ~303 KB Erstlast bereits sehr schlank (groesster Posten: Jakarta-Variable-TTF 174 KB), das eigentliche Gewicht liegt in der Gallery: 18,2 MB Bilder in PNG/JPG (Spitzenreiter zushi.png mit 5,1 MB bei 2048px fuer max ~540px Anzeige) plus 16,4 MB MP3 (320 kbps, laedt korrekt erst bei Klick). Fonts sind im Deploy sauber (nur Jakarta VF, Inter/Lora via .assetsignore ausgeschlossen), aber 23 MB tote Fonts liegen im Repo und 4,6 MB unreferenzierte Bilder gehen mit ins Deploy (~40,5 MB gesamt). Lazy-Loading ist fast flaechendeckend korrekt, Ausnahme: mascot.png (884 KB, eager) im HNTZ-Hero. Umgebung: ffmpeg vorhanden (AVIF via SVT-AV1 moeglich, kein WebP-Encoder), keine .env vorhanden, .gitignore deckt .env ab.",
+      "confirmed": [],
+      "unconfirmed": [],
+      "other": [
+        {
+          "file": "gallery.html",
+          "line": 187,
+          "what": "Gallery laedt 27 Bilder mit zusammen 18,2 MB (19.035.340 B), alles PNG/JPG, kein einziges WebP/AVIF",
+          "category": "opportunity",
+          "severity": "high",
+          "evidence": "Summe aller items in gallery.html:187-213 gegen du/ls: zushi.png 5.087.774 B, matchachin_hp.png 1.504.041 B, fruits_and_candy_d.png 1.476.679 B, sg-2.jpg 1.405.574 B, faces.png 1.402.207 B, faces2.png 1.211.949 B, akai.jpg 1.024.235 B, 1000kraut.jpg 960.179 B, kyowa.jpg 923.565 B"
+        },
+        {
+          "file": "assets/img/illustrationen/zushi.png",
+          "line": 1,
+          "what": "Groesster Einzelbrocken: 5,1 MB PNG bei 2048x2048 px, wird in der Gallery in max ~540px Breite angezeigt (baseW-Berechnung gallery.html:227)",
+          "category": "opportunity",
+          "severity": "high",
+          "evidence": "sips: 2048x2048, 5.087.774 B; als WebP/AVIF in Anzeigegroesse realistisch <300 KB"
+        },
+        {
+          "file": ".assetsignore",
+          "line": 21,
+          "what": "4,6 MB in 24 nirgends referenzierten Bildern gehen mit ins Deploy, .assetsignore deckt sie nicht ab",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "Referenz-Scan (alle live HTML/JS/CSS) vs. Dateibestand: web/matchachin-b.jpg 1.104.854 B, web/matchachin-a.jpg 929.992 B, matchachin/rewe-banner.png 549.699 B, clients/matchachin.jpg 311.194 B, og-preview.png 271.550 B, 4x hntz/Screenshot*.png (Dubletten von home-dark/radar-chart/settings-dark, identische Bytegroessen 61.589/13.355/63.733), zusammen 4.602 KB"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 8,
+          "what": "Fonts werden als unkomprimierte TTF-Variable-Fonts ausgeliefert statt WOFF2: 352 KB statt ~120-140 KB",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "@font-face wrlz.css:8+15 laedt PlusJakartaSans-VariableFont_wght.ttf (173.760 B) + Italic (178.708 B); WOFF2 spart typ. 60-65 %; woff2_compress lokal nicht installiert"
+        },
+        {
+          "file": "assets/css/wrlz.css",
+          "line": 13,
+          "what": "Jakarta-Italic-Font (178,7 KB) ist per @font-face deklariert, aber keine einzige Live-Seite enthaelt kursiven Text — Browser laedt ihn nur bei Bedarf, Deklaration + Datei sind toter Ballast",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "grep '<em>|italic-accent|font-style:italic' ueber index/gallery/alle case-*.html: 0 Treffer; einzige italic-Regeln (wrlz.css:132-133) werden nie getriggert"
+        },
+        {
+          "file": "assets/fonts/Inter",
+          "line": 1,
+          "what": "Inter (20 MB, davon 18 MB static mit 52 Einzelschnitten) und Lora (1,5 MB) liegen komplett ungenutzt im Repo; einziger @font-face verweist auf Plus Jakarta Sans",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "du: Inter 20M (static 18M), Lora 1.5M, Jakarta/static 1.3M; grep nach fonts/-Referenzen findet nur wrlz.css:8+15 (Jakarta VF). Deploy ist via .assetsignore:17-19 sauber, aber ~23 MB Repo-/Git-Gewicht (assets gesamt 73M, .git 78M)"
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 75,
+          "what": "mascot.png (884,8 KB, 1080x1352 PNG mit Alpha) laedt eager ohne loading-Attribut im Hero und ist damit der dominante Posten der Case-Seite (~1,13 MB eager gesamt)",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "case-hntz.html:75 <img class=\"hero-tricho\" src=\"assets/img/hntz/mascot.png\"> ohne loading=lazy; ls: 884.842 B; als WebP ~150-250 KB. Eager-Summe case-hntz: HTML 13.849 + CSS 18.449 + JS 48.658 + Font 173.760 + Logo-SVG 13.284 + mascot 884.842 = ~1,13 MB"
+        },
+        {
+          "file": "gallery.html",
+          "line": 333,
+          "what": "pride-tears.mp3 ist 16,4 MB bei 320 kbps und 6:51 min; wird korrekt erst bei Klick auf den Plattenspieler instanziert, aber bei jedem Play-Klick voll gezogen (kein Cache-Header fuer /assets/audio/*)",
+          "category": "opportunity",
+          "severity": "medium",
+          "evidence": "ffprobe: duration 411,4 s, bit_rate 320.047, size 16.460.332 B; ensureAudio() erst in start() (gallery.html:380-384); _headers hat nur Regeln fuer /assets/fonts/* und /assets/img/*"
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 54,
+          "what": "Hero laedt clients/matchachin.png (319,3 KB) eager als Wasserzeichen-Logo, waehrend das halb so nutzbare matchachin.jpg (311 KB) ungenutzt daneben liegt und mit deployed wird",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "case-matchachin.html:54 ohne loading=lazy; ls clients/: matchachin.png 319.315 B (referenziert), matchachin.jpg 311.194 B (unreferenziert)"
+        },
+        {
+          "file": "wrangler.toml",
+          "line": 6,
+          "what": "Assets-Directory ist das Repo-Root (\"./\"); alles Nichtignorierte geht hoch — Deploy nach .assetsignore-Simulation ~40,5 MB / 84 Dateien, davon 16,4 MB MP3 und 4,6 MB unreferenzierte Bilder",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "wrangler.toml:5-7 [assets] directory=\"./\"; Simulation mit .assetsignore-Regeln: 40,5 MB gesamt. .wrangler/ (4 KB cache/tmp) fehlt in .assetsignore, .gitignore:13 deckt es nur fuer git"
+        },
+        {
+          "file": "_headers",
+          "line": 6,
+          "what": "Cache-Regeln decken nur Fonts (1 Jahr immutable) und Bilder (30 Tage) ab; CSS, JS und Audio laufen ohne explizites Cache-Control",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "_headers:6-10 enthaelt nur /assets/fonts/* und /assets/img/*; wrlz.css/wrlz.js/lenis.min.js/pride-tears.mp3 ungeregelt"
+        },
+        {
+          "file": ".assetsignore",
+          "line": 8,
+          "what": "Stale Eintraege: og-generator.html, README.md, node_modules, .github existieren im Repo nicht (harmlos, aber Landkarte stimmt nicht mehr)",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "ls Repo-Root: keine dieser Dateien/Ordner vorhanden; .assetsignore:1,3,8,10"
+        },
+        {
+          "file": "index.html",
+          "line": 342,
+          "what": "Startseite ist bereits schlank: reales Erstladegewicht ~303 KB (HTML 30,5 + CSS 18,4 + lenis 12,8 + wrlz.js 35,9 + Jakarta-Regular-TTF 173,8 + Favicon 0,4 KB), einzige 2 Bilder (akai.png 32,3 KB, numark.png 6,3 KB) sind lazy+async — Font ist mit 57 % der groesste Einzelposten",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "index.html referenziert nur wrlz.css, lenis.min.js, wrlz.js, 2 Client-Logos (Zeilen 342-343, beide loading=\"lazy\" decoding=\"async\"), favicon.svg; wrlz.js selbst laedt keine weiteren Assets (grep nach assets/-Pfaden: 0 Treffer)"
+        },
+        {
+          "file": "gallery.html",
+          "line": 249,
+          "what": "Lazy-Loading-Status gesamt: index 2/2 lazy, gallery 27/27 lazy (JS-generiert), case-hntz 4 lazy + 2 eager (Logo-SVG ok, mascot.png 884 KB problematisch), case-wrlz 2 lazy + 1 eager (SVG 4,2 KB), case-fairi 1 eager (SVG 16,6 KB), case-matchachin 2 lazy + 2 eager (61,8 KB jpg + 319 KB png), case-kanzlei 0 Bilder",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "grep -c loading=\"lazy\" pro Datei + grep '<img' ohne lazy; gallery.html:249 setzt loading=\"lazy\" auf jedes generierte img"
+        },
+        {
+          "file": "assets/img/og-card.png",
+          "line": 1,
+          "what": "og-card.png (271,5 KB PNG) koennte als JPG ~100 KB sein; Format muss aber PNG/JPG bleiben (Social-Crawler, kein WebP)",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": "ls: 271.550 B; referenziert in allen Seiten als og:image (index.html:16)"
+        },
+        {
+          "file": ".gitignore",
+          "line": 5,
+          "what": "Umgebung: keine .env/.env.local im Repo-Root vorhanden; .gitignore deckt beide ab. ffmpeg installiert (/opt/homebrew/bin/ffmpeg) mit libsvtav1 (AVIF moeglich), aber OHNE libwebp; cwebp/avifenc/magick/woff2_compress fehlen, sips vorhanden (kann kein WebP schreiben)",
+          "category": "risk",
+          "severity": "low",
+          "evidence": "find -maxdepth 1 -name '.env*': leer; .gitignore:5-6 '.env'/'.env.local'; which ffmpeg=/opt/homebrew/bin/ffmpeg; ffmpeg -encoders | grep webp: 0 Treffer, libsvtav1 vorhanden"
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 163,
+          "what": "Gleiches mascot.png wird zweimal auf der Seite referenziert (Hero eager + Abschnitt lazy) — zweiter Hit kommt aus dem Cache, aber die 884 KB haengen an beiden Stellen an einer einzigen unoptimierten Datei",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "case-hntz.html:75 und :163 beide src=\"assets/img/hntz/mascot.png\""
+        }
+      ],
+      "preserve": [
+        "Audio-Lazy-Init der Gallery: ensureAudio()/Audio-Objekt wird erst beim Klick auf den Plattenspieler erzeugt (gallery.html:380-384) — bei Umbau nicht in einen Preload verwandeln",
+        ".assetsignore-Mechanik (Ausschluss Inter/Lora/Jakarta-static, _old, _notes, soilgoodman_*) — haelt das Deploy trotz 276-MB-Arbeitskopie bei ~40 MB",
+        "@font-face-Pfade in wrlz.css:8+15 muessen bei Font-Konvertierung (TTF->WOFF2) synchron mit den Dateien angepasst werden; /assets/fonts/* haengt an 1-Jahr-immutable-Cache in _headers:6-7, daher bei Formatwechsel neuer Dateiname noetig",
+        "loading=\"lazy\" + decoding=\"async\" auf den Brand-Logos der Startseite (index.html:342-343) und das JS-generierte lazy in gallery.html:249",
+        "og-card.png muss PNG oder JPG bleiben (og:image-Crawler-Kompatibilitaet), Pfad wird von allen Seiten referenziert",
+        "prefers-reduced-motion-Bloecke in wrlz.css:371-378 (schalten Reveals/Marquee/Paws ab)",
+        "Canonical- und og:url-Verweise auf https://pascaljaeger.de/ — .de ist die Live-Domain, nicht .online",
+        "Deterministischer Seed der Gallery-Anordnung (seed 20120401, gallery.html:216) — Layout ist absichtlich reproduzierbar",
+        "Die 27 Gallery-Bilddateien selbst (Referenzen in gallery.html:187-213) — Konvertierung ja, Entfernen nein; Aspect-Ratios sind im JS hart kodiert und muessen zu den Dateien passen"
+      ]
+    },
+    {
+      "dim": "copy",
+      "summary": "Kein einziger \"matcha\"-Verstoss, Zahlen sind innerhalb der Cases sauber, aber die Site verletzt ihre eigene Antithesen-Regel flaechendeckend: rund ein Dutzend Statt-, Nicht-sondern- und Kontrast-Konstruktionen quer ueber alle fuenf Cases, dazu Gedankenstriche in saemtlichen title-Tags. Schwerster inhaltlicher Treffer ist der Widerspruch zwischen dem WRLZ-Terminal (Kanzlei-Pipeline laeuft mit Tageszahlen) und dem Kanzlei-Case (Anbindung erst in Vorbereitung), gefolgt von unbelegten Kernzahlen (70% Fixkosten, 3.321 Leads) und einer kollidierenden Case-Nummerierung (WRLZ und fairi beide /01). Die Lesespalten (HNTZ, fairi, Matchachin) und der Kanzlei-Tuersteher-Absatz sind das staerkste Material und sollten beim Umbau unangetastet bleiben.",
+      "confirmed": [
+        {
+          "file": "case-wrlz.html",
+          "line": 136,
+          "what": "Das Terminal zeigt eine laufende Kanzlei-Pipeline mit Tageszahlen, waehrend der Kanzlei-Case explizit sagt, dass noch keine echten Aktendaten angebunden sind.",
+          "category": "conflict",
+          "severity": "high",
+          "evidence": "case-wrlz.html:136-140 'wrlz run --client kanzlei --task intake ... 142 Mails klassifiziert ... 38 Fristen erkannt & eingetragen ... erledigt in 4 min · 0 Klicks vom Team' und :151 'Mandats-Intake, Fristen und Schriftsatz-Entwuerfe automatisiert' vs. case-kanzlei.html:84 'Kernkomponenten gebaut · Anbindung in Vorbereitung' und :168 'Als Naechstes: den Actaport-Zugang beantragen ... echte Aktendaten anbinden'. Ein pruefender Leser (Jury, Mandant) faellt genau darueber.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-wrlz.html:135-140 ('# was eine WRLZ-Pipeline am Tag erledigt' + 'wrlz run --client kanzlei --task intake ... 38 Fristen erkannt & eingetragen ... 0 Klicks vom Team'), case-wrlz.html:95 ('3 aktive Kunden · live') und :151 ('Mandats-Intake, Fristen und Schriftsatz-Entwürfe automatisiert') vs. case-kanzlei.html:84 ('Kernkomponenten gebaut · Anbindung in Vorbereitung'), :97 ('Die Anbindung an die Kanzleisoftware ist in Vorbereitung') und :168 ('Als Nächstes: den Actaport-Zugang beantragen ... echte Aktendaten anbinden')",
+            "correction": "Befund bestätigt und leicht verschärft: Der WRLZ-Case zählt die Kanzlei über die drei Case-Points sogar explizit zu den '3 Pipelines live' (case-wrlz.html:95, :112, :150). Kein Hinweis in HTML, _notes/HANDOFF.md oder dem Portfolio-Skill, dass die Terminal-Zahlen als fiktiv/illustrativ gemeint sind. Es gibt nur einen Kanzlei-Kunden auf der Site, beide Seiten beschreiben dieselben Familienrecht-Komponenten (Intake, Fristen, Schriftsätze)."
+          }
+        },
+        {
+          "file": "case-fairi.html",
+          "line": 86,
+          "what": "Antithesen-Haeufung auf der fairi-Seite verstoesst gegen Hausregel 4 (keine Antithesen, immer).",
+          "category": "bug",
+          "severity": "high",
+          "evidence": ":86 'Kinder wollen keine App. Sie wollen eine Geschichte.' / :83 'Einschlaf-Ritual statt Bildschirm' / :129 'Das Kind ist nie Zuschauer, sondern Held.' / :133 'Keine 20 wiederholten Buecher. Die KI schreibt...' / :136 'Ruhe, kein Reiz'",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "Regel: /Users/wrlz.ai/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 \"Texte ohne Gedankenstriche und ohne Antithesen. Immer.\" (ebenso _notes/HANDOFF.md:17, CLAUDE.md:19). Definition: precht-clear/SKILL.md:19 Antithese = \"nicht X sondern Y\", precht-style/SKILL.md:20 verbietet \"Antithesen jeder Art\". Belegstellen per grep -n verifiziert, alle Zeilennummern korrekt: case-fairi.html:86 \"Kinder wollen keine App. Sie wollen eine Geschichte.\" / :83 \"Einschlaf-Ritual statt Bildschirm\" / :129 \"Das Kind ist nie Zuschauer, sondern Held.\" (Lehrbuch-Treffer der precht-clear-Definition) / :133 \"Keine 20 wiederholten Bücher. Die KI schreibt jeden Abend eine frische Welt\" / :136 \"Ruhe, kein Reiz\". Keine dokumentierte Ausnahme in _notes/ oder SKILL.md; SKILL.md:71 listet \"Gedankenstriche/Antithesen in Texte\" explizit unter \"Was NICHT tun\".",
+            "correction": "Befund inhaltlich korrekt, zwei Präzisierungen: (1) category \"bug\" ist falsch, es ist ein Content/Style-Verstoß ohne funktionalen Defekt, kein Bug. (2) Der Befund untertreibt eher: das Muster zieht sich weiter durch die Seite, z.B. :98 \"Ein Einschlaf-Ritual ohne Bildschirm, jeden Abend anders\", :104 \"0 / Bildschirm-Flackern\" und :137 \"kein blinkender Bildschirm\". git blame zeigt Commit e229025b (2026-06-14) als Ursprung, keine dokumentierte bewusste Ausnahme."
+          }
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 84,
+          "what": "Antithesen-Haeufung auf der WRLZ-Seite verstoesst gegen Hausregel 4, inklusive Konkurrenz-Bashing.",
+          "category": "bug",
+          "severity": "high",
+          "evidence": ":84 'Werkzeuge statt Chatbots.' (auch og:description :13) / :127 'Die meisten verkaufen Chatbots. Ich baue Pipelines, die abends weiterlaufen.' / :151 'Das Team entscheidet, die Maschine tippt.' / :173 'Freigeben statt selbst tippen.'",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "Hausregel 4 existiert und ist absolut: ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 \"Texte ohne Gedankenstriche und ohne Antithesen. Immer.\" (bekräftigt in SKILL.md:71 und _notes/HANDOFF.md:17). Alle zitierten Stellen stimmen wörtlich, selbst gelesen in /Users/wrlz.ai/Desktop/claude/pascaljaeger.online/case-wrlz.html — :13 og:description \"Werkzeuge statt Chatbots.\", :84 \"KI-Automation, die echte Arbeit übernimmt. Werkzeuge statt Chatbots.\", :127 \"Die meisten verkaufen Chatbots. Ich baue Pipelines, die abends weiterlaufen.\", :151 \"Das Team entscheidet, die Maschine tippt.\", :173 \"Freigeben statt selbst tippen.\" Das sind klassische Antithesen-Konstruktionen (X statt Y, Die-meisten-vs-Ich, Team-vs-Maschine). Keine dokumentierte Ausnahme in _notes oder Git-Historie gefunden.",
+            "correction": "Kern bestätigt, zwei Ungenauigkeiten: (1) \"Konkurrenz-Bashing\" ist NICHT Teil von Hausregel 4 und durch den Site-Ton sogar gedeckt (SKILL.md:8: \"provokant aber erwachsen\") — nur die Antithesen-Form von :127 verstößt, nicht der provokante Inhalt. (2) category \"bug\" ist falsch, es ist ein Content-/Stilregel-Verstoß, kein Code-Defekt; \"high\" ist wegen des \"Immer\" der Regel vertretbar, aber die Seite funktioniert fehlerfrei. Zusatzfund: :155 \"Eine Stimme, hundert Posts\" ist eine weitere grenzwertige Kontrast-Konstruktion, die bei einem Fix mit geprüft werden sollte."
+          }
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 87,
+          "what": "Antithesen auf der HNTZ-Seite verstossen gegen Hausregel 4.",
+          "category": "bug",
+          "severity": "medium",
+          "evidence": ":87 'Pflanzen luegen nicht. Tabellen schon.' (auch meta description :7 als Zitatbasis) / :136 'Wahrscheinlichkeiten statt Bauchgefuehl.'",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-hntz.html:87 enthält wörtlich 'Pflanzen lügen nicht. <span class=\"hl\">Tabellen schon.</span>' (per grep -n exakt Zeile 87 verifiziert) und :136 'Wahrscheinlichkeiten statt Bauchgefühl.' Die Regel existiert: ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 (Goldene Regel 4: 'Texte ohne Gedankenstriche und ohne Antithesen. Immer.'), bekräftigt in SKILL.md:71 und _notes/HANDOFF.md:17 ('Nie Gedankenstriche, nie Antithesen'). precht-style/SKILL.md:18-20 verbietet explizit 'Kontraststrukturen' und 'Antithesen jeder Art'. Keine dokumentierte Ausnahme in _notes/ gefunden.",
+            "correction": "Kern bestätigt, aber zwei Ungenauigkeiten im Evidence: (1) Die meta description in Zeile 7 enthält KEINE Antithese und nicht das Zitat ('HNTZ: Phenotype Discovery als SaaS. Jede Pflanze ein Datenobjekt...'), der Verweis ':7 als Zitatbasis' ist falsch. (2) :136 'X statt Y' ist der schwächere Fall: eine Kontraststruktur, aber die precht-style-SKILL nutzt selbst 'Rhythmus statt Rhetorik. Tiefe statt Slogan.' in ihrer Beschreibung (SKILL.md:12), streng nach 'Antithesen jeder Art' zählt es trotzdem. Zeile 87 allein ('Pflanzen lügen nicht. Tabellen schon.') ist eine eindeutige Antithese und trägt den Befund. Category 'bug' ist irreführend, es ist ein Content-/Stilverstoß, kein Code-Fehler."
+          }
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 106,
+          "what": "Antithesen in den Leitbild-Karten verstossen gegen Hausregel 4; 'Red Bull ohne Red Bull' ist zudem flapsig und nennt zweimal eine Fremdmarke.",
+          "category": "bug",
+          "severity": "medium",
+          "evidence": ":106 'Kein Shot, ein Getraenk.' / :107 'Red Bull ohne Red Bull.' / :97 Marquee 'KEIN SHOT, EIN GETRAENK'. Zitat-Charakter (Anfuehrungszeichen) mildert, hebt die Regel aber nicht auf.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-matchachin.html:106 „Kein Shot, ein Getränk.\" / :107 „Red Bull ohne Red Bull.\" / :97 Marquee KEIN SHOT, EIN GETRÄNK; Regel: ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 u. :71, _notes/HANDOFF.md:17; Antithesen-Definition inkl. „kein X, sondern Y\" u. „Antithesen jeder Art\": ~/.claude/skills/precht-style/SKILL.md:19-20",
+            "correction": "Kern bestätigt, zwei Präzisierungen: (1) „Red Bull ohne Red Bull\" ist streng genommen ein Paradoxon, fällt aber unter das Verbot „Antithesen jeder Art\" (precht-style/SKILL.md:20); die doppelte Fremdmarken-Nennung stimmt. (2) Die Zitat-Milderung ist reine Typografie: nirgends in _notes/ oder Skill dokumentiert, dass es authentische Brand-Zitate mit Ausnahmestatus sind, und Hausregel 4 sagt „Immer\" ohne Zitat-Ausnahme. Kategorie ist eher Content-/Stilverstoß als „bug\". Zeile 105 („Tee für Leute, die keine Energy-Drinks trinken.\") ist eine dritte Negativ-Konstruktion im selben Block, im Befund nicht erwähnt."
+          }
+        },
+        {
+          "file": "index.html",
+          "line": 6,
+          "what": "Gedankenstriche (em dash) in allen title-Tags, og:title und der visually-hidden h1, sichtbar in Tab, Suchergebnis und Screenreader.",
+          "category": "bug",
+          "severity": "medium",
+          "evidence": "index.html:6/:12/:192 'Pascal Jaeger — UX, Produkt & KI-Automation...', identisches Muster in case-fairi.html:6/:12, case-hntz.html:6/:12, case-wrlz.html:6/:12, case-kanzlei.html:6/:12, case-matchachin.html:6/:12. Dazu Halbgeviertstrich case-wrlz.html:96 '2025 – heute'.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "index.html:6 '<title>Pascal Jäger — UX, Produkt & KI-Automation aus Heidelberg</title>', index.html:12 og:title, index.html:192 visually-hidden h1; identisch case-fairi.html:6/:12, case-hntz.html:6/:12, case-wrlz.html:6/:12, case-kanzlei.html:6/:12, case-matchachin.html:6/:12; case-wrlz.html:96 '2025 – heute'. Konvention dagegen: ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 und :71 ('Nie machen: Gedankenstriche/Antithesen in Texte') sowie _notes/HANDOFF.md:17.",
+            "correction": "Fundstellen und Zeilennummern stimmen alle exakt. Zwei Praezisierungen: (1) Kategorie 'bug' ist falsch, technisch bricht nichts; es ist ein Verstoss gegen die explizite Projektkonvention 'keine Gedankenstriche' (SKILL.md:14/:71, HANDOFF.md:17, CLAUDE.md), die Striche hier sind allerdings Titel-Trenner (Name — Tagline), keine Gedankenstriche im Prosa-Sinn. (2) case-wrlz.html:96 '2025 – heute' ist ein Halbgeviertstrich als Bis-Strich (Zeitspanne), typografisch korrektes Deutsch und von der Regel gegen Gedankenstriche eigentlich nicht erfasst; dieser Teilbefund ist schwach."
+          }
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 82,
+          "what": "Case-Nummerierung kollidiert zwischen Index und Case-Seiten: WRLZ und fairi tragen beide /01, Kanzlei traegt /03 statt /04.",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "case-wrlz.html:82 'Case /01 · Agentur' vs. index.html:258 Karte '/03' und case-fairi.html:70 'Case /01 · App'. case-kanzlei.html:72 'Case /03' vs. index.html:271 '/04 · Recht · DSGVO'.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-wrlz.html:82 'Case /01 · Agentur · Claude API · n8n' vs. index.html:256-258 (Karte href=case-wrlz.html, card-idx '/03'); case-fairi.html:70 'Case /01 · App' = index.html:230-232 '/01' (Kollision beider /01); case-kanzlei.html:72 'Case /03 · Recht · DSGVO' vs. index.html:270-271 href=case-kanzlei.html '/04 · Recht · DSGVO'. Korrekt dagegen: case-hntz.html:70 '/02' und case-matchachin.html:57 '/05' matchen den Index.",
+            "correction": "Befund stimmt vollstaendig. Ursache erkennbar: alte Reihenfolge WRLZ=/01, HNTZ=/02, Kanzlei=/03; fairi wurde als neue /01 eingeschoben, Index umnummeriert, Case-Seiten-Kicker von WRLZ und Kanzlei nicht. Beleg: next-case-Kette case-wrlz.html:221 (WRZL→HNTZ) und case-fairi.html:174 (fairi→HNTZ) zeigen beide auf HNTZ — WRLZ muesste in neuer Ordnung auf Kanzlei zeigen. Fix: case-wrlz.html:82 auf /03, case-kanzlei.html:72 auf /04, optional next-case in case-wrlz.html auf Kanzlei."
+          }
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 221,
+          "what": "Matchachin ist von der Case-Ebene aus unsichtbar: die Naechster-Case-Kette bildet eine Schleife ohne Matchachin, und die Case-Footer lassen fairi und Matchachin inkonsistent weg.",
+          "category": "conflict",
+          "severity": "medium",
+          "evidence": "Kette: fairi->HNTZ (fairi:174), HNTZ->Kanzlei (hntz:204), Kanzlei->WRLZ (kanzlei:190), WRLZ->HNTZ (wrlz:221). Footer 'Arbeit': hntz:215-217, wrlz:232-234, kanzlei:201-203 je nur WRLZ/HNTZ/Kanzlei; index.html:455-459 listet alle fuenf.",
+          "verdict": {
+            "confirmed": true,
+            "correction": "Kern bestaetigt, eine Nuance: \"von der Case-Ebene aus unsichtbar\" ist leicht ueberzogen. Kein Case verlinkt direkt auf case-matchachin.html, aber jede Case-Navi hat einen Gallery-Link (case-wrlz.html:63) und gallery.html:169 verlinkt Matchachin; indirekt erreichbar ist es also. Zusaetzlich verschaerfend: Matchachin selbst zeigt als Naechster Case auf fairi (case-matchachin.html:168), ist also nur Ausgang der Kette, nie Ziel. Absicht ist nirgends dokumentiert (weder _notes/HANDOFF.md noch Skill); das Archiv-Label auf index.html:276 koennte Downranking erklaeren, aber das inkonsistente Fehlen von fairi in drei Footern spricht fuer Drift statt Design.",
+            "evidence": "case-fairi.html:174 (→HNTZ), case-hntz.html:204 (→Kanzlei), case-kanzlei.html:190 (→WRLZ), case-wrlz.html:221 (→HNTZ), case-matchachin.html:168 (→fairi); Footer: case-hntz.html:215-217, case-wrlz.html:232-234, case-kanzlei.html:201-203 (je nur WRLZ/HNTZ/Kanzlei), case-fairi.html:185-188 und case-matchachin.html:179-182 (je ohne Matchachin); index.html:455-459 (alle fuenf)"
+          }
+        },
+        {
+          "file": "case-kanzlei.html",
+          "line": 74,
+          "what": "'Die KI bereitet vor, der Mensch entscheidet' ist antithetisch gebaut und wird dreimal plus og:description wiederholt.",
+          "category": "bug",
+          "severity": "low",
+          "evidence": ":74, :110 (Marquee), :167, og :13. Inhaltlich der staerkste Claim des Cases, formal ein Verstoss gegen die Antithesen-Regel und durch Wiederholung abgenutzt.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "case-kanzlei.html:13 (og:description), :74 (case-sub), :110 (Marquee, Uppercase), :167 (case-lede). Regel-Beleg: ~/.claude/skills/pascaljaeger-portfolio/SKILL.md:14 \"Texte ohne Gedankenstriche und ohne Antithesen. Immer.\" und _notes/HANDOFF.md:17 \"Nie Gedankenstriche, nie Antithesen.\" precht-style/SKILL.md:20 verbietet \"Antithesen jeder Art\". Gegenprobe: andere Case-Seiten (case-fairi.html:72/86, case-hntz.html:72/87, case-wrlz.html:84/127, case-matchachin.html:59/73) wiederholen Sub/Lede/Marquee nicht wortidentisch, das Kanzlei-Pattern ist also kein Site-Standard.",
+            "correction": "Minimal ungenau, ohne Kernaussage zu kippen: Vorkommen :110 ist aria-hidden (dekorativer Marquee) und :13 ist Meta-Tag, kein sichtbarer Fließtext. Sichtbar im Lesefluss sind :74 und :167, dazu Marquee visuell. \"Dreimal plus og:description\" stimmt als Zählung der Vorkommen im Markup exakt."
+          }
+        },
+        {
+          "file": "index.html",
+          "line": 474,
+          "what": "'Gebaut mit Haltung. Kein Template.' ist Negations-Antithese, und 'Haltung' laeuft sich auf dem Index tot (dreimal).",
+          "category": "bug",
+          "severity": "low",
+          "evidence": ":474 Footer, :289 '// Haltung', :377 'Haltung sichtbar machen.' Auch :287 'Wenn es leicht aussieht, war es Arbeit.' ist eine Antithese (leicht vs. Arbeit), wenn auch die beste der Site.",
+          "verdict": {
+            "confirmed": true,
+            "evidence": "index.html:474 'Gebaut mit Haltung. Kein Template.' (Footer); index.html:289 '// Haltung' (st-tag); index.html:377 'Haltung sichtbar machen.'; index.html:287 'Wenn es leicht aussieht, war es Arbeit.'; _notes/HANDOFF.md:17 'Nie Gedankenstriche, nie Antithesen.'",
+            "correction": "Faktisch voll bestaetigt: 'Haltung' exakt 3x im sichtbaren Text, :474 ist Negations-Antithese und verstoesst gegen die eigene Konvention (HANDOFF.md:17). Nuance: :289 ist ein Sektions-Tag, kein Fliesstext; ob 3 Vorkommen 'totgelaufen' sind, ist Wertung, nicht Fakt."
+          }
+        }
+      ],
+      "unconfirmed": [],
+      "other": [
+        {
+          "file": "case-wrlz.html",
+          "line": 111,
+          "what": "Die 70%-Fixkosten-Behauptung steht ohne jeden Beleg (welcher Kunde, gemessen woran) und wird zwischen den Seiten haerter: aus 'Bis zu 70 %' wird '70%' absolut.",
+          "category": "risk",
+          "severity": "high",
+          "evidence": "index.html:265 'Bis zu 70 % weniger Fixkosten' vs. case-wrlz.html:111 '70% / weniger Fixkosten', :121 '70% FIXKOSTEN RAUS', :208 '70% weniger Fixkosten'. Nirgends Kontext oder Fall, der die Zahl traegt."
+        },
+        {
+          "file": "case-kanzlei.html",
+          "line": 168,
+          "what": "Schwaechste Textstelle 1: Superlativ-Floskel mit Absolutversprechen im Rechtskontext, unbelegbar und juristisch angreifbar.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": "Zitat: 'hoechste Qualitaet bei voller Datenschutzsicherheit'. Bricht mit dem sonst praezisen, belegenden Ton der Seite (13/34/8/17 Tests)."
+        },
+        {
+          "file": "index.html",
+          "line": 437,
+          "what": "Schwaechste Textstelle 2: austauschbarer Werbeslogan als Kontakt-Headline, klingt nach Agentur-Baukasten.",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "Zitat: 'Klar gedacht. Direkt gemacht.' Parallelismus ohne Inhalt, jeder Dienstleister koennte das schreiben."
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 107,
+          "what": "Schwaechste Textstelle 3: 'Red Bull ohne Red Bull' wirkt im sonst erwachsenen Umfeld flapsig und wie ein Paradox-Gag.",
+          "category": "decoration",
+          "severity": "medium",
+          "evidence": "Zitat: '„Red Bull ohne Red Bull.“' Zusammen mit :97 'EHRLICHER ENERGY' und :59 'ehrliche Marke' (Selbstlob ohne Einloesung) die duennste Passage der Site."
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 159,
+          "what": "Praezise Lead-Zahl ohne Bezugsrahmen: fuer wen, welcher Zeitraum, was heisst 'qualifiziert'.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": ":113/:159/:210 '3.321 qualifizierte Leads pro Monat, vollautomatisch sortiert'. Die Kommagenauigkeit suggeriert Messung, die nirgends gezeigt wird."
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 84,
+          "what": "Kernclaim des Cases ohne sichtbaren Beleg: Listung im Einzelhandel wird behauptet, aber kein Haendler, kein Regalfoto, kein Zeitraum.",
+          "category": "risk",
+          "severity": "medium",
+          "evidence": ":84 'Vom ersten Konzept bis zur Listung im Einzelhandel.' und :87 'Regal / Konzept bis Einzelhandel'. Die Shots (:116-117) zeigen nur eigenes Material."
+        },
+        {
+          "file": "case-matchachin.html",
+          "line": 88,
+          "what": "Umstrittene Faktenbehauptung ohne Quelle.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": ":88 'Guayusa / koffeinreichste Pflanze der Welt'. Als absolute Tatsachenbehauptung angreifbar, 'eine der koffeinreichsten' waere sicher."
+        },
+        {
+          "file": "index.html",
+          "line": 286,
+          "what": "Grammatisch doppeldeutige Statement-Zeile: 'Das beste Tool erklaert niemand' kann heissen 'niemand erklaert es' statt 'es braucht keine Erklaerung'.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": "Zitat index.html:286: 'Das beste Tool erklaert <span class=\"out\">niemand</span>.'"
+        },
+        {
+          "file": "index.html",
+          "line": 391,
+          "what": "Orchestrierungs-Intro ist sachlich schief: der Pruefer korrigiert nicht sich selbst, er schickt Ergebnisse an den Planer zurueck.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": ":391 'ein Pruefer, der sich selbst korrigiert' vs. :417 data-desc 'Prueft das Ergebnis und schickt es zurueck, wenn es nicht traegt.' Dazu :427 'Fahr ueber die Knoten.' als Hover-Anweisung, die auf Touch ins Leere laeuft."
+        },
+        {
+          "file": "case-wrlz.html",
+          "line": 155,
+          "what": "Floskeln aus dem KI-Marketing-Jargon.",
+          "category": "decoration",
+          "severity": "low",
+          "evidence": ":155 'kein generischer Brei', :140 '0 Klicks vom Team'. Dazu Schreibweisen-Inkonsistenz :85 'wrlz.ai' vs. :244 'WRLZ.ai' und index.html:265 '70 %' (mit Leerzeichen) vs. wrlz durchgehend '70%'."
+        },
+        {
+          "file": "case-hntz.html",
+          "line": 72,
+          "what": "Wirksamkeits-Behauptung der Engine ohne ein einziges konkretes Beispiel.",
+          "category": "risk",
+          "severity": "low",
+          "evidence": ":72 'erkennt Anomalien, bevor du sie siehst', :180 'bevor das Auge es bemerkt', :181 'findet schon Dinge, die vorher im Spreadsheet verschwunden waeren'. Ein konkreter Fund wuerde alle drei Saetze belegen."
+        },
+        {
+          "file": "case-fairi.html",
+          "line": 81,
+          "what": "fairi ist der einzige Case ohne Status-Feld in der Meta-Leiste; ob die App live, Beta oder Konzept ist, bleibt offen, obwohl 'fairi.app live ansehen' verlinkt wird.",
+          "category": "opportunity",
+          "severity": "low",
+          "evidence": ":81-84 Meta hat Rolle/Stack/Idee/Fuer, kein Status. HNTZ :84, WRLZ :95, Kanzlei :84, Matchachin :71 haben alle Status."
+        }
+      ],
+      "preserve": [
+        "Staerkste Textstelle 1, HNTZ-Lesespalte (case-hntz.html:178-181): 'Wer Pflanzen zuechtet, sammelt ueber Jahre ein Wissen, das selten den Kopf verlaesst. Welche Mutter welche Staerke weitergibt. Wann ein Geruch kippt.' bis 'Gebaut habe ich das allein, vom Datenmodell bis zur Sprachoberflaeche, rund zwanzigtausend Zeilen.' Konkret, ruhig, belegt die Zahlen der Seite.",
+        "Staerkste Textstelle 2, Kanzlei-Tuersteher-Absatz (case-kanzlei.html:132 + :146): 'Bevor ein Text an ein Cloud-Sprachmodell geht, ersetzt er alle Klarnamen, Adressen, Aktenzeichen und Kontodaten durch Platzhalter. ... Fehlt die Erkennungs-Engine, bricht der Vorgang ab und sendet nichts.' Technischer Beleg statt Behauptung, das seriöseste Stueck der Site.",
+        "Staerkste Textstelle 3, fairi-Schluss (case-fairi.html:151): 'Am naechsten Abend will das Kind wissen, wohin es heute reist.' Leiser Payoff, kein Marketing.",
+        "Das Credo (index.html:347) mit Ex-Koch- und Musik-Bildern ('Vier Takte halten manchmal laenger als zehn Minuten Laerm', 'aus kleinen Kuechen') traegt die Persoenlichkeit; beim Entschaerfen der Kontrast-Struktur den Ton nicht glattbuegeln.",
+        "Persona-Anker konsistent halten: 'seit dem 386er' (index.html:197/:216/:323), Turbo Pascal 1993 (index.html:306), Scanner-Selbstbeschreibung (index.html:323), '10.000+ Zeilen System-Prompt' (index.html:326/:335).",
+        "In-sich stimmige Zahlen nicht anfassen: Kanzlei 72 Tests = 13+34+8+17 (case-kanzlei.html:156-159 vs. :178), HNTZ 15 Tester und 20.000 Zeilen ueberall gleich (index.html:252, case-hntz.html:7/:85/:101/:181/:192), 30+ Jahre am Code passt zu 1993.",
+        "Matchachin = Guayusa-Begriff der Quichua; das Wort 'matcha' kommt nirgends vor (Grep ueber alle Seiten leer), das muss so bleiben.",
+        "Die stillen Mikrotexte als Teil des Tons: 'Atempause' (index.html:207), die Orchestrierungs-Hover-Beschreibungen (index.html:396-422), 'Klarname bleibt im Haus' (index.html:272)."
+      ]
+    }
+  ],
+  "facts": {
+    "goal_command": {
+      "exists": true,
+      "detail": "Claude Code hat den /goal-Befehl seit v2.1.139+. Er setzt eine überprüfbare Bedingung (z.B. 'all tests pass', 'git status is clean') und iteriert autonom, bis die Bedingung erfüllt ist. Ein separates Evaluator-Modell prüft den Status nach jeder Turn."
+    },
+    "sonnet46": {
+      "exists": true,
+      "detail": "Claude Sonnet 4.6 existiert (Feb 2026, Modell-ID: anthropic/claude-sonnet-4-6). Die AKTUELLE beste Sonnet-Version ist aber Claude Sonnet 5 (Juni 2026, Modell-ID: claude-sonnet-5), verfügbar über alle Pläne, mit 1M-Token-Kontext."
+    },
+    "motion_so_mcp": {
+      "exists": false,
+      "detail": "NEIN. motion.so ist ein AI-Video-Generator für Text-zu-Video, es gibt aber KEINE offizielle MCP-Integration mit Credit-System bei mcp.motion.so. Es gibt inoffizielle MCPs für Motion (usemotion.com — Task-Management), nicht für motion.so."
+    },
+    "motion_dev_ai_kit": {
+      "exists": true,
+      "detail": "Motion AI Kit existiert und funktioniert mit Claude Code. Es bietet Dokumentation-Zugriff, 400+ Beispiele, MotionScore, Transition Editor, CSS-Spring-Generierung. Scroll-Scrubbing-Beispiele sind NICHT dokumentiert."
+    }
+  }
+}

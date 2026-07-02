@@ -28,13 +28,13 @@
 
 /* Der §203-Türsteher (Kern) */
 .kz-core { border:2.5px solid var(--ink); border-radius: var(--radius); background: var(--grass); padding: clamp(1.6rem,3.5vw,2.6rem); }
-.kz-core h3 { font-weight:800; font-size: clamp(1.4rem,3vw,2.2rem); letter-spacing:-.02em; line-height:1.1; }
-.kz-core p { font-size: clamp(1rem,1.4vw,1.15rem); line-height:1.55; margin-top:.8rem; max-width:62ch; }
+.kz-core h3 { font-weight:800; font-size: var(--fs-h3); letter-spacing:-.02em; line-height:1.1; }
+.kz-core p { font-size: var(--fs-body); line-height:1.55; margin-top:.8rem; max-width:62ch; }
 .kz-flow { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .4rem; margin-top:1.5rem; }
-.kz-flow .step { font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; border:2px solid var(--ink); border-radius:999px; padding:.5em .9em; background:var(--chalk); }
+.kz-flow .step { font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.06em; text-transform:uppercase; border:2px solid var(--ink); border-radius:999px; padding:.5em .9em; background:var(--chalk); }
 .kz-flow .step.key { background:var(--ink); color:var(--chalk); }
 .kz-flow .arr { font-weight:800; opacity:.45; }
-.kz-note { font-family:var(--mono); font-size:.7rem; letter-spacing:.04em; opacity:.72; margin-top:1.1rem; }
+.kz-note { font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.04em; opacity:.72; margin-top:1.1rem; }
 
 /* Werkzeuge */
 .tools { display:grid; gap:1rem; }
@@ -42,9 +42,9 @@
 @media (min-width:1040px){ .tools { grid-template-columns: repeat(4,1fr); } }
 .tool { border:2.5px solid var(--ink); border-radius: var(--radius); padding: clamp(1.4rem,2.5vw,1.9rem); background: var(--chalk); }
 .tool .te { font-size: 1.7rem; }
-.tool h4 { font-weight:800; font-size:1.2rem; margin:.6rem 0 .25rem; letter-spacing:-.02em; }
-.tool .role { font-family:var(--mono); font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; opacity:.55; }
-.tool p { font-size:.92rem; opacity:.82; line-height:1.5; margin-top:.7rem; }
+.tool h4 { font-weight:800; font-size:var(--fs-body); margin:.6rem 0 .25rem; letter-spacing:-.02em; }
+.tool .role { font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.12em; text-transform:uppercase; opacity:.55; }
+.tool p { font-size:var(--fs-small); opacity:.82; line-height:1.5; margin-top:.7rem; }
 </style>
 </head>
 <body>
@@ -63,13 +63,13 @@
 <!-- HERO -->
 <header class="case-hero" data-tilt>
   <div class="case-bg">
-    <div class="kz-grid" data-px="0.05" data-depth="0.4"></div>
-    <div class="kz-paper kz-p1" data-px="0.22" data-depth="2.2"></div>
-    <div class="kz-paper kz-p2" data-px="0.3" data-depth="2.8"></div>
-    <div class="kz-paper kz-p3" data-px="0.16" data-depth="1.6"></div>
+    <div class="kz-grid" data-depth="0.4"></div>
+    <div class="kz-paper kz-p1" data-depth="2.2"></div>
+    <div class="kz-paper kz-p2" data-depth="2.8"></div>
+    <div class="kz-paper kz-p3" data-depth="1.6"></div>
   </div>
   <div class="wrap">
-    <p class="case-kicker" data-depth="0.3">Case /03 · Recht · DSGVO &amp; §203 by design</p>
+    <p class="case-kicker" data-depth="0.3">Case /04 · Recht · DSGVO &amp; §203 by design</p>
     <h1 class="case-title" data-fall data-depth="1">KANZLEI</h1>
     <p class="case-sub" data-depth="0.6">JustAI: eine Schutz- und Automatikschicht für eine Familienrechtskanzlei. Die KI bereitet vor, der Mensch entscheidet.</p>
   </div>
@@ -127,7 +127,7 @@
 <!-- KERN: §203-TÜRSTEHER -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="kz-core reveal" data-px="0.03">
+    <div class="kz-core reveal">
       <h3>Im Zentrum: der §203-Türsteher</h3>
       <p>Ein reversibler Pseudonymisierer. Bevor ein Text an ein Cloud-Sprachmodell geht, ersetzt er alle Klarnamen, Adressen, Aktenzeichen und Kontodaten durch Platzhalter. Erst die fertige Antwort wird innerhalb der Kanzlei wieder mit den echten Daten zusammengeführt. Fehlt die Erkennungs-Engine, bricht der Vorgang ab und sendet nichts.</p>
       <div class="kz-flow">

@@ -17,7 +17,7 @@
 :root { --accent: var(--hot); --accent2: var(--grass); --cta: var(--grass); }
 body { background: #14110f; color: var(--linen); }
 ::selection { background: var(--hot); color: var(--linen); }
-.case-hero { background: #14110f; color: var(--linen); min-height: 96svh; }
+.case-hero { background: #14110f; color: var(--linen); min-height: 96svh; position: relative; overflow: hidden; }
 .case-hero .case-lede .hl { color: var(--hot); }
 .hntz-dots { position: absolute; inset: 0; }
 .hntz-dots circle { mix-blend-mode: screen; }
@@ -29,21 +29,20 @@ body { background: #14110f; color: var(--linen); }
 .dark-section { background: #14110f; color: var(--linen); }
 .dark-section .case-point { border-color: rgba(243,233,219,.25); }
 .dark-section .result { background: #1d1916; border-color: rgba(243,233,219,.25); color: var(--linen); }
-.cap { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; margin-top: .8rem; }
+.cap { font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .55; margin-top: .8rem; }
 .radar-row { display:grid; gap: clamp(1.5rem,3vw,3rem); align-items:center; }
 @media (min-width:860px){ .radar-row { grid-template-columns: 1fr 1fr; } }
 .mascot-row { display:grid; gap:clamp(1.5rem,4vw,3.5rem); align-items:center; }
 @media (min-width:760px){ .mascot-row { grid-template-columns: 0.85fr 1fr; } }
 .shot-mascot img { width:100%; max-width:340px; height:auto; display:block; margin:0 auto; filter: drop-shadow(0 22px 34px rgba(28,27,25,.3)); }
-.case-hero { position: relative; overflow: hidden; }
 .hero-logo { left: -2%; top: 30%; width: min(40vw, 440px); opacity: .10; }
 @media (max-width:760px){ .hero-logo { display: none; } }
 .hero-tricho { position: absolute; right: clamp(0.5rem,4vw,4.5rem); bottom: 0; width: clamp(150px,24vw,360px); height: auto; z-index: 2; filter: drop-shadow(0 22px 36px rgba(0,0,0,.5)); pointer-events: none; }
 @media (max-width:760px){ .hero-tricho { width: 150px; right: 4%; top: 13%; bottom: auto; opacity: .95; } }
 .read-col { max-width:60ch; margin:0 auto; }
-.read-col p { font-size:clamp(1.05rem,1.5vw,1.25rem); line-height:1.7; margin:0 0 1.2rem; color:var(--linen); opacity:.88; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; color:var(--linen); opacity:.88; }
 .read-col p:last-child { margin-bottom:0; }
-.read-k { display:block; text-align:center; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
 </style>
 </head>
 <body>
@@ -62,9 +61,9 @@ body { background: #14110f; color: var(--linen); }
 <!-- HERO -->
 <header class="case-hero" data-tilt>
   <div class="case-bg">
-    <span class="hntz-glow" data-px="-0.15" data-depth="0.8"></span>
-    <svg class="hntz-dots" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.18" data-depth="1.8"><g class="dotg"></g></svg>
-    <img class="hero-logo" src="assets/img/hntz/hntz_logo_golden.svg" alt="" aria-hidden="true" data-px="0.06" data-depth="0.5">
+    <span class="hntz-glow" data-depth="0.8"></span>
+    <svg class="hntz-dots" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-depth="1.8"><g class="dotg"></g></svg>
+    <img class="hero-logo" src="assets/img/hntz/hntz_logo_golden.svg" alt="" aria-hidden="true" data-depth="0.5">
   </div>
   <div class="wrap">
     <p class="case-kicker" data-depth="0.3" style="color:var(--lime)">Case /02 · SaaS · Closed Beta</p>
@@ -72,7 +71,7 @@ body { background: #14110f; color: var(--linen); }
     <p class="case-sub" data-depth="0.6" style="color:var(--linen)">Jede Pflanze ein Datenobjekt. Eine Engine, die Anomalien erkennt, bevor du sie siehst.</p>
     <a class="case-live" href="https://hntz.app/beta.html" target="_blank" rel="noopener">Beta live ansehen <span class="ar">→</span></a>
   </div>
-  <img class="hero-tricho" src="assets/img/hntz/mascot.png" alt="Tricho Jenkins, das HNTZ-Maskottchen" data-px="0.08" data-depth="0.6">
+  <img class="hero-tricho" src="assets/img/hntz/mascot.png" alt="Tricho Jenkins, das HNTZ-Maskottchen" data-depth="0.6">
 </header>
 
 <!-- META on linen -->
@@ -116,8 +115,8 @@ body { background: #14110f; color: var(--linen); }
   <div class="wrap">
     <div class="sec-head"><span class="num" style="opacity:.5">Das Produkt</span></div>
     <div class="shot-grid two">
-      <div class="shot reveal" data-px="0.05"><img src="assets/img/hntz/home-dark.png" alt="HNTZ Dashboard" loading="lazy"></div>
-      <div class="shot reveal" data-px="0.09"><img src="assets/img/hntz/stammbaum.jpeg" alt="HNTZ Stammbaum-Ansicht" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/hntz/home-dark.png" alt="HNTZ Dashboard" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/hntz/stammbaum.jpeg" alt="HNTZ Stammbaum-Ansicht" loading="lazy"></div>
     </div>
     <p class="cap">Dashboard &amp; Stammbaum. Jede Linie eine Entscheidung über tausende Datenpunkte.</p>
   </div>
@@ -147,7 +146,7 @@ body { background: #14110f; color: var(--linen); }
 <section class="section dark-section" style="padding-top:0">
   <div class="wrap">
     <div class="radar-row">
-      <div class="shot reveal" data-px="0.06"><img src="assets/img/hntz/radar-chart.png" alt="HNTZ Phänotyp Radar-Chart" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/hntz/radar-chart.png" alt="HNTZ Phänotyp Radar-Chart" loading="lazy"></div>
       <div class="reveal">
         <p class="case-lede" style="max-width:24ch">Sechs Achsen pro Pflanze. Ein Blick, und der Phänotyp ist <span style="color:var(--lime)">lesbar</span>.</p>
         <p class="body" style="opacity:.8;margin-top:1.2rem;color:var(--linen)">Der Radar verdichtet Wuchs, Aroma, Resistenz, Ertrag, Blütezeit und Stabilität zu einer Form, die man vergleichen kann. Discovery wird visuell.</p>
@@ -160,7 +159,7 @@ body { background: #14110f; color: var(--linen); }
 <section class="section invert-block">
   <div class="wrap">
     <div class="mascot-row">
-      <div class="shot-mascot reveal" data-px="0.06"><img src="assets/img/hntz/mascot.png" alt="HNTZ Maskottchen, geboren aus Trichomen" loading="lazy"></div>
+      <div class="shot-mascot reveal"><img src="assets/img/hntz/mascot.png" alt="HNTZ Maskottchen, geboren aus Trichomen" loading="lazy"></div>
       <div class="reveal">
         <span class="sticker hot" style="box-shadow:4px 4px 0 var(--ink)">● Reveal: Cannafair</span>
         <p class="case-lede" style="max-width:22ch;margin-top:1.3rem">Neu: ein <span class="hl">Maskottchen</span>, geboren aus Trichomen.</p>

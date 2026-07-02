@@ -33,7 +33,7 @@
       if (!target) return;
       e.preventDefault();
       if (lenis) lenis.scrollTo(target, { offset: -10, duration: 1.4 });
-      else target.scrollIntoView({ behavior: 'smooth' });
+      else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
     });
   });
 
@@ -41,12 +41,11 @@
      PARALLAX (Scroll) — schreibt translate/rotate
      --------------------------------------------------------- */
   const pxNodes = [];
-  document.querySelectorAll('[data-px],[data-px-x],[data-px-rot]').forEach(el => {
+  document.querySelectorAll('[data-px],[data-px-x]').forEach(el => {
     pxNodes.push({
       el,
       y:   parseFloat(el.dataset.px) || 0,
       x:   parseFloat(el.dataset.pxX) || 0,
-      rot: parseFloat(el.dataset.pxRot) || 0,
       base: 0, cur: 0, tgt: 0
     });
   });
@@ -57,26 +56,6 @@
       const r = n.el.getBoundingClientRect();
       n.base = window.scrollY + r.top + r.height / 2;
       n.el.style.translate = prev;
-    });
-  }
-
-  /* ---------------------------------------------------------
-     SEESAW — Wippe: Block ist waagerecht in der Viewport-Mitte,
-     kippt nach oben/unten weg. Dreht sich um die eigene Mitte.
-     --------------------------------------------------------- */
-  const seesawNodes = [];
-  document.querySelectorAll('[data-seesaw]').forEach(el => {
-    el.style.transformOrigin = '50% 50%';
-    el.style.willChange = 'rotate';
-    seesawNodes.push({ el, max: parseFloat(el.dataset.seesaw) || 3.5, base: 0, cur: 0 });
-  });
-  function measureSeesaw() {
-    seesawNodes.forEach(n => {
-      const prev = n.el.style.rotate;
-      n.el.style.rotate = '';
-      const r = n.el.getBoundingClientRect();
-      n.base = window.scrollY + r.top + r.height / 2;
-      n.el.style.rotate = prev;
     });
   }
 
@@ -166,7 +145,7 @@
   document.querySelectorAll('.marquee').forEach(m => {
     const track = m.querySelector('.track');
     if (!track) return;
-    const baseDir = m.dataset.dir === 'left' ? -1 : 1;
+    const baseDir = m.dataset.dir === 'left' ? 1 : -1;
     const first = track.querySelector('.item');
     let guard = 0;
     while (track.scrollWidth < window.innerWidth * 2 && guard < 12) {
@@ -183,7 +162,7 @@
   const barGroups = [];
   document.querySelectorAll('[data-bars]').forEach(container => {
     const count = parseInt(container.dataset.bars) || 28;
-    const palette = ['#8FB1A6', '#C77E52', '#C98792'];
+    const palette = ['var(--grass)', 'var(--hot)', 'var(--bubble)'];
     const bars = [];
     for (let i = 0; i < count; i++) {
       const b = document.createElement('div');
@@ -208,7 +187,7 @@
      --------------------------------------------------------- */
   const CHARS = '01ABCDEF!?#@%';
   document.querySelectorAll('[data-flip]').forEach(el => {
-    if (isTouch) return;
+    if (isTouch || reduced) return;
     const original = el.textContent;
     let running = false, id = null;
     const start = () => {
@@ -693,7 +672,7 @@
   const flipTop = document.querySelector('.flip-top');
   let lastScroll = window.scrollY;
   let t = 0;
-  const remeasure = () => { measurePx(); measureSeesaw(); };
+  const remeasure = () => { measurePx(); };
   remeasure();
   window.addEventListener('resize', remeasure, { passive: true });
   window.addEventListener('load', remeasure);
@@ -715,14 +694,6 @@
         const ty = -n.cur * n.y;
         const tx = -n.cur * 0.02 * n.x;
         n.el.style.translate = `${tx.toFixed(2)}px ${ty.toFixed(2)}px`;
-        if (n.rot) n.el.style.rotate = `${(-n.cur * 0.004 * n.rot).toFixed(3)}deg`;
-      });
-
-      // Seesaw / Wippe
-      seesawNodes.forEach(n => {
-        const norm = clamp((n.base - center) / (vh() * 0.62), -1, 1);
-        n.cur = lerp(n.cur, norm * n.max, 0.09);
-        n.el.style.rotate = `${n.cur.toFixed(3)}deg`;
       });
 
       tiltGroups.forEach(g => {

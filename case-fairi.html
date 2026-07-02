@@ -35,14 +35,14 @@ body { background: #16132b; color: #efeafa; }
 .story {
   border:2px solid rgba(239,234,250,.3); border-radius:var(--radius);
   padding:clamp(1.6rem,4vw,3rem); background:#1e1a3a;
-  font-size:clamp(1.2rem,2.4vw,1.9rem); line-height:1.5; font-weight:500;
+  font-size:var(--fs-h4); line-height:1.5; font-weight:500;
 }
 .story .nm { color:var(--bubble); }
-.story .cap { display:block; margin-top:1.2rem; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; }
+.story .cap { display:block; margin-top:1.2rem; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; }
 .read-col { max-width:60ch; margin:0 auto; }
-.read-col p { font-size:clamp(1.05rem,1.5vw,1.25rem); line-height:1.7; margin:0 0 1.2rem; opacity:.9; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; opacity:.9; }
 .read-col p:last-child { margin-bottom:0; }
-.read-k { display:block; text-align:center; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
 </style>
 </head>
 <body>
@@ -61,10 +61,10 @@ body { background: #16132b; color: #efeafa; }
 <!-- HERO -->
 <header class="case-hero" data-tilt>
   <div class="case-bg">
-    <span class="fairi-glow" data-px="-0.12" data-depth="0.8"></span>
-    <div class="fairi-moon" data-px="0.16" data-depth="1.4"></div>
-    <svg class="fairi-sky" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-px="0.2" data-depth="1.8"><g class="starg"></g></svg>
-    <img class="hero-logo" src="assets/img/fairi/logo.svg" alt="" aria-hidden="true" data-px="0.05" data-depth="0.5">
+    <span class="fairi-glow" data-depth="0.8"></span>
+    <div class="fairi-moon" data-depth="1.4"></div>
+    <svg class="fairi-sky" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-depth="1.8"><g class="starg"></g></svg>
+    <img class="hero-logo" src="assets/img/fairi/logo.svg" alt="" aria-hidden="true" data-depth="0.5">
   </div>
   <div class="wrap">
     <p class="case-kicker" data-depth="0.3" style="color:var(--lime)">Case /01 · App · KI-Gutenachtgeschichten</p>
@@ -113,7 +113,7 @@ body { background: #16132b; color: #efeafa; }
 <!-- STORY -->
 <section class="section night">
   <div class="wrap">
-    <div class="story reveal" data-px="0.05">
+    <div class="story reveal">
       „Heute reist <span class="nm">Mia</span> auf einem Papierboot über den Mond, weil sie nicht einschlafen kann …"
       <span class="cap">Jede Geschichte beginnt mit dem echten Namen, der Stimmung und dem Lieblingstier des Kindes.</span>
     </div>

@@ -24,13 +24,13 @@
 .mc-hero-ov { position:absolute; inset:0; z-index:1; background:linear-gradient(to top, rgba(20,16,12,.9), rgba(20,16,12,.2) 55%, rgba(20,16,12,.45)); }
 .notes { display:grid; gap:1rem; }
 @media (min-width:700px){ .notes { grid-template-columns: repeat(3,1fr); } }
-.note { border:2px solid var(--ink); border-radius:14px; padding:1.2rem 1.3rem; background:var(--chalk); font-weight:600; font-size:clamp(1.05rem,1.6vw,1.3rem); letter-spacing:-.01em; box-shadow:5px 5px 0 var(--ink); }
+.note { border:2px solid var(--ink); border-radius:14px; padding:1.2rem 1.3rem; background:var(--chalk); font-weight:600; font-size:var(--fs-body); letter-spacing:-.01em; box-shadow:5px 5px 0 var(--ink); }
 .note.sage { background:var(--grass); }
 .note.rose { background:var(--bubble); color:var(--chalk); }
 .read-col { max-width:60ch; margin:0 auto; }
-.read-col p { font-size:clamp(1.05rem,1.5vw,1.25rem); line-height:1.7; margin:0 0 1.2rem; opacity:.85; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; opacity:.85; }
 .read-col p:last-child { margin-bottom:0; }
-.read-k { display:block; text-align:center; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
 </style>
 </head>
 <body>
@@ -49,9 +49,9 @@
 <!-- HERO -->
 <header class="case-hero" data-tilt>
   <div class="case-bg">
-    <img class="mc-hero-img" src="assets/img/matchachin/bottle-lifestyle.jpg" alt="" aria-hidden="true" data-px="0.08" data-depth="0.5">
+    <img class="mc-hero-img" src="assets/img/matchachin/bottle-lifestyle.jpg" alt="" aria-hidden="true" data-depth="0.5">
     <div class="mc-hero-ov"></div>
-    <img class="hero-logo" src="assets/img/clients/matchachin.png" alt="" aria-hidden="true" data-px="0.05" data-depth="0.5">
+    <img class="hero-logo" src="assets/img/clients/matchachin.png" alt="" aria-hidden="true" data-depth="0.5">
   </div>
   <div class="wrap">
     <p class="case-kicker" data-depth="0.3">Case /05 · Marke &amp; Produkt · Archiv</p>
@@ -113,8 +113,8 @@
 <section class="section" style="padding-top:0">
   <div class="wrap">
     <div class="shot-grid two">
-      <div class="shot reveal" data-px="0.05"><img src="assets/img/matchachin/guayusa1.png" alt="Matchachin Guayusa: Verpackung und Flaschen, morgens und unterwegs" loading="lazy"></div>
-      <div class="shot reveal" data-px="0.09"><img src="assets/img/matchachin/matchachin_hp.png" alt="Matchachin Website: Energydrinks gab es gestern" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/matchachin/guayusa1.png" alt="Matchachin Guayusa: Verpackung und Flaschen, morgens und unterwegs" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/matchachin/matchachin_hp.png" alt="Matchachin Website: Energydrinks gab es gestern" loading="lazy"></div>
     </div>
   </div>
 </section>

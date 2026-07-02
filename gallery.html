@@ -28,7 +28,7 @@
 .lightbox { position: fixed; inset: 0; z-index: 9500; display: none; place-items: center; background: rgba(20,17,12,.93); padding: 4vmin; cursor: zoom-out; }
 .lightbox.on { display: grid; }
 .lightbox img { max-width: 92vw; max-height: 86vh; width: auto; height: auto; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
-.lb-cap { position: fixed; bottom: 3vmin; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .85; }
+.lb-cap { position: fixed; bottom: 3vmin; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .85; }
 .lb-close { position: fixed; top: 3vmin; right: 4vmin; width: 46px; height: 46px; border: 2px solid var(--chalk); border-radius: 50%; background: transparent; color: var(--chalk); font-size: 1.4rem; line-height: 1; cursor: pointer; }
 
 /* ---------- Hero ---------- */
@@ -39,9 +39,9 @@
 /* ---------- Nähkästchen ---------- */
 .g-words { position: relative; z-index: 2; max-width: 760px; margin: clamp(2rem,5vw,4rem) auto; padding: clamp(2rem,5vw,3.5rem);
   background: rgba(244,239,229,.92); border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 12px 12px 0 var(--ink); }
-.g-words p { font-size: clamp(1.05rem,1.5vw,1.3rem); line-height: 1.62; margin-bottom: 1.1rem; }
+.g-words p { font-size: var(--fs-body); line-height: 1.62; margin-bottom: 1.1rem; }
 .g-words p:last-child { margin-bottom: 0; }
-.g-words .lead-line { font-weight: 700; font-size: clamp(1.4rem,2.6vw,2.1rem); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 1.4rem; }
+.g-words .lead-line { font-weight: 700; font-size: var(--fs-h4); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 1.4rem; }
 .g-words .hl { color: var(--hot); }
 
 /* ---------- Technics 1210 ---------- */
@@ -73,8 +73,8 @@
 .startstop { position: absolute; left: 8%; bottom: 11%; width: 13%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #d23a3a, #8a1f1f); box-shadow: inset 0 1px 2px rgba(255,255,255,.5), 0 3px 6px rgba(0,0,0,.4); }
 .deck.spin .startstop { background: radial-gradient(circle at 40% 35%, #4ad26a, #1f8a3a); }
 .deck-brand { position: absolute; right: 9%; top: 56%; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; color: #5a5a5d; }
-.tt-credit { text-align: center; font-family: var(--mono); font-size: .76rem; letter-spacing: .1em; margin-top: 1.8rem; color: var(--chalk); opacity: .92; }
-.tt-hint { text-align: center; font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: var(--chalk); opacity: .65; margin-top: .8rem; }
+.tt-credit { text-align: center; font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .1em; margin-top: 1.8rem; color: var(--chalk); opacity: .92; }
+.tt-hint { text-align: center; font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--chalk); opacity: .65; margin-top: .8rem; }
 .wave { display: block; width: min(780px, 94vw); height: clamp(260px, 42vh, 400px); position: relative; left: 50%; transform: translateX(-50%); margin-top: .4rem; background: transparent; border: none; opacity: 0; transition: opacity .6s;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 90%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 90%, transparent 100%); }
@@ -87,7 +87,7 @@
   box-shadow: 0 14px 30px rgba(28,27,25,.22); background: var(--chalk); border: 1px solid rgba(28,27,25,.08); }
 .g-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .g-item .g-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: .5rem .7rem;
-  font-family: var(--mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase;
+  font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .12em; text-transform: uppercase;
   color: var(--chalk); background: linear-gradient(to top, rgba(20,17,12,.82), transparent); opacity: 0; transition: opacity .3s; }
 .g-item:hover { rotate: 0deg; transform: scale(1.06); z-index: 80; box-shadow: 18px 18px 0 var(--ink); }
 .g-item:hover .g-cap { opacity: 1; }
@@ -217,83 +217,82 @@
   const rnd = () => { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; };
   const rng = (a, b) => a + (b - a) * rnd();
 
-  const W = Math.max(document.documentElement.clientWidth, 320);
-  const vh = window.innerHeight;
-  const sf = Math.min(1, W / 1240);
   const canvas = document.getElementById('gcanvas');
-  let y = vh * 0.4;
-
-  items.forEach((it, i) => {
-    const baseW = (it.big ? rng(380, 540) : rng(210, 330)) * sf * 1.5;
-    const w = Math.round(baseW), h = Math.round(w / it.a);
-    const side = i % 3;
-    const xpct = side === 0 ? rng(1, 24) : side === 1 ? rng(50, 78) : rng(22, 56);
-    const x = Math.round(W * xpct / 100);
-    const a = document.createElement('a');
-    a.className = 'g-item';
-    a.style.left = x + 'px'; a.style.top = Math.round(y) + 'px';
-    a.style.width = w + 'px'; a.style.height = h + 'px';
-    a.style.setProperty('--r', rng(-9, 9).toFixed(1) + 'deg');
-    a.style.setProperty('--ar', it.a.toFixed(3));
-    a.style.opacity = (it.big ? 1 : 0.94).toFixed(2);
-    a.style.zIndex = it.big ? 30 : 12;
-    // Richtung mischen: manche fliegen seitlich, manche von oben nach unten
-    const vertical = i % 2 === 0;
-    if (vertical) {
-      a.setAttribute('data-px', rng(0.26, 0.5).toFixed(3));   // starker vertikaler Drift
-      a.setAttribute('data-px-x', rng(-14, 14).toFixed(0));
-    } else {
-      a.setAttribute('data-px', (it.big ? rng(0.06, 0.14) : rng(0.14, 0.26)).toFixed(3));
-      a.setAttribute('data-px-x', rng(-60, 60).toFixed(0));   // starker seitlicher Drift
-    }
-    a.innerHTML = `<img src="assets/img/${it.s}" alt="${it.l}" loading="lazy"><figcaption class="g-cap">${it.l}</figcaption>`;
-    canvas.appendChild(a);
-    y += rng(vh * 0.2, vh * 0.46);
-  });
-  const canvasH = Math.round(y + vh * 0.4);
-  canvas.style.height = canvasH + 'px';
-
-  /* ---------- Flyer-Aufbau: gespiegelter Papierstapel, scrollt mit ----------
-     Wie der Flyer: oben hell (Hero), unten hell (Footer), dazwischen Farbe von
-     außen (hell) nach innen (dunkel). Obere Hälfte und untere Hälfte sind an der
-     Mitte gespiegelt, die Diagonalen laufen dort zu einem Trapez zusammen.
-     Schatten weich und lang, zur Mitte hin tiefer. */
   const stack = document.getElementById('pstack');
-  if (stack) {
-    const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#4A2540']; // hell -> dunkel
-    const total = canvas.offsetTop + canvasH + 900;
-    stack.style.height = total + 'px';
-    stack.style.background = pal[0];               // helle Basis (Hero/Footer hell)
-    // Ping-Pong durch die Palette: hell -> dunkel -> hell, immer wieder.
-    const seq = [0, 1, 2, 3, 4, 5, 4, 3, 2, 1];    // Periode 10, dunkel bei Index 5
-    const bandH = 320;                             // Abstand der Blätter (Flächengröße)
-    const s = 90;                                  // dezenter Zickzack
-    const OV = 170;                                // Überlappung -> keine Lücken an Wenden
-    const PAD = 120;                               // Platz für die Schräge oben
-    const EH = bandH + OV + PAD;                   // jedes Blatt ist größer als der Abstand
-    const frag = document.createDocumentFragment();
-    const N = Math.ceil(total / bandH) + 2;
-    const tilt = (b) => (b % 2 === 0 ? s : -s);    // Naht kippt abwechselnd links/rechts hoch
 
-    for (let b = 0; b < N; b++) {
-      const color = pal[seq[b % seq.length]];
-      const tb = tilt(b);
-      const w = document.createElement('div');
-      w.className = 'pband';
-      w.style.top = (b * bandH - PAD) + 'px';
-      w.style.height = EH + 'px';
-      w.style.zIndex = String(b + 1);             // tieferes Blatt liegt oben, überlappt das vorige
-      w.style.filter = 'drop-shadow(0 -14px 30px rgba(16,8,4,.42))'; // Schatten aufs Blatt darüber
-      const i = document.createElement('i');
-      i.style.background = color;
-      // diagonale Oberkante (Naht), darunter voll gefüllt bis übers nächste Blatt
-      i.style.clipPath = `polygon(0 ${PAD}px, 100% ${PAD + tb}px, 100% ${EH}px, 0 ${EH}px)`;
-      w.appendChild(i);
-      frag.appendChild(w);
+  function buildGallery() {
+    seed = 20120401;
+    canvas.textContent = '';
+    const W = Math.max(document.documentElement.clientWidth, 320);
+    const vh = window.innerHeight;
+    const sf = Math.min(1, W / 1240);
+    let y = vh * 0.4;
+
+    items.forEach((it, i) => {
+      const baseW = (it.big ? rng(380, 540) : rng(210, 330)) * sf * 1.5;
+      const w = Math.round(baseW), h = Math.round(w / it.a);
+      const side = i % 3;
+      const xpct = side === 0 ? rng(1, 24) : side === 1 ? rng(50, 78) : rng(22, 56);
+      const x = Math.round(W * xpct / 100);
+      const a = document.createElement('a');
+      a.className = 'g-item';
+      a.href = '#'; a.tabIndex = 0; a.setAttribute('role', 'button');
+      a.setAttribute('aria-label', it.l + ' vergrößern');
+      a.style.left = x + 'px'; a.style.top = Math.round(y) + 'px';
+      a.style.width = w + 'px'; a.style.height = h + 'px';
+      a.style.setProperty('--r', rng(-9, 9).toFixed(1) + 'deg');
+      a.style.setProperty('--ar', it.a.toFixed(3));
+      a.style.opacity = (it.big ? 1 : 0.94).toFixed(2);
+      a.style.zIndex = it.big ? 30 : 12;
+      a.innerHTML = `<img src="assets/img/${it.s}" alt="${it.l}" loading="lazy"><span class="g-cap">${it.l}</span>`;
+      canvas.appendChild(a);
+      y += rng(vh * 0.2, vh * 0.46);
+    });
+    const canvasH = Math.round(y + vh * 0.4);
+    canvas.style.height = canvasH + 'px';
+
+    // Flyer-Hintergrund neu aufbauen
+    if (stack) {
+      stack.textContent = '';
+      const pal = ['#ECE7DB', '#9DB6AE', '#CC7A4E', '#D2868F', '#6E2E40', '#4A2540'];
+      const total = canvas.offsetTop + canvasH + 900;
+      stack.style.height = total + 'px';
+      stack.style.background = pal[0];
+      const seq = [0, 1, 2, 3, 4, 5, 4, 3, 2, 1];
+      const bandH = 320;
+      const s = 90;
+      const OV = 170;
+      const PAD = 120;
+      const EH = bandH + OV + PAD;
+      const frag = document.createDocumentFragment();
+      const N = Math.ceil(total / bandH) + 2;
+      const tilt = (b) => (b % 2 === 0 ? s : -s);
+
+      for (let b = 0; b < N; b++) {
+        const color = pal[seq[b % seq.length]];
+        const tb = tilt(b);
+        const w = document.createElement('div');
+        w.className = 'pband';
+        w.style.top = (b * bandH - PAD) + 'px';
+        w.style.height = EH + 'px';
+        w.style.zIndex = String(b + 1);
+        w.style.filter = 'drop-shadow(0 -14px 30px rgba(16,8,4,.42))';
+        const i = document.createElement('i');
+        i.style.background = color;
+        i.style.clipPath = `polygon(0 ${PAD}px, 100% ${PAD + tb}px, 100% ${EH}px, 0 ${EH}px)`;
+        w.appendChild(i);
+        frag.appendChild(w);
+      }
+      stack.appendChild(frag);
     }
-
-    stack.appendChild(frag);
   }
+
+  buildGallery();
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(buildGallery, 250);
+  }, { passive: true });
 })();
 
 /* ---------- Lightbox: Klick auf ein Werk = groß ---------- */
@@ -324,6 +323,7 @@
 
 /* ---------- Technics 1210: Pride Tears + Waveform (wie der Hero) ---------- */
 (() => {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tt = document.getElementById('tt');
   const wave = document.getElementById('wave');
   if (!tt) return;
@@ -340,6 +340,7 @@
   }
   // 3D-Equalizer-Feld wie das Sinus-Feld im Hero, getrieben vom Frequenzspektrum
   function draw3D() {
+    if (!analyser) { raf = requestAnimationFrame(draw3D); return; }
     const c = wave, ctx = c.getContext('2d');
     const dpr = Math.min(devicePixelRatio || 1, 1.5);          // Pixel-Dichte begrenzt = weniger Last
     if (c.width !== Math.round(c.clientWidth * dpr)) { c.width = Math.round(c.clientWidth * dpr); c.height = Math.round(c.clientHeight * dpr); }
@@ -382,7 +383,7 @@
     if (!src) { try { ensureAudio(); } catch (e) {} }
     if (actx && actx.state === 'suspended') actx.resume();
     if (audioEl) audioEl.play().catch(() => {});
-    cancelAnimationFrame(raf); draw3D();
+    if (!reduced) { cancelAnimationFrame(raf); draw3D(); }
   }
   function stop() {
     playing = false; tt.classList.remove('spin'); wave.classList.remove('on');

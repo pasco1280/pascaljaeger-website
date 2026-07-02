@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Nichts dahinter · Pascal Jäger</title>
+<meta name="description" content="Diese Seite existiert nicht. Wie eine umgefallene Pappkulisse.">
+<meta name="theme-color" content="#57432E">
+<link rel="canonical" href="https://pascaljaeger.de/404.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+body { background: #57432E; color: var(--chalk); display: grid; place-items: center; min-height: 100svh; text-align: center; }
+.ff { max-width: 28rem; padding: 2rem; }
+.ff svg { width: 100%; max-width: 260px; height: auto; margin-bottom: 2rem; }
+.ff h1 { font-family: var(--mono); font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; opacity: .55; margin-bottom: .8rem; }
+.ff p { font-size: clamp(1.1rem, 2vw, 1.4rem); line-height: 1.5; opacity: .82; margin-bottom: 2rem; }
+.ff a { color: var(--chalk); border-bottom: 1.5px solid var(--chalk); padding-bottom: .15em; font-weight: 600; }
+.ff a:hover { color: var(--hot); border-color: var(--hot); }
+</style>
+</head>
+<body>
+<div class="ff">
+  <svg viewBox="0 0 240 180" aria-hidden="true">
+    <!-- Umgefallene Pappkulisse: ein einfaches Haus aus Karton, gekippt -->
+    <rect x="70" y="50" width="100" height="90" rx="2" fill="#B5885A" stroke="#57432E" stroke-width="2.5" transform="rotate(-22 120 95)"/>
+    <polygon points="120,8 60,55 180,55" fill="#C99A6B" stroke="#57432E" stroke-width="2.5" transform="rotate(-22 120 95)"/>
+    <!-- Gestanztes Fenster -->
+    <rect x="90" y="68" width="24" height="22" rx="1" fill="#1C1B19" transform="rotate(-22 120 95)"/>
+    <!-- Klebelasche, abgerissen -->
+    <path d="M 170 52 Q 178 48 176 38" fill="none" stroke="#57432E" stroke-width="1.5" transform="rotate(-22 120 95)"/>
+    <!-- Staub / Schatten -->
+    <ellipse cx="120" cy="155" rx="70" ry="6" fill="rgba(28,27,25,.3)"/>
+  </svg>
+  <h1>404 · Nichts dahinter</h1>
+  <p>Diese Seite existiert nicht. Wie eine umgefallene Pappkulisse — ein Blick hinter die Fassade, und da ist nur die Werkbank.</p>
+  <p><a href="index.html">← Zurück zum Index</a></p>
+</div>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    window.location.href = a.getAttribute('href');
+  });
+});
+</script>
+</body>
+</html>
