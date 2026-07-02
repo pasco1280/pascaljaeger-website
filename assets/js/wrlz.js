@@ -353,7 +353,7 @@
     };
     const GRASS = 'rgba(143,177,166,';   // #8FB1A6, hartkodierte Nahtfarbe
     const SEQ = (window.matchMedia('(orientation: portrait)').matches && window.innerWidth < 820)
-      ? { stadt: ['m_stadt/m_stadt_', 60], strand: ['m_strand/m_strand_', 45], maya: null, end: 'endbild/endbild_mobil' }
+      ? { stadt: ['m_stadt/m_stadt_', 60], strand: ['m_strand/m_strand_', 45], maya: ['m_maya/m_maya_', 34], end: 'endbild/endbild_mobil' }
       : { stadt: ['stadt/stadt_', 65],     strand: ['strand/strand_', 50],     maya: ['maya/maya_', 48], end: 'endbild/endbild' };
     const staticHero = reduced ||
       (navigator.connection && navigator.connection.saveData) ||
