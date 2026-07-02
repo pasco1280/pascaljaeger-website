@@ -538,9 +538,11 @@
       const beachPos = seqPos(p, PM.strand[0], PM.strand[1], beachSeq.n);
       const bAlpha = segT(p, PM.portal[0], PM.portal[1]);
       if (bAlpha > 0) drawSeq(beachCtx, beachSeq, beachPos, bAlpha);
-      // Szene 06: Maya (eigener Take, gleicher Ort) blendet über den gehaltenen Strand
+      // Szene 06: Maya (eigener Take, gleicher Ort) blendet über den gehaltenen Strand.
+      // Deckkraft gedeckelt (nicht bis 1.0): bleibt Erscheinung, nie Vollbild-Zeichentrick.
+      const MAYA_MAX = 0.4;
       if (mayaSeq) {
-        const mAlpha = segT(p, PM.mayaFade[0], PM.mayaFade[1]);
+        const mAlpha = segT(p, PM.mayaFade[0], PM.mayaFade[1]) * MAYA_MAX;
         const mayaPos = seqPos(p, PM.maya[0], PM.maya[1], mayaSeq.n);
         if (mAlpha > 0) drawSeq(beachCtx, mayaSeq, mayaPos, mAlpha);
         if (p > 0.6) mayaSeq.prefetch(mayaPos.i);
