@@ -1,5 +1,221 @@
 # HANDOFF — Portfolio v4 (pascaljaeger.online)
 
+## ATELIER DIVE GEBAUT (3.7. Mittag, Claude Code / Fable 5): /atelier als 3D-Tauchfahrt
+Neue Route `atelier/index.html` + `atelier/src/*.js` (ES-Module, kein Build): WebGL-Unterwasserwelt
+nach dem George-&-Jonathan-Prinzip. Pride Tears läuft als <audio>+AnalyserNode (Bänder wie im
+Gallery-Bus), die Noten aus `assets/audio/pride-tears.mid` stehen als LICHT-SKULPTUR im Raum:
+Zeit = Z-Achse (SPEED 7 u/s), Pitch = Y, Spur = Farbe (TRACK_COLORS in beams.js), Länge = Dauer,
+alles eine InstancedBufferGeometry, Envelope rechnet der Vertex-Shader allein aus uTime (kein
+CPU-Update). Pro Note ein Lichtfleck (Points, flammt beim Playhead). Kamera folgt dem Playhead,
+Maus-Drag orbitet frei (XYZ), Wheel zoomt, Beat gibt FOV-Kick. Atmosphäre: FogExp2 (Farb-Lerp
+Oberfläche→Tiefe), 1400 Plankton-Partikel (GPU-gewrappt um Kamera), Voronoi-Kaustik-Boden
+(bass-reaktiv), 36 God-Rays (pulsieren mit Energy), warme Sonne am Start + Finale-Sonne ab
+t-45s. 14 Werke aus der Gallery-Liste hängen als schwebende Tafeln (Passepartout + Halo,
+lazy Texturen, toneMapped false) entlang der Reise. Einstieg: Endbild-Strand + Play-Kreis,
+Dive-Transition (Blur/Kälte/Ripple, Kamera sinkt 6s), Ende: Endcard (Zodiak) mit Replay/Links.
+THREE.js r170 selbst gehostet (`atelier/lib/three.module.min.js`, 676 KB), eigener MIDI-Parser
+(~100 Zeilen, Tempo-Map, Multi-Track-ready). Fallbacks: kein WebGL2/reduced-motion/Save-Data →
+Endbild + Musik (mode-still, Kenburns nur ohne reduced-motion). Esc/× beendet sauber.
+Verifiziert im Preview: 61 fps Desktop UND mobil 375px, Orbit/Zoom/Replay/Exit/Endcard getestet.
+Test-Hook: `window.__dive` (seek/time/stage/el — Achtung: Dev-Server kann kein HTTP-Range,
+Seek klemmt lokal, live auf Cloudflare geht es).
+WICHTIGE FALLE: `active` ist reserviertes GLSL-Wort (kostete eine Debug-Runde).
+
+NACHMITTAGS-PASS (Pascals Feedback + 4 Stem-MIDIs): Der Raum ist jetzt RUHIG (kein FOV-Kick,
+keine Kamera-Sinuswelle, Kaustik/Partikel fast entkoppelt vom Audio), NUR die Spuren leben.
+Pascal hat 4 Stems geliefert (assets/audio/pride-tears-{bass,drums,other,vocals}.mid,
+1059/3546/4952/219 Noten, volle Länge — die Vocal-Lücke ist Geschichte). main.js lädt die
+Liste MIDI_URLS, eine Datei = eine Spur = eine Lane/Farbe (parseMidi(buf, forceTrack)):
+0 Bass grün unten links, 1 Drums chalk-weiß unten rechts, 2 Other (Triangle-Synths) = warme
+Leitspur Mitte (#E8925C, Pascals „rote Linie"), 3 Vocals rosé oben. DAW-Prinzip: parallele
+Lanes, Akkorde fächern über pitch%24 vertikal (sonst brennt additive Überlagerung weiß aus).
+Kamera (2. Iteration nach Pascals Feedback „anstrengend, limitiert"): DRAG-Orbit unbegrenzt in
+alle Richtungen (theta unbounded, auch Rückwärtsblick auf anfliegende Spuren), Schwung beim
+Loslassen, Maus-Position nur noch feines Parallax (±0.22 rad), Wheel + Pinch zoomen.
+Beams (3. Iteration, „weniger Glow, runde Kabel"): Noten sind jetzt OPAKE Kapsel-Impostor
+(rundes Profil via sqrt(1-r²), runde Kappen, discard-Kante, eigener Fog-Mix, depthWrite an,
+KEIN Additiv-Stacking mehr), Grundleuchtkraft 0.75, weißer Kern nur beim Aufleuchten.
+God-Rays als getrenntes weiches Additiv-Mesh, Lichtflecken dezenter, Werk-Halo 0.14.
+AV-Latenz: anchor-basierte Clock, avOffset = 0.04 + outputLatency,
+live tunebar via `__dive.setOffset(s)` — Pascal soll hörend nachstellen, Richtung: Bild zu
+früh → Offset erhöhen. PREVIEW-FALLE: Panel setzt document.hidden → rAF pausiert →
+`__dive.step()` rendert synchron einen Frame (wie __reel).
+Sync-Werkzeug (Pascals Beat-Latenz-Feedback): Ziffer 0-4 waehlt Master/Bass/Drums/Other/Vocals,
+Pfeil hoch/runter schiebt die Spur in 5ms-Schritten frueher/spaeter (beams.js setTrackOffset
+verschiebt Position UND Trigger-Zeit zusammen, damit Kabel und Aufleuchten synchron bleiben),
+gespeichert in localStorage (dive-track-sync). Grund fuer die Verspaetung: KI-Audio-zu-MIDI-
+Transkription erkennt perkussive Einsaetze praezise, gehaltene Toene (Other/Vocals) systematisch
+zu spaet (50-200ms), kein Bug im Sync-Code selbst (eine Uhr treibt alle Noten gleich).
+
+GEOMETRIE-PASS (Pascals Feedback „Glitches beim Beruehren", „Zukunft muss verschlossen bleiben"):
+Kabel sind jetzt ECHTE 3D-Zylinder (InstancedBufferGeometry auf CylinderGeometry-Basis, 6 radiale
+Segmente, per-Instanz nur Skalierung/Verschiebung im Vertex-Shader, keine Rotationsmatrix noetig
+weil die Geometrie einmalig per rotateX auf die Z-Achse gedreht wird) statt kamera-facing Billboard-
+Impostor — kein Z-Fighting mehr moeglich, da echtes Volumen statt zweier sich kreuzender Ebenen.
+Zukunfts-Sperre: `step(aMeta.x, uTime)` kollabiert die Geometrie auf einen Punkt (nullflaechig,
+wird nicht gerastert) bis der Playhead die Note erreicht, danach normale Groesse — Vergangenheit
+bleibt sichtbar (Envelope haelt nach dem Release einen Dimm-Sockel), Zukunft ist komplett
+unsichtbar bis zum eigenen Einsatz. Verifiziert: kompletter Vorschub aller Noten +1000s macht die
+Kabel vollstaendig unsichtbar (Regressionstest), 61fps trotz schwererer Geometrie, Screenshot mit
+Blick zurueck zeigt nur Vergangenheit + aktuell aufleuchtende Kabel, keine Flacker-Artefakte.
+PREVIEW-FALLE (neu entdeckt): Der Preview-Harness injiziert offenbar zwischen einzelnen Tool-
+Aufrufen ein Escape, das den Escape-Handler (`stopAll()`) ausloest — Tests IMMER als EINEN
+zusammenhaengenden eval-Call bauen (await/setTimeout innerhalb desselben Calls), nicht auf
+State-Persistenz ueber mehrere separate Tool-Calls hinweg verlassen.
+
+REFERENZ-ABGLEICH (Pascal schickte eine MKV-Aufnahme von georgeandjonathan.com, 3.7. Nachmittag):
+Frames extrahiert und angeschaut (ffmpeg-Stills, kein Making-of-Text mehr noetig). Erkenntnisse:
+geführte Text-Intro vor der freien Kamera ("Hello and welcome", "This is every note in the song",
+"Drag the screen to move the camera"), runde Roehren mit weisser Spitze bestaetigen unseren Ansatz,
+ABER Referenz-Palette ist sattes Neon (Magenta/Blau/Cyan/Limette) und Lanes liegen flacher/als
+Fluchtpunkt-Korridor statt gestapelter Hoehen-Lanes. Pascal per AskUserQuestion entschieden:
+Hybrid-Palette (eigene Markenfarben, aber satter) + kurze gefuehrte Intro wie die Referenz. Beides
+umgesetzt (siehe unten). Volle Neon-Uebernahme und der Fluchtpunkt-Korridor-Umbau sind NICHT
+gemacht (Pascal wollte die Lane-Geometrie nicht anfassen, nur Farbe+Intro).
+
+ONPOINT-MIX + SYNC FINAL (3.7. Nachmittag): Pascal lieferte `Pridetears_onpoint.mp3` (identische
+Laenge 411.48s, vermutlich Ableton-Re-Export mit korrigierter Stem-Ausrichtung) — eingesetzt als
+assets/audio/pride-tears.mp3. Pascal hat per Pfeiltasten-Tool selbst auf -195ms Master-Offset
+gestellt und das als richtig empfunden, jetzt als HARTER DEFAULT in audio.js (avOffset = -0.195,
+localStorage-Override bleibt fuer weiteres Feintuning erhalten). Pro-Spur-Korrektur (setTrackOffset)
+war mit dem Onpoint-Mix nicht mehr noetig, defaults bleiben bei [0,0,0,0].
+
+FARBEN + INTRO UMGESETZT (3.7. Nachmittag): TRACK_COLORS in beams.js sind jetzt die echten
+Seiten-Grundfarben (sage/chalk/plum/hot aus wrlz.css) rechnerisch in HSL aufgesaettigt (S+0.32,
+L auf 0.58-0.68 angehoben) statt frei erfundener Hex-Werte: Bass `#71CFB1` (Sage), Drums `#EAC471`
+(Chalk/Gold), Other/Leitspur `#E24672` (Plum/Magenta — bewusst die praesenteste Farbe fuer die
+"rote Linie"), Vocals `#ED7E3B` (Hot/Orange). Kurze gefuehrte Intro in main.js (runIntroCaptions):
+zwei Einblendungen nach dem Abtauchen ("Jede Spur ihr eigenes Licht" bei 2.2-5.8s, "Ziehen bewegt
+die Kamera" bei 7.2-10.8s), eigenes `#caption`-Element in index.html im Look der Referenz-Textbox
+(Border, Chalk-Text, dezenter Blur-Hintergrund), Timer werden in stopAll() sauber geklaert.
+Verifiziert per Timeline-Log (0.5-0.8s-Schritte) und Screenshot: Timing exakt, keine Konsolenfehler.
+
+MELODISCHE KONTUR (3.7. Nachmittag, Pascals Wunsch: "Spuren gehen auch mal hoch/runter/links/
+rechts, nicht nur geradeaus"): layoutNote in beams.js ist jetzt zustandsbehaftet
+(createLayout()-Factory statt reiner Funktion, ein Aufruf pro Szenenaufbau in main.js/createBeams,
+noten muessen zeitlich sortiert durchlaufen werden — sind sie bereits). Pro Spur laeuft ein
+gleitender Mittelwert (EMA, alpha 0.12) von Tonhoehe und Velocity mit; weicht eine Note davon ab,
+verschiebt sich ihre Position in genau diese Richtung (hoeher als der Verlauf = Y nach oben,
+lauter als der Verlauf = X zur Seite), auf ±9 Halbtoene bzw. ±0.55 Velocity geklemmt gegen
+Ausreisser. GEFUNDENER BUG beim ersten Versuch: die Other-Spur lag bei x=0/y~9, praktisch exakt
+auf der Default-Kameraposition (Kamera bei Theta=0 sitzt selbst nahe x=0) — der neue Ausschlag
+schwenkte Noten direkt in die Linse, sah aus wie Kamera-Clipping (riesige rote Flaechen). Fix:
+LANES-Basispositionen von x=0/y~9 weggerueckt, X-Skala von 9 auf 6 reduziert. Verifiziert:
+Positions-Streuung deutlich groesser als die alten starren Spuren (X -7.8..8.1, Y -0.7..8.7 statt
+vorher enger), kein Clipping mehr im Screenshot, 61fps unveraendert. LEHRE: bei jeder Aenderung an
+Noten-Positionen pruefen, ob eine Spur zufaellig auf der Default-Kamera-Position liegt.
+
+KARIBIK-PASS + HUD + LIGHTBOX (3.7. spaeter Nachmittag, Pascals Vier-Punkte-Feedback nach dem
+Frau-Testlauf): (1) Wasser heller/tuerkiser statt Hamburger-Hafen-Gruen — PALETTE.fogSurface/
+fogDeep in scene.js auf helles Tuerkis umgestellt, Fog-Dichte gesenkt (main.js + createStage),
+toneMappingExposure 1.12->1.22. (2) Sandiger Boden — underwater.js floor ist nicht mehr rein
+additiv/transparent auf Schwarz, sondern eine OPAKE Sand-Flaeche (warme Sand-Toene, Ripple+Grain-
+Textur ohne Bild-Asset) mit der bestehenden Voronoi-Kaustik als Modulation obendrauf, nutzt jetzt
+uni.fogColor/uni.fogDensity fuer den Distanz-Fade statt eigener Fade-Konstante. (3) Gallery-Werke
+erscheinen frueher UND proportional zur Tracklaenge (t0=max(4,totalDur*0.02), t1=totalDur*0.92
+statt fixer Sekundenwerte) — wichtig fuers geplante kuerzere Intro-Stueck. (4) Werke anklickbar:
+gallery.js bekommt camera+canvas+onOpen-Parameter, eigene Pointer-Erkennung (Distanz>8px oder
+Dauer>600ms = Drag, kein Klick), Raycaster gegen die Bild-Meshes, oeffnet eine neue Lightbox
+(index.html #lightbox, groSSes Bild + eigener Schliessen-Button). BUG gefunden+gefixt: der
+Lightbox-Close-Button lag exakt auf den Exit-Button-Koordinaten (beide top:22/right:26) — Fix ist
+`.lightbox-on #exit { opacity:0; pointer-events:none }` plus den Close-Button als Kind von
+#lightbox zu verschachteln (erbt automatisch dessen opacity/pointer-events-Kaskade, keine
+doppelte Sichtbarkeits-Logik noetig). Escape schliesst jetzt zuerst nur die Lightbox (return),
+zweites Escape verlaesst das Erlebnis — verifiziert in einem zusammenhaengenden eval-Call (die
+Escape-Autoinjektion des Preview-Harness zwischen Tool-Calls verfaelscht sonst den Test, siehe
+bekannte Falle oben).
+HUD statt Kurz-Captions (Pascals Frau brauchte mehr Erklaerung): die alte 2-Zeilen-Sequenz
+(#caption, runIntroCaptions) ist komplett ersetzt durch ein persistentes #hud-Panel oben links
+im U-Boot-Look (ui-monospace-Font, Eckklammern via ::before/::after, pulsierender Punkt), zeigt
+Trackname+Credit+Kurzerklaerung, bleibt 32s stehen (showHud()/hideHud() in main.js). Text ist
+hart auf Pride Tears codiert, MUSS angepasst werden sobald der neue Suno-Track Standard wird.
+Verifiziert: kein Shader-Fehler, Screenshot zeigt alle vier Punkte korrekt, 60-61fps stabil
+(ein einzelner 46fps-Ausreisser war Tab-Ermuedung nach langer Testsession, kein Regressions-Bug,
+durch Reload bestaetigt). Test-Hooks erweitert: `window.__dive.worksCtl()` und `.THREE`.
+
+NAV-UMSTELLUNG + MOBILE-CHECK (3.7. Abend, Pascals Entscheidung "Galerie raus, Atelier drin"):
+Site-weiter Nav-Link "Atelier" zeigt jetzt ueberall auf `atelier/index.html` statt `gallery.html`
+(index.html x2, alle case-*.html, impressum.html, datenschutz.html — per sed ersetzt, verifiziert).
+`gallery.html` bleibt als Datei bestehen (nicht geloescht, nur aus der Haupt-Nav entfernt) und
+wurde umbenannt zu "Buntkram" (title/og:title/h1), damit nicht zwei Seiten denselben Atelier-
+Titel tragen. atelier/index.html: der alte "← Atelier"-Zurueck-Link (zeigte auf gallery.html)
+heisst jetzt "← Index" und zeigt auf ../index.html; die redundante "Zum Atelier"-Zeile in der
+Endcard ist raus (man ist ja bereits im Atelier), Endcard hat jetzt nur noch Replay + Index.
+sitemap.xml wurde NICHT angefasst (listet noch gallery.html, kein atelier/ — das ist ein
+Deploy-Zeitpunkt-Thema, nicht jetzt).
+Mobile-Verifikation der letzten Baenderung (375px): HUD-Panel ueberlappt den Exit-Button nicht
+(24px Abstand gemessen), Lightbox oeffnet zuverlaessig per Touch-Tap (pointerType:'touch'
+getestet, nicht nur Maus), Touch-Drag dreht die Kamera korrekt, Endcard sauber ohne die
+entfernte Zeile, gallery.html traegt jetzt "Buntkram" im Titel. Keine Konsolenfehler.
+
+THE TIDE EINGEBAUT (3.7. Abend): Pascals eigens komponierter Track ist jetzt der STANDARD-Beat
+beim Eintauchen, Pride Tears ist die optionale Zweitauswahl. Dateien in `atelier_neu/music/the
+tide/` (6 Stems: Drums/Bass/Keyboard/Percussion/Synth/Brass als WAV+MIDI, plus Master-MP3
+"the tide.mp3", 232.6s/120bpm) kopiert nach `assets/audio/the-tide{,-drums,-bass,-keyboard,
+-percussion,-synth,-brass}.{mp3,mid}`. main.js kennt jetzt ein TRACKS-Array (statt fest codierter
+Konstanten) mit Titel/Credit/Audio-URL/MIDI-Liste/Spur-Labels/HUD-Text pro Track. Grosser Umbau
+fuer Mehrfach-Track-Support:
+- `ensureTrackLoaded(track)` ersetzt das alte einmalige `buildScene()`: promise-gepoolt (ein
+  frueher Vorlade-Aufruf und ein Play-Klick auf denselben Track teilen sich dieselbe Promise,
+  kein Doppel-Fetch), baut Audio IMMER frisch (neuer AudioContext pro Track), baut die 3D-Szene
+  nur wenn sich der Track wirklich aendert (Replay desselben Tracks fasst weder Audio noch Szene
+  an, wichtig weil Browser ein Limit an gleichzeitigen AudioContexts haben).
+- beams.js/underwater.js/gallery.js haben jetzt alle eine `dispose()`-Funktion (Geometrien/
+  Materialien/Texturen freigeben, Event-Listener abmelden), damit beim Track-Wechsel die alte
+  Spur sauber aus der EINEN persistenten THREE.Scene raus- und die neue reinkommt — der Renderer/
+  die Szene/Kamera selbst werden nur EINMAL erzeugt (zweiter `new THREE.WebGLRenderer` auf
+  demselben Canvas waere riskant, siehe Kommentar in main.js).
+- audio.js kennt keine Tracks/localStorage mehr: `createAudio(url, defaultOffset)` nimmt den
+  Default als Parameter, persistiert nichts mehr selbst. main.js speichert Sync-Werte jetzt
+  pro Track unter eigenen Keys (`dive-sync-<id>`, `dive-track-sync-<id>`), sonst wuerden sich
+  Pride-Tears- und Tide-Korrekturen gegenseitig ueberschreiben (unterschiedliche Spur-Anzahl:
+  4 vs. 6). The Tide hat noch KEINEN getesteten Sync-Default (defaultOffset:0, ungehoert) —
+  Pascal muss das noch mit dem Pfeiltasten-Tool einmessen.
+- Track-Picker auf dem Play-Screen (zwei Pill-Buttons, `.track-opt`), Klick laedt den
+  gewaehlten Track schon im Hintergrund vor. HUD/Credit/Endcard sind jetzt komplett dynamisch
+  (kein hart codierter Trackname mehr).
+- Sync-Tool generalisiert: Zifferntasten 0-9 pruefen `currentTrack.labels.length`, ungueltige
+  Tasten werden ignoriert (Pride Tears hat 4 Spuren "1-4", The Tide hat 6 "1-6").
+Verifiziert: beide Tracks einzeln + Wechsel hin und zurueck (Dispose/Rebuild-Pfad), Replay ohne
+Neuaufbau, Sync-Tool mit korrekten Labels pro Track, Endcard/HUD/Credit korrekt, keine
+Konsolenfehler, 61fps mit The Tide.
+
+OFFEN: (1) Pascal muss The Tide per Pfeiltasten-Tool einmessen (Standard ist aktuell 0ms,
+ungetestet). (2) Feintuning (Lane-Positionen, Kamera-Default, ob die 6 Tide-Farben/Lanes so
+passen) = Sonnet/Cline. (3) `atelier_neu/` (WAV-Rohdaten + MKV-Referenzaufnahme) ist in
+.gitignore/.assetsignore. Dev-Server kann Verzeichnis-Index + avif/mp3/mid-MIME
+(.claude/server.js erweitert), aber KEIN HTTP-Range (Audio-Seek klemmt lokal, live auf
+Cloudflare geht es). (4) Noch nie deployed, alles nur lokal getestet — Deploy nur auf
+explizites "deploy" von Pascal. (5) Nichts von alledem ist bisher committed.
+
+PRE-DEPLOY-AUDIT (3.7. spaeter Abend, Pascal hat Commit+Deploy fuer "wenn das durch ist"
+freigegeben): kompletter Pruefdurchgang vor dem ersten Go-Live.
+- .gitignore/.assetsignore: `atelier_neu/` korrekt ausgeschlossen, `atelier/` UND alle neuen
+  assets/audio/*-Dateien korrekt NICHT ausgeschlossen (waeren sonst live kaputt).
+- git status sauber: nur erwartete Aenderungen, keine Stray-Dateien.
+- Alle Audio/MIDI/Font/Frame-Pfad-Referenzen gegen echte Dateinamen gegengeprueft (Gross-/
+  Kleinschreibung exakt gleich — macOS ist case-insensitive, Cloudflare-Deploy ist es nicht,
+  klassische Falle die lokal nie auffaellt).
+- Keine gallery.html-Restspuren mehr in anderen Seiten (nur noch ihr eigenes canonical-Tag).
+  404.html unbetroffen.
+- sitemap.xml war noch nicht aktualisiert: gallery.html stand mit Prioritaet 0.8 drin, /atelier/
+  fehlte komplett. Gefixt: /atelier/ jetzt mit 0.8 (uebernimmt die Rolle), gallery.html auf 0.5
+  runtergestuft (existiert weiter, ist aber nicht mehr die Hauptnav-Destination).
+- ECHTER BUG GEFUNDEN UND GEFIXT: in main.js waren alle drei ensureTrackLoaded()-Aufrufstellen
+  mit `if (full)` gated. Im Fallback-Modus (reduced-motion oder kein WebGL2) haette das bedeutet:
+  `audio` bleibt fuer immer `null`, ein Klick auf Play crasht mit "Cannot read properties of
+  null (reading 'play')". Fix: alle drei Aufrufe unconditional gemacht (ensureTrackLoaded baut
+  Audio in jedem Fall, ueberspringt nur intern den 3D-Aufbau bei !full — das war schon richtig,
+  nur die AUSSEREN if(full)-Gates drumherum waren der Fehler). Der reduced-motion-Modus liess
+  sich im Preview-Tool nicht direkt erzwingen (keine Media-Emulation fuer prefers-reduced-motion
+  verfuegbar), Fix ist stattdessen per Code-Lesung verifiziert (grep bestaetigt: keine if(full)
+  mehr um die drei Aufrufstellen).
+- Stresstest: 4x schnell hintereinander zwischen beiden Tracks gewechselt, dann eingetaucht —
+  keine Konsolenfehler, kein Leck, Dispose/Rebuild haelt das aus.
+Fazit: bereit fuer Commit+Deploy, SOBALD Pascal seinen Teil (The-Tide-Sync per Ohr einmessen)
+bestaetigt hat. Bis dahin nicht deployen (Deploy-Trigger ist weiterhin das explizite Wort
+"deploy", diese Freigabe war an die Bedingung geknuepft).
+
 **UPDATE 2026-07-02 Abend: Relaunch KULISSENBRUCH, Stand für den neuen Chat.**
 
 Lesereihenfolge: diese Datei, dann `_notes/session-2026-07-01.md` (komplettes Log beider Tage), dann `_notes/design-brief-2026.md` (freigegeben, v1.1 mit Nachträgen) und `_notes/bestandsaufnahme-2026-07-01.md`.

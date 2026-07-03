@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier — Pascal Jäger</title>
+<meta name="description" content="Eine Tauchfahrt durch The Tide. Pascals Musik als Licht, seine Arbeiten als schwebende Werke im Wasser.">
+<meta name="theme-color" content="#052220">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Atelier — Pascal Jäger">
+<meta property="og:description" content="Eine Tauchfahrt durch The Tide.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.jpg">
+<style>
+@font-face {
+  font-family: 'Zodiak';
+  src: url('../assets/fonts/Zodiak/Zodiak-Variable_2026.woff2') format('woff2-variations');
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Jakarta';
+  src: url('../assets/fonts/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght_2026.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-display: swap;
+}
+:root {
+  --deep: #052220;
+  --teal: #0E4A43;
+  --chalk: #ECE7DB;
+  --ice: #AED9E4;
+  --hot: #C77E52;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--deep); font-family: 'Jakarta', system-ui, sans-serif; color: var(--chalk); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+#stage {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  opacity: 0; transition: opacity 2s ease .5s;
+}
+.state-diving #stage, .state-under #stage { opacity: 1; }
+.mode-still #stage { display: none; }
+
+#surface { position: fixed; inset: 0; overflow: hidden; }
+#surface img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: filter 2.4s ease, transform 2.6s cubic-bezier(.5,0,.8,.5);
+}
+#surface::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(5,34,32,.25), rgba(5,34,32,.92));
+  opacity: 0; transition: opacity 2.2s ease;
+}
+.state-diving #surface img {
+  filter: blur(16px) saturate(.55) brightness(.5) hue-rotate(-14deg);
+  transform: scale(1.2) translateY(9%);
+}
+.state-diving #surface::after { opacity: 1; }
+.state-under #surface, .state-end #surface { visibility: hidden; }
+.state-diving #surface { pointer-events: none; }
+
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.12) translateY(-2.5%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .mode-still.state-under #surface { visibility: visible; }
+  .mode-still.state-under #surface img { animation: kenburns 60s ease-in-out infinite alternate; }
+  .mode-still.state-under #surface::after { opacity: .55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mode-still.state-under #surface { visibility: visible; }
+  .mode-still.state-under #surface::after { opacity: .45; }
+  #surface img, #surface::after, #stage, #ui, #endcard { transition: none !important; }
+}
+
+#ui {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  transition: opacity 1.4s ease; z-index: 3;
+}
+.state-diving #ui, .state-under #ui, .state-end #ui { opacity: 0; pointer-events: none; }
+.entry { display: grid; justify-items: center; gap: 26px; }
+#play {
+  width: 96px; height: 96px; border-radius: 50%;
+  border: 1.5px solid var(--chalk); background: rgba(5,34,32,.28);
+  backdrop-filter: blur(3px);
+  color: var(--chalk); cursor: pointer; display: grid; place-items: center;
+  transition: transform .4s ease, background .4s ease, border-color .4s ease;
+  animation: breathe 4.2s ease-in-out infinite;
+}
+#play:hover, #play:focus-visible { transform: scale(1.08); background: rgba(14,74,67,.45); border-color: var(--ice); }
+#play:focus-visible { outline: 2px solid var(--ice); outline-offset: 4px; }
+#play svg { width: 30px; height: 30px; margin-left: 5px; }
+@keyframes breathe { 0%,100% { box-shadow: 0 0 0 0 rgba(236,231,219,.22); } 50% { box-shadow: 0 0 0 16px rgba(236,231,219,0); } }
+@media (prefers-reduced-motion: reduce) { #play { animation: none; } }
+.credit {
+  font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(236,231,219,.82); font-weight: 400;
+  text-shadow: 0 1px 12px rgba(5,34,32,.7);
+}
+
+.track-picker { display: flex; gap: 4px; border: 1px solid rgba(236,231,219,.3); border-radius: 999px; padding: 4px; }
+.track-opt {
+  font-family: inherit; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(236,231,219,.65); background: none; border: none; border-radius: 999px;
+  padding: 8px 16px; cursor: pointer; transition: background .3s ease, color .3s ease;
+}
+.track-opt.is-active { color: var(--deep); background: var(--chalk); }
+.track-opt:not(.is-active):hover, .track-opt:not(.is-active):focus-visible { color: var(--chalk); }
+
+#exit {
+  position: fixed; top: 22px; right: 26px; z-index: 4;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(236,231,219,.4); background: rgba(5,34,32,.3);
+  color: var(--chalk); font-size: 20px; line-height: 1; cursor: pointer;
+  opacity: 0; pointer-events: none; transition: opacity 1s ease 1.6s, border-color .3s ease;
+  font-family: inherit;
+}
+#exit:hover, #exit:focus-visible { border-color: var(--chalk); }
+.state-under #exit { opacity: .75; pointer-events: auto; }
+.lightbox-on #exit { opacity: 0; pointer-events: none; }
+
+#back {
+  position: fixed; top: 30px; left: 30px; z-index: 4;
+  color: rgba(236,231,219,.85); text-decoration: none; font-size: 13px;
+  letter-spacing: .12em; text-transform: uppercase;
+  border-bottom: 1px solid transparent; transition: border-color .3s ease, opacity 1s ease;
+  text-shadow: 0 1px 10px rgba(5,34,32,.8);
+}
+#back:hover, #back:focus-visible { border-color: var(--chalk); }
+.state-diving #back, .state-under #back { opacity: 0; pointer-events: none; }
+
+.ripple {
+  position: fixed; z-index: 5; width: 12px; height: 12px; border-radius: 50%;
+  border: 1.5px solid var(--chalk); transform: translate(-50%,-50%) scale(0);
+  pointer-events: none; animation: rip 1.25s ease-out forwards;
+}
+@keyframes rip {
+  0% { transform: translate(-50%,-50%) scale(0); opacity: .8; }
+  100% { transform: translate(-50%,-50%) scale(30); opacity: 0; }
+}
+
+#sync {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 5;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(236,231,219,.85); text-shadow: 0 1px 8px rgba(5,34,32,.8);
+  opacity: 0; transition: opacity .4s ease; pointer-events: none;
+}
+
+/* U-Boot-HUD oben links: Track-Credit + kurze Erklaerung, bleibt lange stehen. */
+#hud {
+  position: fixed; top: 26px; left: 26px; z-index: 3; max-width: 300px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .06em; line-height: 1.75;
+  color: var(--ice); text-transform: uppercase;
+  padding: 14px 16px; border: 1px solid rgba(174,217,228,.35);
+  background: rgba(5,34,32,.4); backdrop-filter: blur(2px);
+  opacity: 0; transition: opacity 1.3s ease; pointer-events: none;
+}
+.hud-on #hud { opacity: 1; }
+#hud::before, #hud::after {
+  content: ''; position: absolute; width: 9px; height: 9px;
+  border-color: var(--ice); border-style: solid;
+}
+#hud::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+#hud::after { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+.hud-title { color: var(--chalk); font-size: 13px; letter-spacing: .09em; }
+.hud-dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--hot); margin-right: 8px; animation: hudpulse 1.6s ease-in-out infinite;
+}
+@keyframes hudpulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
+.hud-sep { height: 1px; background: rgba(174,217,228,.25); margin: 9px 0; }
+@media (max-width: 640px) { #hud { max-width: 74vw; font-size: 10px; top: 20px; left: 20px; } }
+
+#lightbox {
+  position: fixed; inset: 0; z-index: 8; display: grid; place-items: center;
+  background: rgba(5,34,32,.94); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none; transition: opacity .35s ease;
+}
+.lightbox-on #lightbox { opacity: 1; pointer-events: auto; }
+#lightbox img {
+  max-width: 88vw; max-height: 84vh; object-fit: contain;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+}
+#lightbox-close {
+  position: fixed; top: 22px; right: 26px; z-index: 9;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(236,231,219,.5); background: rgba(5,34,32,.4);
+  color: var(--chalk); font-size: 20px; line-height: 1; cursor: pointer; font-family: inherit;
+}
+#lightbox-close:hover, #lightbox-close:focus-visible { border-color: var(--chalk); }
+
+#endcard {
+  position: fixed; inset: 0; z-index: 6; display: grid; place-items: center;
+  background: radial-gradient(120% 90% at 50% 110%, #123f39 0%, var(--deep) 62%);
+  opacity: 0; pointer-events: none; transition: opacity 2.4s ease;
+}
+.state-end #endcard { opacity: 1; pointer-events: auto; }
+.end-inner { display: grid; justify-items: center; gap: 14px; text-align: center; padding: 0 24px; }
+.end-inner h2 {
+  font-family: 'Zodiak', serif; font-weight: 600; font-size: clamp(34px, 6vw, 58px);
+  color: var(--chalk); letter-spacing: .01em;
+}
+.end-inner p { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: rgba(236,231,219,.6); }
+.end-actions { display: flex; gap: 22px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+.end-actions button, .end-actions a {
+  font-family: inherit; font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--chalk); background: none; border: 1px solid rgba(236,231,219,.45);
+  border-radius: 999px; padding: 12px 22px; cursor: pointer; text-decoration: none;
+  transition: border-color .3s ease, background .3s ease;
+}
+.end-actions button:hover, .end-actions a:hover,
+.end-actions button:focus-visible, .end-actions a:focus-visible { border-color: var(--ice); background: rgba(174,217,228,.08); }
+</style>
+</head>
+<body class="state-surface">
+<h1 class="vh">Atelier. Eine Tauchfahrt durch The Tide.</h1>
+
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<div id="surface" aria-hidden="true">
+  <picture>
+    <source media="(max-width: 700px)" srcset="../assets/frames/endbild/endbild_mobil.avif" type="image/avif">
+    <source srcset="../assets/frames/endbild/endbild.avif" type="image/avif">
+    <img src="../assets/frames/endbild/endbild.jpg" alt="" decoding="async">
+  </picture>
+</div>
+
+<a id="back" href="../index.html">← Index</a>
+
+<div id="ui">
+  <div class="entry">
+    <div class="track-picker" role="radiogroup" aria-label="Track wählen">
+      <button type="button" class="track-opt is-active" data-track="tide">The Tide</button>
+      <button type="button" class="track-opt" data-track="pride">Pride Tears</button>
+    </div>
+    <button id="play" aria-label="Eintauchen: The Tide abspielen">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg>
+    </button>
+    <span class="credit" id="credit">The Tide · Adamn Sampler</span>
+  </div>
+</div>
+
+<button id="exit" aria-label="Erlebnis verlassen">×</button>
+<div id="sync" aria-hidden="true"></div>
+
+<div id="hud" aria-hidden="true"></div>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Werk in Großansicht">
+  <button id="lightbox-close" aria-label="Großansicht schließen">×</button>
+  <img id="lightbox-img" alt="">
+</div>
+
+<div id="endcard" role="dialog" aria-label="Ende der Tauchfahrt">
+  <div class="end-inner">
+    <h2 id="end-title">The Tide</h2>
+    <p id="end-credit">Adamn Sampler</p>
+    <div class="end-actions">
+      <button id="replay">Nochmal eintauchen</button>
+      <a href="../index.html">Index</a>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "./lib/three.module.min.js" } }
+</script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
