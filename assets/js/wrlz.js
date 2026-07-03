@@ -32,8 +32,9 @@
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      if (lenis) lenis.scrollTo(target, { offset: -10, duration: 1.4 });
-      else target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      // data-skip springt sofort (Rückweg-Falle des gepinnten Heros vermeiden)
+      if (lenis) lenis.scrollTo(target, a.hasAttribute('data-skip') ? { immediate: true, force: true } : { offset: -10, duration: 1.4 });
+      else target.scrollIntoView({ behavior: (reduced || a.hasAttribute('data-skip')) ? 'auto' : 'smooth' });
     });
   });
 
@@ -293,6 +294,8 @@
     const svg = reel.querySelector('.reel-svg');
     const intro = reel.querySelector('.reel-intro');
     const hint = reel.querySelector('.reel-hint');
+    const slate = document.getElementById('slate');
+    let slateTxt = '';
     const NS = 'http://www.w3.org/2000/svg';
 
     // Das s steht im Wort: Ink-Füllung in Ruhe, weicht als Tor dem Portal-Licht
@@ -353,6 +356,11 @@
       maya:    [0.78, 0.985],  // Szene 06: Rauch-Maya läuft über den Sand
       mayaFade: [0.78, 0.815], // weicher Take-Übergang (beide Takes, gleicher Ort, andere Wellen)
       intro:   [0.90, 0.99],   // Title Card erst, wenn Maya sich auflöst
+      slates: [                // Filmklappe, zählt beim Scrubben vor und zurück
+        [0.00, '01 / 07 STADT'], [0.127, '02 / 07 BRUCH'], [0.30, '03 / 07 SOG'],
+        [0.50, '04 / 07 UMSCHLAG'], [0.68, '05 / 07 STILLE'], [0.78, '06 / 07 MAYA'],
+        [0.92, '07 / 07 ÜBERGABE'],
+      ],
     };
     const GRASS = 'rgba(143,177,166,';   // #8FB1A6, hartkodierte Nahtfarbe
     const SEQ = (window.matchMedia('(orientation: portrait)').matches && window.innerWidth < 820)
@@ -584,7 +592,12 @@
       intro.style.opacity = io.toFixed(3);
       intro.style.transform = `translateY(${(20 - 20 * io).toFixed(1)}px)`;
       intro.style.pointerEvents = io > 0.5 ? 'auto' : 'none';
-      hint.style.opacity = clamp(0.55 - p * 6, 0, 0.55).toFixed(3);
+      if (slate) {
+        let txt = PM.slates[0][1];
+        for (const [sp, name] of PM.slates) { if (p >= sp) txt = name; }
+        if (txt !== slateTxt) { slateTxt = txt; slate.textContent = txt; }
+      }
+      hint.style.opacity = (0.6 * (1 - segT(p, 0.9, 0.97))).toFixed(3);   // Slate weicht der Title Card
     }
 
     function tick() {

@@ -42,11 +42,20 @@ img.reel-endbild { object-fit: cover; }
 .reel-tag .hl { color: var(--hot); }
 .reel-cta { background: var(--ink); color: var(--chalk); border-color: var(--ink); }
 .reel-cta:hover { background: var(--hot); border-color: var(--hot); color: var(--chalk); }
+/* Szenen-Slate: die Hint-Zeile ist die Filmklappe, zählt beim Scrubben vor und zurück */
 .reel-hint {
   position: absolute; z-index: 4; bottom: 1.6rem; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: .6rem;
-  font-family: var(--mono); font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ink); opacity: .55;
+  display: flex; align-items: center; gap: .6rem; white-space: nowrap;
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--chalk); text-shadow: 0 1px 10px rgba(20,17,12,.55); opacity: .6;
 }
+/* Skip ohne Entschuldigung: ab der ersten Sekunde da, springt hinter den Pin */
+.reel-skip {
+  position: absolute; z-index: 4; top: clamp(4.2rem, 8vh, 5.5rem); left: var(--gutter);
+  font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--chalk); text-shadow: 0 1px 10px rgba(20,17,12,.55); opacity: .55; transition: opacity .25s;
+}
+.reel-skip:hover, .reel-skip:focus-visible { opacity: 1; }
 .reel-hint-bar { display: inline-block; width: 30px; height: 1.5px; background: currentColor; position: relative; overflow: hidden; }
 .reel-hint-bar::after { content:''; position:absolute; inset:0; background: var(--hot); animation: cueslide 1.8s infinite; }
 @keyframes cueslide { 0%{ transform: translateX(-100%);} 60%,100%{ transform: translateX(100%);} }
@@ -201,12 +210,13 @@ img.reel-endbild { object-fit: cover; }
       <p class="reel-tag">Produkte denken.<br><span class="hl">KI orchestrieren.</span></p>
       <a class="btn reel-cta" href="#kontakt">Projekt starten <span class="arrow">→</span></a>
     </div>
-    <div class="reel-hint" aria-hidden="true">scroll <span class="reel-hint-bar"></span></div>
+    <a class="reel-skip" href="#film-ende" data-skip>Direkt zur Arbeit →</a>
+    <div class="reel-hint"><span id="slate">01 / 07 STADT</span> <span class="reel-hint-bar" aria-hidden="true"></span></div>
   </div>
 </section>
 
 <!-- ===================== ATEMPAUSE (Raum für die Katze) ===================== -->
-<section class="breath" aria-hidden="true">
+<section class="breath" id="film-ende" aria-hidden="true">
   <span class="whisper">Atempause</span>
 </section>
 
