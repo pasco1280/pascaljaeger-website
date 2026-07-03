@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery — Pascal Jäger · Illustration, Logo, Web, Sound, Produkt</title>
+<title>Atelier — Pascal Jäger · Illustration, Logo, Web, Sound, Produkt</title>
 <meta name="description" content="Alles von A bis Z: Illustrationen, Logodesign, Webdesign, Flyer, Sound-Cover, Apps und Produkte. Ein Kopf, viele Materien.">
 <meta name="theme-color" content="#EBE5D7">
 <link rel="canonical" href="https://pascaljaeger.de/gallery.html">
 <meta name="author" content="Pascal Jäger">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Gallery — Pascal Jäger">
+<meta property="og:title" content="Atelier — Pascal Jäger">
 <meta property="og:description" content="Ein Kopf, viele Materien. Illustration, Logo, Web, Sound, Produkt.">
 <meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.png">
 <link rel="stylesheet" href="assets/css/wrlz.css">
@@ -31,18 +31,9 @@
 .lb-cap { position: fixed; bottom: 3vmin; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--chalk); opacity: .85; }
 .lb-close { position: fixed; top: 3vmin; right: 4vmin; width: 46px; height: 46px; border: 2px solid var(--chalk); border-radius: 50%; background: transparent; color: var(--chalk); font-size: 1.4rem; line-height: 1; cursor: pointer; }
 
-/* ---------- Hero ---------- */
-.g-hero { position: relative; padding: clamp(7rem,14vh,10rem) var(--gutter) clamp(1rem,3vw,2rem); text-align: center; }
-.g-hero .h2, .g-hero .kicker { color: var(--ink); }
-.g-hero .lead { max-width: 44ch; margin: 1.2rem auto 0; opacity: .82; color: var(--ink); }
-
-/* ---------- Nähkästchen ---------- */
-.g-words { position: relative; z-index: 2; max-width: 760px; margin: clamp(2rem,5vw,4rem) auto; padding: clamp(2rem,5vw,3.5rem);
-  background: rgba(244,239,229,.92); border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 12px 12px 0 var(--ink); }
-.g-words p { font-size: var(--fs-body); line-height: 1.62; margin-bottom: 1.1rem; }
-.g-words p:last-child { margin-bottom: 0; }
-.g-words .lead-line { font-weight: 700; font-size: var(--fs-h4); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 1.4rem; }
-.g-words .hl { color: var(--hot); }
+/* ---------- Hero: das Atelier braucht keinen Text ---------- */
+.g-hero { position: relative; padding-top: clamp(4rem,9vh,6rem); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 
 /* ---------- Technics 1210 ---------- */
 .tt-wrap { position: relative; z-index: 2; width: min(480px, 92vw); margin: clamp(2.5rem,6vw,4rem) auto 0; }
@@ -77,17 +68,37 @@
 .tt-hint { text-align: center; font-family: var(--mono); font-size: var(--fs-mono); letter-spacing: .18em; text-transform: uppercase; color: var(--chalk); opacity: .65; margin-top: .8rem; }
 /* ---------- Audio-Reaktivität: die Galerie ist der Visualizer ----------
    Karten reagieren über die translate-Prop (komponiert mit rotate/--r und
-   Hover-transform), der Beat blitzt genau eine sichtbare Karte an. */
-.g-item { will-change: translate; }
-.g-item.beat-hit { box-shadow: 0 0 0 3px var(--chalk), 20px 20px 0 var(--ink); }
+   Hover-transform), der Beat blitzt genau eine sichtbare Karte an. Das
+   Licht der Werkstattlampe wandert mit der Musik, alle Schatten folgen
+   dem Winkel (--sh-x/--sh-y, 10 Hz nachgeführt, Transition glättet). */
+.g-item { will-change: translate; box-shadow: var(--sh-x, 0px) var(--sh-y, 14px) 30px rgba(28,27,25,.22); }
+body.live .g-item { box-shadow: var(--sh-x, 0px) var(--sh-y, 14px) 18px rgba(12,9,6,.48); }
+.g-item.beat-hit { box-shadow: 0 0 0 3px var(--chalk), var(--sh-x, 0px) var(--sh-y, 14px) 0 var(--ink); }
+@keyframes thump { 30% { scale: 1.035; } 100% { scale: 1; } }
+.g-item.thump { animation: thump .26s cubic-bezier(.2,.8,.2,1); }
+
+/* Set-Karten: Karton-Passepartout + Archivnummer (Kontaktbogen-Logik) */
+.g-item { border: 7px solid #EFE9DC; }
+.g-item .g-num { position: absolute; top: 7px; left: 9px; z-index: 2;
+  font-family: var(--mono); font-size: var(--fs-mono-s); letter-spacing: .12em;
+  color: rgba(28,27,25,.72); background: rgba(244,239,228,.92); padding: .18em .55em;
+  border-radius: 3px; box-shadow: 0 2px 5px rgba(28,27,25,.2); }
+
+/* Die Werkstattlampe: ein warmer Lichtkegel über allem, wandert mit dem Track */
+.lamp { position: fixed; inset: 0; z-index: 500; pointer-events: none; mix-blend-mode: screen;
+  opacity: 0; transition: opacity 1.4s ease;
+  background: radial-gradient(clamp(340px, 42vw, 680px) at var(--lamp-x, 50%) var(--lamp-y, 40%),
+    rgba(244,228,196,.26), rgba(244,228,196,.07) 46%, transparent 70%); }
+body.live .lamp { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .lamp { display: none; } }
 
 /* ---------- Nacht-Modus: Nadel drauf = die Werkstatt dimmt ----------
    body.live ist der Verwandlungs-Hook, die volle Regie (Palette, Lampe,
    Schattenwinkel) baut Phase 6 darauf auf. Overlay statt filter: billig. */
 .paper-stack::after { content: ''; position: absolute; inset: 0; z-index: 999; background: #1C1B19; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
 body.live .paper-stack::after { opacity: .35; }
-.g-words, .g-hero { transition: opacity 1.2s ease; }
-body.live .g-words, body.live .g-hero { opacity: .72; }
+.g-hero { transition: opacity 1.2s ease; }
+body.live .g-hero { opacity: .72; }
 
 /* ---------- Chaos-Canvas ---------- */
 .g-canvas { position: relative; width: 100%; overflow: hidden; z-index: 1; }
@@ -110,6 +121,7 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
 <body>
 
 <div class="paper-stack" id="pstack" aria-hidden="true"></div>
+<div class="lamp" aria-hidden="true"></div>
 
 <nav class="nav">
   <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
@@ -121,21 +133,8 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
 </nav>
 
 <header class="g-hero wrap">
-  <span class="kicker" style="opacity:.55">Alles von A bis Z</span>
-  <h1 class="h2" style="margin-top:1rem">Buntkram.</h1>
-  <p class="lead">Illustration, Logo, Web, Flyer, Sound, Produkt. Ein Kopf, viele Materien.</p>
+  <h1 class="visually-hidden">Atelier — Pascal Jäger · Illustration, Logo, Web, Sound, Produkt</h1>
 </header>
-
-<!-- NÄHKÄSTCHEN -->
-<section class="wrap">
-  <div class="g-words">
-    <p class="lead-line">Ich habe ADHS. Lange hieß das, ein Kopf der nicht stillhält.</p>
-    <p>Irgendwann habe ich aufgehört, das Chaos zu bekämpfen, und angefangen es zu lenken. Ein Scanner springt zwischen den Dingen. Von einer Zeile Code zu einem Akkord, von dort zum Boden unter einer Tomate. Dabei gehe ich in eine Materie oft weiter hinein als jemand, der sie studiert hat. Ich betrachte sie selten von außen. Ich lebe eine Weile in ihr.</p>
-    <p>Ich war Koch. Später habe ich das Restaurant gebaut, das die Gerichte trägt, und das Sounddesign dazu, weil ein Farm-to-Table-Raum klingen muss, wenn der Teller kommt. Auch der Boden ist ein Entwurf. Ich arbeite an den Rezepten der Erde, bis die Frucht so schmeckt wie sie soll, und richte sie dann an, als hinge alles an diesem einen Teller.</p>
-    <p>Das nenne ich <span class="hl">Design</span>. Geschmack, der bis in die Wurzel reicht. Eine Sache so lange ernst nehmen, bis aus Sorgfalt Liebe wird und am Ende Genuss.</p>
-    <p>Die Arbeiten hier könnten verschiedener kaum sein. Sie verschwimmen, weil derselbe Kopf sie angefasst hat.</p>
-  </div>
-</section>
 
 <!-- TECHNICS 1210 + WAVEFORM -->
 <div class="tt-wrap">
@@ -252,7 +251,7 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
       a.style.setProperty('--ar', it.a.toFixed(3));
       a.style.opacity = (it.big ? 1 : 0.94).toFixed(2);
       a.style.zIndex = it.big ? 30 : 12;
-      a.innerHTML = `<img src="assets/img/${it.s}" alt="${it.l}" loading="lazy"><span class="g-cap">${it.l}</span>`;
+      a.innerHTML = `<img src="assets/img/${it.s}" alt="${it.l}" loading="lazy"><span class="g-num">PJ-${String(i + 1).padStart(3, '0')}</span><span class="g-cap">${it.l}</span>`;
       canvas.appendChild(a);
       y += rng(vh * 0.2, vh * 0.46);
     });
@@ -353,7 +352,8 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
 
   /* Bus: geglättete Bänder (0..1) + Beat via Bass-Flux mit Cooldown */
   const bus = { bass: 0, mid: 0, high: 0, energy: 0, beat: false };
-  let fluxPrev = 0, beatCool = 0;
+  const pstack = document.getElementById('pstack');
+  let fluxPrev = 0, beatCool = 0, frame = 0;
   function readBands() {
     analyser.getByteFrequencyData(freq);
     const avg = (a, b) => { let s = 0; for (let i = a; i < b; i++) s += freq[i]; return s / ((b - a) * 255); };
@@ -396,6 +396,16 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
     root.style.setProperty('--au-bass', bus.bass.toFixed(3));
     root.style.setProperty('--au-energy', bus.energy.toFixed(3));
     const t = performance.now() / 1000;
+    frame++;
+    if (frame % 6 === 0) {   // Licht bei ~10 Hz nachführen, die Schatten-Transition glättet
+      const ang = -35 + Math.sin(t * 0.13) * 18 + bus.energy * 26;
+      const rad = (ang - 90) * Math.PI / 180;
+      root.style.setProperty('--sh-x', (Math.cos(rad) * -16).toFixed(1) + 'px');
+      root.style.setProperty('--sh-y', (Math.sin(rad) * -16).toFixed(1) + 'px');
+      root.style.setProperty('--lamp-x', (50 + Math.sin(t * 0.21) * 26 + bus.bass * 5).toFixed(1) + '%');
+      root.style.setProperty('--lamp-y', (38 + Math.cos(t * 0.17) * 22).toFixed(1) + '%');
+    }
+    if (pstack) pstack.style.translate = `0 ${(bus.bass * 7).toFixed(1)}px`;   // der Boden bebt mit
     cards.forEach(c => {
       if (!c.el._vis) return;
       const a = bus.bass * c.wb + bus.mid * c.wm + bus.high * c.wh;
@@ -410,6 +420,10 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
         pick.el.classList.add('beat-hit');
         setTimeout(() => pick.el.classList.remove('beat-hit'), 200);
       }
+      vis.filter(c => c.wb > 0.5).slice(0, 2).forEach(c => {   // Bass-Kick: große Werke zucken
+        c.el.classList.remove('thump'); void c.el.offsetWidth;
+        c.el.classList.add('thump');
+      });
     }
     raf = requestAnimationFrame(tick);
   }
@@ -428,8 +442,10 @@ body.live .g-words, body.live .g-hero { opacity: .72; }
     if (audioEl) audioEl.pause();
     cancelAnimationFrame(raf);
     cards.forEach(c => { c.el.style.translate = ''; });         // alles setzt sich
+    if (pstack) pstack.style.translate = '';
     root.style.setProperty('--au-bass', '0');
     root.style.setProperty('--au-energy', '0');
+    ['--sh-x', '--sh-y', '--lamp-x', '--lamp-y'].forEach(v => root.style.removeProperty(v));
   }
   const toggle = () => playing ? stop() : start();
   tt.addEventListener('click', toggle);

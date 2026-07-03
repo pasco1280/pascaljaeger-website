@@ -17,11 +17,13 @@ wrlz.css ausser du ergaenzt dort nur Vars. Kein Player-UI bauen (kein
 Fortschrittsbalken, keine Buttons), die Platte bleibt der einzige Regler.
 Keine Dependencies, kein Build.
 
-1. ATELIER-LOOK (Tag-Zustand): Die Karten werden Set-Karten wie im Brief:
-   schmales Karton-Passepartout (Toene um --karton/#B5885A, innen Chalk),
-   Mono-Archivnummer auf jeder Karte (PJ-001 aufsteigend, Position wie
-   Kontaktbogen), ruhige Schatten. Der Flyer-Papier-Hintergrund bleibt
-   erhalten (Farben, Baender, Seed).
+1. ATELIER-LOOK (Tag-Zustand): Basis existiert (7px-Passepartout #EFE9DC,
+   .g-num-Archivnummern PJ-001ff). Verfeinere: Karton-Ton statt neutralem
+   Creme pruefen (Richtung #EFE9DC bis heller Karton), Passepartout-Staerke
+   pro Kartengroesse, Archivnummer-Chip-Look (Klebeetikett-Anmutung).
+   Der Flyer-Papier-Hintergrund bleibt erhalten (Farben, Baender, Seed).
+   Die Seite ist bewusst TEXTFREI (nur h1 visually-hidden, tt-credit,
+   tt-hint, End-CTA) — keinen Text wieder einbauen.
 
 2. NACHT-MODUS (body.live, Hook existiert): Das Overlay auf .paper-stack
    dimmt schon auf 0.35, bau die Verwandlung aus: Karten-Schatten werden
@@ -29,12 +31,11 @@ Keine Dependencies, kein Build.
    Hero und Naehkaestchen dimmen (vorhanden), tt-credit und tt-hint bleiben
    lesbar. Alle Uebergaenge um 1.2s ease, beim Stop setzt sich alles zurueck.
 
-3. LICHT: Fuehre --light-angle als Root-Var ein (Startwert -35deg) und
-   leite die box-shadow-Richtung der Karten daraus ab (cos/sin einmal in JS
-   berechnen und als --sh-x/--sh-y setzen, CSS nutzt die Vars). Im
-   live-Zustand wandert der Winkel langsam mit bus.energy (im tick eine
-   Zeile: Winkel += energy * kleiner Faktor). Verfeinere .beat-hit:
-   Chalk-Ring plus eine schmale Hot-Kante (#C77E52), kein Doppel-Schatten.
+3. LICHT: Das System existiert (--sh-x/--sh-y bei 10 Hz im tick, .lamp mit
+   --lamp-x/--lamp-y als wandernder Screen-Blend-Kegel). Tune: Lampen-
+   Radius/Waerme, Wander-Tempo, Schatten-Tiefe Tag vs. Nacht. Verfeinere
+   .beat-hit: Chalk-Ring plus eine schmale Hot-Kante (#C77E52), kein
+   Doppel-Schatten. Die Lampe darf im Tag-Zustand NICHT sichtbar sein.
 
 4. KARTEN-TUNING: lift 16 / sway 7 sind Startwerte, finde Werte, bei denen
    grosse Karten spuerbar auf Bass-Kicks reagieren und kleine auf Hi-Hats
