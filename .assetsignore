@@ -4,6 +4,8 @@ node_modules
 .claude
 .gitignore
 .assetsignore
+.env
+.env.local
 wrangler.toml
 README.md
 *.md

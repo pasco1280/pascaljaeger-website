@@ -1,5 +1,24 @@
 # HANDOFF — Portfolio v4 (pascaljaeger.online)
 
+## DEPLOYED + SICHERHEITSVORFALL (3.7. Nacht): Atelier Dive ist live, .env war kurz offen
+Commit `57d41a5`, dann `npx wrangler deploy` auf Pascals Wort "deploy". Live:
+https://pascaljaeger.pasco1280.workers.dev — `/`, `/atelier/`, `/gallery` (Clean-URL-Redirect
+von gallery.html, normal), Audio/MIDI-Assets alle mit 200 geprueft.
+SICHERHEITSVORFALL beim ersten Deploy: `.env` (enthaelt KLING_ACCESS_KEY, KLING_SECRET_KEY,
+LEONARDO_API_KEY) stand NICHT in `.assetsignore` und wurde von wrangler als oeffentliche
+Static-Asset-Datei mit hochgeladen (HTTP 200 auf /.env bestaetigt). Sofort bemerkt (Wrangler-
+Log zeigte `+ /.env` in der Upload-Liste), `.env`+`.env.local` zu `.assetsignore` ergaenzt,
+sofort neu deployed — `/.env` liefert jetzt 404, verifiziert. Exposure-Fenster war kurz
+(Sekunden bis niedrige Minuten zwischen den beiden Deploys), aber die Datei WAR live erreichbar.
+**Pascal sollte die drei Keys (Kling Access+Secret, Leonardo) sicherheitshalber rotieren**,
+auch wenn es keinen Hinweis auf Abgriff gibt — bei einem oeffentlich erreichbaren Secret kann
+man Zugriff durch Dritte nie zu 100% ausschliessen. Andere Dotfiles/wrangler.toml/.git wurden
+nachtraeglich geprueft, alle korrekt mit 404 (kein weiterer Vorfall).
+LEHRE: `.assetsignore` und `.gitignore` sind ZWEI GETRENNTE Listen mit unterschiedlichem Zweck.
+`.env` stand in `.gitignore` (daher nie im Git-Repo), aber NICHT in `.assetsignore` (daher live
+exponiert) — beide muessen bei jedem neuen Secret/Config-File separat gepflegt werden, das eine
+schuetzt nicht automatisch vor dem anderen.
+
 ## ATELIER DIVE GEBAUT (3.7. Mittag, Claude Code / Fable 5): /atelier als 3D-Tauchfahrt
 Neue Route `atelier/index.html` + `atelier/src/*.js` (ES-Module, kein Build): WebGL-Unterwasserwelt
 nach dem George-&-Jonathan-Prinzip. Pride Tears läuft als <audio>+AnalyserNode (Bänder wie im
