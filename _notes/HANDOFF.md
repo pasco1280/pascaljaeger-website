@@ -1,6 +1,22 @@
 # HANDOFF — Portfolio v4 (pascaljaeger.online)
 
-## NACHBESSERUNGEN NACH DEM ERSTEN LIVE-CHECK (3.7. spaete Nacht, NOCH NICHT COMMITTED)
+## MOBILE PICKER-LAYOUT-SPRUNG (3.7. Nacht, NOCH NICHT COMMITTED/DEPLOYED)
+Pascal auf dem Live-Handy: beim Umschalten The Tide <-> Pride Tears auf dem Play-Screen
+"bewegt sich alles", der Credit-Text unter dem Play-Button war nicht zentriert und hat den
+Rest verschoben. Ursache: `.credit` (unter `#ui{display:grid;place-items:center}` /
+`.entry{justify-items:center}`) hatte kein `text-align`, wurde als Grid-Item aber auf volle
+Spaltenbreite (375px) aufgeblasen sobald der laengere Pride-Tears-Text ("· Beatport Charts
+2012") auf 2 Zeilen umbrach — Text stand dadurch linksbuendig am Bildschirmrand statt
+zentriert, UND weil die Zeilenzahl (1 vs. 2) die Gesamthoehe von `.entry` veraenderte, hat
+`#ui`s Zentrierung den KOMPLETTEN Block (Picker + Play-Button + Credit) neu einsortiert —
+das war das gemeldete "alles versetzt sich". Fix in `atelier/index.html`: `.credit` bekommt
+`text-align:center`, `line-height:1.5`, `min-height:3em` (reserviert IMMER 2 Zeilen Platz,
+The Tide mit 1 Zeile Text schiebt dadurch nichts mehr), mobil zusaetzlich `max-width:280px`
+fuer einen ausgewogeneren Umbruch statt einer sehr langen + einer sehr kurzen Zeile. Verifiziert:
+`#play`-Bounding-Box exakt identisch (x:141,y:360.5) bei The Tide UND Pride Tears auf 375px,
+Desktop weiterhin einzeilig ohne sichtbaren Effekt durch die reservierte Mindesthoehe.
+
+## NACHBESSERUNGEN NACH DEM ERSTEN LIVE-CHECK (3.7. spaete Nacht, COMMIT b8fa02c, DEPLOYED)
 Pascal hat nach dem Deploy live getestet, drei Punkte kamen zurueck:
 1. **Mobile-Hero-Ruckeln (Android)**: gemeldet als "subtile Glitches beim Scrollen, Meer/Katze
    betroffen, haengt mit der nicht ganz starren Android-Navi zusammen". Untersucht per Subagent
