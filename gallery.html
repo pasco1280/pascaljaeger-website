@@ -73,16 +73,23 @@
    dem Winkel (--sh-x/--sh-y, 10 Hz nachgeführt, Transition glättet). */
 .g-item { will-change: translate; box-shadow: var(--sh-x, 0px) var(--sh-y, 14px) 30px rgba(28,27,25,.22); }
 body.live .g-item { box-shadow: var(--sh-x, 0px) var(--sh-y, 14px) 18px rgba(12,9,6,.48); }
-.g-item.beat-hit { box-shadow: 0 0 0 3px var(--chalk), var(--sh-x, 0px) var(--sh-y, 14px) 0 var(--ink); }
+.g-item.beat-hit { box-shadow: 0 0 0 2px var(--chalk), 0 0 0 4px var(--hot), var(--sh-x, 0px) var(--sh-y, 14px) 18px rgba(12,9,6,.48); }
+.g-item:focus-visible { outline: 3px solid var(--hot); outline-offset: 3px; }
 @keyframes thump { 30% { scale: 1.035; } 100% { scale: 1; } }
 .g-item.thump { animation: thump .26s cubic-bezier(.2,.8,.2,1); }
 
-/* Set-Karten: Karton-Passepartout + Archivnummer (Kontaktbogen-Logik) */
-.g-item { border: 7px solid #EFE9DC; }
+/* Set-Karten: Karton-Passepartout + Archivnummer (Kontaktbogen-Logik).
+   Nachts kippt das Passepartout Richtung Umbra, das Etikett wird dunkel. */
+.g-item { border: 7px solid #EFE9DC; transition: rotate .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, border-color 1.2s ease; }
+body.live .g-item { border-color: #8a7358; }
 .g-item .g-num { position: absolute; top: 7px; left: 9px; z-index: 2;
   font-family: var(--mono); font-size: var(--fs-mono-s); letter-spacing: .12em;
   color: rgba(28,27,25,.72); background: rgba(244,239,228,.92); padding: .18em .55em;
-  border-radius: 3px; box-shadow: 0 2px 5px rgba(28,27,25,.2); }
+  border-radius: 3px; box-shadow: 0 2px 5px rgba(28,27,25,.2); transition: background 1.2s ease, color 1.2s ease; }
+body.live .g-item .g-num { background: rgba(28,27,25,.55); color: rgba(244,239,228,.85); }
+
+/* Lightbox pulsiert im live-Zustand leise mit der Energie des Tracks */
+body.live .lightbox img { box-shadow: 0 0 0 calc(var(--au-energy, 0) * 8px) rgba(244,239,228,.22), 0 30px 80px rgba(0,0,0,.6); }
 
 /* Die Werkstattlampe: ein warmer Lichtkegel über allem, wandert mit dem Track */
 .lamp { position: fixed; inset: 0; z-index: 500; pointer-events: none; mix-blend-mode: screen;
@@ -91,6 +98,23 @@ body.live .g-item { box-shadow: var(--sh-x, 0px) var(--sh-y, 14px) 18px rgba(12,
     rgba(244,228,196,.26), rgba(244,228,196,.07) 46%, transparent 70%); }
 body.live .lamp { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .lamp { display: none; } }
+
+/* Puzzle-Shift: die Papierbahnen rücken im Takt gegeneinander (GPU, zwei Vars) */
+body.live .pband:nth-child(even) { translate: var(--puz-a, 0px) 0; }
+body.live .pband:nth-child(odd)  { translate: var(--puz-b, 0px) 0; }
+
+/* Höhen-Licht: Farbe pulsiert als Licht über der Bühne, nie als Umfärbung */
+.tint { position: fixed; inset: 0; z-index: 400; pointer-events: none; mix-blend-mode: overlay;
+  background: linear-gradient(160deg, var(--grass), var(--bubble) 55%, var(--hot));
+  opacity: calc(var(--au-high, 0) * 0.22); }
+body:not(.live) .tint { opacity: 0; transition: opacity 1.2s ease; }
+@media (prefers-reduced-motion: reduce) { .tint { display: none; } }
+
+/* Werkstatt-Staub: stiebt im Lichtkegel auf, wenn der Bass tritt */
+.dust { position: fixed; inset: 0; z-index: 502; pointer-events: none; width: 100%; height: 100%;
+  opacity: 0; transition: opacity 1.4s ease; }
+body.live .dust { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .dust { display: none; } }
 
 /* ---------- Nacht-Modus: Nadel drauf = die Werkstatt dimmt ----------
    body.live ist der Verwandlungs-Hook, die volle Regie (Palette, Lampe,
@@ -121,7 +145,9 @@ body.live .g-hero { opacity: .72; }
 <body>
 
 <div class="paper-stack" id="pstack" aria-hidden="true"></div>
+<div class="tint" aria-hidden="true"></div>
 <div class="lamp" aria-hidden="true"></div>
+<canvas class="dust" id="dust" aria-hidden="true"></canvas>
 
 <nav class="nav">
   <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
@@ -353,7 +379,12 @@ body.live .g-hero { opacity: .72; }
   /* Bus: geglättete Bänder (0..1) + Beat via Bass-Flux mit Cooldown */
   const bus = { bass: 0, mid: 0, high: 0, energy: 0, beat: false };
   const pstack = document.getElementById('pstack');
+  const dustCv = document.getElementById('dust');
+  const dustCtx = dustCv ? dustCv.getContext('2d') : null;
   let fluxPrev = 0, beatCool = 0, frame = 0;
+  let puzA = 0, puzB = 0, puzTgtA = 0, puzTgtB = 0, puzDir = 1;
+  let lastSy = window.scrollY, scrollVel = 0, waveUntil = 0;
+  const staub = [];   // Werkstatt-Staub im Lichtkegel
   function readBands() {
     analyser.getByteFrequencyData(freq);
     const avg = (a, b) => { let s = 0; for (let i = a; i < b; i++) s += freq[i]; return s / ((b - a) * 255); };
@@ -395,8 +426,20 @@ body.live .g-hero { opacity: .72; }
     readBands();
     root.style.setProperty('--au-bass', bus.bass.toFixed(3));
     root.style.setProperty('--au-energy', bus.energy.toFixed(3));
+    root.style.setProperty('--au-high', bus.high.toFixed(3));
     const t = performance.now() / 1000;
     frame++;
+
+    // Wer scrollt, dirigiert mit: Scroll-Tempo fließt in Puzzle und Licht
+    const sy = window.scrollY;
+    scrollVel += ((sy - lastSy) - scrollVel) * 0.2;
+    lastSy = sy;
+
+    // Puzzle-Feder: Beats stoßen die Bahnen an, sie schwingen zurück
+    puzA += (puzTgtA - puzA) * 0.12; puzTgtA *= 0.93;
+    puzB += (puzTgtB - puzB) * 0.12; puzTgtB *= 0.93;
+    root.style.setProperty('--puz-a', puzA.toFixed(2) + 'px');
+    root.style.setProperty('--puz-b', puzB.toFixed(2) + 'px');
     if (frame % 6 === 0) {   // Licht bei ~10 Hz nachführen, die Schatten-Transition glättet
       const ang = -35 + Math.sin(t * 0.13) * 18 + bus.energy * 26;
       const rad = (ang - 90) * Math.PI / 180;
@@ -406,13 +449,15 @@ body.live .g-hero { opacity: .72; }
       root.style.setProperty('--lamp-y', (38 + Math.cos(t * 0.17) * 22).toFixed(1) + '%');
     }
     if (pstack) pstack.style.translate = `0 ${(bus.bass * 7).toFixed(1)}px`;   // der Boden bebt mit
-    cards.forEach(c => {
-      if (!c.el._vis) return;
-      const a = bus.bass * c.wb + bus.mid * c.wm + bus.high * c.wh;
-      const lift = a * 16;
-      const sway = Math.sin(t * 1.1 + c.ph) * a * 7;
-      c.el.style.translate = `${sway.toFixed(1)}px ${(-lift).toFixed(1)}px`;
-    });
+    if (performance.now() > waveUntil) {                       // während der Aufwachwelle führt die Welle
+      cards.forEach(c => {
+        if (!c.el._vis) return;
+        const a = bus.bass * c.wb + bus.mid * c.wm + bus.high * c.wh;
+        const lift = a * 16;
+        const sway = Math.sin(t * 1.1 + c.ph) * a * 7;
+        c.el.style.translate = `${sway.toFixed(1)}px ${(-lift).toFixed(1)}px`;
+      });
+    }
     if (bus.beat) {
       const vis = cards.filter(c => c.el._vis);
       const pick = vis[(Math.random() * vis.length) | 0];
@@ -424,8 +469,58 @@ body.live .g-hero { opacity: .72; }
         c.el.classList.remove('thump'); void c.el.offsetWidth;
         c.el.classList.add('thump');
       });
+      puzDir = -puzDir;                                        // Puzzle: die Bahnen rücken gegeneinander
+      puzTgtA = puzDir * (4 + bus.bass * 12) + scrollVel * 0.5;
+      puzTgtB = -puzTgtA * 0.7;
+      spawnDust();                                             // Staub stiebt im Lichtkegel auf
     }
+    drawDust();
     raf = requestAnimationFrame(tick);
+  }
+
+  /* Werkstatt-Staub: wenige, weiche Partikel, nur im Licht (Nardi-Prinzip 5) */
+  function spawnDust() {
+    if (!dustCtx || staub.length > 34) return;
+    const gs = getComputedStyle(root);
+    const lx = parseFloat(gs.getPropertyValue('--lamp-x')) / 100 * innerWidth || innerWidth / 2;
+    const ly = parseFloat(gs.getPropertyValue('--lamp-y')) / 100 * innerHeight || innerHeight * 0.4;
+    const n = 5 + Math.round(bus.bass * 6);
+    for (let i = 0; i < n; i++) {
+      staub.push({
+        x: lx + (Math.random() - 0.5) * 260, y: ly + (Math.random() - 0.5) * 180,
+        vx: (Math.random() - 0.5) * 0.5, vy: -0.25 - Math.random() * 0.6,
+        r: 0.8 + Math.random() * 2.0, life: 1, tot: 0.006 + Math.random() * 0.008,
+      });
+    }
+  }
+  function drawDust() {
+    if (!dustCtx) return;
+    if (dustCv.width !== innerWidth) { dustCv.width = innerWidth; dustCv.height = innerHeight; }
+    dustCtx.clearRect(0, 0, dustCv.width, dustCv.height);
+    for (let i = staub.length - 1; i >= 0; i--) {
+      const p = staub[i];
+      p.x += p.vx; p.y += p.vy; p.life -= p.tot;
+      if (p.life <= 0) { staub.splice(i, 1); continue; }
+      dustCtx.globalAlpha = p.life * 0.35;
+      dustCtx.fillStyle = '#F4E4C4';
+      dustCtx.beginPath(); dustCtx.arc(p.x, p.y, p.r, 0, 7); dustCtx.fill();
+    }
+    dustCtx.globalAlpha = 1;
+  }
+
+  /* Nadel-Drop: das Atelier wacht auf — eine Welle läuft einmal die Wand hinunter */
+  function wakeWave() {
+    waveUntil = performance.now() + cards.length * 40 + 760;
+    cards.forEach((c, i) => {
+      setTimeout(() => {
+        c.el.style.transition = 'translate .45s cubic-bezier(.2,.8,.2,1)';
+        c.el.style.translate = '0 -12px';
+        setTimeout(() => {
+          c.el.style.translate = '0 0';
+          setTimeout(() => { c.el.style.transition = ''; }, 470);
+        }, 240);
+      }, i * 40);
+    });
   }
 
   function start() {
@@ -434,18 +529,22 @@ body.live .g-hero { opacity: .72; }
     if (!src) { try { ensureAudio(); } catch (e) {} }
     if (actx && actx.state === 'suspended') actx.resume();
     if (audioEl) audioEl.play().catch(() => {});
-    if (!reduced && analyser) { cancelAnimationFrame(raf); tick(); }
+    if (!reduced && analyser) { cancelAnimationFrame(raf); wakeWave(); tick(); }
   }
   function stop() {
     playing = false; tt.classList.remove('spin');
     document.body.classList.remove('live');
     if (audioEl) audioEl.pause();
     cancelAnimationFrame(raf);
-    cards.forEach(c => { c.el.style.translate = ''; });         // alles setzt sich
+    cards.forEach(c => { c.el.style.translate = ''; c.el.style.transition = ''; });   // alles setzt sich
     if (pstack) pstack.style.translate = '';
+    staub.length = 0;
+    if (dustCtx) dustCtx.clearRect(0, 0, dustCv.width, dustCv.height);
+    puzA = puzB = puzTgtA = puzTgtB = 0;
     root.style.setProperty('--au-bass', '0');
     root.style.setProperty('--au-energy', '0');
-    ['--sh-x', '--sh-y', '--lamp-x', '--lamp-y'].forEach(v => root.style.removeProperty(v));
+    root.style.setProperty('--au-high', '0');
+    ['--sh-x', '--sh-y', '--lamp-x', '--lamp-y', '--puz-a', '--puz-b'].forEach(v => root.style.removeProperty(v));
   }
   const toggle = () => playing ? stop() : start();
   tt.addEventListener('click', toggle);

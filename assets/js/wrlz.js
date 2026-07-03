@@ -316,13 +316,16 @@
     // 3D-Karton-Buchstaben (HTML, CSS-3D) — Stirnseite ink, Tiefe in Kraftbraun
     const lettersHost = reel.querySelector('.reel-letters');
     const DEPTH_N = 9, DEPTH_STEP = 2.4;
-    // Retimed: Szene 01 steht (bis 0.08), der Bruch läuft vor der Kamerafahrt (0.42) aus
+    // Beat-Sync aus dem Take (ffmpeg-Szenenanalyse seqA_take1): die zwei frühen
+    // Beben (p 0.14/0.18) sind Vorbeben, die Stadt spürt es zuerst. Die
+    // Buchstaben-Aufschläge (Fallmitte) liegen auf den schweren Kollapsen
+    // bei p 0.30, 0.40 und 0.47.
     const fallCfg = [
-      { i: 0, ch: 'P', s: 0.08, sp: 0.32, dist: 1.25, dx: -55, rz: -95, rx: 150, bounce: false },
-      { i: 1, ch: 'a', s: 0.12, sp: 0.35, dist: 1.10, dx: 18,  rz: 80,  rx: 210, bounce: false },
-      { i: 3, ch: 'c', s: 0.16, sp: 0.41, dist: 1.32, dx: 30,  rz: 170, rx: 120, bounce: false },
-      { i: 4, ch: 'a', s: 0.13, sp: 0.38, dist: 1.00, dx: -18, rz: -70, rx: 280, bounce: true  },
-      { i: 5, ch: 'l', s: 0.19, sp: 0.45, dist: 1.05, dx: 64,  rz: -45, rx: 95,  bounce: false },
+      { i: 1, ch: 'a', s: 0.127, sp: 0.35, dist: 1.10, dx: 18,  rz: 80,  rx: 210, bounce: false },
+      { i: 0, ch: 'P', s: 0.140, sp: 0.32, dist: 1.25, dx: -55, rz: -95, rx: 150, bounce: false },
+      { i: 4, ch: 'a', s: 0.206, sp: 0.38, dist: 1.00, dx: -18, rz: -70, rx: 280, bounce: true  },
+      { i: 3, ch: 'c', s: 0.210, sp: 0.41, dist: 1.32, dx: 30,  rz: 170, rx: 120, bounce: false },
+      { i: 5, ch: 'l', s: 0.258, sp: 0.43, dist: 1.05, dx: 64,  rz: -45, rx: 95,  bounce: false },
     ];
     const letters = fallCfg.map(cfg => {
       const el = document.createElement('div'); el.className = 'rl3d';
