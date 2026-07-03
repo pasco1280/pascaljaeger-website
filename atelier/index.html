@@ -9,7 +9,7 @@
 <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Atelier — Pascal Jäger">
 <meta property="og:description" content="Eine Tauchfahrt durch The Tide.">
-<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card.jpg">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/og-card-atelier.jpg">
 <style>
 @font-face {
   font-family: 'Zodiak';
@@ -155,7 +155,7 @@ body { background: var(--deep); font-family: 'Jakarta', system-ui, sans-serif; c
   background: rgba(5,34,32,.4); backdrop-filter: blur(2px);
   opacity: 0; transition: opacity 1.3s ease; pointer-events: none;
 }
-.hud-on #hud { opacity: 1; }
+.hud-on #hud { opacity: 1; pointer-events: auto; }
 #hud::before, #hud::after {
   content: ''; position: absolute; width: 9px; height: 9px;
   border-color: var(--ice); border-style: solid;
@@ -169,6 +169,12 @@ body { background: var(--deep); font-family: 'Jakarta', system-ui, sans-serif; c
 }
 @keyframes hudpulse { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 .hud-sep { height: 1px; background: rgba(174,217,228,.25); margin: 9px 0; }
+.hud-switch {
+  display: block; margin-top: 3px; font: inherit; letter-spacing: inherit; text-transform: inherit;
+  color: var(--chalk); background: none; border: none; padding: 2px 0; cursor: pointer;
+  border-bottom: 1px solid rgba(236,231,219,.4); transition: border-color .3s ease, color .3s ease;
+}
+.hud-switch:hover, .hud-switch:focus-visible { color: var(--ice); border-color: var(--ice); }
 @media (max-width: 640px) { #hud { max-width: 74vw; font-size: 10px; top: 20px; left: 20px; } }
 
 #lightbox {

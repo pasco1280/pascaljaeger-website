@@ -1,5 +1,40 @@
 # HANDOFF — Portfolio v4 (pascaljaeger.online)
 
+## NACHBESSERUNGEN NACH DEM ERSTEN LIVE-CHECK (3.7. spaete Nacht, NOCH NICHT COMMITTED)
+Pascal hat nach dem Deploy live getestet, drei Punkte kamen zurueck:
+1. **Mobile-Hero-Ruckeln (Android)**: gemeldet als "subtile Glitches beim Scrollen, Meer/Katze
+   betroffen, haengt mit der nicht ganz starren Android-Navi zusammen". Untersucht per Subagent
+   + selbst verifiziert: `.reel`/`.breath` in index.html und `body{min-height}` in wrlz.css
+   standen auf `vh` statt `svh`, UND der `resize`-Listener in wrlz.js (Zeile ~627) feuerte
+   ungebremst bei JEDEM Resize-Event — Android feuert bei jeder Adressleisten-Ein/Ausblendung
+   ein reines Hoehen-Resize, das loeste mitten im Scroll ein volles `layout()` + Redraw beider
+   Canvas (teure `findInkAnchor()`, destination-in-Maskierung) aus. Fix: `vh`->`svh` an allen drei
+   Stellen (matcht die bereits bestehende `.reel-pin{100svh}`-Konvention), Resize-Listener
+   ignoriert jetzt reine Hoehenaenderungen (`Math.abs(w-lastW)<2` => return), reagiert nur auf
+   echte Breitenaenderung. Verifiziert im Preview: Hoehen-only-Resize aendert Canvas-Groesse NICHT
+   mehr, echte Breitenaenderung (Rotation) loest weiterhin korrekt neu aus. Kein SVG-Filter-
+   Problem gefunden (initPaws() ist bereits inaktiv, totes Code), kein Lenis-Bug.
+2. **In-Dive-Track-Wechsel**: Pascal wollte einen Button WAEHREND der Fahrt (nicht nur auf dem
+   Play-Screen) um direkt zum anderen Track zu springen. Umgesetzt als Zeile im HUD-Panel
+   ("⇄ [anderer Titel]"), Klick blendet die Leinwand kurz ab (kaschiert den Dispose/Rebuild-
+   Sprung), wechselt Audio+Szene ueber das bestehende ensureTrackLoaded(), taucht wieder ein
+   (diveT-Reset spielt den Sink-Effekt erneut, verdeckt vom Abblenden). `applyTrackSelection()`
+   als gemeinsamer Helfer extrahiert (Picker-Klick und In-Dive-Wechsel nutzen denselben Code,
+   Play-Screen-Picker bleibt nach Exit konsistent mit der zuletzt gewaehlten Spur). `#hud`
+   brauchte `pointer-events:auto` im `.hud-on`-Zustand (war vorher nur Text, nicht klickbar).
+   Verifiziert: Klick wechselt Track+Audio+HUD korrekt, kein Fehler, Picker nach Exit konsistent.
+3. **Eigene og-card fuers Atelier**: Pascal meinte mit "Info-Bild bei Pride Tears" (per Rueckfrage
+   geklaert) das Social-Share-Vorschaubild — die Atelier-Seite nutzte bisher die generische
+   Seiten-og-card ("Pascal Jäger — Produkte denken. KI orchestrieren.", Strand-Foto), nicht
+   Track-spezifisch. Neue eigene Karte gebaut: `assets/img/og-card-atelier.jpg` (1200x630,
+   Unterwasser-Palette aus scene.js PALETTE, Lichtkabel-Andeutung in den TRACK_COLORS-Tönen,
+   Zodiak-Headline "The Tide", Text in der etablierten dritten-Person-Stimme der Seite). Gebaut
+   als eigenstaendige HTML-Komposition, per `google-chrome --headless --screenshot` exakt in
+   1200x630 gerendert (kein Design-Tool involviert, kein WebGL-Frame-Grab noetig). `atelier/
+   index.html`s `og:image` zeigt jetzt darauf statt auf die generische Karte.
+Alle drei Punkte lokal verifiziert, aber NOCH NICHT committed/deployed — auf Pascals naechstes
+"deploy" warten wie beim ersten Mal.
+
 ## DEPLOYED + SICHERHEITSVORFALL (3.7. Nacht): Atelier Dive ist live, .env war kurz offen
 Commit `57d41a5`, dann `npx wrangler deploy` auf Pascals Wort "deploy". Live:
 https://pascaljaeger.pasco1280.workers.dev — `/`, `/atelier/`, `/gallery` (Clean-URL-Redirect

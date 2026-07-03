@@ -624,7 +624,18 @@
         return;
       }
       layout();
-      window.addEventListener('resize', () => { layout(); lastP = -1; }, { passive: true });
+      /* Nur auf echte Breitenaenderung reagieren: Android blendet beim Scrollen die
+         Adressleiste ein/aus, das feuert ungebremst 'resize'-Events mit gleicher Breite
+         und wuerde sonst mitten im Scroll ein teures layout()+Redraw auf beiden Canvas
+         auslösen (findInkAnchor, destination-in-Maskierung) — genau das erzeugte das
+         Ruckeln/Springen. */
+      let lastW = window.innerWidth;
+      window.addEventListener('resize', () => {
+        const w = window.innerWidth;
+        if (Math.abs(w - lastW) < 2) return;
+        lastW = w;
+        layout(); lastP = -1;
+      }, { passive: true });
       applyScroll(0);
       requestAnimationFrame(tick);
       beachSeq.prefetch(0);              // Portal-Fenster früh dekodieren (Umschlag ist der kritische Moment)

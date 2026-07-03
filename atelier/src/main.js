@@ -220,11 +220,15 @@ let hudTimer = 0;
    braucht mehr Erklaerung als die alten Kurz-Einblendungen). Traegt Tracknamen/Credit,
    Inhalt kommt aus dem TRACKS-Eintrag, kein hart codierter Text mehr. */
 function renderHud(track) {
+  const other = TRACKS.find(t => t.id !== track.id);
   hudEl.innerHTML =
     '<div class="hud-title"><span class="hud-dot"></span>' + track.title + '</div>' +
     '<div>' + track.credit + '</div>' +
     '<div class="hud-sep"></div>' +
-    track.hudLines.map(l => '<div>' + l + '</div>').join('');
+    track.hudLines.map(l => '<div>' + l + '</div>').join('') +
+    '<div class="hud-sep"></div>' +
+    '<button type="button" class="hud-switch">⇄ ' + other.title + '</button>';
+  hudEl.querySelector('.hud-switch').addEventListener('click', () => switchTrack(other));
 }
 function showHud() {
   clearTimeout(hudTimer);
@@ -252,14 +256,17 @@ lightboxEl.addEventListener('click', e => { if (e.target === lightboxEl) closeLi
 /* Track-Auswahl auf dem Play-Screen: The Tide ist vorausgewaehlt, ein Klick auf die
    andere Option laedt sie schon im Hintergrund vor (kein Warten beim Eintauchen). */
 const trackButtons = [...document.querySelectorAll('.track-opt')];
+function applyTrackSelection(track) {
+  currentTrack = track;
+  trackButtons.forEach(b => b.classList.toggle('is-active', b.dataset.track === track.id));
+  creditEl.textContent = track.title + ' · ' + track.credit;
+  playBtn.setAttribute('aria-label', 'Eintauchen: ' + track.title + ' abspielen');
+}
 trackButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const track = TRACKS.find(t => t.id === btn.dataset.track);
     if (!track || track === currentTrack) return;
-    currentTrack = track;
-    trackButtons.forEach(b => b.classList.toggle('is-active', b === btn));
-    creditEl.textContent = track.title + ' · ' + track.credit;
-    playBtn.setAttribute('aria-label', 'Eintauchen: ' + track.title + ' abspielen');
+    applyTrackSelection(track);
     ensureTrackLoaded(track).catch(err => console.error('Track konnte nicht geladen werden', err));
   });
 });
@@ -285,6 +292,39 @@ async function startDive(e) {
     last = performance.now();
     raf = requestAnimationFrame(frame);
   }
+}
+
+/* Direkter Wechsel WAEHREND der Fahrt (Pascal: "Button innerhalb des Tracks um den
+   anderen direkt anzuwaehlen", statt erst raus auf den Play-Screen zu muessen). Kurzes
+   Abblenden der Leinwand kaschiert den Dispose/Rebuild-Sprung, danach taucht der neue
+   Track normal ein (diveT wird zurueckgesetzt, der Sink-Effekt spielt erneut, nur
+   verdeckt vom Abblenden). */
+let switching = false;
+async function switchTrack(track) {
+  if (switching || track === currentTrack || !document.body.classList.contains('state-under')) return;
+  switching = true;
+  applyTrackSelection(track);
+  hideHud();
+  canvas.style.transition = 'opacity .5s ease';
+  canvas.style.opacity = '0';
+  await new Promise(r => setTimeout(r, 500));
+  try {
+    await ensureTrackLoaded(track);
+    await audio.play();
+  } catch (err) {
+    console.error('Track-Wechsel fehlgeschlagen', err);
+    switching = false;
+    canvas.style.opacity = '1';
+    return;
+  }
+  renderHud(track);
+  endTitleEl.textContent = track.title;
+  endCreditEl.textContent = track.credit;
+  diveT = performance.now();
+  endT = -1;
+  canvas.style.opacity = '1';
+  showHud();
+  switching = false;
 }
 
 function stopAll() {
