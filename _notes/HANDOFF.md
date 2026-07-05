@@ -38,7 +38,12 @@ WARTET AUF PASCAL.
 - case-jungl.html: `.case-live`-Button "Das Gemälde live erleben →" auf wrlz.ai/jungl/,
   Status-Meta + Index-Feature-Card auf "Live-Demo" umformuliert.
 
-## JUNGL-CASE GEBAUT (5.7., Claude Code / Fable 5, NOCH NICHT COMMITTED/DEPLOYED)
+## JUNGL-CASE DEPLOYED (5.7., Commit 0ddfc7f, wrangler-Version a016c68d)
+Auf Pascals Go committed + deployed. Live verifiziert: pascaljaeger.de/case-jungl (307
+Clean-URL-Redirect wie bei gallery, Ziel 200), Bilder 200, Feature-Card im Index-HTML,
+.env/.claude weiterhin 404. Der Rest dieses Abschnitts beschreibt den Bau:
+
+## JUNGL-CASE GEBAUT (5.7., Claude Code / Fable 5)
 Neuer Case /06 fuer die JUNGL-Demo (`~/Desktop/claude/jungl`, Kundendemo fuer einen Freund,
 "lebendes Gemaelde": GSAP-Scroll-Reise, Sumi-e-Tusche auf Buettenpapier, 7 Stationen, Inka-
 Tocapu, DnB-Easter-Egg "JUNGL is MASSIVE"). Pascals Framing fuer die Copy: Todd McFarlane
