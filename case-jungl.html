@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUNGL — Ein lebendes Gemälde · Pascal Jäger</title>
+<meta name="description" content="JUNGL: ein Dschungel aus Tusche, der beim Scrollen entsteht. Sumi-e trifft Inka. Eigenes Drehbuch, KI-animierte Bildwelt, eigene Canvas-Engine. Eine Kundendemo als lebendes Gemälde.">
+<meta name="theme-color" content="#2E6E5E">
+<link rel="canonical" href="https://pascaljaeger.de/case-jungl.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="JUNGL — Ein lebendes Gemälde">
+<meta property="og:description" content="Sumi-e trifft Inka. Ein Dschungel aus Tusche, der unter dem Scroll aufblüht.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/jungl/og-jungl.jpg">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: var(--grass); --accent2: var(--hot); --cta: var(--hot); }
+.case-hero { background: #F0E9D4; color: #2B2723; }
+.case-hero .case-title { color: #2B2723; }
+.case-hero .case-kicker { color: #2E6E5E; text-shadow: 0 0 14px rgba(240,233,212,.95), 0 0 5px rgba(240,233,212,.9); }
+.case-hero .case-sub { color: #2B2723; }
+.jg-hero-img { position:absolute; inset:0; width:100%; height:108%; object-fit:cover; object-position:74% 30%; z-index:0; }
+.jg-hero-ov { position:absolute; inset:0; z-index:1; background:
+  linear-gradient(to top, rgba(240,233,212,.96), rgba(240,233,212,0) 54%),
+  linear-gradient(100deg, rgba(240,233,212,.88) 12%, rgba(240,233,212,0) 58%); }
+.hero-logo { left: var(--gutter); right: auto; top: 12%; width: min(22vw, 190px); opacity: .2; mix-blend-mode: multiply; }
+.notes { display:grid; gap:1rem; }
+@media (min-width:700px){ .notes { grid-template-columns: repeat(3,1fr); } }
+.note { border:2px solid var(--ink); border-radius:14px; padding:1.2rem 1.3rem; background:var(--chalk); font-weight:600; font-size:var(--fs-body); letter-spacing:-.01em; box-shadow:5px 5px 0 var(--ink); }
+.note.jade { background:#8FBFAA; }
+.note.gold { background:#E2B75C; }
+.jg-letters { display:flex; flex-wrap:wrap; gap:clamp(1rem,2.5vw,1.8rem); justify-content:center; align-items:flex-start; }
+.jg-letter { text-align:center; }
+.jg-letter .gl { display:grid; place-items:center; width:clamp(76px,12vw,124px); aspect-ratio:1; border:2.5px solid var(--ink); border-radius:16px; font-family:var(--serif); font-weight:800; font-size:clamp(2.6rem,6vw,4.6rem); line-height:1; color:var(--ink); box-shadow:6px 6px 0 var(--ink); }
+.jg-letter .st { display:block; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-top:.8rem; }
+.read-col { max-width:60ch; margin:0 auto; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; opacity:.85; }
+.read-col p:last-child { margin-bottom:0; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-fairi.html">fairi</a>
+    <a href="case-hntz.html">HNTZ</a>
+    <a href="atelier/index.html">Atelier</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <img class="jg-hero-img" src="assets/img/jungl/jungl-leap.jpg" alt="" aria-hidden="true" data-depth="0.5">
+    <div class="jg-hero-ov"></div>
+    <img class="hero-logo" src="assets/img/jungl/tocapu.jpg" alt="" aria-hidden="true" data-depth="0.5">
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3">Case /06 · Web-Erlebnis · Kundendemo</p>
+    <h1 class="case-title" data-fall data-depth="1">JUNGL</h1>
+    <p class="case-sub" data-depth="0.6">Ein lebendes Gemälde. Sumi-e trifft Inka, und ein Dschungel blüht unter dem Scroll auf.</p>
+    <a class="case-live" href="https://wrlz.ai/jungl/" target="_blank" rel="noopener">Das Gemälde live erleben <span class="ar">→</span></a>
+  </div>
+</header>
+
+<!-- META -->
+<section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Konzept · Art Direction · Code</div></div>
+      <div><div class="m-k">Was</div><div class="m-v">Ein lebendes Gemälde im Browser</div></div>
+      <div><div class="m-k">Umfang</div><div class="m-v">Drehbuch · Bildwelt · Engine · Regie</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Live-Demo · Fortsetzung offen</div></div>
+    </div>
+    <p class="case-lede reveal" style="margin-top:clamp(2.5rem,5vw,4rem)">Todd McFarlane lernt Sumi-e und erzählt eine Inka-Geschichte. <span class="hl">Als Web-Erlebnis.</span></p>
+  </div>
+</section>
+
+<!-- RÜCKGRAT -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-spine reveal">
+      <div class="spine-beats">
+        <div class="beat"><div class="bk">Problem</div><div class="bv">Ein Freund und Kunde wollte sehen, wie weit ein Markenauftritt im Browser gehen kann. Das Briefing blieb bewusst offen.</div></div>
+        <div class="beat"><div class="bk">Ansatz</div><div class="bv">Eine Sumi-e-Bühnenshow. Eigenes Drehbuch, handgemalte Skizzen, KI-animierte Motive und eine Engine, die Tinte wie Tinte behandelt.</div></div>
+        <div class="beat"><div class="bk">Ergebnis</div><div class="bv">Eine Demo wie ein Filmauftritt. Sie zeigt in einer Scroll-Minute, wie Drehbuch, Bildwelt und Code zu einem Erlebnis verschmelzen.</div></div>
+      </div>
+      <div class="spine-proof">
+        <div class="sp"><div class="spn">7 Akte</div><div class="spd">eine Scroll-Reise, ein Gemälde</div></div>
+        <div class="sp"><div class="spn">Sumi-e</div><div class="spd">die Physik echter Tusche</div></div>
+        <div class="sp"><div class="spn">KI-Duo</div><div class="spd">Midjourney malt, Kling animiert</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee alt" data-dir="left" aria-hidden="true">
+  <div class="track"><span class="item">EIN LEBENDES GEMÄLDE <span class="sep">✶</span> SUMI-E TRIFFT INKA <span class="sep">✶</span> TUSCHE AUF BÜTTEN <span class="sep">✶</span> JUNGL IS MASSIVE <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- LEITBILDER -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Die Bilder im Kopf</span></div>
+    <div class="notes" data-reveal-stagger>
+      <div class="note reveal">„Eine Bühnenshow aus Tinte."</div>
+      <div class="note jade reveal">„Guild Wars 2 trifft Dschungelbuch."</div>
+      <div class="note gold reveal">„JUNGL is MASSIVE."</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATIONEN -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Sieben Stationen, fünf Buchstaben</span></div>
+    <div class="jg-letters" data-reveal-stagger>
+      <div class="jg-letter reveal"><span class="gl" style="background:#8FBFAA;rotate:-2deg">J</span><span class="st">Panther · Gang</span></div>
+      <div class="jg-letter reveal"><span class="gl" style="background:#E2B75C;rotate:1.4deg">U</span><span class="st">Panther · Pirsch</span></div>
+      <div class="jg-letter reveal"><span class="gl" style="background:#D9906F;rotate:-1deg">N</span><span class="st">Panther · Sprung</span></div>
+      <div class="jg-letter reveal"><span class="gl" style="background:#D97C93;rotate:2deg">G</span><span class="st">Kolibri</span></div>
+      <div class="jg-letter reveal"><span class="gl" style="background:#2E6E5E;color:var(--chalk);rotate:-1.6deg">L</span><span class="st">Jaguar-Familie</span></div>
+    </div>
+    <p class="body reveal" style="text-align:center;margin-top:clamp(1.6rem,3vw,2.4rem);opacity:.7;max-width:52ch;margin-inline:auto">Jede Station blüht als Tinte im Papier auf und stempelt ihren Buchstaben. Tukan und Schlange treten dazwischen auf. Am Ende steht der Titel, und das Gemälde ist komplett.</p>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot reveal"><img src="assets/img/jungl/jungl-demo.jpg" alt="JUNGL Demo: Kolibri und Jaguar-Familie als Tusche auf Büttenpapier, darüber der gestempelte Titel" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Die Bildwelt</h3>
+        <p>Eigenes Drehbuch, handgemalte Skizzen, eine Handschrift. Midjourney baut die Motive aus, Kling setzt sie in Bewegung, danach wird freigestellt, bis nur noch Tusche übrig ist.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Die Engine</h3>
+        <p>2D-Canvas mit eigener Splash-Engine. Echte Klecks-Stempel werden zu Masken, jede Szene blüht wie Tinte im Bütten auf. Vorbild war die recherchierte Physik echter Tusche auf Papier.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Die Regie</h3>
+        <p>Der Scroll dirigiert. Kleckse landen mit Kontakt zur Silhouette, Videos spielen genau einmal und trocknen als Bild ein. Choreografiert bis auf den einzelnen Klecks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot-grid two">
+      <div class="shot reveal"><img src="assets/img/jungl/jungl-toucan.jpg" alt="JUNGL Bildwelt: Tukan als Tuschezeichnung mit Terrakotta-Schnabel" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/jungl/jungl-hummingbird.jpg" alt="JUNGL Bildwelt: Kolibri in Jade und Terrakotta, aus Tinte gemalt" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LESEN -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="read-col reveal">
+      <span class="read-k">Zum Weiterlesen</span>
+      <p>Am Anfang stand ein Anruf. Ein Freund und Kunde wollte ausprobieren, wie sich seine Welt im Browser anfühlen könnte, und ließ alles offen. Solche Aufträge sind selten. Also wurde aus dem Experiment eine Bühne.</p>
+      <p>Die Richtung kam aus Bildern, die bleiben: die Tuschemalerei des Sumi-e, die Wucht von Todd McFarlanes Linien, die gemalten Welten von Guild Wars 2, dazu die Ruhe des Dschungelbuchs. Handgemalte Skizzen und ein eigenes Drehbuch legten fest, wer auftritt, wo die Tinte landet und wann das Papier still bleibt.</p>
+      <p>Midjourney baute die Motive in dieser Handschrift aus, Kling setzte sie in Bewegung. Panther, Tukan, Schlange, Kolibri. Jedes Motiv wurde freigestellt, bis es auf dem Papier lebt.</p>
+      <p>Damit die Täuschung trägt, wurde recherchiert, wie sich echte Tusche verhält: wie Tinte in Bütten einsickert, wie Ränder auslaufen, wie ein Klecks trocknet. Die Splash-Engine stempelt jede Szene aus echten Klecks-Formen auf, und die Inka-Ebene erzählt leise mit. Tocapu-Siegel rahmen die Reise, und wer das Siegel im Titel anklickt, findet einen Jaguarkopf und einen Witz für alle, die bei Jungle zuerst an Drum and Bass denken.</p>
+      <p>Wohin die Demo führt, weiß noch niemand. Dass es weitergeht, steht außer Frage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <p class="case-lede reveal">Eine Demo wie ein Kinobesuch. Markenwelten dürfen sich so anfühlen.</p>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full">
+  <div class="wrap">
+    <div class="next-case">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-fairi.html"><div class="nc-t">fairi →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Bild<br>im Kopf?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-fairi.html">fairi</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+      <li><a href="case-kanzlei.html">Kanzlei</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>JUNGL · Ein lebendes Gemälde</span>
+  </div>
+</footer>
+
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

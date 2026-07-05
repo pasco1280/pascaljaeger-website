@@ -1,5 +1,77 @@
 # HANDOFF — Portfolio v4 (pascaljaeger.online)
 
+## JUNGL-DEMO LIVE: https://wrlz.ai/jungl/ (5.7., Deploy auf Pascals "deploy wrlz")
+Vercel-Deploy dpl_DNoDMvdYr4iSu4YTTGcLthrBeKcy, aliased auf wrlz.ai. Live verifiziert:
+/jungl/ 200 mit SEO-Titel/og, manifest/sprites(webp)/videos(webm)/og-card alle 200 mit
+korrektem MIME, /jungl/ in sitemap-0.xml, Root-Site unveraendert 200. Details unten.
+
+## URSPRUENGLICH (gleicher Tag, Kontext):
+Pascals Wunsch: die Demo muss selbst erlebbar sein, nicht nur Screenshots. Ziel-URL
+**https://wrlz.ai/jungl/**. WICHTIGE ERKENNTNIS: wrlz.ai laeuft auf **Vercel** (Astro-Site
+in `~/Desktop/claude/wrlz_v2/site`, Projekt `wrlz-ai`, Deploy `npx vercel --prod`) — das
+GitHub-Pages-Repo pasco1280/wrlz (lokal `WRLZ/landing`) ist die ALTE tote Site (DNS zeigt
+auf Vercel, Pages baut gruen ins Leere). Die Demo landete erst versehentlich dort (Commits
+5945ef5 + 317204f, harmlos, kann man revert-en), dann richtig: Kopie liegt in
+`wrlz_v2/site/public/jungl/`, Astro-Build lokal verifiziert (dist/jungl komplett), Sitemap
+via customPages in astro.config.mjs. Produktions-CSP (vercel.json) passt (nur externe
+Scripts). Der finale `npx vercel --prod` wurde vom Permission-Classifier geblockt —
+WARTET AUF PASCAL.
+- Deploy-Artefakt gebaut per Script (`build-jungl.js`, Scratchpad, benutzt npm sharp):
+  kopiert NUR die vom Manifest + index.html + styles.css referenzierten Dateien aus
+  `~/Desktop/claude/jungl` (assets_raw*/.claude bleiben draussen), konvertiert PNGs >400KB
+  zu WebP (Szenen q90, Sprites q85, alphaQuality 100) und patcht manifest.json + styles.css
+  auf die neuen Endungen. Payload 97MB -> 38MB. FALLE: styles.css referenziert
+  `assets/img/jadeplate.png` als CSS-url (steht NICHT im Manifest) — beim Nachbauen daran
+  denken. SEO/og-Meta in die index.html-Kopie injiziert (canonical wrlz.ai/jungl/,
+  og-Bild = og-jungl.jpg aus dem Leap-Artwork). Quellprojekt `~/Desktop/claude/jungl`
+  wurde NICHT angefasst.
+- Commit 5945ef5 im wrlz-Repo, NUR jungl/ gestaged (agb/datenschutz/impressum/index.html
+  hatten fremde uncommittete Aenderungen — liegen weiter unangetastet im Working Tree).
+- Verifiziert vor dem Push: alle 54 Assets laden (ready:true), Engine malt die WebP-Szenen
+  korrekt (Canvas-Pixel-Check: 207k Samples, 194k farbig, Segment snake), keine 404s,
+  keine Konsolenfehler. PREVIEW-FALLEN dokumentiert: (1) img.decode() haengt im hidden Tab
+  — ein preview_screenshot macht den Tab kurz sichtbar und flusht die Decodes. (2) GSAP-
+  Ticker pausiert hidden — Frames synchron rendern via `JUNGL.onFrame.forEach(cb=>cb(dt,t))`
+  bei scrollY 0 und state.scroll von Hand setzen. (3) Harness-gespawnte Server (launch.json)
+  koennen NICHT ausserhalb des Projektordners lesen (wedged ohne Fehler) — Server fuer
+  fremde Ordner per Bash starten (`.claude/serve-landing.js`, PORT env).
+- case-jungl.html: `.case-live`-Button "Das Gemälde live erleben →" auf wrlz.ai/jungl/,
+  Status-Meta + Index-Feature-Card auf "Live-Demo" umformuliert.
+
+## JUNGL-CASE GEBAUT (5.7., Claude Code / Fable 5, NOCH NICHT COMMITTED/DEPLOYED)
+Neuer Case /06 fuer die JUNGL-Demo (`~/Desktop/claude/jungl`, Kundendemo fuer einen Freund,
+"lebendes Gemaelde": GSAP-Scroll-Reise, Sumi-e-Tusche auf Buettenpapier, 7 Stationen, Inka-
+Tocapu, DnB-Easter-Egg "JUNGL is MASSIVE"). Pascals Framing fuer die Copy: Todd McFarlane
+lernt Sumi-e und erzaehlt eine Inka-Geschichte, inspiriert von Guild Wars 2 + Dschungelbuch,
+eigene Drehbuecher/Skizzen mit Midjourney gemalt und Kling animiert, Tinte-auf-Papier-Physik
+recherchiert. Gebaut:
+- `case-jungl.html` — helles Papier-Theme (JUNGL-Palette aus choreo.js: creme/jade/petrol/
+  terracotta/gold/pink/tusche), Hero = scene_jag_leap voll­flaechig + Tocapu-Stempel als
+  hero-logo (mix-blend multiply, JPG reicht dank multiply — kein Alpha noetig), Kicker mit
+  Papier-Halo-text-shadow gegen den dunklen Splash. Eigene Sektion `.jg-letters`: J-U-N-G-L
+  als gestempelte Kacheln mit Stations-Labels und den TITLE_LETTER_ROT-Rotationen aus der Demo.
+  Kein case-live-Link (Demo ist nirgends deployed, wie Kanzlei bewusst ohne).
+- Assets in `assets/img/jungl/`: jungl-demo.jpg (Screenshot aus der Demo, oberste 62px
+  gecroppt — da sass das Debug-HUD), jungl-leap/-toucan/-hummingbird.jpg (Szenen-Artworks,
+  ffmpeg-skaliert; ffmpeg hier hat KEIN libwebp und sips schreibt kein webp — deshalb JPG),
+  og-jungl.jpg (1200x630 aus dem Leap-Artwork), tocapu.jpg. ~1,8 MB gesamt.
+- Index: neue `.card.feature` (wrlz.css) — volle Reihe UEBER den drei Cards, Leap-Artwork als
+  background-image mit Papier-Gradient-Overlay. JUNGL im Marquee + Footer-Arbeit-Liste.
+- Kette: matchachin -> JUNGL -> fairi. sitemap.xml: case-jungl mit 0.9.
+- ECHTER BUG GEFUNDEN + SITE-WEIT GEFIXT: `.spine-proof` stand auf `repeat(3, 1fr)` — `1fr`
+  hat einen min-content-Boden, lange unbrechbare Woerter in `.spn` (hier "Stationen",
+  "Drehbuch", "Midjourney") blaehten auf Mobile das Layout-Viewport auf 404px auf (Seite wirkte
+  rausgezoomt, Nav abgeschnitten). Fix: `repeat(3, minmax(0,1fr))` in wrlz.css (andere Cases
+  gegengeprueft: alle spn kurz bzw. mit Bindestrich brechbar, keine Regression) PLUS kurze
+  Kachel-Copy (7 Akte / Sumi-e / KI-Duo). Diagnose-Weg fuer die Zukunft: mobile Emulation
+  zeigt shrink-to-fit — wenn innerWidth > 375 meldet, hat irgendein Element einen zu breiten
+  min-content; per fetch+document.write-Bisektion der Sektionen einkreisen.
+- Verifiziert: 375/835/1440 per DOM-Reads + Screenshots, keine Konsolenfehler, kein
+  Horizontal-Overflow, Spine-Kacheln ohne Text-Ueberlauf. ACHTUNG Preview: Screenshots nach
+  preview_resize malen z.T. nur einen Teilbereich (Capture-Artefakt) — DOM-Reads sind die
+  Wahrheit. Der __lenis-Handle wurde fuer die Tests gesetzt und ist wieder ENTFERNT.
+
+
 ## MOBILE PICKER-LAYOUT-SPRUNG (3.7. Nacht, NOCH NICHT COMMITTED/DEPLOYED)
 Pascal auf dem Live-Handy: beim Umschalten The Tide <-> Pride Tears auf dem Play-Screen
 "bewegt sich alles", der Credit-Text unter dem Play-Button war nicht zentriert und hat den
