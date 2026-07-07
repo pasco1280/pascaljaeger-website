@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LULL — Sleep, engineered · Pascal Jäger</title>
+<meta name="description" content="LULL: ein erfundener Titan-Schlafring, inszeniert als scroll-choreografierte Produktseite. KI-Bildwelt, ein Ring-Video das beim Scrollen rotiert, eine eigene Scroll-Engine. Konzeptstudie als Live-Demo.">
+<meta name="theme-color" content="#07070f">
+<link rel="canonical" href="https://pascaljaeger.de/case-lull.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="LULL — Sleep, engineered">
+<meta property="og:description" content="Ein Produkt, das es nicht gibt, in einer Scroll-Minute zum Leben erweckt. Von der Nacht in den Morgen.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/lull/lull-ring.jpg">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: #6fe8c4; --accent2: #f5b877; --cta: #6fe8c4; }
+.case-hero { background: #07070f; color: var(--chalk); }
+.case-hero .case-title { color: var(--chalk); }
+.case-hero .case-kicker { color: #6fe8c4; text-shadow: 0 0 18px rgba(111,232,196,.35); }
+.case-hero .case-sub { color: rgba(243,241,234,.82); }
+.lull-hero-img { position:absolute; inset:0; width:100%; height:108%; object-fit:cover; object-position:50% 42%; z-index:0; }
+.lull-hero-ov { position:absolute; inset:0; z-index:1; background:
+  radial-gradient(70% 60% at 50% 38%, rgba(7,7,15,0) 0%, rgba(7,7,15,.55) 70%),
+  linear-gradient(to top, rgba(7,7,15,.98), rgba(7,7,15,0) 56%),
+  linear-gradient(100deg, rgba(7,7,15,.9) 10%, rgba(7,7,15,0) 62%); }
+.lull-orb { position:absolute; z-index:0; border-radius:50%; filter:blur(80px); pointer-events:none; }
+.lull-orb.a { width:36vw; height:36vw; top:-8vw; left:-6vw; background:radial-gradient(circle, rgba(111,232,196,.22), transparent 68%); }
+.lull-orb.b { width:32vw; height:32vw; bottom:-10vw; right:-6vw; background:radial-gradient(circle, rgba(245,184,119,.18), transparent 68%); }
+.notes { display:grid; gap:1rem; }
+@media (min-width:700px){ .notes { grid-template-columns: repeat(3,1fr); } }
+.note { border:2px solid var(--ink); border-radius:14px; padding:1.2rem 1.3rem; background:var(--chalk); color:var(--ink); font-weight:600; font-size:var(--fs-body); letter-spacing:-.01em; box-shadow:5px 5px 0 var(--ink); }
+.note.teal { background:#8fe8cf; }
+.note.gold { background:#f0c98a; }
+.read-col { max-width:60ch; margin:0 auto; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; opacity:.85; }
+.read-col p:last-child { margin-bottom:0; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-jungl.html">JUNGL</a>
+    <a href="case-fairi.html">fairi</a>
+    <a href="atelier/index.html">Atelier</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <img class="lull-hero-img" src="assets/img/lull/lull-ring.jpg" alt="" aria-hidden="true" data-depth="0.5">
+    <div class="lull-hero-ov"></div>
+    <span class="lull-orb a" aria-hidden="true"></span>
+    <span class="lull-orb b" aria-hidden="true"></span>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3">Case /07 · Konzeptstudie · Web-Demo</p>
+    <h1 class="case-title" data-fall data-depth="1">LULL</h1>
+    <p class="case-sub" data-depth="0.6">Ein erfundener Titan-Schlafring, inszeniert als scroll-choreografierte Produktseite. Von der Nacht in den Morgen.</p>
+    <a class="case-live" href="https://pasco1280.github.io/lull-demo/" target="_blank" rel="noopener">Die Demo live erleben <span class="ar">→</span></a>
+  </div>
+</header>
+
+<!-- META -->
+<section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Konzept · Design · Code</div></div>
+      <div><div class="m-k">Was</div><div class="m-v">Erfundenes Produkt als Web-Erlebnis</div></div>
+      <div><div class="m-k">Umfang</div><div class="m-v">Marke · Bildwelt · Motion · Engine</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Konzeptstudie · Live-Demo</div></div>
+    </div>
+    <p class="case-lede reveal" style="margin-top:clamp(2.5rem,5vw,4rem)">Ein Produkt, das es nicht gibt, in einer Scroll-Minute zum Leben erweckt. <span class="hl">Sleep, engineered.</span></p>
+  </div>
+</section>
+
+<!-- RÜCKGRAT -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-spine reveal">
+      <div class="spine-beats">
+        <div class="beat"><div class="bk">Problem</div><div class="bv">Eine Demo sollte zeigen, wie weit eine Produktseite geht, wenn Konzept, Bild und Code aus einer Hand kommen. Dafür brauchte es ein Produkt, das jeder kennt.</div></div>
+        <div class="beat"><div class="bk">Ansatz</div><div class="bv">Ein Titan-Schlafring namens LULL. Eine Bildwelt aus KI-Renders, ein Ring-Video das beim Scrollen rotiert, und eine eigene Scroll-Engine die alles an die Bewegung bindet.</div></div>
+        <div class="beat"><div class="bk">Ergebnis</div><div class="bv">Eine Seite, die sich wie ein Produktlaunch anfühlt. Die Reise führt von der dunklen Nacht bis zum warmen Sonnenaufgang.</div></div>
+      </div>
+      <div class="spine-proof">
+        <div class="sp"><div class="spn">5 Effekte</div><div class="spd">eine Scroll-Choreografie</div></div>
+        <div class="sp"><div class="spn">0 Frameworks</div><div class="spd">Vanilla HTML, CSS, JS</div></div>
+        <div class="sp"><div class="spn">Leonardo + Seedance</div><div class="spd">Render, dann animiert</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee alt" data-dir="left" aria-hidden="true">
+  <div class="track"><span class="item">SLEEP, ENGINEERED <span class="sep">✶</span> VON DER NACHT IN DEN MORGEN <span class="sep">✶</span> EIN PRODUKTLAUNCH OHNE PRODUKT <span class="sep">✶</span> LULL <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- LEITBILDER -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Die Bilder im Kopf</span></div>
+    <div class="notes" data-reveal-stagger>
+      <div class="note reveal">„Sleep, engineered."</div>
+      <div class="note teal reveal">„Von der Nacht in den Morgen."</div>
+      <div class="note gold reveal">„Ein Produktlaunch ohne Produkt."</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot reveal"><img src="assets/img/lull/lull-morning.jpg" alt="LULL Bildwelt: Aufwachen im warmen Sonnenaufgang, den Titan-Ring am Finger" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Die Bildwelt</h3>
+        <p>Ein Render aus Leonardo wurde zum Master. Jeder weitere Shot referenziert ihn, damit überall derselbe Ring sitzt. Seedance macht aus dem Standbild eine Rotation.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Das Motion-System</h3>
+        <p>Das Ring-Video wird nicht abgespielt. Der Scroll setzt seinen Zeitpunkt Frame für Frame, so dreht sich der Ring genau im Takt der Bewegung.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Der Aufbau</h3>
+        <p>Buchstaben fallen, ein Panel steigt von unten, ein 3D-Text-Drum rotiert durch das Manifest. Alles an eine einzige Scroll-Position gebunden, ganz ohne Framework.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot-grid two">
+      <div class="shot reveal"><img src="assets/img/lull/lull-macro.jpg" alt="LULL Macro: die inneren Sensoren des Titan-Rings mit teal Glimmen" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/lull/lull-charger.jpg" alt="LULL auf dem Ladepuck am Nachttisch, teal Glow im dunklen Raum" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LESEN -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="read-col reveal">
+      <span class="read-k">Zum Weiterlesen</span>
+      <p>Am Anfang stand eine Frage: Wie professionell wirkt eine Produktseite, wenn niemand ein echtes Produkt liefert? Die Antwort war, selbst eines zu erfinden.</p>
+      <p>LULL ist ein Schlafring aus Titan. Er liest die Nacht und weckt in der leichtesten Phase. Marke, Bildwelt und Texte entstanden in einem Zug. Dunkles Indigo mit einem teal Glimmen, ein warmer Sonnenaufgang als Ziel.</p>
+      <p>Die Bilder kamen aus Leonardo. Ein Master-Render wurde festgelegt, alle weiteren Shots referenzierten ihn, damit der Ring überall gleich aussieht. Seedance verwandelte das Standbild in eine langsame Rotation.</p>
+      <p>Den Rest übernahm der Code. Eine eigene Scroll-Engine bindet Video, Text und Bilder an die Scroll-Position. Das Ring-Video scrubbt Frame für Frame, die Headline zerfällt in Buchstaben, ein Panel steigt auf und ein Text-Drum dreht sich durch das Manifest.</p>
+      <p>LULL gibt es nicht zu kaufen. Als Demo zeigt es in einer Minute, wie Konzept, Bildwelt und Code zu einem Produktgefühl verschmelzen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <p class="case-lede reveal">Ein Produktlaunch, den es nie gab. So kann sich Software anfühlen, bevor sie existiert.</p>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full">
+  <div class="wrap">
+    <div class="next-case">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-jungl.html"><div class="nc-t">JUNGL →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Bild<br>im Kopf?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-jungl.html">JUNGL</a></li>
+      <li><a href="case-fairi.html">fairi</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>LULL · Sleep, engineered</span>
+  </div>
+</footer>
+
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>
