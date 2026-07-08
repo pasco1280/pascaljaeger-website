@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biottle — Eine Welt im Glas · Pascal Jäger</title>
+<meta name="description" content="Biottle: ein lebendes Biotop im Glas, inszeniert als Scroll-Erlebnis. Die freigestellte Flasche dreht sich durch die Seite, eine Liana schiebt sich von oben herein. Konzeptstudie als Live-Demo.">
+<meta name="theme-color" content="#E7EFE4">
+<link rel="canonical" href="https://pascaljaeger.de/case-biottle.html">
+<meta name="author" content="Pascal Jäger">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Biottle — Eine Welt im Glas">
+<meta property="og:description" content="Ein geschlossenes Biotop im Glas, in einer Scroll-Minute zum Leben erweckt. Living Soil.">
+<meta property="og:image" content="https://pascaljaeger.de/assets/img/biottle/biottle-hero.jpg">
+<link rel="stylesheet" href="assets/css/wrlz.css">
+<style>
+:root { --accent: #3E6B47; --accent2: #E0752D; --cta: #3E6B47; }
+.case-hero { background: #E7EFE4; color: var(--ink); }
+.case-hero .case-title { color: var(--ink); }
+.case-hero .case-kicker { color: #3E6B47; }
+.case-hero .case-sub { color: rgba(28,27,25,.78); }
+.bio-hero-img { position:absolute; inset:0; width:100%; height:108%; object-fit:cover; object-position:50% 46%; z-index:0; }
+.bio-hero-ov { position:absolute; inset:0; z-index:1; background:
+  radial-gradient(72% 60% at 50% 42%, rgba(231,239,228,0) 0%, rgba(231,239,228,.42) 72%),
+  linear-gradient(to top, rgba(231,239,228,.96), rgba(231,239,228,0) 58%),
+  linear-gradient(100deg, rgba(231,239,228,.82) 8%, rgba(231,239,228,0) 60%); }
+.bio-orb { position:absolute; z-index:0; border-radius:50%; filter:blur(80px); pointer-events:none; }
+.bio-orb.a { width:36vw; height:36vw; top:-8vw; left:-6vw; background:radial-gradient(circle, rgba(111,169,108,.30), transparent 68%); }
+.bio-orb.b { width:30vw; height:30vw; bottom:-10vw; right:-4vw; background:radial-gradient(circle, rgba(224,117,45,.16), transparent 68%); }
+.notes { display:grid; gap:1rem; }
+@media (min-width:700px){ .notes { grid-template-columns: repeat(3,1fr); } }
+.note { border:2px solid var(--ink); border-radius:14px; padding:1.2rem 1.3rem; background:var(--chalk); color:var(--ink); font-weight:600; font-size:var(--fs-body); letter-spacing:-.01em; box-shadow:5px 5px 0 var(--ink); }
+.note.teal { background:#8fe0cf; }
+.note.gold { background:#f0c98a; }
+.read-col { max-width:60ch; margin:0 auto; }
+.read-col p { font-size:var(--fs-body); line-height:1.7; margin:0 0 1.2rem; opacity:.85; }
+.read-col p:last-child { margin-bottom:0; }
+.read-k { display:block; text-align:center; font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:.14em; text-transform:uppercase; opacity:.5; margin-bottom:1.6rem; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="brand">PJ<span class="dot">.</span></a>
+  <div class="links">
+    <a href="index.html">Index</a>
+    <a href="case-jungl.html">JUNGL</a>
+    <a href="case-lull.html">LULL</a>
+    <a href="atelier/index.html">Atelier</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="case-hero" data-tilt>
+  <div class="case-bg">
+    <img class="bio-hero-img" src="assets/img/biottle/biottle-hero.jpg" alt="" aria-hidden="true" data-depth="0.5">
+    <div class="bio-hero-ov"></div>
+    <span class="bio-orb a" aria-hidden="true"></span>
+    <span class="bio-orb b" aria-hidden="true"></span>
+  </div>
+  <div class="wrap">
+    <p class="case-kicker" data-depth="0.3">Case /06 · Konzeptstudie · Web-Demo</p>
+    <h1 class="case-title" data-fall data-depth="1">Biottle</h1>
+    <p class="case-sub" data-depth="0.6">Ein geschlossenes Biotop im Glas, inszeniert als scroll-choreografiertes Web-Erlebnis. Living Soil, versiegelt.</p>
+    <a class="case-live" href="biottle-demo/index.html" target="_blank" rel="noopener">Die Demo live erleben <span class="ar">→</span></a>
+  </div>
+</header>
+
+<!-- META -->
+<section class="section" style="padding-top:clamp(2.5rem,5vw,4rem)">
+  <div class="wrap">
+    <div class="case-meta">
+      <div><div class="m-k">Rolle</div><div class="m-v">Konzept · Design · Code</div></div>
+      <div><div class="m-k">Was</div><div class="m-v">Lebendes Biotop als Web-Erlebnis</div></div>
+      <div><div class="m-k">Umfang</div><div class="m-v">Freistellung · Bildwelt · Motion · Engine</div></div>
+      <div><div class="m-k">Status</div><div class="m-v">Konzeptstudie · Live-Demo</div></div>
+    </div>
+    <p class="case-lede reveal" style="margin-top:clamp(2.5rem,5vw,4rem)">Eine Welt, die sich selbst erhält, in einer Scroll-Minute zum Leben erweckt. <span class="hl">Versiegelt im Glas.</span></p>
+  </div>
+</section>
+
+<!-- RÜCKGRAT -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-spine reveal">
+      <div class="spine-beats">
+        <div class="beat"><div class="bk">Problem</div><div class="bv">Ein Biotop-im-Glas-Produzent braucht eine Seite, die das Gefühl einer lebendigen, versiegelten Welt trägt — nicht nur ein Produktfoto zeigt.</div></div>
+        <div class="beat"><div class="bk">Ansatz</div><div class="bv">Die Flasche aus einem Rotations-Video freistellen und als Scroll-Frame-Sequenz binden. Sie steigt drehend auf, hält mittig, dreht sich mit der Maus. Eine Liana schiebt sich von oben herein.</div></div>
+        <div class="beat"><div class="bk">Ergebnis</div><div class="bv">Eine Landingpage, die sich wie ein Blick in ein Ökosystem anfühlt. Weiß, Grün, ein Hauch Orange. Ruhig und lebendig zugleich.</div></div>
+      </div>
+      <div class="spine-proof">
+        <div class="sp"><div class="spn">121 Frames</div><div class="spd">Flasche freigestellt, Frame für Frame</div></div>
+        <div class="sp"><div class="spn">Vanilla</div><div class="spd">HTML, CSS, JS · nur Lenis für Smooth-Scroll</div></div>
+        <div class="sp"><div class="spn">rembg + ffmpeg</div><div class="spd">Video zu freigestellter Sequenz</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee alt" data-dir="left" aria-hidden="true">
+  <div class="track"><span class="item">EINE WELT · VERSIEGELT IM GLAS <span class="sep">✶</span> LIVING SOIL <span class="sep">✶</span> EIN GESCHLOSSENER KREISLAUF <span class="sep">✶</span> BIOTTLE <span class="sep">✶</span>&nbsp;</span></div>
+</div>
+
+<!-- LEITBILDER -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">Die Bilder im Kopf</span></div>
+    <div class="notes" data-reveal-stagger>
+      <div class="note reveal">„Eine Welt, versiegelt im Glas."</div>
+      <div class="note teal reveal">„Living Soil — lebendige Erde."</div>
+      <div class="note gold reveal">„Null Pflege, nur Licht."</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot reveal"><img src="assets/img/biottle/biottle-bottle.jpg" alt="Biottle: die freigestellte Flasche mit Mini-Dschungel, zentriert auf nebelgrünem Grund" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- POINTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="case-points" data-reveal-stagger>
+      <div class="case-point reveal">
+        <h3>Die Flasche</h3>
+        <p>Ein Rotations-Video der Flasche wird per ffmpeg in 121 Frames zerlegt und mit rembg freigestellt. Die Flasche schwebt auf Transparenz und dreht sich frei durch die Seite.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Die Liana</h3>
+        <p>Sobald die Flasche nach oben abdreht, schiebt sich am rechten Rand eine Liana physisch von oben nach unten ins Bild — kein Einblenden, ein echtes Hineinschieben, im Vordergrund über allem.</p>
+      </div>
+      <div class="case-point reveal">
+        <h3>Die Engine</h3>
+        <p>Der Scroll setzt Frame, Position und Drehung. Im Zentrum übernimmt die Maus. Dazu fallen echte Blätter der Liana. Alles an eine Scroll-Position gebunden, ohne Framework.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOTS -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="shot-grid two">
+      <div class="shot reveal"><img src="assets/img/biottle/biottle-liana.jpg" alt="Biottle: die glühende Liana am rechten Rand, mit fallenden Blättern" loading="lazy"></div>
+      <div class="shot reveal"><img src="assets/img/biottle/biottle-card.jpg" alt="Biottle: die Flasche in einem anderen Drehwinkel" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LESEN -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="read-col reveal">
+      <span class="read-k">Zum Weiterlesen</span>
+      <p>Am Anfang stand ein Video: eine Flasche mit einem Mini-Dschungel darin, die sich langsam dreht. Die Frage war, wie man daraus ein Web-Erlebnis macht, das sich lebendig anfühlt.</p>
+      <p>Die Flasche wurde Frame für Frame freigestellt. ffmpeg zerlegt das Video, rembg schneidet das Glas sauber aus dem Hintergrund — auch die transparenten Kanten. Übrig bleiben 121 Einzelbilder einer schwebenden Flasche.</p>
+      <p>Den Rest übernimmt eine eigene Scroll-Engine. Die Flasche steigt von unten auf, dreht sich dabei, kommt mittig zur Ruhe und lässt sich dort mit der Maus drehen. Beim Weiterscrollen dreht sie sich nach oben aus dem Bild.</p>
+      <p>In diesem Moment schiebt sich am rechten Rand eine Liana von oben herein — nicht eingeblendet, sondern physisch nach unten geschoben, im Vordergrund. Dazu trudeln echte, freigestellte Blätter der Liana langsam durchs Bild.</p>
+      <p>Biottle ist eine Konzeptstudie. Als Demo zeigt sie in einer Minute, wie aus einem einzelnen Produktvideo eine ganze, atmende Landingpage wird.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RANGE -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <p class="case-lede reveal">Ein Produktvideo, in eine lebendige Welt verwandelt. So kann sich eine Marke anfühlen, bevor der erste Satz Text fällt.</p>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="full">
+  <div class="wrap">
+    <div class="next-case">
+      <div>
+        <div class="nc-k">Nächster Case</div>
+        <a href="case-jungl.html"><div class="nc-t">JUNGL →</div></a>
+      </div>
+      <a class="btn ghost" href="index.html">← Zurück zum Index</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div><div class="foot-big"><a href="mailto:hello@pascaljaeger.de">Bild<br>im Kopf?</a></div></div>
+    <div><h4>Arbeit</h4><ul>
+      <li><a href="case-jungl.html">JUNGL</a></li>
+      <li><a href="case-fairi.html">fairi</a></li>
+      <li><a href="case-hntz.html">HNTZ</a></li>
+      <li><a href="case-wrlz.html">WRLZ</a></li>
+    </ul></div>
+    <div><h4>Sonst</h4><ul>
+      <li><a href="https://calendly.com/pasco1280/30min" target="_blank" rel="noopener">Call buchen</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+    </ul></div>
+  </div>
+  <div class="foot-base">
+    <span>© <span data-year>2026</span> Pascal Jäger · Heidelberg</span>
+    <span>Biottle · Eine Welt im Glas</span>
+  </div>
+</footer>
+
+<script src="assets/js/lenis.min.js"></script>
+<script src="assets/js/wrlz.js"></script>
+</body>
+</html>

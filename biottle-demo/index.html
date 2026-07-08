@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Biottle — Eine geschlossene Welt im Glas</title>
+  <meta name="description" content="Biottle: ein lebendes Biotop im Glas. Living Soil, geschlossener Kreislauf, null Pflege." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- grain + vignette overlays -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- shifting atmosphere background -->
+  <div class="atmo" aria-hidden="true">
+    <div class="atmo-glow"></div>
+  </div>
+
+  <!-- floating spores -->
+  <canvas class="spores" aria-hidden="true"></canvas>
+
+  <!-- the rotating bottle, fixed & centered, driven by scroll + mouse -->
+  <div class="stage" aria-hidden="true">
+    <div class="stage-shadow"></div>
+    <canvas class="bottle" id="bottle"></canvas>
+  </div>
+
+  <!-- right-side liana crawls down from the top once the bottle turns up -->
+  <div class="liana" id="liana" aria-hidden="true">
+    <img src="assets/vine/liane-right.webp" alt="" class="liana-img" />
+  </div>
+  <!-- falling leaves -->
+  <canvas class="leaves" aria-hidden="true"></canvas>
+
+  <!-- progress rail -->
+  <div class="rail" aria-hidden="true"><div class="rail-fill" id="railFill"></div></div>
+
+  <header class="nav">
+    <div class="brand">biottle<span class="dot">.</span></div>
+    <nav class="nav-links">
+      <a href="#idee">Idee</a>
+      <a href="#prinzip">Prinzip</a>
+      <a href="#collection">Collection</a>
+    </nav>
+    <a href="#cta" class="nav-cta">Vorbestellen</a>
+  </header>
+
+  <main>
+    <!-- ACT 1 — HERO -->
+    <section class="hero" id="top">
+      <p class="eyebrow reveal">Living Soil · Geschlossenes Ökosystem</p>
+      <h1 class="hero-title">
+        <span class="reveal" style="--d:.05s">Eine</span>
+        <span class="reveal" style="--d:.12s">Welt.</span>
+        <span class="reveal serif-it" style="--d:.19s">Versiegelt</span>
+        <span class="reveal" style="--d:.26s">im Glas.</span>
+      </h1>
+      <p class="hero-sub reveal" style="--d:.4s">
+        Biottle ist ein sich selbst erhaltendes Biotop. Kein Gießen, kein Öffnen,
+        kein Eingriff — nur ein lebendiger Kreislauf, der Jahre atmet.
+      </p>
+      <div class="scroll-hint reveal" style="--d:.6s">
+        <span>Scrollen</span>
+        <div class="scroll-line"><i></i></div>
+      </div>
+    </section>
+
+    <!-- spacer while the bottle rises -->
+    <section class="act-rise"></section>
+
+    <!-- ACT 2 — HOLD: texts flanking the centered bottle -->
+    <section class="act-hold" id="idee">
+      <article class="fact fact-left">
+        <span class="fact-num">01</span>
+        <h2 class="fact-title">Living&nbsp;Soil</h2>
+        <p>Lebendige Erde statt totem Substrat. Milliarden Mikroorganismen,
+          Pilzgeflechte und Springschwänze bilden ein Bodennetz, das Nährstoffe
+          endlos umwälzt.</p>
+      </article>
+
+      <article class="fact fact-right">
+        <span class="fact-num">02</span>
+        <h2 class="fact-title serif-it">Kreislauf</h2>
+        <p>Wasser verdunstet an der Glaswand, kondensiert, regnet zurück.
+          Ein Miniatur-Wetter, das sich selbst trägt. Einmal versiegelt,
+          nie wieder geöffnet.</p>
+      </article>
+
+      <article class="fact fact-left low">
+        <span class="fact-num">03</span>
+        <h2 class="fact-title">Null&nbsp;Pflege</h2>
+        <p>Licht rein — mehr braucht es nicht. Kein Düngen, kein Beschneiden.
+          Die Flasche reguliert sich selbst und wird mit den Jahren nur schöner.</p>
+      </article>
+
+      <p class="hold-hint">Zieh mit der Maus — dreh die Welt.</p>
+    </section>
+
+    <!-- spacer while the bottle exits upward -->
+    <section class="act-exit"></section>
+
+    <!-- ACT 3 — PRINCIPLE band -->
+    <section class="principle" id="prinzip">
+      <h2 class="section-h reveal">Ein Ökosystem<br><span class="serif-it">in vier Schichten.</span></h2>
+      <div class="layers">
+        <div class="layer reveal"><span class="layer-k">Drainage</span><p>Lavagestein hält Staunässe fern und speichert Reserve-Feuchtigkeit.</p></div>
+        <div class="layer reveal"><span class="layer-k">Aktivkohle</span><p>Filtert, hält das Wasser klar und das Klima im Glas gesund.</p></div>
+        <div class="layer reveal"><span class="layer-k">Living Soil</span><p>Das lebende Herz — Mikrobiom, Mykorrhiza, organische Substanz.</p></div>
+        <div class="layer reveal"><span class="layer-k">Flora</span><p>Moose, Farne, Miniaturbäume — kuratiert für Jahrzehnte Balance.</p></div>
+      </div>
+    </section>
+
+    <!-- ACT 4 — COLLECTION -->
+    <section class="collection" id="collection">
+      <h2 class="section-h reveal">Die <span class="serif-it">Collection</span></h2>
+      <div class="grid">
+        <div class="card reveal"><div class="card-art art-1"></div><h3>Fern Valley</h3><p>Farndominiert, kühles Grün, 5 L.</p><span class="price">ab 149 €</span></div>
+        <div class="card reveal"><div class="card-art art-2"></div><h3>Moss Hollow</h3><p>Dichter Moosteppich, weiches Licht, 3 L.</p><span class="price">ab 119 €</span></div>
+        <div class="card reveal"><div class="card-art art-3"></div><h3>Canopy</h3><p>Miniaturbaum, offener Grund, 8 L.</p><span class="price">ab 189 €</span></div>
+      </div>
+    </section>
+
+    <!-- ACT 5 — CTA -->
+    <section class="cta" id="cta">
+      <h2 class="cta-h reveal">Nimm ein Stück<br><span class="serif-it">lebende Welt</span> nach Hause.</h2>
+      <p class="reveal">Limitierte erste Edition. Jede Flasche von Hand angelegt und versiegelt.</p>
+      <form class="cta-form reveal" onsubmit="return false">
+        <input type="email" placeholder="deine@email.de" aria-label="E-Mail" />
+        <button type="submit">Auf die Liste</button>
+      </form>
+    </section>
+
+    <footer class="footer">
+      <span class="brand">biottle<span class="dot">.</span></span>
+      <span class="foot-meta">Handgemacht · versiegelt · lebendig</span>
+    </footer>
+  </main>
+
+  <script src="libs/lenis.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
